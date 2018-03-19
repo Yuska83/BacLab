@@ -1,0 +1,117 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:BacLab">
+
+    
+    
+    <ControlTemplate x:Key="ButtonClose">
+        <Grid>
+            <Rectangle Width="{TemplateBinding Width}" Height="20" RadiusX="10" RadiusY="10">
+                <Rectangle.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#FF408AFA" Offset="0.2"/>
+                        <GradientStop Color="#FF006063" Offset="1"/>
+                    </RadialGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <ContentPresenter Content="{TemplateBinding Button.Content}"  VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="Button.IsPressed" Value="true">
+                <Setter Property="RenderTransformOrigin" Value="0.5 0.5"/>
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="ButtonCodeLock">
+        <Grid>
+            <Rectangle Width="{TemplateBinding Width}" Height="50" RadiusX="10" RadiusY="10">
+                <Rectangle.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#00ffff" Offset="0.1"/>
+                        <GradientStop Color="#0000ff" Offset="2.7"/>
+                    </RadialGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <ContentPresenter Content="{TemplateBinding Button.Content}"  VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="Button.IsPressed" Value="true">
+                <Setter Property="RenderTransformOrigin" Value="0.5 0.5"/>
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="InstrumentalRadioButton" >
+        <Grid>
+            <Rectangle x:Name="rec" Width="70" Height="70" RadiusX="10" RadiusY="10">
+                <Rectangle.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Color="LightBlue" Offset="0.1"/>
+                        <GradientStop Color="#000000" Offset="2.7"/>
+                    </RadialGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <ContentPresenter Content="{TemplateBinding Button.Content}"  VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                <EventTrigger.Actions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Duration="0:0:0.2"
+                            Storyboard.TargetProperty="Width"
+                            To="80"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger.Actions>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="Mouse.MouseLeave" x:Name="mLeave">
+                <EventTrigger.Actions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                Duration="0:0:0.1"
+                                Storyboard.TargetProperty="Width"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger.Actions>
+            </EventTrigger>
+            <Trigger Property="RadioButton.IsChecked" Value="true">
+                <Setter Property="Fill" TargetName="rec"  Value="Azure"/>
+                <Setter Property="RenderTransformOrigin" Value="0.5 0.5"/>
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <ScaleTransform ScaleX="1.2" ScaleY="1.2"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="Instrumental" >
+        <Grid>
+            <Rectangle x:Name="rec" Width="70" Height="70" RadiusX="10" RadiusY="10">
+                <Rectangle.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Color="LightBlue" Offset="0.1"/>
+                        <GradientStop Color="#000000" Offset="2.7"/>
+                    </RadialGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <ContentPresenter Content="{TemplateBinding Button.Content}"  VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Grid>
+    </ControlTemplate>
+
+</ResourceDictionary>

@@ -1,0 +1,367 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Хранилище BacLab_DBModelContainer" CdmEntityContainer="BacLab_DBEntities">
+    <EntitySetMapping Name="Analyses">
+      <EntityTypeMapping TypeName="BacLab_DBModel.Analysis">
+        <MappingFragment StoreEntitySet="Analysis">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="num" ColumnName="num" />
+          <ScalarProperty Name="finance" ColumnName="finance" />
+          <ScalarProperty Name="dateSampling" ColumnName="dateSampling" />
+          <ScalarProperty Name="dateAvailable" ColumnName="dateAvailable" />
+          <ScalarProperty Name="id_patient" ColumnName="id_patient" />
+          <ScalarProperty Name="idInstitution" ColumnName="idInstitution" />
+          <ScalarProperty Name="idDepartment" ColumnName="idDepartment" />
+          <ScalarProperty Name="numMedCards" ColumnName="numMedCards" />
+          <ScalarProperty Name="idMaterial" ColumnName="idMaterial" />
+          <ScalarProperty Name="idGroupOfStudy" ColumnName="idGroupOfStudy" />
+          <ScalarProperty Name="idDiagnosis" ColumnName="idDiagnosis" />
+          <ScalarProperty Name="idPurposeofStudy" ColumnName="idPurposeofStudy" />
+          <ScalarProperty Name="idCategoryOfPatient" ColumnName="idCategoryOfPatient" />
+          <ScalarProperty Name="sentDoctor" ColumnName="sentDoctor" />
+          <ScalarProperty Name="idBritrany" ColumnName="idBritrany" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Britranies">
+      <EntityTypeMapping TypeName="BacLab_DBModel.Britrany">
+        <MappingFragment StoreEntitySet="Britrany">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="discription" ColumnName="discription" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="d_Antibiotics">
+      <EntityTypeMapping TypeName="BacLab_DBModel.d_Antibiotics">
+        <MappingFragment StoreEntitySet="d_Antibiotics">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id_group_AB" ColumnName="id_group_AB" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="d_Antibiotics_groups">
+      <EntityTypeMapping TypeName="BacLab_DBModel.d_Antibiotics_groups">
+        <MappingFragment StoreEntitySet="d_Antibiotics_groups">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="antibiotics_groups" ColumnName="antibiotics_groups" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="d_Category_of_patient">
+      <EntityTypeMapping TypeName="BacLab_DBModel.d_Category_of_patient">
+        <MappingFragment StoreEntitySet="d_Category_of_patient">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="category" ColumnName="category" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="d_Department">
+      <EntityTypeMapping TypeName="BacLab_DBModel.d_Department">
+        <MappingFragment StoreEntitySet="d_Department">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="department" ColumnName="department" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="d_Diagnosis">
+      <EntityTypeMapping TypeName="BacLab_DBModel.d_Diagnosis">
+        <MappingFragment StoreEntitySet="d_Diagnosis">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="diagnosis" ColumnName="diagnosis" />
+          <ScalarProperty Name="abbr" ColumnName="abbr" />
+          <ScalarProperty Name="id_diagnosis_group" ColumnName="id_diagnosis_group" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="d_Diagnosis_group">
+      <EntityTypeMapping TypeName="BacLab_DBModel.d_Diagnosis_group">
+        <MappingFragment StoreEntitySet="d_Diagnosis_group">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="diagnosis_group" ColumnName="diagnosis_group" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="d_District">
+      <EntityTypeMapping TypeName="BacLab_DBModel.d_District">
+        <MappingFragment StoreEntitySet="d_District">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="district" ColumnName="district" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="d_Finance">
+      <EntityTypeMapping TypeName="BacLab_DBModel.d_Finance">
+        <MappingFragment StoreEntitySet="d_Finance">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="finance" ColumnName="finance" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="d_Gramm">
+      <EntityTypeMapping TypeName="BacLab_DBModel.d_Gramm">
+        <MappingFragment StoreEntitySet="d_Gramm">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="color" ColumnName="color" />
+          <ScalarProperty Name="abv" ColumnName="abv" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="d_Group_of_Study">
+      <EntityTypeMapping TypeName="BacLab_DBModel.d_Group_of_Study">
+        <MappingFragment StoreEntitySet="d_Group_of_Study">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="Group_of_Study" ColumnName="Group_of_Study" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="d_Institution">
+      <EntityTypeMapping TypeName="BacLab_DBModel.d_Institution">
+        <MappingFragment StoreEntitySet="d_Institution">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="institution" ColumnName="institution" />
+          <ScalarProperty Name="abbr" ColumnName="abbr" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="d_Material">
+      <EntityTypeMapping TypeName="BacLab_DBModel.d_Material">
+        <MappingFragment StoreEntitySet="d_Material">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="material" ColumnName="material" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="d_Medium">
+      <EntityTypeMapping TypeName="BacLab_DBModel.d_Medium">
+        <MappingFragment StoreEntitySet="d_Medium">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="medium" ColumnName="medium" />
+          <ScalarProperty Name="code" ColumnName="code" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="d_Microorganisms">
+      <EntityTypeMapping TypeName="BacLab_DBModel.d_Microorganisms">
+        <MappingFragment StoreEntitySet="d_Microorganisms">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="id_group" ColumnName="id_group" />
+          <ScalarProperty Name="id_genus" ColumnName="id_genus" />
+          <ScalarProperty Name="species" ColumnName="species" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="d_Microorganisms_genus">
+      <EntityTypeMapping TypeName="BacLab_DBModel.d_Microorganisms_genus">
+        <MappingFragment StoreEntitySet="d_Microorganisms_genus">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="abbr_name" ColumnName="abbr_name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="d_Microorganisms_groups">
+      <EntityTypeMapping TypeName="BacLab_DBModel.d_Microorganisms_groups">
+        <MappingFragment StoreEntitySet="d_Microorganisms_groups">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="microorganisms_groups" ColumnName="microorganisms_groups" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="d_Morphology">
+      <EntityTypeMapping TypeName="BacLab_DBModel.d_Morphology">
+        <MappingFragment StoreEntitySet="d_Morphology">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="microscopy" ColumnName="microscopy" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="d_Name_Test_Set">
+      <EntityTypeMapping TypeName="BacLab_DBModel.d_Name_Test_Set">
+        <MappingFragment StoreEntitySet="d_Name_Test_Set">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="d_Olkenickiy">
+      <EntityTypeMapping TypeName="BacLab_DBModel.d_Olkenickiy">
+        <MappingFragment StoreEntitySet="d_Olkenickiy">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name_test_set" ColumnName="name_test_set" />
+          <ScalarProperty Name="typeOlk" ColumnName="typeOlk" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="d_Purpose_of_study">
+      <EntityTypeMapping TypeName="BacLab_DBModel.d_Purpose_of_study">
+        <MappingFragment StoreEntitySet="d_Purpose_of_study">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="purpose" ColumnName="purpose" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="d_Staff_category">
+      <EntityTypeMapping TypeName="BacLab_DBModel.d_Staff_category">
+        <MappingFragment StoreEntitySet="d_Staff_category">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="category" ColumnName="category" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="d_Test_result">
+      <EntityTypeMapping TypeName="BacLab_DBModel.d_Test_result">
+        <MappingFragment StoreEntitySet="d_Test_result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="result" ColumnName="result" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="d_Tests">
+      <EntityTypeMapping TypeName="BacLab_DBModel.d_Tests">
+        <MappingFragment StoreEntitySet="d_Tests">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="test" ColumnName="test" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="d_Type_Colonyy">
+      <EntityTypeMapping TypeName="BacLab_DBModel.d_Type_Colonyy">
+        <MappingFragment StoreEntitySet="d_Type_Colonyy">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="type_colonyy" ColumnName="type_colonyy" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="p_AB_MO_group_profile">
+      <EntityTypeMapping TypeName="BacLab_DBModel.p_AB_MO_group_profile">
+        <MappingFragment StoreEntitySet="p_AB_MO_group_profile">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="id_AB" ColumnName="id_AB" />
+          <ScalarProperty Name="id_group_MO" ColumnName="id_group_MO" />
+          <ScalarProperty Name="id_MO" ColumnName="id_MO" />
+          <ScalarProperty Name="Res" ColumnName="Res" />
+          <ScalarProperty Name="Sen" ColumnName="Sen" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="p_Group_Material">
+      <EntityTypeMapping TypeName="BacLab_DBModel.p_Group_Material">
+        <MappingFragment StoreEntitySet="p_Group_Material">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="id_group_of_study" ColumnName="id_group_of_study" />
+          <ScalarProperty Name="id_material" ColumnName="id_material" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="p_Group_Material_Purpose">
+      <EntityTypeMapping TypeName="BacLab_DBModel.p_Group_Material_Purpose">
+        <MappingFragment StoreEntitySet="p_Group_Material_Purpose">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="id_group_material" ColumnName="id_group_material" />
+          <ScalarProperty Name="id_purpose" ColumnName="id_purpose" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="p_Group_Material_Purpose_Medium">
+      <EntityTypeMapping TypeName="BacLab_DBModel.p_Group_Material_Purpose_Medium">
+        <MappingFragment StoreEntitySet="p_Group_Material_Purpose_Medium">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="id_group_material_purpose" ColumnName="id_group_material_purpose" />
+          <ScalarProperty Name="id_Medium" ColumnName="id_Medium" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="p_Identification_Table">
+      <EntityTypeMapping TypeName="BacLab_DBModel.p_Identification_Table">
+        <MappingFragment StoreEntitySet="p_Identification_Table">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="id_MO" ColumnName="id_MO" />
+          <ScalarProperty Name="id_test" ColumnName="id_test" />
+          <ScalarProperty Name="result" ColumnName="result" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="p_Institution_Department_District">
+      <EntityTypeMapping TypeName="BacLab_DBModel.p_Institution_Department_District">
+        <MappingFragment StoreEntitySet="p_Institution_Department_District">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="abbr" ColumnName="abbr" />
+          <ScalarProperty Name="id_institution" ColumnName="id_institution" />
+          <ScalarProperty Name="id_department" ColumnName="id_department" />
+          <ScalarProperty Name="id_district" ColumnName="id_district" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="p_Purpose_CategoryPatient">
+      <EntityTypeMapping TypeName="BacLab_DBModel.p_Purpose_CategoryPatient">
+        <MappingFragment StoreEntitySet="p_Purpose_CategoryPatient">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="id_purpose_of_study" ColumnName="id_purpose_of_study" />
+          <ScalarProperty Name="id_category_of_patient" ColumnName="id_category_of_patient" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="p_Test_Set">
+      <EntityTypeMapping TypeName="BacLab_DBModel.p_Test_Set">
+        <MappingFragment StoreEntitySet="p_Test_Set">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="id_name_set" ColumnName="id_name_set" />
+          <ScalarProperty Name="id_test" ColumnName="id_test" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Patients">
+      <EntityTypeMapping TypeName="BacLab_DBModel.Patient">
+        <MappingFragment StoreEntitySet="Patients">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+          <ScalarProperty Name="middleName" ColumnName="middleName" />
+          <ScalarProperty Name="yearOfBirth" ColumnName="yearOfBirth" />
+          <ScalarProperty Name="adress" ColumnName="adress" />
+          <ScalarProperty Name="district_adress" ColumnName="district_adress" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="jobPlace" ColumnName="jobPlace" />
+          <ScalarProperty Name="district_jobPlace" ColumnName="district_jobPlace" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Staffs">
+      <EntityTypeMapping TypeName="BacLab_DBModel.Staff">
+        <MappingFragment StoreEntitySet="Staff">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+          <ScalarProperty Name="middleName" ColumnName="middleName" />
+          <ScalarProperty Name="id_category" ColumnName="id_category" />
+          <ScalarProperty Name="birthday" ColumnName="birthday" />
+          <ScalarProperty Name="adress" ColumnName="adress" />
+          <ScalarProperty Name="telephon1" ColumnName="telephon1" />
+          <ScalarProperty Name="telephon2" ColumnName="telephon2" />
+          <ScalarProperty Name="telephon3" ColumnName="telephon3" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="BacLab_DBModel.sysdiagram">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Template_Results">
+      <EntityTypeMapping TypeName="BacLab_DBModel.Template_Results">
+        <MappingFragment StoreEntitySet="Template_Results">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="template" ColumnName="template" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
