@@ -16,6 +16,7 @@ using MahApps.Metro.Controls;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 using Dragablz;
+using BacLab.Settings;
 
 
 namespace BacLab
@@ -33,6 +34,10 @@ namespace BacLab
             {
                 InitializeComponent();
                 context = new BacLab_DBEntities();
+                ApplyStyle();
+                
+
+
             }
             catch (Exception ex)
             {
@@ -67,6 +72,28 @@ namespace BacLab
             {
                 MessageBox.Show(ex.Message + " /n" + ex.StackTrace);
             }
+        }
+        private void ApplyStyle()
+        {
+            var style = context.StyleApps.Where(c => c.id == 1).FirstOrDefault();
+
+            
+            var resourceDictionary = new ResourceDictionary
+            {
+                Source = new Uri(@"pack://application:,,,/Dragablz;component/Themes/materialdesign.xaml")
+            };
+            bool ss = Convert.ToBoolean(style.style);
+            var styleKey = ss  ? "MaterialDesignAlternateTabablzControlStyle" : "MaterialDesignTabablzControlStyle";
+            var st = (Style)resourceDictionary[styleKey];
+
+            foreach (var tabablzControl in Dragablz.TabablzControl.GetLoadedInstances())
+            {
+                tabablzControl.Style = st;
+            }
+
+            new PaletteHelper().SetLightDark(Convert.ToBoolean(style.isDark));
+            new PaletteHelper().ReplacePrimaryColor(style.primary_color);
+            new PaletteHelper().ReplaceAccentColor(style.accent_color);
         }
     }
 

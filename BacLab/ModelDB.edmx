@@ -312,6 +312,17 @@
           <Property Name="telephon2" Type="nvarchar" MaxLength="20" />
           <Property Name="telephon3" Type="nvarchar" MaxLength="20" />
         </EntityType>
+        <EntityType Name="StyleApp">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_staff" Type="int" />
+          <Property Name="style" Type="nvarchar" MaxLength="50" />
+          <Property Name="isDark" Type="nvarchar" MaxLength="50" />
+          <Property Name="primary_color" Type="nvarchar" MaxLength="50" />
+          <Property Name="accent_color" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
             <PropertyRef Name="diagram_id" />
@@ -773,6 +784,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="StyleStaff_FK">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StyleApp" Type="Self.StyleApp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="StyleApp">
+              <PropertyRef Name="id_staff" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="Хранилище BacLab_DBModelContainer">
           <EntitySet Name="Analysis" EntityType="Self.Analysis" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Britrany" EntityType="Self.Britrany" Schema="dbo" store:Type="Tables" />
@@ -810,6 +835,7 @@
           <EntitySet Name="p_Test_Set" EntityType="Self.p_Test_Set" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patients" EntityType="Self.Patients" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Staff" EntityType="Self.Staff" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StyleApp" EntityType="Self.StyleApp" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Template_Results" EntityType="Self.Template_Results" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__Analysis__financ__3429BB53" Association="Self.FK__Analysis__financ__3429BB53">
@@ -959,6 +985,10 @@
           <AssociationSet Name="FK__Staff__id_catego__7849DB76" Association="Self.FK__Staff__id_catego__7849DB76">
             <End Role="d_Staff_category" EntitySet="d_Staff_category" />
             <End Role="Staff" EntitySet="Staff" />
+          </AssociationSet>
+          <AssociationSet Name="StyleStaff_FK" Association="Self.StyleStaff_FK">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="StyleApp" EntitySet="StyleApp" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -1346,6 +1376,19 @@
           <Property Name="telephon2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="telephon3" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="d_Staff_category" Relationship="Self.FK__Staff__id_catego__7849DB76" FromRole="Staff" ToRole="d_Staff_category" />
+          <NavigationProperty Name="StyleApps" Relationship="Self.StyleStaff_FK" FromRole="Staff" ToRole="StyleApp" />
+        </EntityType>
+        <EntityType Name="StyleApp">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_staff" Type="Int32" />
+          <Property Name="style" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="isDark" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="primary_color" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="accent_color" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Staff" Relationship="Self.StyleStaff_FK" FromRole="StyleApp" ToRole="Staff" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -1808,6 +1851,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="StyleStaff_FK">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StyleApp" Type="Self.StyleApp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="StyleApp">
+              <PropertyRef Name="id_staff" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="BacLab_DBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Analyses" EntityType="Self.Analysis" />
           <EntitySet Name="Britranies" EntityType="Self.Britrany" />
@@ -1845,6 +1902,7 @@
           <EntitySet Name="p_Test_Set" EntityType="Self.p_Test_Set" />
           <EntitySet Name="Patients" EntityType="Self.Patient" />
           <EntitySet Name="Staffs" EntityType="Self.Staff" />
+          <EntitySet Name="StyleApps" EntityType="Self.StyleApp" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="Template_Results" EntityType="Self.Template_Results" />
           <AssociationSet Name="FK__Analysis__financ__3429BB53" Association="Self.FK__Analysis__financ__3429BB53">
@@ -1994,6 +2052,10 @@
           <AssociationSet Name="FK__p_Group_M__id_gr__28ED12D1" Association="Self.FK__p_Group_M__id_gr__28ED12D1">
             <End Role="p_Group_Material_Purpose" EntitySet="p_Group_Material_Purpose" />
             <End Role="p_Group_Material_Purpose_Medium" EntitySet="p_Group_Material_Purpose_Medium" />
+          </AssociationSet>
+          <AssociationSet Name="StyleStaff_FK" Association="Self.StyleStaff_FK">
+            <End Role="Staff" EntitySet="Staffs" />
+            <End Role="StyleApp" EntitySet="StyleApps" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -2342,6 +2404,18 @@
                 <ScalarProperty Name="telephon1" ColumnName="telephon1" />
                 <ScalarProperty Name="telephon2" ColumnName="telephon2" />
                 <ScalarProperty Name="telephon3" ColumnName="telephon3" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StyleApps">
+            <EntityTypeMapping TypeName="BacLab_DBModel.StyleApp">
+              <MappingFragment StoreEntitySet="StyleApp">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="id_staff" ColumnName="id_staff" />
+                <ScalarProperty Name="style" ColumnName="style" />
+                <ScalarProperty Name="isDark" ColumnName="isDark" />
+                <ScalarProperty Name="primary_color" ColumnName="primary_color" />
+                <ScalarProperty Name="accent_color" ColumnName="accent_color" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

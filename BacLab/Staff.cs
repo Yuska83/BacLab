@@ -14,6 +14,12 @@ namespace BacLab
     
     public partial class Staff
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Staff()
+        {
+            this.StyleApps = new HashSet<StyleApp>();
+        }
+    
         public int id { get; set; }
         public string lastName { get; set; }
         public string firstName { get; set; }
@@ -26,5 +32,7 @@ namespace BacLab
         public string telephon3 { get; set; }
     
         public virtual d_Staff_category d_Staff_category { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StyleApp> StyleApps { get; set; }
     }
 }

@@ -61,6 +61,7 @@ namespace BacLab
         public virtual DbSet<p_Test_Set> p_Test_Set { get; set; }
         public virtual DbSet<Patient> Patients { get; set; }
         public virtual DbSet<Staff> Staffs { get; set; }
+        public virtual DbSet<StyleApp> StyleApps { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Template_Results> Template_Results { get; set; }
     }

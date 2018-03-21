@@ -7,6 +7,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Linq;
+using System;
 
 namespace BacLab.Settings
 {
@@ -15,9 +17,17 @@ namespace BacLab.Settings
     /// </summary>
     public partial class PaletteSelector : UserControl
     {
+        BacLab_DBEntities context;
+       
         public PaletteSelector()
         {
             InitializeComponent();
+            context = new BacLab_DBEntities();
+           
+
+
         }
+
+       
     }
 }

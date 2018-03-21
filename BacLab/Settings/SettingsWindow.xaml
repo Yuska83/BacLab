@@ -10,7 +10,7 @@
                       TextElement.Foreground="{DynamicResource MaterialDesignBody}"
                       Background="{DynamicResource MaterialDesignPaper}"					  
                       GlowBrush="{DynamicResource AccentColorBrush}"					  
-                      FontFamily="{StaticResource DefaultFont}" 
+                      FontFamily="{StaticResource DefaultFont}"
                       Icon="/BacLab;component/Microscope-icon.ico" 
                       Title="BacLab" 
                       WindowStartupLocation="CenterScreen" 
@@ -22,9 +22,11 @@
                 <dragablz:TabablzControl BorderThickness="2" >
 
                     <TabItem Header="Палітра" >
-                        <TabItem.Content>
-                            <domain:PaletteSelector />
-                        </TabItem.Content>
+                        <domain:PaletteSelector Margin="16">
+                            <domain:PaletteSelector.DataContext>
+                                <domain:PaletteSelectorViewModel />
+                            </domain:PaletteSelector.DataContext>
+                        </domain:PaletteSelector>
                     </TabItem>
                 </dragablz:TabablzControl>
             </DockPanel>

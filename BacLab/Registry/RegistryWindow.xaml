@@ -6,6 +6,7 @@
                       xmlns:dockablz="clr-namespace:Dragablz.Dockablz;assembly=Dragablz"
                       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
                       xmlns:domain="clr-namespace:BacLab.Administration"
+                      xmlns:domain1="clr-namespace:BacLab.Settings"
                       WindowTransitionsEnabled="False"
                       TextElement.Foreground="{DynamicResource MaterialDesignBody}"
                       Background="{DynamicResource MaterialDesignPaper}"					  
@@ -212,6 +213,13 @@
                     </TabItem>
                     <TabItem Header="Телефоны">
 
+                    </TabItem>
+                    <TabItem Header="Палітра" >
+                        <domain1:PaletteSelector Margin="16">
+                            <domain1:PaletteSelector.DataContext>
+                                <domain1:PaletteSelectorViewModel />
+                            </domain1:PaletteSelector.DataContext>
+                        </domain1:PaletteSelector>
                     </TabItem>
                 </dragablz:TabablzControl>
 

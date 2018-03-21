@@ -344,6 +344,18 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="StyleApps">
+      <EntityTypeMapping TypeName="BacLab_DBModel.StyleApp">
+        <MappingFragment StoreEntitySet="StyleApp">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="id_staff" ColumnName="id_staff" />
+          <ScalarProperty Name="style" ColumnName="style" />
+          <ScalarProperty Name="isDark" ColumnName="isDark" />
+          <ScalarProperty Name="primary_color" ColumnName="primary_color" />
+          <ScalarProperty Name="accent_color" ColumnName="accent_color" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="sysdiagrams">
       <EntityTypeMapping TypeName="BacLab_DBModel.sysdiagram">
         <MappingFragment StoreEntitySet="sysdiagrams">

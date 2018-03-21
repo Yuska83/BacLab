@@ -49,9 +49,6 @@ C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\EntityFramework.dll
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\EntityFramework.SqlServer.dll
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MahApps.Metro.dll
-C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignColors.dll
-C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignThemes.MahApps.dll
-C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignThemes.Wpf.dll
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\System.Windows.Interactivity.dll
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\Dragablz.pdb
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\Dragablz.xml
@@ -59,9 +56,6 @@ C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MahApps.Metro.pdb
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MahApps.Metro.xml
-C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignColors.pdb
-C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignThemes.Wpf.pdb
-C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignThemes.Wpf.xml
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\ru\EntityFramework.resources.dll
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\ru\EntityFramework.SqlServer.resources.dll
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Resources\Icons.baml
@@ -173,3 +167,34 @@ C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\BacLab.csproj.Gen
 C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\BacLab.exe
 C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\BacLab.pdb
 C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\BacLab.csprojResolveAssemblyReference.cache
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\ControlzEx.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\Xceed.Wpf.AvalonDock.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Aero.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Metro.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\Xceed.Wpf.AvalonDock.Themes.VS2010.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\Xceed.Wpf.DataGrid.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\Xceed.Wpf.Toolkit.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\ControlzEx.pdb
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignThemes.MahApps.pdb
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\de\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\es\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\fr\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\hu\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\it\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\pt-BR\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\ro\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\ru\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\sv\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\zh-Hans\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\Dictionary\Antibiotics.g.cs
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Settings\PaletteSelector.g.cs
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Settings\SettingsWindow.g.cs
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\Dictionary\Antibiotics.baml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Settings\PaletteSelector.baml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Settings\SettingsWindow.baml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignThemes.MahApps.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignColors.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignColors.pdb
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignThemes.Wpf.xml

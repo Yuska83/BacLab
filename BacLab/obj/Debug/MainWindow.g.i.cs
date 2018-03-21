@@ -11,9 +11,7 @@
 
 using Dragablz;
 using Dragablz.Dockablz;
-using MahApps.Metro;
 using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
 using MahMaterialDragablzMashUp;
 using MaterialDesignThemes.MahApps;
 using MaterialDesignThemes.Wpf;
