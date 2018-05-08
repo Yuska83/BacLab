@@ -15,6 +15,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -34,17 +35,54 @@
                     <DataGrid x:Name="x_antibioticsGrid" 
                               AutoGenerateColumns="False"
 						        Margin="5"
-						        AlternatingRowBackground="Azure"
 						        CanUserSortColumns="True" 
 						        CanUserAddRows="True" 
+                              AddingNewItem="x_antibioticsGrid_AddingNewItem"
 						        materialDesign:DataGridAssist.CellPadding="13 8 8 8" 
 						        materialDesign:DataGridAssist.ColumnHeaderPadding="8"
-                                ItemsSource="{Binding}">
+                                ItemsSource="{Binding}" 
+                              AlternatingRowBackground="GhostWhite" 
+                              Background="White">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
+                            <DataGridTextColumn Header="Id" IsReadOnly="True" Binding="{Binding Id, Mode=TwoWay}" />
                             <DataGridTextColumn Header="Назва" Binding="{Binding Name}" />
-                            <DataGridTextColumn Header="Група" Binding="{Binding Group}" />
-                            <DataGridComboBoxColumn x:Name="x_edit" Header="Редагування" SelectedItemBinding="{Binding GroupAb}"/>
+                            <DataGridTemplateColumn Header="Група">
+
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Group, Mode=TwoWay}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <ComboBox ItemsSource="{Binding List_group}" 
+                                                  SelectedValue="{Binding Group, Mode=TwoWay}" 
+                                                  Background="White" 
+                                                  IsDropDownOpen="True"
+                                                 />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn x:Name="x_save_button" >
+
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ToggleButton 
+                                                      Checked="x_save_button_Checked"
+                                                      Margin="8 0 0 0" 
+                                                      Style="{StaticResource MaterialDesignActionToggleButton}" 
+                                                      ToolTip="Зберегти" IsEnabled="{Binding IsEdit}"
+                                                      Background="{Binding Foregraund, Mode=TwoWay}" 
+                                                     >
+                                            <materialDesign:PackIcon Kind="Check" />
+                                        </ToggleButton>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+
+                            </DataGridTemplateColumn>
+
                         </DataGrid.Columns>
 
                     </DataGrid>
