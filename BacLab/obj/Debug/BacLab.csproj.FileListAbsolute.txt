@@ -80,7 +80,6 @@ C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.csproj.GenerateResource.Cache
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.exe
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.pdb
-C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.csprojResolveAssemblyReference.cache
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\SampleProgressDialog.baml
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\SampleProgressDialog.g.cs
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\SampleMessageDialog.baml
@@ -198,3 +197,4 @@ C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignColors.pdb
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignThemes.Wpf.pdb
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.csprojResolveAssemblyReference.cache

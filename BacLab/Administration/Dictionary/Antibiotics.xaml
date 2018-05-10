@@ -34,30 +34,33 @@
 
                     <DataGrid x:Name="x_antibioticsGrid" 
                               AutoGenerateColumns="False"
-						        Margin="5"
-						        CanUserSortColumns="True" 
-						        CanUserAddRows="True" 
+                              Margin="5" 
+                              CanUserSortColumns="True" 
+                              CanUserAddRows="True" 
                               AddingNewItem="x_antibioticsGrid_AddingNewItem"
-						        materialDesign:DataGridAssist.CellPadding="13 8 8 8" 
-						        materialDesign:DataGridAssist.ColumnHeaderPadding="8"
-                                ItemsSource="{Binding}" 
+                              materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                              materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                              ItemsSource="{Binding}" 
                               AlternatingRowBackground="GhostWhite" 
                               Background="White">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <TextBlock x:Name="x_btn_delete" Text="Видалити"  MouseLeftButtonDown="x_btn_delete_MouseLeftButtonDown"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Id" IsReadOnly="True" Binding="{Binding Id, Mode=TwoWay}" />
-                            <DataGridTextColumn Header="Назва" Binding="{Binding Name}" />
+                            <DataGridTextColumn Header="Назва" Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                             <DataGridTemplateColumn Header="Група">
-
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Group, Mode=TwoWay}"/>
+                                        <TextBlock Text="{Binding Group, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
-
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <ComboBox ItemsSource="{Binding List_group}" 
-                                                  SelectedValue="{Binding Group, Mode=TwoWay}" 
+                                                  SelectedValue="{Binding Group, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
                                                   Background="White" 
                                                   IsDropDownOpen="True"
                                                  />
@@ -66,7 +69,6 @@
                             </DataGridTemplateColumn>
 
                             <DataGridTemplateColumn x:Name="x_save_button" >
-
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <ToggleButton 

@@ -3,16 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace BacLab.Administration.Dictionary
 {
@@ -21,16 +16,16 @@ namespace BacLab.Administration.Dictionary
     /// </summary>
     public partial class Antibiotics : UserControl
     {
-        BacLab_DBEntities context;
+        BacLab_DBEntities context = new BacLab_DBEntities();
         List<Antibiotic> listAb = new List<Antibiotic>();
-        Antibiotic newAB;
+        Antibiotic newAB = new Antibiotic();
 
         public Antibiotics()
         {
             try
             {
                 InitializeComponent();
-                context = new BacLab_DBEntities();
+                this.DataContext = listAb;
                 fillList();
                
             }
@@ -57,7 +52,7 @@ namespace BacLab.Administration.Dictionary
                     ab.Name = item.Name;
                     ab.Group = item.Group;
                     ab.IsEdit = false;
-                    ab.Foregraund = Brushes.BlueViolet;
+                    ab.Foregraund = Brushes.Cyan;
 
                     ab.List_group = new List<string>();
                     var col2 = from t in context.d_Antibiotics_groups select t.antibiotics_groups;
@@ -65,8 +60,7 @@ namespace BacLab.Administration.Dictionary
 
                     listAb.Add(ab);
                 }
-
-                this.DataContext = listAb;
+                
             }
             catch (Exception ex)
             {
@@ -84,9 +78,10 @@ namespace BacLab.Administration.Dictionary
                 newAB.Name = "";
                 newAB.Group = "";
                 newAB.IsEdit = true;
+                newAB.Foregraund = Brushes.Cyan;
                 newAB.List_group = new List<string>();
-                var col2 = from t in context.d_Antibiotics_groups select t.antibiotics_groups;
-                newAB.List_group = col2.ToList();
+                var col = from t in context.d_Antibiotics_groups select t.antibiotics_groups;
+                newAB.List_group = col.ToList();
                 
                 e.NewItem = newAB;
 
@@ -100,24 +95,84 @@ namespace BacLab.Administration.Dictionary
 
         private void x_save_button_Checked(object sender, RoutedEventArgs e)
         {
-            d_Antibiotics ab = new d_Antibiotics();
-            ab.name = newAB.Name;
-            ab.id_group_AB = context.d_Antibiotics_groups.Where(c => c.antibiotics_groups == newAB.Group).FirstOrDefault().id;
+            try
+            {
+                if (newAB.Name == "")
+                {
+                    MessageBox.Show("Заповніть поле \"Назва\"");
+                    (e.Source as ToggleButton).IsChecked = false;
+                    return;
+                }
+                if (newAB.Group == "")
+                {
+                    MessageBox.Show("Заповніть поле \"Група\"");
+                    (e.Source as ToggleButton).IsChecked = false;
+                    return;
+                }
+                
+                var col = context.d_Antibiotics.Where(c => c.name == newAB.Name);
+                if ( col.Count() != 0)
+                {
+                    MessageBox.Show("Антибіотик з такою назвою вже існує");
+                    (e.Source as ToggleButton).IsChecked = false;
+                    return;
+                }
+                
 
-            context.d_Antibiotics.Add(ab);
-            context.SaveChanges();
-            newAB.Id = ab.id;
-            (sender as Button).IsEnabled = false;
+
+                d_Antibiotics ab = new d_Antibiotics();
+                ab.name = newAB.Name;
+                ab.id_group_AB = context.d_Antibiotics_groups.Where(c => c.antibiotics_groups == newAB.Group).FirstOrDefault().id;
+                
+                context.d_Antibiotics.Add(ab);
+                context.SaveChanges();
+                newAB.Id = ab.id;
+                newAB.IsEdit = false;
+                newAB.Foregraund = Brushes.Red;
+                
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n" + ex.StackTrace);
+            }
+           
             
         }
-        
+
+       
+        private void x_btn_delete_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                Antibiotic selectedAB = x_antibioticsGrid.SelectedItem as Antibiotic;
+                if (selectedAB != null)
+                    
+                {
+                    if (MessageBoxResult.OK == MessageBox.Show("Видалити " + selectedAB.Name + " ?", "Увага!!!", MessageBoxButton.OKCancel, MessageBoxImage.Question))
+                    {
+                       
+                        context.d_Antibiotics.Remove(context.d_Antibiotics.Where(c => c.id == selectedAB.Id).FirstOrDefault());
+                        context.SaveChanges();
+                        listAb.Remove(selectedAB);
+                        x_antibioticsGrid.Items.Refresh();
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n" + ex.StackTrace);
+            }
+           
+        }
     }
 
 
 
     public class Antibiotic : INotifyPropertyChanged
     {
-        BacLab_DBEntities context;
+        BacLab_DBEntities context=new BacLab_DBEntities();
+        int id;
         string name;
         string group;
         bool isEdit;
@@ -125,9 +180,20 @@ namespace BacLab.Administration.Dictionary
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public int Id { get; set; }
-        public List<string> List_group { get; set; }
+        public int Id
+        {
+            get
+            {
+                return id;
+            }
 
+            set
+            {
+                id = value;
+                OnPropertyChanged("Id");
+                
+            }
+        }
         public string Name
         {
             get
@@ -138,7 +204,6 @@ namespace BacLab.Administration.Dictionary
             set
             {
                 name = value;
-                context = new BacLab_DBEntities();
                 var ab = context.d_Antibiotics.Where(c => c.id == this.Id).FirstOrDefault();
                 if (ab != null)
                 {
@@ -159,7 +224,6 @@ namespace BacLab.Administration.Dictionary
             set
             {
                 group = value;
-                context = new BacLab_DBEntities();
                 var ab = context.d_Antibiotics.Where(c => c.id == this.Id).FirstOrDefault();
                 if (ab != null)
                 {
@@ -171,7 +235,6 @@ namespace BacLab.Administration.Dictionary
                 
             }
         }
-        
         public bool IsEdit
         {
             get
@@ -185,7 +248,6 @@ namespace BacLab.Administration.Dictionary
                 OnPropertyChanged("IsEdit");
             }
         }
-
         public Brush Foregraund
         {
             get
@@ -199,6 +261,7 @@ namespace BacLab.Administration.Dictionary
                 OnPropertyChanged("Foregraund");
             }
         }
+        public List<string> List_group { get; set; }
 
         protected void OnPropertyChanged(string name)
         {
