@@ -42,7 +42,9 @@
                               materialDesign:DataGridAssist.ColumnHeaderPadding="8"
                               ItemsSource="{Binding}" 
                               AlternatingRowBackground="GhostWhite" 
-                              Background="White">
+                              Background="White"
+                              RowEditEnding="x_antibioticsGrid_RowEditEnding"
+                              >
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <TextBlock x:Name="x_btn_delete" Text="Видалити"  MouseLeftButtonDown="x_btn_delete_MouseLeftButtonDown"/>

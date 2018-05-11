@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace BacLab.Administration.Dictionary
 {
@@ -84,7 +85,7 @@ namespace BacLab.Administration.Dictionary
                 newAB.List_group = col.ToList();
                 
                 e.NewItem = newAB;
-
+                
             }
             catch (Exception ex)
             {
@@ -118,8 +119,6 @@ namespace BacLab.Administration.Dictionary
                     return;
                 }
                 
-
-
                 d_Antibiotics ab = new d_Antibiotics();
                 ab.name = newAB.Name;
                 ab.id_group_AB = context.d_Antibiotics_groups.Where(c => c.antibiotics_groups == newAB.Group).FirstOrDefault().id;
@@ -129,17 +128,30 @@ namespace BacLab.Administration.Dictionary
                 newAB.Id = ab.id;
                 newAB.IsEdit = false;
                 newAB.Foregraund = Brushes.Red;
-                
+           
+                //Перевод фокуса на новую строку
+                try
+                {
+                    x_antibioticsGrid.CanUserAddRows = false;
+                }
+                catch (InvalidOperationException) { }
+
+                x_antibioticsGrid.CanUserAddRows = true;
+
+                DataGridRow dgrow = (DataGridRow)x_antibioticsGrid.ItemContainerGenerator.
+                 ContainerFromItem(x_antibioticsGrid.Items[x_antibioticsGrid.Items.CurrentPosition]);
+
+                x_antibioticsGrid_RowEditEnding(x_antibioticsGrid, new DataGridRowEditEndingEventArgs(dgrow, DataGridEditAction.Commit));
+
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + "\n" + ex.StackTrace);
             }
            
-            
         }
-
-       
+        
         private void x_btn_delete_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             try
@@ -150,12 +162,10 @@ namespace BacLab.Administration.Dictionary
                 {
                     if (MessageBoxResult.OK == MessageBox.Show("Видалити " + selectedAB.Name + " ?", "Увага!!!", MessageBoxButton.OKCancel, MessageBoxImage.Question))
                     {
-                       
                         context.d_Antibiotics.Remove(context.d_Antibiotics.Where(c => c.id == selectedAB.Id).FirstOrDefault());
                         context.SaveChanges();
                         listAb.Remove(selectedAB);
                         x_antibioticsGrid.Items.Refresh();
-
                     }
                 }
             }
@@ -164,6 +174,17 @@ namespace BacLab.Administration.Dictionary
                 MessageBox.Show(ex.Message + "\n" + ex.StackTrace);
             }
            
+        }
+
+        private void x_antibioticsGrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
+        {
+            Dispatcher.BeginInvoke(new Action(delegate () {
+                int newRowIndex = e.Row.GetIndex() +1;
+
+                DataGridRow dgrow = (DataGridRow)x_antibioticsGrid.ItemContainerGenerator.
+                  ContainerFromItem(x_antibioticsGrid.Items[newRowIndex]);
+                dgrow.MoveFocus(new TraversalRequest(FocusNavigationDirection.Down));
+            }), DispatcherPriority.ContextIdle);
         }
     }
 
@@ -203,14 +224,24 @@ namespace BacLab.Administration.Dictionary
 
             set
             {
+                string oldName = name;
                 name = value;
                 var ab = context.d_Antibiotics.Where(c => c.id == this.Id).FirstOrDefault();
                 if (ab != null)
                 {
                     ab.name = value;
-                    context.SaveChanges();
-                    this.Foregraund = Brushes.Red;
+                    try
+                    {
+                        context.SaveChanges();
+                        this.Foregraund = Brushes.Red; 
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Антибіотик з такою назвою вже існує");
+                        name = oldName;
+                    }
                     OnPropertyChanged("Name");
+
                 }
             }
         }
