@@ -1,8 +1,10 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -20,6 +22,7 @@ namespace BacLab.Administration.Dictionary
         BacLab_DBEntities context = new BacLab_DBEntities();
         List<Antibiotic> listAb = new List<Antibiotic>();
         Antibiotic newAB = new Antibiotic();
+        private readonly Dispatcher _dispatcher = Dispatcher.CurrentDispatcher;
 
         public Antibiotics()
         {
@@ -152,21 +155,29 @@ namespace BacLab.Administration.Dictionary
            
         }
         
-        private void x_btn_delete_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private async void x_btn_delete_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             try
             {
-                Antibiotic selectedAB = x_antibioticsGrid.SelectedItem as Antibiotic;
+                var selectedAB = x_antibioticsGrid.SelectedItems;
                 if (selectedAB != null)
-                    
                 {
-                    if (MessageBoxResult.OK == MessageBox.Show("Видалити " + selectedAB.Name + " ?", "Увага!!!", MessageBoxButton.OKCancel, MessageBoxImage.Question))
+                    foreach (var item in selectedAB)
                     {
-                        context.d_Antibiotics.Remove(context.d_Antibiotics.Where(c => c.id == selectedAB.Id).FirstOrDefault());
-                        context.SaveChanges();
-                        listAb.Remove(selectedAB);
-                        x_antibioticsGrid.Items.Refresh();
+                        Antibiotic ab = item as Antibiotic;
+                        if(ab != null)
+                        {
+                            object res = await ShowMessage("Видалити "+ab.Name+" ?");
+                            
+                            if (res.ToString() == "True")
+                            {
+                                context.d_Antibiotics.Remove(context.d_Antibiotics.Where(c => c.id == ab.Id).FirstOrDefault());
+                                context.SaveChanges();
+                                listAb.Remove(ab);
+                            }
+                        }
                     }
+                    x_antibioticsGrid.Items.Refresh();
                 }
             }
             catch (Exception ex)
@@ -185,6 +196,25 @@ namespace BacLab.Administration.Dictionary
                   ContainerFromItem(x_antibioticsGrid.Items[newRowIndex]);
                 dgrow.MoveFocus(new TraversalRequest(FocusNavigationDirection.Down));
             }), DispatcherPriority.ContextIdle);
+        }
+
+
+       //для сообщений
+        private async Task<bool> ShowMessage(object o)
+        {
+            var view = new MsgDialogYesNo
+            {
+                DataContext = new SampleDialogViewModel()
+            };
+
+            view.Message.Text = o.ToString();
+            var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
+            return (bool)result;
+        }
+
+        private void ClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
+        {
+            if ((bool)eventArgs.Parameter == false) return;
         }
     }
 

@@ -135,6 +135,9 @@
     <Compile Include="Administration\DictionaryWindow.xaml.cs">
       <DependentUpon>DictionaryWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Administration\MsgDialogYesNo.xaml.cs">
+      <DependentUpon>MsgDialogYesNo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Administration\NotifyPropertyChangedExtension.cs" />
     <Compile Include="Analysis.cs">
       <DependentUpon>ModelDB.tt</DependentUpon>
@@ -301,6 +304,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Administration\Dictionary\Antibiotics.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Administration\MsgDialogYesNo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

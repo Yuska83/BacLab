@@ -7,6 +7,7 @@
                       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
                       xmlns:domain="clr-namespace:BacLab.Administration"
                       xmlns:domain1="clr-namespace:BacLab.Settings"
+                      xmlns:domain2="clr-namespace:BacLab.Administration.Dictionary"
                       WindowTransitionsEnabled="False"
                       TextElement.Foreground="{DynamicResource MaterialDesignBody}"
                       Background="{DynamicResource MaterialDesignPaper}"					  
@@ -200,7 +201,9 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="Словники" >
-                       
+                        <TabItem.Content>
+                            <domain2:Antibiotics />
+                        </TabItem.Content>
                     </TabItem>
                     <TabItem Header="Редактирование">
                         <TabItem.Content>

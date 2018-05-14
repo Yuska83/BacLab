@@ -17,7 +17,7 @@ namespace BacLab.Administration
     /// </summary>
     public partial class DictionaryWindow : UserControl
     {
-        BacLab_DBEntities context;
+        BacLab_DBEntities context = new BacLab_DBEntities();
         private readonly Dispatcher _dispatcher = Dispatcher.CurrentDispatcher;
 
         public DictionaryWindow()
@@ -25,7 +25,7 @@ namespace BacLab.Administration
             try
             {
                 InitializeComponent();
-                context = new BacLab_DBEntities();
+                
             }
             catch (Exception ex)
             {

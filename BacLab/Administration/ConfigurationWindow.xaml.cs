@@ -13,7 +13,7 @@ namespace BacLab.Administration
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        BacLab_DBEntities context;
+        BacLab_DBEntities context = new BacLab_DBEntities();
         int id_group, id_material, id_purpose, id_medium,
             id_group_material;
         private readonly Dispatcher _dispatcher = Dispatcher.CurrentDispatcher;
@@ -21,7 +21,6 @@ namespace BacLab.Administration
         public ConfigurationWindow()
         {
             InitializeComponent();
-            context = new BacLab_DBEntities();
         }
 
        
@@ -60,14 +59,16 @@ namespace BacLab.Administration
                     object res = await ShowMessage("привет");
 
                     MessageBox.Show(res.ToString());
+                    if ((bool)res)
+                    {
+                        /*p_Group_Material g_m = new p_Group_Material();
+                        g_m.id_group_of_study = id_group;
+                        g_m.id_material = id_material;
 
-                    p_Group_Material g_m = new p_Group_Material();
-                    g_m.id_group_of_study = id_group;
-                    g_m.id_material = id_material;
-
-                    context.p_Group_Material.Add(group_material);
-
-                    context.SaveChanges();
+                        context.p_Group_Material.Add(group_material);
+                        context.SaveChanges();*/
+                    }
+                    
                 }
 
             }
@@ -84,25 +85,19 @@ namespace BacLab.Administration
 
         private async Task<bool> ShowMessage(object o)
         {
-
             var view = new SampleMessageDialog
             {
                 DataContext = new SampleDialogViewModel()
             };
 
             view.Message.Text = o.ToString();
-
             var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
-
             return (bool)result;
-
         }
 
         private void ClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
         {
             if ((bool)eventArgs.Parameter == false) return;
-
-
         }
     }
 }

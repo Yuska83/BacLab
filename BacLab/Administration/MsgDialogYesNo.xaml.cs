@@ -5,11 +5,12 @@ namespace BacLab
     /// <summary>
     /// Логика взаимодействия для SampleMessageDialog.xaml
     /// </summary>
-    public partial class SampleMessageDialog : UserControl
+    public partial class MsgDialogYesNo : UserControl
     {
-        public SampleMessageDialog()
+        public MsgDialogYesNo()
         {
             InitializeComponent();
         }
     }
 }
+
