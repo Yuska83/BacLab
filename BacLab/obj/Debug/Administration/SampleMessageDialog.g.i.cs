@@ -38,9 +38,9 @@ namespace BacLab {
     
     
     /// <summary>
-    /// SampleMessageDialog
+    /// MsgDialogSaveCancle
     /// </summary>
-    public partial class SampleMessageDialog : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
+    public partial class MsgDialogSaveCancle : System.Windows.Controls.UserControl, System.Windows.Markup.IComponentConnector {
         
         
         #line 17 "..\..\..\Administration\SampleMessageDialog.xaml"

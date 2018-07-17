@@ -7,139 +7,148 @@
                 xmlns:domain="clr-namespace:BacLab.Administration"
                 xmlns:domain1="clr-namespace:BacLab.Administration"
                 mc:Ignorable="d" 
-                d:DesignHeight="560" d:DesignWidth="600" >
+                d:DesignHeight="560" d:DesignWidth="600"
+             DataContext="ConfigurationWindow"
+             
+             >
+
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
+       
     </UserControl.Resources>
-    <UserControl.DataContext>
-        <domain:ListsAndGridsViewModel />
-    </UserControl.DataContext>
+    
     <Grid >
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition  />
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <materialDesign:Card Grid.ColumnSpan="2">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <DataGrid x:Name="x_dataGridNewConfig"
-                            Margin="0 8 0 0" 
-                            ItemsSource="{Binding Items1}" 
-                            AutoGenerateColumns="False"
-                            CanUserSortColumns="False"
-                            CanUserAddRows="False"
-                            materialDesign:DataGridAssist.CellPadding="13 8 8 8" 
-                            materialDesign:DataGridAssist.ColumnHeaderPadding="8">
-                    <DataGrid.Columns>
-                        <materialDesign:MaterialDataGridTextColumn                   
-                            Header="Numeric"   
-                            Visibility="Hidden"
-                            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"/>
-                        <materialDesign:MaterialDataGridComboBoxColumn 
-                            x:Name="x_Group"
-                            Header="Група"
-                            materialDesign:MaterialDataGridComboBoxColumn.Width="{Binding ElementName=x_Group2, Path=Width, Mode=TwoWay}"
-                            SelectedValueBinding="{Binding Group}"                         
-                            ItemsSourceBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.Groups}" />
-                        <materialDesign:MaterialDataGridComboBoxColumn 
-                            x:Name="x_Material"
-                            Header="Матеріал"   
-                            Width="{Binding ElementName=x_Material2, Path=Width, Mode=TwoWay}"
-                            SelectedValueBinding="{Binding Material}"                         
-                            ItemsSourceBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.Materials}" />
-                        <materialDesign:MaterialDataGridComboBoxColumn 
-                            x:Name="x_Purpose"
-                            Header="Мета"
-                            Width="{Binding ElementName=x_Purpose2, Path=Width, Mode=TwoWay}"
-                            SelectedValueBinding="{Binding Purpose}"                         
-                            ItemsSourceBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.Purposes}" />
-                        <materialDesign:MaterialDataGridComboBoxColumn 
-                            x:Name="x_Medium"
-                            Header="Середовище" 
-                            Width="{Binding ElementName=x_Medium2, Path=Width, Mode=TwoWay}"
-                            SelectedValueBinding="{Binding Medium}"                         
-                            ItemsSourceBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.Mediums}" />
-                    </DataGrid.Columns>
-                </DataGrid>
-                <Button x:Name="x_saveNewConfig" Grid.Column="1"
-                        Style="{DynamicResource MaterialDesignRaisedButton}"
-                        Margin="10 0 10 10"
-                        materialDesign:ShadowAssist.ShadowDepth="Depth4"
-                        Click="x_saveNewConfig_Click"
-                        >Зберегти</Button>
-            </Grid>
-        </materialDesign:Card>
-        <ScrollViewer Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="2">
-            <StackPanel>
-                <TextBlock Margin="10 24 0 0" FontWeight="Bold" FontSize="16" >Існуючи конфігурації</TextBlock>
-                <DataGrid Margin="10 8 0 0" 
-                        ItemsSource="{Binding Items2}" 
-                        CanUserSortColumns="True" 
-                        CanUserAddRows="False" 
-                        AutoGenerateColumns="False"
-                        materialDesign:DataGridAssist.CellPadding="13 8 8 8" 
-                        materialDesign:DataGridAssist.ColumnHeaderPadding="8">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn 
-                            x:Name="x_Group2"
-                            Binding="{Binding Group}"
-                            Header="Група" 
-                            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
-/>
+       
 
-                        <materialDesign:MaterialDataGridTextColumn
-                            Binding="{Binding Material}"
-                            x:Name="x_Material2"
-                            Header="Матеріал"                                                        
-                            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" 
-    />
+        <DockPanel Grid.Column="1">
+            <ScrollViewer x:Name="x_scrollViewer" DockPanel.Dock="Top">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock x:Name="x_nameDictionary" Text="Конфігурації" Margin="5" FontWeight="Bold" FontSize="20" />
 
-                        <materialDesign:MaterialDataGridTextColumn 
-                            Binding="{Binding Purpose}"
-                            Header="Мета дослід."                                                        
-                            x:Name="x_Purpose2"
-                            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" 
-    />
-                        <materialDesign:MaterialDataGridTextColumn 
-                            Binding="{Binding Medium}"
-                            Header="Середовище"
-                            x:Name="x_Medium2"           
-                            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
-    />
+                    <DataGrid x:Name="x_configurationGrid" 
+                              AutoGenerateColumns="False"
+                              Margin="5" 
+                              CanUserSortColumns="True" 
+                              CanUserAddRows="True" 
+                              AddingNewItem="x_configurationGrid_AddingNewItem"
+                              SelectionChanged="x_configurationGrid_SelectionChanged"
+                              materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                              materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                              ItemsSource="{Binding}" 
+                              AlternatingRowBackground="GhostWhite" 
+                              Background="White"
+                             
+                              >
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <TextBlock x:Name="x_btn_delete" Text="Видалити"  MouseLeftButtonDown="x_btn_delete_MouseLeftButtonDown"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Id" IsReadOnly="True" Binding="{Binding Id, Mode=TwoWay}" />
 
-                    </DataGrid.Columns>
-                </DataGrid>
-            </StackPanel>
-        </ScrollViewer>
-        <!--<materialDesign:PopupBox   
-            Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
-            PlacementMode="TopAndAlignCentres"                                                                      
-            ToggleCheckedContentCommand="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=domain:DictionaryWindow}, Path=FloatingActionDemoCommand}"
-            ToggleCheckedContentCommandParameter="wowsers"
-            Margin="30 0 40 30"
-            Grid.Column="1" Grid.Row="2"
-            ToolTip="Додати конфігурацію">
-            <materialDesign:PopupBox.ToggleCheckedContent>
-                <materialDesign:PackIcon Kind="Pencil" Width="24" Height="24" />
-            </materialDesign:PopupBox.ToggleCheckedContent>
-            <StackPanel>
-                <Button x:Name="x_btn_addGroup" ToolTip="Додати групу" Click="x_btn_editDictionary_Click">1</Button>
-                <Button x:Name="x_btn_addMaterial" ToolTip="Додати матеріал" Click="x_btn_editDictionary_Click">2</Button>
-                <Button x:Name="x_btn_addPurpose" ToolTip="Додати мету" Click="x_btn_editDictionary_Click">3</Button>
-                <Button x:Name="x_btn_addMedium" ToolTip="Додати середовище" Click="x_btn_editDictionary_Click">4</Button>
-            </StackPanel>
-        </materialDesign:PopupBox>-->
+                            <DataGridTemplateColumn Header="Група" >
+                                <DataGridTemplateColumn.CellTemplate >
+                                    <DataTemplate>
+                                        <TextBlock IsEnabled="{Binding IsEdit}" Text="{Binding Group, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                   />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <ComboBox IsEnabled="{Binding IsEdit}" ItemsSource="{Binding ListGroup}" 
+                                                  SelectedValue="{Binding Group, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
+                                                  Background="White" 
+                                                  IsDropDownOpen="True"
+                                                 />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="Матеріал">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Material, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <ComboBox ItemsSource="{Binding ListMaterial}" 
+                                                  SelectedValue="{Binding Material, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
+                                                  Background="White" 
+                                                  IsDropDownOpen="True"
+                                                 />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="Мета">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Purpose, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <ComboBox ItemsSource="{Binding ListPurpose}" 
+                                                  SelectedValue="{Binding Purpose, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
+                                                  Background="White" 
+                                                  IsDropDownOpen="True"
+                                                 />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="Середовище">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Medium, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <ComboBox ItemsSource="{Binding ListMedium}" 
+                                                  SelectedValue="{Binding Medium, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
+                                                  Background="White" 
+                                                  IsDropDownOpen="True"
+                                                 />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn x:Name="x_save_button" >
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ToggleButton 
+                                                      Checked="ToggleButton_Checked"
+                                                      Margin="8 0 0 0" 
+                                                      Style="{StaticResource MaterialDesignActionToggleButton}" 
+                                                      ToolTip="Зберегти" IsEnabled="{Binding IsEdit}"
+                                                      Background="{Binding Foregraund, Mode=TwoWay}" 
+                                                     >
+                                            <materialDesign:PackIcon Kind="Check" />
+                                        </ToggleButton>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+
+                            </DataGridTemplateColumn>
+
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+
+                </StackPanel>
+            </ScrollViewer>
+
+        </DockPanel>
     </Grid>
 </UserControl>

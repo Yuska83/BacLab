@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Data.Objects;
 using System.Windows.Data;
+using BacLab.Dialogs;
 
 namespace BacLab.Administration
 {
@@ -37,9 +38,9 @@ namespace BacLab.Administration
         private async Task<bool> ShowMessage(object o)
         {
 
-            var view = new SampleMessageDialog
+            var view = new MsgDialogSaveCancle
             {
-                DataContext = new SampleDialogViewModel()
+                DataContext = new DialogViewModel()
             };
 
             view.Message.Text = o.ToString();

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BacLab.Administration
 {
-    internal class SelectableViewModel : INotifyPropertyChanged
+    internal class GroupMaterialPurposeMediun : INotifyPropertyChanged
     {
 
         private string group;

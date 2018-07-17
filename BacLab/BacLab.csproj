@@ -63,13 +63,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\MaterialDesign\MaterialDesignColors.Wpf.Tests\bin\Release\MaterialDesignColors.dll</HintPath>
     </Reference>
-    <Reference Include="MaterialDesignThemes.MahApps, Version=0.0.7.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\MaterialDesign\MaterialDesignThemes.MahApps\bin\Release\MaterialDesignThemes.MahApps.dll</HintPath>
+    <Reference Include="MaterialDesignThemes.MahApps, Version=0.0.11.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.MahApps.0.0.11\lib\net45\MaterialDesignThemes.MahApps.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="MaterialDesignThemes.Wpf, Version=1.2.0.28427, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\MaterialDesign\MaterialDesignThemes.MahApps\bin\Release\MaterialDesignThemes.Wpf.dll</HintPath>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=2.4.0.1044, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.2.4.0.1044\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -93,6 +93,10 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsInput, Version=1.0.4.0, Culture=neutral, PublicKeyToken=9b287f7dc5073cad, processorArchitecture=MSIL">
+      <HintPath>..\packages\InputSimulator.1.0.4.0\lib\net20\WindowsInput.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Xceed.Wpf.AvalonDock, Version=3.3.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
       <HintPath>..\packages\Extended.Wpf.Toolkit.3.3.0\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
       <Private>True</Private>
@@ -123,22 +127,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Administration\AnotherCommandImplementation.cs" />
     <Compile Include="Administration\ConfigurationWindow.xaml.cs">
       <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Administration\DialogsViewModel.cs" />
-    <Compile Include="Administration\Dictionary\Antibiotics.xaml.cs">
+    <Compile Include="Dialogs\Message.cs" />
+    <Compile Include="Dictionary\Antibiotics.xaml.cs">
       <DependentUpon>Antibiotics.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Administration\ListsAndGridsViewModel.cs" />
     <Compile Include="Administration\DictionaryWindow.xaml.cs">
       <DependentUpon>DictionaryWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Administration\MsgDialogYesNo.xaml.cs">
+    <Compile Include="Dialogs\MsgDialogOk.xaml.cs">
+      <DependentUpon>MsgDialogOk.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\MsgDialogYesNo.xaml.cs">
       <DependentUpon>MsgDialogYesNo.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Administration\NotifyPropertyChangedExtension.cs" />
     <Compile Include="Analysis.cs">
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
@@ -232,6 +236,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelDB.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\NotifyPropertyChangedExtension.cs" />
     <Compile Include="Patient.cs">
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
@@ -262,20 +267,15 @@
     <Compile Include="Settings\AnotherCommandImplementation.cs" />
     <Compile Include="Settings\PaletteSelector.xaml.cs" />
     <Compile Include="Settings\PaletteSelectorViewModel.cs" />
-    <Compile Include="Administration\SampleDialogViewModel.cs" />
-    <Compile Include="Administration\SampleProgressDialog.xaml.cs">
-      <DependentUpon>SampleProgressDialog.xaml</DependentUpon>
+    <Compile Include="Dialogs\DialogViewModel.cs" />
+    <Compile Include="Dialogs\MsgProgressDialog.xaml.cs">
+      <DependentUpon>MsgProgressDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Administration\SelectableViewModel.cs" />
-    <Compile Include="Administration\TextFieldsViewModel.cs" />
-    <Compile Include="LoginWindow.xaml.cs">
-      <DependentUpon>LoginWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Registry\RegistryWindow.xaml.cs">
+    <Compile Include="Administration\RegistryWindow.xaml.cs">
       <DependentUpon>RegistryWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Administration\SampleMessageDialog.xaml.cs">
-      <DependentUpon>SampleMessageDialog.xaml</DependentUpon>
+    <Compile Include="Dialogs\MsgDialogSaveCancle.xaml.cs">
+      <DependentUpon>MsgDialogSaveCancle.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
@@ -292,9 +292,6 @@
     <Compile Include="Template_Results.cs">
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Workbook\WorkBook.xaml.cs">
-      <DependentUpon>WorkBook.xaml</DependentUpon>
-    </Compile>
     <Page Include="Administration\ConfigurationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -303,11 +300,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Administration\Dictionary\Antibiotics.xaml">
+    <Page Include="Dictionary\Antibiotics.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Administration\MsgDialogYesNo.xaml">
+    <Page Include="Dialogs\MsgDialogOk.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\MsgDialogYesNo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -315,15 +316,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Administration\SampleProgressDialog.xaml">
+    <Page Include="Dialogs\MsgProgressDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LoginWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Administration\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -331,11 +328,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Administration\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Registry\RegistryWindow.xaml">
+    <Page Include="Administration\RegistryWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -347,7 +344,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Administration\SampleMessageDialog.xaml">
+    <Page Include="Dialogs\MsgDialogSaveCancle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -356,10 +353,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Workbook\WorkBook.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -413,9 +406,7 @@
     <Resource Include="Resources\Entypo-license.txt" />
     <Resource Include="Resources\WindowsIcons-license.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Preparatory\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Resources\Microscope-icon.ico" />
     <SplashScreen Include="Microscope-icon.ico" />
