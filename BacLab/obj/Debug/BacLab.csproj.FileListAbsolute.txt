@@ -122,28 +122,27 @@ C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\BacLab.pdb
 C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\BacLab.csprojResolveAssemblyReference.cache
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dialogs\MsgDialogOk.baml
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dialogs\MsgDialogYesNo.baml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dialogs\MsgProgressDialog.baml
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Resources\Icons.baml
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Resources\IconsNonShared.baml
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dialogs\MsgDialogSaveCancle.baml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\AdminWindow.g.cs
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\ConfigurationWindow.g.cs
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\DictionaryWindow.g.cs
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dictionary\Antibiotics.g.cs
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dialogs\MsgDialogOk.g.cs
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dialogs\MsgDialogYesNo.g.cs
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Settings\PaletteSelector.g.cs
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dialogs\MsgProgressDialog.g.cs
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\MainWindow.g.cs
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\RegistryWindow.g.cs
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dialogs\MsgDialogSaveCancle.g.cs
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Settings\SettingsWindow.g.cs
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\App.g.cs
-C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab_Content.g.cs
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\GeneratedInternalTypeHelper.g.cs
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab_MarkupCompile.cache
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab_MarkupCompile.lref
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\BacLab.exe.config
-C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.csprojResolveAssemblyReference.cache
-C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dialogs\MsgProgressDialog.baml
-C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dialogs\MsgProgressDialog.g.cs
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\BacLab.exe
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\BacLab.pdb
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\ControlzEx.dll
@@ -155,6 +154,7 @@ C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignThemes.MahApps.dll
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignThemes.Wpf.dll
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\WindowsInput.dll
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\Xceed.Wpf.AvalonDock.dll
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Aero.dll
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Metro.dll
@@ -171,6 +171,7 @@ C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignColors.pdb
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignThemes.Wpf.pdb
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\WindowsInput.xml
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\ru\EntityFramework.resources.dll
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\ru\EntityFramework.SqlServer.resources.dll
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\de\Xceed.Wpf.AvalonDock.resources.dll
@@ -183,7 +184,9 @@ C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\ru\Xceed.Wpf.AvalonDock.resources.dll
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\sv\Xceed.Wpf.AvalonDock.resources.dll
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\zh-Hans\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab_Content.g.cs
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\App.baml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\AdminWindow.baml
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\ConfigurationWindow.baml
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\DictionaryWindow.baml
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dictionary\Antibiotics.baml
@@ -197,5 +200,6 @@ C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.csproj.GenerateResource.Cache
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.exe
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.pdb
-C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\WindowsInput.dll
-C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\WindowsInput.xml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.csprojAssemblyReference.cache
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.csproj.CoreCompileInputs.cache
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.csproj.CopyComplete

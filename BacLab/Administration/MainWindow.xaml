@@ -159,11 +159,13 @@
                 Background="#FF4F5F6C" 
                 Foreground="White" FontSize="24" BorderBrush="White">Об'ява
         </Button>
-        <Button Grid.Row="1" Grid.Column="7" 
+        <Button x:Name="Dictionary"
+            Grid.Row="1" Grid.Column="7" 
                 Grid.RowSpan="2" Grid.ColumnSpan="2"
                 Margin="5 5 5 5" Height="Auto"
                 Background="#FFC0D113" 
-                Foreground="White" FontSize="24" BorderBrush="White">Звіти
+                Foreground="White" FontSize="24" BorderBrush="White"
+                Click="Dictionary_Click">Словники
         </Button>
         <Button Grid.Row="3" Grid.Column="7" 
                 Grid.RowSpan="2" Grid.ColumnSpan="2"

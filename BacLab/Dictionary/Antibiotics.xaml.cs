@@ -15,7 +15,7 @@ namespace BacLab.Dictionary
     /// </summary>
     public partial class Antibiotics : UserControl
     {
-        BacLab_DBEntities context = new BacLab_DBEntities();
+        BacLab_DBEntities context;
         ObservableCollection <Antibiotic> listAb = new ObservableCollection<Antibiotic>();
         Antibiotic newAB = null;
         
@@ -37,10 +37,12 @@ namespace BacLab.Dictionary
             try
             {
                 InitializeComponent();
-                this.DataContext = ListAb;
+                context = new BacLab_DBEntities();
+                
                 ListAb.CollectionChanged += ListAb_CollectionChanged;
                 fillList();
-               
+                DataContext = ListAb;
+
             }
             catch (Exception ex)
             {

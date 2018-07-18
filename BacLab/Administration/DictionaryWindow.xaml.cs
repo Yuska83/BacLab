@@ -2,30 +2,22 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Threading;
-using System.ComponentModel;
-using System.Collections.Generic;
-using System.Data.Objects;
-using System.Windows.Data;
-using BacLab.Dialogs;
+using BacLab.Dictionary;
 
 namespace BacLab.Administration
 {
     /// <summary>
     /// Логика взаимодействия для DictionaryWindow.xaml
     /// </summary>
-    public partial class DictionaryWindow : UserControl
+    public partial class DictionaryWindow 
     {
-        BacLab_DBEntities context = new BacLab_DBEntities();
-        private readonly Dispatcher _dispatcher = Dispatcher.CurrentDispatcher;
-
         public DictionaryWindow()
         {
             try
             {
                 InitializeComponent();
+                x_AB.Content = new Antibiotics();
                 
             }
             catch (Exception ex)
@@ -35,28 +27,7 @@ namespace BacLab.Administration
 
         }
 
-        private async Task<bool> ShowMessage(object o)
-        {
-
-            var view = new MsgDialogSaveCancle
-            {
-                DataContext = new DialogViewModel()
-            };
-
-            view.Message.Text = o.ToString();
-
-            var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
-
-            return (bool)result;
-
-        }
-
-        private void ClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
-        {
-            if ((bool)eventArgs.Parameter == false) return;
-
-
-        }
+        
 
     }
 

@@ -50,7 +50,7 @@ namespace BacLab.Administration
         {
             try
             {
-                RegistryWindow registryWindow = new RegistryWindow();
+                AdminWindow registryWindow = new AdminWindow();
                 registryWindow.Show();
                 this.Close();
             }
@@ -64,7 +64,7 @@ namespace BacLab.Administration
         {
             try
             {
-                Settings.SettingsWindow settingsWindow = new Settings.SettingsWindow();
+                SettingsWindow settingsWindow = new SettingsWindow();
                 settingsWindow.Show();
                 this.Close();
             }
@@ -94,6 +94,20 @@ namespace BacLab.Administration
             new PaletteHelper().SetLightDark(Convert.ToBoolean(style.isDark));
             new PaletteHelper().ReplacePrimaryColor(style.primary_color);
             new PaletteHelper().ReplaceAccentColor(style.accent_color);
+        }
+
+        private void Dictionary_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                DictionaryWindow settingsWindow = new DictionaryWindow();
+                settingsWindow.Show();
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + " /n" + ex.StackTrace);
+            }
         }
     }
 

@@ -4,11 +4,11 @@
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                 xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-                xmlns:domain="clr-namespace:BacLab.Administration"
-                xmlns:BacLab="clr-namespace:BacLab" 
+                xmlns:Dictionary="clr-namespace:BacLab.Dictionary" 
                 mc:Ignorable="d" 
                 d:DesignHeight="560" d:DesignWidth="600" 
-                DataContext="Antibiotics"
+                d:DataContext="{d:DesignInstance Dictionary:Antibiotics,
+                                          IsDesignTimeCreatable=False}"
                >
 
     <UserControl.Resources>

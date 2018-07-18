@@ -4,12 +4,12 @@
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                 xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-                xmlns:domain="clr-namespace:BacLab.Administration"
-                xmlns:domain1="clr-namespace:BacLab.Administration"
+                xmlns:Administration="clr-namespace:BacLab.Administration"
                 mc:Ignorable="d" 
                 d:DesignHeight="560" d:DesignWidth="600"
              DataContext="ConfigurationWindow"
-             
+              d:DataContext="{d:DesignInstance Administration:ConfigurationWindow,
+                                          IsDesignTimeCreatable=False}"
              >
 
     <UserControl.Resources>

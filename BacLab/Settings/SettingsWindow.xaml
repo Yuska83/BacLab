@@ -4,8 +4,7 @@
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
                       xmlns:dockablz="clr-namespace:Dragablz.Dockablz;assembly=Dragablz"
-                      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
-                      xmlns:domain="clr-namespace:BacLab.Settings"
+                      xmlns:Settings="clr-namespace:BacLab.Settings"
                       WindowTransitionsEnabled="False"
                       TextElement.Foreground="{DynamicResource MaterialDesignBody}"
                       Background="{DynamicResource MaterialDesignPaper}"					  
@@ -16,20 +15,20 @@
                       WindowStartupLocation="CenterScreen" 
                       WindowState="Maximized" ResizeMode="CanResize"
                      >
-    <materialDesign:DialogHost Identifier="RootDialog" >
+    
         <dockablz:Layout>
             <DockPanel >
                 <dragablz:TabablzControl BorderThickness="2" >
 
                     <TabItem Header="Палітра" >
-                        <domain:PaletteSelector Margin="16">
-                            <domain:PaletteSelector.DataContext>
-                                <domain:PaletteSelectorViewModel />
-                            </domain:PaletteSelector.DataContext>
-                        </domain:PaletteSelector>
+                        <Settings:PaletteSelector Margin="16">
+                        <Settings:PaletteSelector.DataContext>
+                            <Settings:PaletteSelectorViewModel />
+                        </Settings:PaletteSelector.DataContext>
+                        </Settings:PaletteSelector>
                     </TabItem>
                 </dragablz:TabablzControl>
             </DockPanel>
         </dockablz:Layout>
-    </materialDesign:DialogHost>
+   
 </controls:MetroWindow>

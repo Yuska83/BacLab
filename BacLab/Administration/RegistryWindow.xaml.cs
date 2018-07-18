@@ -1,14 +1,15 @@
 ﻿using System;
+using Dragablz;
 using System.Windows;
 using System.Windows.Controls;
-using Dragablz;
+using System.ComponentModel;
 
 namespace BacLab.Administration
 {
     /// <summary>
     /// Логика взаимодействия для RegistryWindow.xaml
     /// </summary>
-    public partial class RegistryWindow
+    public partial class RegistryWindow: UserControl
     {
         BacLab_DBEntities context;
 
@@ -56,6 +57,9 @@ namespace BacLab.Administration
         //заполнение списков********************************************************************
         public void fillList()
         {
+            if ((bool)(DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue))
+                return;
+            
             try
             {
                 var DistrictCol = context.d_District;
@@ -91,6 +95,8 @@ namespace BacLab.Administration
         //заполнение вкладки Исследования
         public void fillStudyTabControl()
         {
+            if ((bool)(DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue))
+                return;
             try
             {
                 var Groups = context.d_Group_of_Study;

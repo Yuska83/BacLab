@@ -19,23 +19,12 @@ namespace BacLab.Administration
     /// </summary>
     public partial class ConfigurationWindow : UserControl, INotifyPropertyChanged
     {
-        BacLab_DBEntities context = new BacLab_DBEntities();
+        BacLab_DBEntities context;
         private readonly Dispatcher _dispatcher = Dispatcher.CurrentDispatcher;
-        List<GroupMaterialPurposeMedium> listConfiguration = new List<GroupMaterialPurposeMedium>();
         GroupMaterialPurposeMedium newConfiguration = null;
-        
-        public List<GroupMaterialPurposeMedium> ListConfiguration
-        {
-            get
-            {
-                return listConfiguration;
-            }
 
-            set
-            {
-                listConfiguration = value;
-            }
-        }
+        public List<GroupMaterialPurposeMedium> ListConfiguration { get; set; } = new List<GroupMaterialPurposeMedium>();
+
         public GroupMaterialPurposeMedium NewConfiguration
         {
             get
@@ -61,9 +50,21 @@ namespace BacLab.Administration
         public ConfigurationWindow()
         {
             InitializeComponent();
-            listConfiguration = fillConfiguration();
-            DataContext = listConfiguration;
+            context = new BacLab_DBEntities();
+
+            fillConfigurationAsync();
            
+        }
+
+        private async void fillConfigurationAsync()
+        {
+            
+            Task<List<GroupMaterialPurposeMedium>> task = new Task<List<GroupMaterialPurposeMedium>>(fillConfiguration);
+            task.Start();
+            List<GroupMaterialPurposeMedium> list = await task;
+            ListConfiguration = list;
+            DataContext = ListConfiguration;
+
         }
 
         //добавление существующих конфигураций
@@ -109,7 +110,8 @@ namespace BacLab.Administration
                         }
                     }
                 }
-                return myCol;
+                return myCol; 
+                
             }
 
             catch (Exception ex)
