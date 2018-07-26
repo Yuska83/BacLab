@@ -1,0 +1,216 @@
+c:\users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\bin\Debug\BacLab.exe.config
+c:\users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\bin\Debug\BacLab.exe
+c:\users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\bin\Debug\BacLab.pdb
+c:\users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\bin\Debug\EntityFramework.dll
+c:\users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\bin\Debug\EntityFramework.SqlServer.dll
+c:\users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\bin\Debug\EntityFramework.xml
+c:\users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\bin\Debug\EntityFramework.SqlServer.xml
+c:\users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\bin\Debug\ru\EntityFramework.resources.dll
+c:\users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.csprojResolveAssemblyReference.cache
+c:\users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\obj\Debug\MainWindow.g.cs
+c:\users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\obj\Debug\App.g.cs
+c:\users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab_Content.g.cs
+c:\users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab_MarkupCompile.cache
+c:\users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab_MarkupCompile.lref
+c:\users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\obj\Debug\MainWindow.baml
+c:\users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.g.resources
+c:\users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.Properties.Resources.resources
+c:\users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.csproj.GenerateResource.Cache
+c:\users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.exe
+c:\users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.pdb
+c:\users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\obj\Debug\Styles.baml
+C:\Users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\bin\Debug\ru\EntityFramework.SqlServer.resources.dll
+C:\Users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignColors.dll
+C:\Users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\Users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\Users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\Users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\obj\Debug\App.baml
+C:\Users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\bin\Debug\MahApps.Metro.dll
+C:\Users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignThemes.MahApps.dll
+C:\Users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\bin\Debug\MahApps.Metro.pdb
+C:\Users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\bin\Debug\MahApps.Metro.xml
+C:\Users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignColors.pdb
+C:\Users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\obj\Debug\Resources\Icons.baml
+C:\Users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\obj\Debug\Resources\IconsNonShared.baml
+C:\Users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\bin\Debug\Dragablz.dll
+C:\Users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\bin\Debug\Dragablz.pdb
+C:\Users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\bin\Debug\Dragablz.xml
+C:\Users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\obj\Debug\LoginWindow.g.cs
+C:\Users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\obj\Debug\Registry\RegistryWindow.g.cs
+C:\Users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\obj\Debug\LoginWindow.baml
+C:\Users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\obj\Debug\Registry\RegistryWindow.baml
+C:\Users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\DictionaryWindow.g.cs
+C:\Users\admin\documents\visual studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\DictionaryWindow.baml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\BacLab.exe.config
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\BacLab.exe
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\BacLab.pdb
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\ControlzEx.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\Dragablz.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\EntityFramework.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\MaterialDesignThemes.MahApps.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\Xceed.Wpf.AvalonDock.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Aero.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Metro.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\Xceed.Wpf.AvalonDock.Themes.VS2010.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\Xceed.Wpf.DataGrid.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\Xceed.Wpf.Toolkit.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\ControlzEx.pdb
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\Dragablz.pdb
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\Dragablz.xml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\EntityFramework.xml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\MahApps.Metro.pdb
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\MahApps.Metro.xml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\MaterialDesignColors.pdb
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\ru\EntityFramework.resources.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\ru\EntityFramework.SqlServer.resources.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\de\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\es\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\fr\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\hu\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\it\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\pt-BR\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\ro\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\ru\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\sv\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\zh-Hans\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Resources\Icons.baml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Resources\IconsNonShared.baml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Administration\ConfigurationWindow.g.cs
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Administration\DictionaryWindow.g.cs
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Settings\PaletteSelector.g.cs
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Settings\SettingsWindow.g.cs
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\App.g.cs
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\BacLab_Content.g.cs
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\BacLab_MarkupCompile.cache
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\BacLab_MarkupCompile.lref
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\App.baml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Administration\ConfigurationWindow.baml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Administration\DictionaryWindow.baml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Settings\PaletteSelector.baml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Settings\SettingsWindow.baml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Styles.baml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\BacLab.g.resources
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\BacLab.Properties.Resources.resources
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\BacLab.csproj.GenerateResource.Cache
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\BacLab.exe
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\BacLab.pdb
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dialogs\MsgDialogOk.baml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dialogs\MsgDialogYesNo.baml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dialogs\MsgProgressDialog.baml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Resources\Icons.baml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Resources\IconsNonShared.baml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dialogs\MsgDialogSaveCancle.baml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\AdminWindow.g.cs
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\ConfigurationWindow.g.cs
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\DictionaryWindow.g.cs
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dictionary\Antibiotics.g.cs
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dialogs\MsgDialogOk.g.cs
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dialogs\MsgDialogYesNo.g.cs
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Settings\PaletteSelector.g.cs
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dialogs\MsgProgressDialog.g.cs
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\MainWindow.g.cs
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\RegistryWindow.g.cs
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dialogs\MsgDialogSaveCancle.g.cs
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Settings\SettingsWindow.g.cs
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\App.g.cs
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab_MarkupCompile.cache
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab_MarkupCompile.lref
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\BacLab.exe.config
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\BacLab.exe
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\BacLab.pdb
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\ControlzEx.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\Dragablz.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\EntityFramework.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MahApps.Metro.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignColors.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignThemes.MahApps.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\WindowsInput.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\Xceed.Wpf.AvalonDock.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Aero.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Metro.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\Xceed.Wpf.AvalonDock.Themes.VS2010.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\Xceed.Wpf.DataGrid.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\Xceed.Wpf.Toolkit.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\ControlzEx.pdb
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\Dragablz.pdb
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\Dragablz.xml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\EntityFramework.xml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MahApps.Metro.pdb
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MahApps.Metro.xml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignColors.pdb
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\WindowsInput.xml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\ru\EntityFramework.resources.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\ru\EntityFramework.SqlServer.resources.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\de\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\es\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\fr\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\hu\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\it\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\pt-BR\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\ro\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\ru\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\sv\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\bin\Debug\zh-Hans\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab_Content.g.cs
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\App.baml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\AdminWindow.baml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\ConfigurationWindow.baml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\DictionaryWindow.baml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dictionary\Antibiotics.baml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Settings\PaletteSelector.baml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\MainWindow.baml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Administration\RegistryWindow.baml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Settings\SettingsWindow.baml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Styles.baml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.g.resources
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.Properties.Resources.resources
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.csproj.GenerateResource.Cache
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.exe
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.pdb
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.csprojAssemblyReference.cache
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.csproj.CoreCompileInputs.cache
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.csproj.CopyComplete
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dictionary\ABGroups.g.cs
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dictionary\ABGroups.baml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dictionary\CategoriesPatient.g.cs
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dictionary\CategoriesPatient.baml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\WindowsInput.dll
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\bin\Debug\WindowsInput.xml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\BacLab.csprojAssemblyReference.cache
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Administration\AdminWindow.baml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Dialogs\MsgDialogOk.baml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Dialogs\MsgDialogYesNo.baml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Dialogs\MsgProgressDialog.baml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Dialogs\MsgDialogSaveCancle.baml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Administration\AdminWindow.g.cs
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Dictionary\ABGroups.g.cs
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Dictionary\Antibiotics.g.cs
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Dialogs\MsgDialogOk.g.cs
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Dialogs\MsgDialogYesNo.g.cs
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Dictionary\CategoriesPatient.g.cs
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Dialogs\MsgProgressDialog.g.cs
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Administration\MainWindow.g.cs
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Administration\RegistryWindow.g.cs
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Dialogs\MsgDialogSaveCancle.g.cs
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Dictionary\ABGroups.baml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Dictionary\Antibiotics.baml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Dictionary\CategoriesPatient.baml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Administration\MainWindow.baml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\Administration\RegistryWindow.baml
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\BacLab.csproj.CoreCompileInputs.cache
+C:\Users\Ифслдфи\Desktop\BacLab-master\BacLab\obj\Debug\BacLab.csproj.CopyComplete
