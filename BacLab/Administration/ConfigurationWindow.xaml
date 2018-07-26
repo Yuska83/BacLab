@@ -22,6 +22,7 @@
        
     </UserControl.Resources>
     
+    
     <Grid >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -32,123 +33,138 @@
         <DockPanel Grid.Column="1">
             <ScrollViewer x:Name="x_scrollViewer" DockPanel.Dock="Top">
                 <StackPanel Orientation="Vertical">
-                    <TextBlock x:Name="x_nameDictionary" Text="Конфігурації" Margin="5" FontWeight="Bold" FontSize="20" />
+                    <TextBlock x:Name="x_nameDictionary" Text="Конфігурації" 
+                               Margin="5" FontWeight="Bold" FontSize="20" />
 
                     <DataGrid x:Name="x_configurationGrid" 
                               AutoGenerateColumns="False"
                               Margin="5" 
                               CanUserSortColumns="True" 
                               CanUserAddRows="True" 
-                              AddingNewItem="x_configurationGrid_AddingNewItem"
-                              SelectionChanged="x_configurationGrid_SelectionChanged"
                               materialDesign:DataGridAssist.CellPadding="13 8 8 8"
                               materialDesign:DataGridAssist.ColumnHeaderPadding="8"
                               ItemsSource="{Binding}" 
                               AlternatingRowBackground="GhostWhite" 
                               Background="White"
-                             
+                              AddingNewItem="x_configurationGrid_AddingNewItem"
+                              RowEditEnding="x_configurationGrid_RowEditEnding"
                               >
-                        <DataGrid.ContextMenu>
-                            <ContextMenu>
-                                <TextBlock x:Name="x_btn_delete" Text="Видалити"  MouseLeftButtonDown="x_btn_delete_MouseLeftButtonDown"/>
-                            </ContextMenu>
-                        </DataGrid.ContextMenu>
+                        
+                        <DataGrid.Resources>
+                            <DataTemplate x:Key="GroupReadonly">
+                                <TextBlock Text="{Binding Group, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                            </DataTemplate>
+
+                            <DataTemplate x:Key="GroupEditable">
+                                <ComboBox ItemsSource="{Binding ListGroup}" 
+                                          SelectedValue="{Binding Group, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
+                                          Background="White" 
+                                          IsDropDownOpen="True"
+                                          />
+                            </DataTemplate>
+
+                            <DataTemplate x:Key="MaterialReadonly">
+                                <TextBlock Text="{Binding Material, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                            </DataTemplate>
+                            <DataTemplate x:Key="MaterialEditable">
+                                <ComboBox ItemsSource="{Binding ListMaterial}" 
+                                          SelectedValue="{Binding Material, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
+                                          Background="White" 
+                                          IsDropDownOpen="True"
+                                          />
+                            </DataTemplate>
+
+                            <DataTemplate x:Key="PurposeReadonly">
+                                <TextBlock Text="{Binding Purpose, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                            </DataTemplate>
+                            <DataTemplate x:Key="PurposeEditable">
+                                <ComboBox ItemsSource="{Binding ListPurpose}" 
+                                         SelectedValue="{Binding Purpose, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
+                                         Background="White" 
+                                         IsDropDownOpen="True"
+                                         />
+                            </DataTemplate>
+
+                            <DataTemplate x:Key="MediumReadonly">
+                                <TextBlock Text="{Binding Medium, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                            </DataTemplate>
+                            <DataTemplate x:Key="MediumEditable">
+                                <ComboBox ItemsSource="{Binding ListMedium}" 
+                                            SelectedValue="{Binding Medium, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
+                                            Background="White" 
+                                            IsDropDownOpen="True"
+                                            IsEnabled="{Binding IsEdit}"
+                                            />
+                            </DataTemplate>
+                        </DataGrid.Resources>
+                        
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Id" IsReadOnly="True" Binding="{Binding Id, Mode=TwoWay}" />
+                            <DataGridTextColumn Header="Id" IsReadOnly="True" 
+                                                Binding="{Binding Id, Mode=TwoWay}" />
 
-                            <DataGridTemplateColumn Header="Група" >
-                                <DataGridTemplateColumn.CellTemplate >
-                                    <DataTemplate>
-                                        <TextBlock IsEnabled="{Binding IsEdit}" Text="{Binding Group, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                   />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn 
+                                Header="Група" SortMemberPath="Група" CanUserSort="True"
+                                CellTemplate="{StaticResource GroupReadonly}">
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <ComboBox IsEnabled="{Binding IsEdit}" ItemsSource="{Binding ListGroup}" 
-                                                  SelectedValue="{Binding Group, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
-                                                  Background="White" 
-                                                  IsDropDownOpen="True"
-                                                 />
+                                        <ContentPresenter x:Name="Presenter" Content="{Binding}" ContentTemplate="{StaticResource GroupReadonly}" />
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding IsEdit}" Value="True">
+                                                <Setter TargetName="Presenter" Property="ContentTemplate" Value="{StaticResource GroupEditable}" />
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Header="Матеріал">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Material, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn 
+                                Header="Матеріал" SortMemberPath="Матеріал" CanUserSort="True"
+                                CellTemplate="{StaticResource MaterialReadonly}">
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <ComboBox ItemsSource="{Binding ListMaterial}" 
-                                                  SelectedValue="{Binding Material, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
-                                                  Background="White" 
-                                                  IsDropDownOpen="True"
-                                                 />
+                                        <ContentPresenter x:Name="Presenter" Content="{Binding}" ContentTemplate="{StaticResource MaterialReadonly}" />
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding IsEdit}" Value="True">
+                                                <Setter TargetName="Presenter" Property="ContentTemplate" Value="{StaticResource MaterialEditable}" />
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Header="Мета">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Purpose, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn
+                                Header="Мета" SortMemberPath="Мета" CanUserSort="True"
+                                CellTemplate="{StaticResource PurposeReadonly}">
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <ComboBox ItemsSource="{Binding ListPurpose}" 
-                                                  SelectedValue="{Binding Purpose, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
-                                                  Background="White" 
-                                                  IsDropDownOpen="True"
-                                                 />
+                                        <ContentPresenter x:Name="Presenter" Content="{Binding}" ContentTemplate="{StaticResource PurposeReadonly}" />
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding IsEdit}" Value="True">
+                                                <Setter TargetName="Presenter" Property="ContentTemplate" Value="{StaticResource PurposeEditable}" />
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Header="Середовище">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Medium, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn 
+                                Header="Середовище" SortMemberPath="Середовище" CanUserSort="True"
+                                CellTemplate="{StaticResource MediumReadonly}">
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <ComboBox ItemsSource="{Binding ListMedium}" 
-                                                  SelectedValue="{Binding Medium, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
-                                                  Background="White" 
-                                                  IsDropDownOpen="True"
-                                                 />
+                                        <ContentPresenter x:Name="Presenter" Content="{Binding}" ContentTemplate="{StaticResource MediumReadonly}" />
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding IsEdit}" Value="True">
+                                                <Setter TargetName="Presenter" Property="ContentTemplate" Value="{StaticResource MediumEditable}" />
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
-
-                            <DataGridTemplateColumn x:Name="x_save_button" >
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ToggleButton 
-                                                      Checked="ToggleButton_Checked"
-                                                      Margin="8 0 0 0" 
-                                                      Style="{StaticResource MaterialDesignActionToggleButton}" 
-                                                      ToolTip="Зберегти" IsEnabled="{Binding IsEdit}"
-                                                      Background="{Binding Foregraund, Mode=TwoWay}" 
-                                                     >
-                                            <materialDesign:PackIcon Kind="Check" />
-                                        </ToggleButton>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-
-                            </DataGridTemplateColumn>
-
                         </DataGrid.Columns>
-
                     </DataGrid>
-
                 </StackPanel>
             </ScrollViewer>
-
         </DockPanel>
     </Grid>
 </UserControl>

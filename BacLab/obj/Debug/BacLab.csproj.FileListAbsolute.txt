@@ -203,3 +203,7 @@ C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.csprojAssemblyReference.cache
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.csproj.CoreCompileInputs.cache
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\BacLab.csproj.CopyComplete
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dictionary\ABGroups.g.cs
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dictionary\ABGroups.baml
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dictionary\CategoriesPatient.g.cs
+C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\obj\Debug\Dictionary\CategoriesPatient.baml

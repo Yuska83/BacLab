@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\Ифслдфи\Documents\Visual Studio 2015\Projects\BacLab\BacLab\App.xaml
-15581177520
+17-177131413
 2-408115400
-671748016505
+69-269077745
 321557991051
-Administration\AdminWindow.xaml;Administration\ConfigurationWindow.xaml;Administration\DictionaryWindow.xaml;Dictionary\Antibiotics.xaml;Dialogs\MsgDialogOk.xaml;Dialogs\MsgDialogYesNo.xaml;Settings\PaletteSelector.xaml;Dialogs\MsgProgressDialog.xaml;Administration\MainWindow.xaml;Administration\RegistryWindow.xaml;Resources\Icons.xaml;Resources\IconsNonShared.xaml;Dialogs\MsgDialogSaveCancle.xaml;Settings\SettingsWindow.xaml;Styles.xaml;
+Administration\AdminWindow.xaml;Administration\ConfigurationWindow.xaml;Administration\DictionaryWindow.xaml;Dictionary\ABGroups.xaml;Dictionary\Antibiotics.xaml;Dialogs\MsgDialogOk.xaml;Dialogs\MsgDialogYesNo.xaml;Dictionary\CategoriesPatient.xaml;Settings\PaletteSelector.xaml;Dialogs\MsgProgressDialog.xaml;Administration\MainWindow.xaml;Administration\RegistryWindow.xaml;Resources\Icons.xaml;Resources\IconsNonShared.xaml;Dialogs\MsgDialogSaveCancle.xaml;Settings\SettingsWindow.xaml;Styles.xaml;
 microscope-icon.ico
 False
 

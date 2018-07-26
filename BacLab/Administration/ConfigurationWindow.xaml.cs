@@ -1,78 +1,53 @@
-﻿using MaterialDesignThemes.Wpf;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Threading;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Collections.Generic;
 using System.Windows.Media;
-using System.Windows.Controls.Primitives;
-using BacLab.Dialogs;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace BacLab.Administration
 {
     /// <summary>
     /// Логика взаимодействия для ConfigurationWindow.xaml
     /// </summary>
-    public partial class ConfigurationWindow : UserControl, INotifyPropertyChanged
+    public partial class ConfigurationWindow : UserControl
     {
         BacLab_DBEntities context;
-        private readonly Dispatcher _dispatcher = Dispatcher.CurrentDispatcher;
-        GroupMaterialPurposeMedium newConfiguration = null;
-
-        public List<GroupMaterialPurposeMedium> ListConfiguration { get; set; } = new List<GroupMaterialPurposeMedium>();
-
-        public GroupMaterialPurposeMedium NewConfiguration
-        {
-            get
-            {
-                return newConfiguration;
-            }
-
-            set
-            {
-                newConfiguration = value;
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        public GroupMaterialPurposeMedium NewConfiguration { get; set; } = null;
+        public ObservableCollection<GroupMaterialPurposeMedium> ListConfiguration { get; set; } = new ObservableCollection<GroupMaterialPurposeMedium>();
+        
 
         public ConfigurationWindow()
         {
             InitializeComponent();
             context = new BacLab_DBEntities();
-
-            fillConfigurationAsync();
+            ListConfiguration.CollectionChanged += ListConfiguration_CollectionChanged;
+            FillConfigurationAsync();// заполнить данные ассинхронно
            
         }
 
-        private async void fillConfigurationAsync()
+        
+        //ассинхронная работа с данными
+        private async void FillConfigurationAsync()
         {
-            
-            Task<List<GroupMaterialPurposeMedium>> task = new Task<List<GroupMaterialPurposeMedium>>(fillConfiguration);
+            Task<ObservableCollection<GroupMaterialPurposeMedium>> task = new Task<ObservableCollection<GroupMaterialPurposeMedium>>(FillConfiguration);
             task.Start();
-            List<GroupMaterialPurposeMedium> list = await task;
+            ObservableCollection<GroupMaterialPurposeMedium> list = await task;
             ListConfiguration = list;
             DataContext = ListConfiguration;
 
         }
 
         //добавление существующих конфигураций
-        private List<GroupMaterialPurposeMedium> fillConfiguration()
+        private ObservableCollection<GroupMaterialPurposeMedium> FillConfiguration()
         {
             try
             {
-                List<GroupMaterialPurposeMedium> myCol = new List<GroupMaterialPurposeMedium>();
+                ObservableCollection<GroupMaterialPurposeMedium> myCol = new ObservableCollection<GroupMaterialPurposeMedium>();
 
                 var elCol = context.d_Group_of_Study;
 
@@ -102,7 +77,6 @@ namespace BacLab.Administration
                                     item.Purpose = el3.d_Purpose_of_study.purpose;
                                     item.Medium = el4.d_Medium.medium;
                                     item.IsEdit = false;
-                                    item.Foregraund = Brushes.Cyan;
                                     myCol.Add(item);
 
                                 }
@@ -110,6 +84,7 @@ namespace BacLab.Administration
                         }
                     }
                 }
+                
                 return myCol; 
                 
             }
@@ -120,83 +95,50 @@ namespace BacLab.Administration
                 return null;
             }
         }
-        
 
-        private void x_configurationGrid_AddingNewItem(object sender, AddingNewItemEventArgs e)
+        //добавление новой конфигурации
+        private void x_configurationGrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
         {
+            if (NewConfiguration == null) return;
+
             try
             {
-                newConfiguration = new GroupMaterialPurposeMedium();
-                newConfiguration.Id = 0;
-                newConfiguration.Group = "";
-                newConfiguration.Material = "";
-                newConfiguration.Purpose = "";
-                newConfiguration.Medium = "";
-                newConfiguration.IsEdit = true;
-                newConfiguration.Foregraund = Brushes.Cyan;
-                var col = from t in context.d_Group_of_Study select t.Group_of_Study;
-                newConfiguration.ListGroup = col.ToList();
-                col = from t in context.d_Material select t.material;
-                newConfiguration.ListMaterial = col.ToList();
-                col = from t in context.d_Purpose_of_study select t.purpose;
-                newConfiguration.ListPurpose = col.ToList();
-                col = from t in context.d_Medium select t.medium;
-                newConfiguration.ListMedium = col.ToList();
-
-                e.NewItem = newConfiguration;
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + "\n" + ex.StackTrace);
-            }
-
-        }
-        
-        private void ToggleButton_Checked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (newConfiguration.Group == "")
+                if (NewConfiguration.Group == "")
                 {
                     MessageBox.Show("Заповніть поле \"Група\"");
-                    (e.Source as ToggleButton).IsChecked = false;
                     return;
                 }
-                if (newConfiguration.Material == "")
+                if (NewConfiguration.Material == "")
                 {
                     MessageBox.Show("Заповніть поле \"Матеріал\"");
-                    (e.Source as ToggleButton).IsChecked = false;
                     return;
                 }
-                if (newConfiguration.Purpose == "")
+                if (NewConfiguration.Purpose == "")
                 {
                     MessageBox.Show("Заповніть поле \"Мета\"");
-                    (e.Source as ToggleButton).IsChecked = false;
                     return;
                 }
-                if (newConfiguration.Medium == "")
+                if (NewConfiguration.Medium == "")
                 {
                     MessageBox.Show("Заповніть поле \"Середовище\"");
-                    (e.Source as ToggleButton).IsChecked = false;
                     return;
                 }
 
 
                 int id_group = context.d_Group_of_Study.
-                    Where(c => c.Group_of_Study == newConfiguration.Group).
+                    Where(c => c.Group_of_Study == NewConfiguration.Group).
                     FirstOrDefault().id;
 
                 int id_material = context.d_Material.
-                    Where(c => c.material == newConfiguration.Material).
+                    Where(c => c.material == NewConfiguration.Material).
                     FirstOrDefault().id;
 
                 int id_purpose = context.d_Purpose_of_study.
-                    Where(c => c.purpose == newConfiguration.Purpose).
+                    Where(c => c.purpose == NewConfiguration.Purpose).
                     FirstOrDefault().id;
 
                 int id_medium = context.d_Medium.
-                    Where(c => c.medium == newConfiguration.Medium).
+                    Where(c => c.medium == NewConfiguration.Medium).
                     FirstOrDefault().id;
 
 
@@ -210,7 +152,7 @@ namespace BacLab.Administration
                     MessageBox.Show("Така конфігурація вже існює: Id " + group_materia_purpose_medium.id.ToString());
                     return;
                 }
-               
+
                 var group_material = context.p_Group_Material.
                     Where(c => c.id_material == id_material && c.id_group_of_study == id_group).
                     FirstOrDefault();
@@ -244,93 +186,70 @@ namespace BacLab.Administration
                     Where(c => c.id_group_material_purpose == group_material_purpose.id && c.id_Medium == id_medium).
                     FirstOrDefault();
 
-                newConfiguration.Id = group_material_purpose_medium.id;
-                newConfiguration.IsEdit = false;
-                newConfiguration.Foregraund = Brushes.Red;
+                NewConfiguration.Id = group_material_purpose_medium.id;
+                NewConfiguration.IsEdit = false;
+
+                NewConfiguration = null;
                 
-                newConfiguration = null;
-               
-                x_configurationGrid_SelectionChanged(null, null);
             }
-           
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + " " + ex.StackTrace);
             }
         }
-
-        
-        private void x_configurationGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (newConfiguration == null)
-            {
-                if(x_configurationGrid.CanUserAddRows == false)
-                {
-                    try
-                    {
-                        x_configurationGrid.CanUserAddRows = true;
-                    }
-                    catch (InvalidOperationException) { }
-                    x_configurationGrid.CanUserAddRows = true;
-                }
-                
-                if (sender==null)
-                 x_scrollViewer.ScrollToEnd();
-                
-            }
-            else
-            {
-                if(x_configurationGrid.CanUserAddRows == true)
-                {
-                    try
-                    {
-                        x_configurationGrid.CanUserAddRows = false;
-                    }
-                    catch (InvalidOperationException) { }
-                }
-                
-            }
-
-        }
-
-        private async void x_btn_delete_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void x_configurationGrid_AddingNewItem(object sender, AddingNewItemEventArgs e)
         {
             try
             {
-                var selectedAB = x_configurationGrid.SelectedItems;
-                List<GroupMaterialPurposeMedium> newlist = new List<GroupMaterialPurposeMedium>();
-                if (selectedAB != null)
-                {
-                    foreach (var item in selectedAB)
-                    {
-                        GroupMaterialPurposeMedium config = item as GroupMaterialPurposeMedium;
-                        if (config != null)
-                        {
-                            object res = await Message.YesNo("Видалити конфігурацію " + 
-                                config.Group+" + "+ config.Material+" + "+
-                                config.Purpose+" + "+config.Medium+" ?");
+                NewConfiguration = new GroupMaterialPurposeMedium();
+                NewConfiguration.Id = 0;
+                NewConfiguration.Group = "";
+                NewConfiguration.Material = "";
+                NewConfiguration.Purpose = "";
+                NewConfiguration.Medium = "";
+                NewConfiguration.IsEdit = true;
+                var col = from t in context.d_Group_of_Study select t.Group_of_Study;
+                NewConfiguration.ListGroup = col.ToList();
+                col = from t in context.d_Material select t.material;
+                NewConfiguration.ListMaterial = col.ToList();
+                col = from t in context.d_Purpose_of_study select t.purpose;
+                NewConfiguration.ListPurpose = col.ToList();
+                col = from t in context.d_Medium select t.medium;
+                NewConfiguration.ListMedium = col.ToList();
 
-                            if (res.ToString() == "True")
-                            {
-                                context.p_Group_Material_Purpose_Medium.Remove
-                                    (context.p_Group_Material_Purpose_Medium.Where(c => c.id == config.Id).FirstOrDefault());
-                                context.SaveChanges();
-                                newlist.Add(config);
-                            }
-                        }
-                    }
-                    for (int i = 0; i < newlist.Count; i++)
+                e.NewItem = NewConfiguration;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n" + ex.StackTrace);
+            }
+
+        }
+        
+        //Удаление конфигурации
+        private void ListConfiguration_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            try
+            {
+                if (e.Action == NotifyCollectionChangedAction.Remove)
+
+                {
+                    foreach (GroupMaterialPurposeMedium ab in e.OldItems)
                     {
-                        ListConfiguration.Remove(newlist[i]);
+                        context.p_Group_Material_Purpose_Medium.Remove(context.p_Group_Material_Purpose_Medium.Where(c => c.id == ab.Id).FirstOrDefault());
+                        context.SaveChanges();
                     }
-                    x_configurationGrid.Items.Refresh();
+
                 }
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + "\n" + ex.StackTrace);
             }
         }
+
         
     }
 
@@ -341,13 +260,8 @@ namespace BacLab.Administration
         private string material;
         private string purpose;
         private string medium;
-        private List<string> listGroup;
-        private List<string> listMaterial;
-        private List<string> listPurpose;
-        private List<string> listMedium;
         bool isEdit;
-        Brush foregraund;
-
+        
         public int Id
         {
             get
@@ -402,54 +316,6 @@ namespace BacLab.Administration
                 OnPropertyChanged("Medium");
             }
         }
-        public List<string> ListGroup
-        {
-            get
-            {
-                return listGroup;
-            }
-
-            set
-            {
-                listGroup = value;
-            }
-        }
-        public List<string> ListMaterial
-        {
-            get
-            {
-                return listMaterial;
-            }
-
-            set
-            {
-                listMaterial = value;
-            }
-        }
-        public List<string> ListPurpose
-        {
-            get
-            {
-                return listPurpose;
-            }
-
-            set
-            {
-                listPurpose = value;
-            }
-        }
-        public List<string> ListMedium
-        {
-            get
-            {
-                return listMedium;
-            }
-
-            set
-            {
-                listMedium = value;
-            }
-        }
         public bool IsEdit
         {
             get
@@ -463,29 +329,18 @@ namespace BacLab.Administration
                 OnPropertyChanged("IsEdit");
             }
         }
-        public Brush Foregraund
-        {
-            get
-            {
-                return foregraund;
-            }
-
-            set
-            {
-                foregraund = value;
-                OnPropertyChanged("Foregraund");
-            }
-        }
+        public List<string> ListGroup { get; set; }
+        public List<string> ListMaterial { get; set; }
+        public List<string> ListPurpose { get; set; }
+        public List<string> ListMedium { get; set; }
+        
+       
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string name)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(name));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 

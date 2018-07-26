@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Data;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,25 +9,25 @@ using System.Windows.Controls;
 namespace BacLab.Dictionary
 {
     /// <summary>
-    /// Логика взаимодействия для Antibiotics.xaml
+    /// Логика взаимодействия для ABGroups.xaml
     /// </summary>
-    public partial class Antibiotics : UserControl
+    public partial class ABGroups : UserControl
     {
         BacLab_DBEntities context;
-        Antibiotic newAB = null;
+        ABGroup newItem = null;
 
-        public ObservableCollection<Antibiotic> ListAb { get; set; } = new ObservableCollection<Antibiotic>();
+        public ObservableCollection<ABGroup> ListABGroup { get; set; } = new ObservableCollection<ABGroup>();
 
-        public Antibiotics()
+        public ABGroups()
         {
             try
             {
                 InitializeComponent();
                 context = new BacLab_DBEntities();
-                
-                ListAb.CollectionChanged += ListAb_CollectionChanged;
+
+                ListABGroup.CollectionChanged += ListABGroup_CollectionChanged;
                 FillList();
-                DataContext = ListAb;
+                DataContext = ListABGroup;
 
             }
             catch (Exception ex)
@@ -38,37 +36,29 @@ namespace BacLab.Dictionary
             }
 
         }
-        
+
         //заполнение списка
         private void FillList()
         {
             try
             {
-                var tab = from t1 in context.d_Antibiotics
-                          join t2 in context.d_Antibiotics_groups
-                          on t1.id_group_AB equals t2.id
-                          select new { Id = t1.id, Name = t1.name, Group = t2.antibiotics_groups, Edit = "" };
+                var tab = from t1 in context.d_Antibiotics_groups
+                          select new { Id = t1.id, Name = t1.antibiotics_groups };
 
                 foreach (var item in tab)
                 {
-                    Antibiotic ab = new Antibiotic();
+                    ABGroup ab = new ABGroup();
                     ab.Id = item.Id;
                     ab.Name = item.Name;
-                    ab.Group = item.Group;
-                    
-                    ab.List_group = new List<string>();
-                    var col2 = from t in context.d_Antibiotics_groups select t.antibiotics_groups;
-                    ab.List_group = col2.ToList();
-
-                    ListAb.Add(ab);
+                    ListABGroup.Add(ab);
                 }
-                
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + "\n" + ex.StackTrace);
             }
-           
+
         }
 
         //инициализация новой строки
@@ -76,15 +66,10 @@ namespace BacLab.Dictionary
         {
             try
             {
-                newAB = new Antibiotic();
-                newAB.Id = 0;
-                newAB.Name = "";
-                newAB.Group = "";
-                newAB.List_group = new List<string>();
-                var col = from t in context.d_Antibiotics_groups select t.antibiotics_groups;
-                newAB.List_group = col.ToList();
-
-                e.NewItem = newAB;
+                newItem = new ABGroup();
+                newItem.Id = 0;
+                newItem.Name = "";
+                e.NewItem = newItem;
 
             }
             catch (Exception ex)
@@ -94,43 +79,37 @@ namespace BacLab.Dictionary
 
         }
 
-     
+
         //добавление новой строки
         private void x_MainGrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
         {
-            if (newAB == null) return;
-           
+            if (newItem == null) return;
+
             try
             {
-                if (newAB.Name == "")
+                if (newItem.Name == "")
                 {
                     MessageBox.Show("Заповніть поле \"Назва\"");
                     return;
                 }
-                if (newAB.Group == "")
-                {
-                    MessageBox.Show("Заповніть поле \"Група\"");
-                    return;
-                }
-
-                var col = context.d_Antibiotics.Where(c => c.name == newAB.Name);
+              
+                var col = context.d_Antibiotics_groups.Where(c => c.antibiotics_groups== newItem.Name);
                 if (col.Count() != 0)
                 {
-                    newAB.Name = "";
-                    MessageBox.Show("Антибіотик з такою назвою вже існує");
+                    newItem.Name = "";
+                    MessageBox.Show("Група з такою назвою вже існує");
                     return;
                 }
 
-                d_Antibiotics ab = new d_Antibiotics();
-                ab.name = newAB.Name;
-                ab.id_group_AB = context.d_Antibiotics_groups.Where(c => c.antibiotics_groups == newAB.Group).FirstOrDefault().id;
-
-                context.d_Antibiotics.Add(ab);
+                d_Antibiotics_groups abgr = new d_Antibiotics_groups();
+                abgr.antibiotics_groups= newItem.Name;
+                
+                context.d_Antibiotics_groups.Add(abgr);
 
                 context.SaveChanges();
-                newAB.Id = ab.id;
-                newAB = null;
-                
+                newItem.Id = abgr.id;
+                newItem = null;
+
             }
             catch (Exception ex)
             {
@@ -139,16 +118,16 @@ namespace BacLab.Dictionary
         }
 
         //Удаление
-        private void ListAb_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void ListABGroup_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             try
             {
                 if (e.Action == NotifyCollectionChangedAction.Remove)
 
                 {
-                    foreach (Antibiotic ab in e.OldItems)
+                    foreach (ABGroup ab in e.OldItems)
                     {
-                        context.d_Antibiotics.Remove(context.d_Antibiotics.Where(c => c.id == ab.Id).FirstOrDefault());
+                        context.d_Antibiotics_groups.Remove(context.d_Antibiotics_groups.Where(c => c.id == ab.Id).FirstOrDefault());
                         context.SaveChanges();
                     }
 
@@ -161,15 +140,13 @@ namespace BacLab.Dictionary
             }
         }
     }
+    
 
-
-
-    public class Antibiotic : INotifyPropertyChanged
+    public class ABGroup : INotifyPropertyChanged
     {
-        BacLab_DBEntities context=new BacLab_DBEntities();
+        BacLab_DBEntities context = new BacLab_DBEntities();
         int id;
         string name;
-        string group;
         
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -197,58 +174,36 @@ namespace BacLab.Dictionary
             {
                 string oldName = name;
                 name = value;
-                var ab = context.d_Antibiotics.Where(c => c.id == this.Id).FirstOrDefault();
-                if (ab != null)
+                var abgr = context.d_Antibiotics_groups.Where(c => c.id == this.Id).FirstOrDefault();
+                if (abgr != null)
                 {
                     if (value == "")
                     {
                         MessageBox.Show("Заповніть поле \"Назва\"");
                         name = oldName;
                         OnPropertyChanged("Name");
-                        
+
                     }
                     else
                     {
-                        ab.name = value;
+                        abgr.antibiotics_groups = value;
                         try
                         {
                             context.SaveChanges();
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show("Антибіотик з такою назвою вже існує");
+                            MessageBox.Show("Така група вже існує");
                             name = oldName;
                             OnPropertyChanged("Name");
                         }
                     }
-                    
+
                 }
             }
+        
         }
-        public string Group
-        {
-            get
-            {
-                return group;
-            }
-
-            set
-            {
-                group = value;
-                var ab = context.d_Antibiotics.Where(c => c.id == this.Id).FirstOrDefault();
-                if (ab != null)
-                {
-                    ab.id_group_AB = context.d_Antibiotics_groups.Where(c => c.antibiotics_groups == group).FirstOrDefault().id;
-                    context.SaveChanges();
-                    //OnPropertyChanged("Group");
-                }
-                
-            }
-        }
-       
-       
-        public List<string> List_group { get; set; }
-
+        
         protected void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
@@ -256,5 +211,3 @@ namespace BacLab.Dictionary
     }
 
 }
-
-

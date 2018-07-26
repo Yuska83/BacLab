@@ -139,6 +139,9 @@
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\Message.cs" />
+    <Compile Include="Dictionary\ABGroups.xaml.cs">
+      <DependentUpon>ABGroups.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dictionary\Antibiotics.xaml.cs">
       <DependentUpon>Antibiotics.xaml</DependentUpon>
     </Compile>
@@ -152,6 +155,9 @@
       <DependentUpon>MsgDialogYesNo.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\NotifyPropertyChangedExtension.cs" />
+    <Compile Include="Dictionary\CategoriesPatient.xaml.cs">
+      <DependentUpon>CategoriesPatient.xaml</DependentUpon>
+    </Compile>
     <Compile Include="d_Antibiotics.cs">
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
@@ -306,6 +312,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Dictionary\ABGroups.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dictionary\Antibiotics.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -315,6 +325,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\MsgDialogYesNo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dictionary\CategoriesPatient.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

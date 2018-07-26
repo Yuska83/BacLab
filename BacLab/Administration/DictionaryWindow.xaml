@@ -2,9 +2,9 @@
                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-                      xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
-                      xmlns:Dictionary="clr-namespace:BacLab.Dictionary"
-                      WindowTransitionsEnabled="False"
+                      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                      xmlns:Dictionary ="clr-namespace:BacLab.Dictionary"
+                       WindowTransitionsEnabled="False"
                       TextElement.Foreground="{DynamicResource MaterialDesignBody}"
                       Background="{DynamicResource MaterialDesignPaper}"					  
                       GlowBrush="{DynamicResource AccentColorBrush}"					  
@@ -14,84 +14,118 @@
                       WindowStartupLocation="CenterScreen" 
                       WindowState="Maximized" ResizeMode="CanResize"
                >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+  
 
-    
+        <materialDesign:ColorZone Grid.Column="0"
+                                  materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                  Mode="Light" VerticalAlignment="Stretch" >
+            <ScrollViewer>
+                <StackPanel>
+                    <Button x:Name="x_AB" Content="Антибіотики" Margin="5"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Click="Button_Click" FontFamily="Arial Rounded MT Bold" FontSize="18"/>
+                    <Button x:Name="x_ABGroup" Content="Групи антибіотиків" Margin="5"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Click="Button_Click" FontFamily="Arial Rounded MT Bold" FontSize="18"/>
+                    <Button x:Name="x_CategoryPatient"  Content="Категорії пацієнтів" Margin="5"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Click="Button_Click" FontFamily="Arial Rounded MT Bold" FontSize="18"/>
+                    <Button x:Name="x_Department"  Content="Відділення" Margin="5"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Click="Button_Click" FontFamily="Arial Rounded MT Bold" FontSize="18"/>
+                    <Button x:Name="x_Diagnosis"  Content="Діагнози" Margin="5"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Click="Button_Click" FontFamily="Arial Rounded MT Bold" FontSize="18"/>
+                    <Button x:Name="x_DiagnosisGroup"  Content="Групи діагнозів" Margin="5"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Click="Button_Click" FontFamily="Arial Rounded MT Bold" FontSize="18"/>
+                    <Button x:Name="x_District"  Content="Райони міста" Margin="5"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Click="Button_Click" FontFamily="Arial Rounded MT Bold" FontSize="18"/>
+                    <Button x:Name="x_Finance"  Content="Фінаси" Margin="5"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Click="Button_Click" FontFamily="Arial Rounded MT Bold" FontSize="18"/>
+                    <Button x:Name="x_GroupOfStudy"  Content="Групи досліджень" Margin="5"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Click="Button_Click" FontFamily="Arial Rounded MT Bold" FontSize="18"/>
+                    <Button x:Name="x_Institution"  Content="Лікарні" Margin="5"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Click="Button_Click" FontFamily="Arial Rounded MT Bold" FontSize="18"/>
+                    <Button x:Name="x_Material"  Content="Матеріал" Margin="5"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Click="Button_Click" FontFamily="Arial Rounded MT Bold" FontSize="18"/>
+                    <Button x:Name="x_Medium" Content="Середовища" Margin="5"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Click="Button_Click" FontFamily="Arial Rounded MT Bold" FontSize="18"/>
+                    <Button x:Name="x_MO" Content="Мікроорганізми" Margin="5"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Click="Button_Click" FontFamily="Arial Rounded MT Bold" FontSize="18"/>
+                    <Button x:Name="x_MOGenus" Content="Род МО" Margin="5"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Click="Button_Click" FontFamily="Arial Rounded MT Bold" FontSize="18"/>
+                    <Button x:Name="x_MOGroup" Content="Групи МО" Margin="5"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Click="Button_Click" FontFamily="Arial Rounded MT Bold" FontSize="18"/>
+                    <Button x:Name="x_Morphology" Content="Морфологія" Margin="5"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Click="Button_Click" FontFamily="Arial Rounded MT Bold" FontSize="18"/>
+                    <Button x:Name="x_Tests" Content="Тести" Margin="5"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Click="Button_Click" FontFamily="Arial Rounded MT Bold" FontSize="18"/>
+                    <Button x:Name="x_NameTestSet" Content="Назви біохім рядів" Margin="5"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Click="Button_Click" FontFamily="Arial Rounded MT Bold" FontSize="18"/>
+                    <Button x:Name="x_Olkenicky" Content="Варіанти Олькіницького" Margin="5"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Click="Button_Click" FontFamily="Arial Rounded MT Bold" FontSize="18"/>
+                    <Button x:Name="x_Purpose" Content="Мета дослідження" Margin="5"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Click="Button_Click" FontFamily="Arial Rounded MT Bold" FontSize="18"/>
+                    <Button x:Name="x_StaffCategory" Content="Категорії працівників" Margin="5"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Click="Button_Click" FontFamily="Arial Rounded MT Bold" FontSize="18"/>
+                    <Button x:Name="x_Staff" Content="Працівники" Margin="5"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Click="Button_Click" FontFamily="Arial Rounded MT Bold" FontSize="18"/>
+                    <Button x:Name="x_TestRes" Content="Результати тестів" Margin="5"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Click="Button_Click" FontFamily="Arial Rounded MT Bold" FontSize="18"/>
+                    <Button x:Name="x_TypeColny" Content="Типи колоній" Margin="5"
+                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Click="Button_Click" FontFamily="Arial Rounded MT Bold" FontSize="18"/>
+                </StackPanel>
+            </ScrollViewer>
+        </materialDesign:ColorZone>
 
-    <dragablz:TabablzControl TabStripPlacement="Left" BorderThickness="2"  >
-        <TabItem  Header="Антибіотики" x:Name="x_AB"/>
-
-        <TabItem Header="Групи антибіотиків" >
-           
-        </TabItem>
-        <TabItem Header="Категорії пацієнтів" >
-            
-        </TabItem>
-        <TabItem Header="Відділення" >
-            
-        </TabItem>
-        <TabItem Header="Діагнози" >
-           
-        </TabItem>
-        <TabItem Header="Групи діагнозів" >
-            
-        </TabItem>
-        <TabItem Header="Райони міста" >
-           
-        </TabItem>
-        <TabItem Header="Фінаси" >
-            
-        </TabItem>
-        <TabItem Header="Групи досліджень" >
-            
-        </TabItem>
-        <TabItem Header="Лікарні" >
-            
-        </TabItem>
-        <TabItem Header="Матеріал" >
-            
-        </TabItem>
-        <TabItem Header="Середовища" >
-           
-        </TabItem>
-        <TabItem Header="Мікроорганізми" >
-            
-        </TabItem>
-        <TabItem Header="Род МО" >
-            
-        </TabItem>
-        <TabItem Header="Групи МО" >
-            
-        </TabItem>
-        <TabItem Header="Морфологія" >
-            
-        </TabItem>
-        <TabItem Header="Назви біохім рядів" >
-           
-        </TabItem>
-        <TabItem Header="Варіанти Олькіницького" >
-            
-        </TabItem>
-        <TabItem Header="Мета дослідження" >
-           
-        </TabItem>
-        <TabItem Header="Категорії працівників" >
-            
-        </TabItem>
-        <TabItem Header="Працівники" >
-            
-        </TabItem>
-        <TabItem Header="Результати тестів" >
-            
-        </TabItem>
-        <TabItem Header="Тести" >
-          
-        </TabItem>
-        <TabItem Header="Типи колоній" >
-           
-        </TabItem>
-        <TabItem Header="Середовища" >
-            
-        </TabItem>
-
-    </dragablz:TabablzControl>
+        <materialDesign:Card x:Name="x_Card" Padding="30,5,5,5" Grid.Column="1" VerticalAlignment="Stretch"/>
+    </Grid>      
 </controls:MetroWindow>
