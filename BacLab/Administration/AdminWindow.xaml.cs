@@ -27,6 +27,8 @@ namespace BacLab.Administration
             x_ConfigurationTabItem.Content = new ConfigurationWindow();
             //номе
             x_ConfigurationTabItem.Content = new ConfigurationWindow();
+            //номе
+            x_ConfigurationTabItem.Content = new ConfigurationWindow();
         }
 
         

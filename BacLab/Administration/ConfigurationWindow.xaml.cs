@@ -27,7 +27,8 @@ namespace BacLab.Administration
             context = new BacLab_DBEntities();
             ListConfiguration.CollectionChanged += ListConfiguration_CollectionChanged;
             FillConfigurationAsync();// заполнить данные ассинхронно
-           
+                                     //номе
+            //x_ConfigurationTabItem.Content = new ConfigurationWindow();
         }
 
         
