@@ -1,0 +1,27 @@
+﻿<controls:MetroWindow x:Class="BacLab.Administration.ControlWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+                      xmlns:dockablz="clr-namespace:Dragablz.Dockablz;assembly=Dragablz"
+                      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+                      WindowTransitionsEnabled="False" 
+                      Icon="/Resources/Logo.ico"
+                      Title="Внутрішні контролі" 
+                      WindowStartupLocation="CenterScreen" 
+                      WindowState="Maximized" ResizeMode="CanResize"
+                      Closing="MetroWindow_Closing" >
+    <materialDesign:DialogHost Identifier="MsgDialog" >
+        <dockablz:Layout>
+            <DockPanel >
+                <dragablz:TabablzControl BorderThickness="2" >
+                    <TabItem Header="Контроль мікроклімату" x:Name="x_InnerControl"/>
+                    <TabItem Header="Вхідний контроль якості антибіотиків" x:Name="x_ABEnterControl"/>
+                    <TabItem Header="Поточний контроль якості антибіотиків" x:Name="x_ABControl"/>
+                    <TabItem Header="Моніторинг якості антибіотиків" x:Name="x_ABMonitoring"/>
+                    <TabItem Header="Контроль якості поживних середовищ" x:Name="x_ConsumablesControls"/>
+                </dragablz:TabablzControl>
+            </DockPanel>
+        </dockablz:Layout>
+    </materialDesign:DialogHost>
+</controls:MetroWindow>

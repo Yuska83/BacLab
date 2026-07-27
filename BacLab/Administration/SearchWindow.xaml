@@ -1,0 +1,153 @@
+﻿<controls:MetroWindow x:Class="BacLab.Administration.SearchWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:Models="clr-namespace:BacLab.Models"
+                      xmlns:Administration="clr-namespace:BacLab.Administration"
+                      WindowTransitionsEnabled="False"
+                      Icon="/Resources/Logo.ico" Title="ПОШУК" 
+                      WindowStartupLocation="CenterScreen" 
+                      WindowState="Maximized"  ResizeMode="CanResize"
+                      mc:Ignorable="d"
+                      d:DataContext="{d:DesignInstance Administration:SearchWindow,IsDesignTimeCreatable=False}"
+                      Closing="MetroWindow_Closing">
+
+    <Window.Resources>
+        <Models:StringToIntConverter x:Key="StringToIntConverter"/>
+        <Models:DateTimeToDateConverter x:Key="DateTimeToDateConverter"/>
+        <Models:DateTimeToDateTimeConverter x:Key="DateTimeToDateTimeConverter"/>
+        <Models:QuantityConverter x:Key="QuantityConverter"/>
+        <Models:BoolToYesNoConverter x:Key="BoolToYesNoConverter"/>
+        
+        <ControlTemplate x:Key="itemListBox" >
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding d_Microorganism.abbr}" />
+                <TextBlock Margin="5 0 0 0" Text="{Binding quantity, Converter={StaticResource QuantityConverter}}" />
+                <!--<TextBlock Margin="5 0 0 0" Text="{Binding betalactamase}" />
+                <TextBlock Margin="5 0 0 0" Text="{Binding blrs}" />
+                <TextBlock Margin="5 0 0 0" Text="{Binding carbopenemase}" />
+                <TextBlock Margin="5 0 0 0" Text="{Binding pzb}" />
+                <TextBlock Margin="5 0 0 0" Text="{Binding mrsa}" />
+                <TextBlock Margin="5 0 0 0" Text="{Binding vre}" />-->
+            </StackPanel>
+        </ControlTemplate>
+
+        <DataTemplate x:Key="itemsListBox">
+            <Control Template="{StaticResource itemListBox}" />
+        </DataTemplate>
+    </Window.Resources>
+
+    <materialDesign:DialogHost Identifier="SearchDialog">
+        <Grid  x:Name="MainGrid" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition  Height="1*" />
+            </Grid.RowDefinitions>
+
+            <materialDesign:Card x:Name="x_searchCard" Grid.Row="0"/>
+
+            <materialDesign:Card  Grid.Row="2">
+                <DataGrid x:Name="x_searchGrid" 
+                          CanUserAddRows="False"  CanUserDeleteRows="False" IsReadOnly="True"
+                          GridLinesVisibility="All" VerticalGridLinesBrush="Gray" HorizontalGridLinesBrush="Gray"
+                          FrozenColumnCount="3"
+                          ItemsSource="{Binding ListItems}"
+                          SelectedItem="{Binding SelectedAnalis,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+
+                    <DataGrid.Columns>
+
+                        <DataGridTextColumn Header="№" Binding="{Binding LabNum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToIntConverter}}" />
+                        <DataGridTextColumn Header="Дата доставки" Binding="{Binding DateDelivery, Converter={StaticResource DateTimeToDateConverter}}"/>
+                        <DataGridTextColumn Header="Дата забору" Binding="{Binding DateSampling, Converter={StaticResource DateTimeToDateConverter}}"/>
+                        <DataGridTextColumn Header="Заклад" Binding="{Binding Institution.abbr}"/>
+                        <DataGridTextColumn Header="Відділення"  Binding="{Binding Department.abbr}"/>
+                        <DataGridTextColumn Header="id" Binding="{Binding Patient.Id}" Visibility="Collapsed"/>
+                        <DataGridTextColumn Header="Підрозділ" Binding="{Binding Subdivisions.abbr}" Visibility="Visible"/>
+                        <DataGridTextColumn Header="Паціент" Binding="{Binding Patient.Name}" />
+                        <DataGridTextColumn Header="Рік" Binding="{Binding Patient.Year}"/>
+                        <DataGridTextColumn Header="Діагноз"  Binding="{Binding Diagnosis.abbr}"/>
+                        <DataGridTextColumn Header="№ медкарти" Binding="{Binding NumMedCard}"/>
+                        <DataGridTextColumn Header="Статус" Binding="{Binding PatientStatus.abbr}"/>
+                        <DataGridTextColumn Header="Матеріал" Binding="{Binding GMP.d_Material.abbr}"/>
+                        <DataGridTextColumn Header="Мета" Binding="{Binding GMP.d_Purpose.abbr}"/>
+                        <DataGridTextColumn Header="Результат" Binding="{Binding ResTemplate.abbr}"/>
+                        <DataGridTemplateColumn Header="Культури" >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ListBox ItemsSource="{Binding Cultures}"
+                                             Background="White" 
+                                             MouseRightButtonUp="Culture_MouseRightButtonUp"
+                                             ItemTemplate="{StaticResource itemsListBox}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridCheckBoxColumn Header="Видан" Binding="{Binding SendAnalis, Mode=TwoWay, NotifyOnTargetUpdated=True}" />
+                        <DataGridTextColumn Header="Дата завершення" Binding="{Binding TimeEnd, Converter={StaticResource DateTimeToDateTimeConverter}}"/>
+                        <DataGridTemplateColumn >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button x:Name="x_editBTN" materialDesign:HintAssist.Hint="Редагувати данні"
+                                        Click="x_EditBTN_Click">
+                                        <materialDesign:PackIcon Kind="LeadPencil" />
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn  >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button x:Name="x_emailBTN" ToolTip="Відправити на пошту"
+                                            Click="x_SentEmail_Click">
+                                        <materialDesign:PackIcon Kind="Email" />
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn  >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button x:Name="x_printBTN" ToolTip="Надрукувати"
+                                            Click="x_PrintRezult_Click"  IsEnabled="{Binding SendAnalis}">
+                                        <materialDesign:PackIcon Kind="Printer" />
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button  x:Name="x_blankBTN" ToolTip="Показати"
+                                Click="x_ShowRezult_Click"  IsEnabled="{Binding SendAnalis}">
+                                        <materialDesign:PackIcon Kind="FileDocument" />
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button  x:Name="x_editRezult" ToolTip="Редагувати результат"
+                                             Click="x_EditRezult_Click">
+                                        <materialDesign:PackIcon Kind="FileDocumentEditOutline" />
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Лабораторія" Binding="{Binding InstitutionLab.abbr}"/>
+                        <DataGridTextColumn Header="Реєстратор" Binding="{Binding StaffRegistration.abbr}"/>
+                        <DataGridTextColumn Header="Ким видано" Binding="{Binding Doctor.abbr}"/>
+                        <DataGridTextColumn Header="Фінансування" Binding="{Binding Finance.abbr}"/>
+                        <DataGridTextColumn Header="Додатково" Binding="{Binding Comment}"/>
+                        <DataGridTextColumn Header="До 48" Binding="{Binding Do48, Converter={StaticResource BoolToYesNoConverter}}"/>
+                        <DataGridTextColumn Header="До 72" Binding="{Binding Do72, Converter={StaticResource BoolToYesNoConverter}}"/>
+                        <!--<DataGridCheckBoxColumn Header="рахунок" Binding="{Binding InRaxunok, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />-->
+                        <DataGridCheckBoxColumn Header="Відправлен" Binding="{Binding IsIssued, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </materialDesign:Card>
+        </Grid>
+    </materialDesign:DialogHost>
+</controls:MetroWindow>

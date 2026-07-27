@@ -8,13 +8,13 @@ namespace BacLab.Administration
     /// <summary>
     /// Логика взаимодействия для AdminWindow.xaml
     /// </summary>
-    public partial class AdminWindow
+    public partial class PreparatorcykaWindow
     {
         BacLab_DBEntities context;
         d_Subdivisions subdivision;
         d_Staff staff;
         string parol;
-        public AdminWindow(BacLab_DBEntities context, d_Subdivisions subdivision, d_Staff staff, String parol)
+        public PreparatorcykaWindow(BacLab_DBEntities context, d_Subdivisions subdivision, d_Staff staff, String parol)
         {
             try
             {
@@ -23,14 +23,11 @@ namespace BacLab.Administration
                 this.subdivision = subdivision;
                 this.staff = staff;
                 this.parol = parol;
-                x_InstitutionTabItem.Content = new AdminInstitutionWindow(context,staff);
-                x_ReserchTabItem.Content = new AdminReserchWindow(context, subdivision);
-                x_MOTabItem.Content = new AdminMOWindow(context);
-                x_ABTabItem.Content = new AdminABWindow(context, subdivision, staff);
-                x_PatientTabItem.Content = new AdminPatientWindow(context, staff);
-                x_LabTabItem.Content = new AdminLabWindow(context, subdivision, staff);
 
-                context.l_log.Add(new l_log() { date = DateTime.Now, datetime = DateTime.Now, idStaff = staff.id, idAction = 6 });
+                x_StockLabTabItem.Content = new StockControl(context, subdivision, staff);
+                x_AdminTabItem.Content = new AdminPreparatorcykaWindow(context, subdivision, staff);
+
+                context.l_log.Add(new l_log() { date = DateTime.Now, datetime = DateTime.Now, idStaff = staff.id, idAction = 20 });
 
             }
             catch (Exception ex)
@@ -40,7 +37,7 @@ namespace BacLab.Administration
 
         }
 
-        public AdminWindow()
+        public PreparatorcykaWindow()
         {
             try
             {
@@ -49,15 +46,11 @@ namespace BacLab.Administration
                 this.subdivision = context.d_Subdivisions.Where(c => c.id == 1).FirstOrDefault();
                 this.staff = context.d_Staff.Where(c => c.id == 4).FirstOrDefault();
                 this.parol = "123";
-                x_InstitutionTabItem.Content = new AdminInstitutionWindow(context,staff);
-                x_ReserchTabItem.Content = new AdminReserchWindow(context, subdivision);
-                x_MOTabItem.Content = new AdminMOWindow(context);
-                x_ABTabItem.Content = new AdminABWindow(context, subdivision, staff);
-                x_PatientTabItem.Content = new AdminPatientWindow(context, staff);
-                x_LabTabItem.Content = new AdminLabWindow(context, subdivision, staff);
 
-                context.l_log.Add(new l_log() { date = DateTime.Now, datetime = DateTime.Now, idStaff = staff.id, idAction = 6 });
+                x_StockLabTabItem.Content = new StockControl(context, subdivision, staff);
+                x_AdminTabItem.Content = new AdminPreparatorcykaWindow(context, subdivision, staff);
 
+                context.l_log.Add(new l_log() { date = DateTime.Now, datetime = DateTime.Now, idStaff = staff.id, idAction = 20 });
             }
             catch (Exception ex)
             {

@@ -1,199 +1,428 @@
-﻿<UserControl x:Class="BacLab.Administration.RegistryWindow"
-                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-                xmlns:Administration="clr-namespace:BacLab.Administration"
-                xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
-                xmlns:dockablz="clr-namespace:Dragablz.Dockablz;assembly=Dragablz"
-                xmlns:BacLab="clr-namespace:BacLab" 
-                mc:Ignorable="d" 
-                d:DesignHeight="560" d:DesignWidth="600"
-              d:DataContext="{d:DesignInstance Administration:RegistryWindow,
-                                          IsDesignTimeCreatable=False}"
-             
-                     >
-    
-   <Grid  x:Name="MainGrid" >
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="2*"/>
-                                <RowDefinition Height="5*"/>
-                                <RowDefinition Height="1*"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
+﻿<controls:MetroWindow x:Class="BacLab.Administration.RegistryWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+                      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:Administration="clr-namespace:BacLab.Administration"
+                      xmlns:Models="clr-namespace:BacLab.Models"
+                      mc:Ignorable="d"
+                      Icon="/Resources/Logo.ico" Title="РЕЄСТРАТУРА" 
+                      WindowStartupLocation="CenterScreen" WindowState="Maximized"  ResizeMode="CanResize"
+                      DataContext="RegistryWindow"
+                      d:DataContext="{d:DesignInstance Administration:RegistryWindow,IsDesignTimeCreatable=False}"
+                      WindowTransitionsEnabled="False" Closing="MetroWindow_Closing">
 
-                            <materialDesign:Card Grid.Row="0" Grid.Column="0" 
-                                             Margin="10 10 10 0" 
-                                             Padding="8">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="0.5*"/>
-                                        <ColumnDefinition Width="3*"/>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="3*"/>
-                                        <ColumnDefinition Width="0.5*"/>
-                                    </Grid.ColumnDefinitions>
+    <Window.Resources>
+        <Models:StringToIntConverter x:Key="StringToIntConverter"/>
+        <Models:CountToEnabledConvector x:Key="CountToEnabledConvector"/>
+        <ControlTemplate x:Key="itemComboBoxAbbr" >
+            <TextBlock Text="{Binding abbr}" />
+        </ControlTemplate>
+        <DataTemplate x:Key="itemsComboBoxAbbr">
+            <Control Template="{StaticResource itemComboBoxAbbr}" />
+        </DataTemplate>
+        <ControlTemplate x:Key="itemComboBoxName" >
+            <TextBlock Text="{Binding name}" />
+        </ControlTemplate>
+        <DataTemplate x:Key="itemsComboBoxName">
+            <Control Template="{StaticResource itemComboBoxName}" />
+        </DataTemplate>
+        <Style TargetType="Expander" BasedOn="{StaticResource MaterialDesignExpander}">
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="ExpandDirection" Value="Down"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
 
-                                    <DatePicker Grid.Column="1" Grid.Row="0" Margin="0 20 0 10"
-                                            x:Name="x_dateReceipt"
-                                            materialDesign:HintAssist.Hint="Дата надходження" 
-                                            Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+        <ItemsPanelTemplate x:Key="itemsPanelTemplate">
+            <WrapPanel Height="150" Width="Auto"
+                       Orientation="Vertical" Background="White" 
+                       ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                       ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
+        </ItemsPanelTemplate>
+    </Window.Resources>
 
-                                    <DatePicker Grid.Column="1" Grid.Row="1" Margin="0 10 0 20"
-                                            x:Name="x_dateSampling"
-                                            materialDesign:HintAssist.Hint="Дата відбору" 
-                                            Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+    <materialDesign:DialogHost Identifier="MsgDialog" Margin="10" >
+        <Grid x:Name="MainGrid" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="5*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width ="Auto" />
+                <ColumnDefinition Width ="1*"/>
+            </Grid.ColumnDefinitions>
+            <GridSplitter Height="Auto" Width="20" Margin="0 10 0 10" Grid.RowSpan="2" 
+                          HorizontalAlignment="Right" VerticalAlignment="Stretch" ResizeDirection="Columns"/>
 
-                                    <materialDesign:TimePicker Grid.Column="3" Grid.Row="0" Margin="0 20 0 10"
-                                                            x:Name="x_timeReceipt" Is24Hours="True"  
-                                                            Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
-                                                            materialDesign:HintAssist.Hint="Час надходження"  />
+            <materialDesign:Card x:Name="x_registryCard" Grid.RowSpan="2" Margin="10 10 5 10">
+                <materialDesign:DialogHost Identifier="x_dlgHostResult" Margin="10" >
+                    <Grid x:Name="x_registryGrid" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
 
-                                    <materialDesign:TimePicker Grid.Column="3" Grid.Row="1" Margin="0 10 0 20"
-                                                           x:Name="x_timeSampling" Is24Hours="True"
-                                                           Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
-                                                           materialDesign:HintAssist.Hint="Час відбору" />
-                                </Grid>
-                            </materialDesign:Card>
+                        <DatePicker Grid.Column="0" Grid.Row="0"  
+                                    materialDesign:HintAssist.Hint="Дата надходження"
+                                    KeyUp="TextBox_KeyUp">
+                            <DatePicker.SelectedDate>
+                                <Binding Path="Analis.DateDelivery" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <Models:DateValidationRule ValidatesOnTargetUpdated="True" />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </DatePicker.SelectedDate>
+                        </DatePicker>
+
+                        <materialDesign:TimePicker Grid.Column="1" Grid.Row="0" Margin="5 0 5 0"
+                                                   materialDesign:HintAssist.Hint="Час надходження"
+                                                   KeyUp="TextBox_KeyUp"
+                                                   SelectedTime="{Binding Analis.TimeDelivery, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <DatePicker Grid.Column="0" Grid.Row="1"
+                                    materialDesign:HintAssist.Hint="Дата забору" 
+                                    KeyUp="TextBox_KeyUp">
+                            <DatePicker.SelectedDate>
+                                <Binding Path="Analis.DateSampling" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <Models:DateValidationRule ValidatesOnTargetUpdated="True" />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </DatePicker.SelectedDate>
+                        </DatePicker>
+
+                        <materialDesign:TimePicker Grid.Column="1" Grid.Row="1"
+                                                   materialDesign:HintAssist.Hint="Час забору"
+                                                   KeyUp="TextBox_KeyUp"
+                                                   SelectedTime="{Binding Analis.TimeSampling, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <StackPanel VerticalAlignment="Bottom" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left">
+                            <RadioButton x:Name="x_financeS_RB" GroupName="financeGroup" Content="с/рахунок"  Checked="x_finance_RB_Checked"/>
+                            <RadioButton x:Name="x_financeB_RB" GroupName="financeGroup" Content="бюджет" Checked="x_finance_RB_Checked"/>
+                        </StackPanel>
+
+                        <TextBox Grid.Column="0" Grid.Row="2" x:Name="x_labNum" 
+                         Text="{Binding Analis.LabNum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource StringToIntConverter} }"
+                         materialDesign:HintAssist.Hint="Номер" KeyUp="TextBox_KeyUp"/>
+
+                        <ComboBox Grid.Column="0" Grid.Row="3" x:Name="x_institution" Grid.ColumnSpan="2"
+                          SelectedItem="{Binding Analis.Institution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          materialDesign:HintAssist.Hint="Медичний заклад" 
+                          KeyUp="TextBox_KeyUp" TextSearch.TextPath="abbr" 
+                          ItemTemplate="{StaticResource itemsComboBoxAbbr}"
+                          SelectionChanged="X_institution_SelectionChanged"/>
+
+                        <ComboBox Grid.Column="0" Grid.Row="4" x:Name="x_department" Grid.ColumnSpan="2"
+                          SelectedItem="{Binding Analis.Department, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True}"
+                          materialDesign:HintAssist.Hint="Відділення" 
+                          KeyUp="TextBox_KeyUp" TextSearch.TextPath="abbr"
+                          ItemTemplate="{StaticResource itemsComboBoxAbbr}" />
+
+                        <StackPanel Grid.Column="3" Grid.Row="4" Margin="5 0 20 0" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                            <Button x:Name="x_editDepartment" Margin="0 0 0 5"
+                                  Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                                  ToolTip="Редагувати" Width="Auto" Height="Auto" 
+                                  materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                  Click="X_editItem_Click">
+                                <materialDesign:PackIcon Kind="PencilCircleOutline" />
+                            </Button>
+                            <Button x:Name="x_addDepartment"  
+                             Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                             ToolTip="Додати" Width="Auto" Height="Auto" 
+                             materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                             Click="X_addItem_Click">           
+                               <materialDesign:PackIcon Kind="PlusCircleOutline" />
+                            </Button>
+                        </StackPanel>
+
+                        <ComboBox Grid.Column="0" Grid.Row="5" x:Name="x_diagnosis" Grid.ColumnSpan="2"
+                          SelectedItem="{Binding Analis.Diagnosis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True}" 
+                          materialDesign:HintAssist.Hint="Діагноз" 
+                          KeyUp="TextBox_KeyUp" TextSearch.TextPath="abbr"
+                          ItemTemplate="{StaticResource itemsComboBoxAbbr}"  />
+
+                        <StackPanel Grid.Column="3" Grid.Row="5" Margin="5 0 20 0" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                            <Button x:Name="x_editDiagnosis" Margin="0 0 0 5"
+                              Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                              ToolTip="Редагувати" Width="Auto" Height="Auto" 
+                              materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                              Click="X_editItem_Click">
+                              <materialDesign:PackIcon Kind="PencilCircleOutline" />
+                            </Button>
+                            <Button x:Name="x_addDiagnosis"  
+                             Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                             ToolTip="Додати" Width="Auto" Height="Auto" 
+                             materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                             Click="X_addItem_Click">   
+                             <materialDesign:PackIcon Kind="PlusCircleOutline" />
+                            </Button>
+                        </StackPanel>
+
+                        <ComboBox Grid.Column="0" Grid.Row="6" x:Name="x_patientStatus" Grid.ColumnSpan="2"
+                          SelectedItem="{Binding Analis.PatientStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          materialDesign:HintAssist.Hint="Категорія пацієнта" 
+                          KeyUp="TextBox_KeyUp" TextSearch.TextPath="abbr"
+                          ItemTemplate="{StaticResource itemsComboBoxAbbr}"
+                          SelectionChanged="x_patientStatus_SelectionChanged"/>
+
+                        <TextBox Grid.Column="0" Grid.Row="7" x:Name="x_numMedCards" Grid.ColumnSpan="2"
+                         Text="{Binding Analis.NumMedCard, Mode=TwoWay}"
+                         materialDesign:HintAssist.Hint="Номер мед.карти" 
+                         KeyUp="TextBox_KeyUp" />
+
+                        <ComboBox Grid.Column="0" Grid.Row="8" x:Name="x_sentPerson" Grid.ColumnSpan="2"
+                          SelectedItem="{Binding Analis.SentPerson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          materialDesign:HintAssist.Hint="Направив" 
+                          KeyUp="TextBox_KeyUp" TextSearch.TextPath="abbr"
+                                  ItemTemplate="{StaticResource itemsComboBoxAbbr}"/>
+
+                        <StackPanel Grid.Column="3" Grid.Row="8" Margin="5 0 20 0" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                            <Button x:Name="x_editSendPerson" Margin="0 0 0 5"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                            ToolTip="Редагувати" Width="Auto" Height="Auto" 
+                            materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                            Click="X_editItem_Click">    
+                            <materialDesign:PackIcon Kind="PencilCircleOutline" />
+                            </Button>
+                            <Button x:Name="x_addSendPerson"  
+                           Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                           ToolTip="Додати" Width="Auto" Height="Auto" 
+                           materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                           Click="X_addItem_Click"> 
+                           <materialDesign:PackIcon Kind="PlusCircleOutline" />
+                            </Button>
+                        </StackPanel>
 
 
-                            <materialDesign:Card Grid.Row="1" Grid.Column="0" Grid.RowSpan="2"
-                                             Margin="10 0 10 0" 
-                                             Padding="8">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="0.5*"/>
-                                        <ColumnDefinition Width="3*"/>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="3*"/>
-                                        <ColumnDefinition Width="0.5*"/>
-                                    </Grid.ColumnDefinitions>
+                        <ComboBox Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="2"
+                                  materialDesign:HintAssist.Hint="Фактори ризику">
+                            <ComboBoxItem>
+                                <ComboBox Grid.Column="0" Grid.Row="0" x:Name="x_cvc" 
+                                          SelectedItem="{Binding Analis.CVC, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          materialDesign:HintAssist.Hint="Центральний катетер"
+                                          ItemsSource="{Binding ListString}" KeyUp="x_ComboBox_KeyUp"/>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <ComboBox Grid.Column="0" Grid.Row="1" x:Name="x_uc" 
+                                          SelectedItem="{Binding Analis.PC, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          materialDesign:HintAssist.Hint="Периферичний катетер"
+                                          ItemsSource="{Binding ListString}" KeyUp="x_ComboBox_KeyUp"/>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <ComboBox Grid.Column="1" Grid.Row="0" x:Name="x_pc" 
+                                          SelectedItem="{Binding Analis.UC, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          materialDesign:HintAssist.Hint="Сечовий катетер"
+                                          ItemsSource="{Binding ListString}" KeyUp="x_ComboBox_KeyUp"/>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <ComboBox Grid.Column="1" Grid.Row="1" x:Name="x_ssi" 
+                                          SelectedItem="{Binding Analis.SSI, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          materialDesign:HintAssist.Hint="Інфекції області хірургічного втручання"
+                                          ItemsSource="{Binding ListString}" KeyUp="x_ComboBox_KeyUp"/>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <ComboBox Grid.Column="2" Grid.Row="0" x:Name="x_uti" 
+                                          SelectedItem="{Binding Analis.UTI, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          materialDesign:HintAssist.Hint="Інфекції сечовивідних шляхів"
+                                          ItemsSource="{Binding ListString}" KeyUp="x_ComboBox_KeyUp"/>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <ComboBox Grid.Column="2" Grid.Row="1" x:Name="x_vap" 
+                                          SelectedItem="{Binding Analis.VAP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          materialDesign:HintAssist.Hint="Вентилятор-ассоциированная пневмония"
+                                          ItemsSource="{Binding ListString}" KeyUp="x_ComboBox_KeyUp"/>
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                <ComboBox Grid.Column="3" Grid.Row="0" x:Name="x_bacteriemia" 
+                                          SelectedItem="{Binding Analis.Bacteriemia, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          materialDesign:HintAssist.Hint="Бактеріємія"
+                                          ItemsSource="{Binding ListString}" KeyUp="x_ComboBox_KeyUp"/>
+                            </ComboBoxItem>
+                        </ComboBox>
 
-                                    <TextBox Grid.Column="1" Grid.Row="0" Margin="0 10 0 0"
-                                         x:Name="x_numAnalis"
-                                         materialDesign:HintAssist.Hint="Номер аналізу" 
-                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        
 
-                                    <ComboBox Grid.Column="3" Grid.Row="0" Margin="0 10 0 0"
-                                          x:Name="x_finance"
-                                         materialDesign:HintAssist.Hint="Фінансування"
-                                         IsTextSearchEnabled="True"
-                                         Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
+                        <TextBox Grid.Column="4" Grid.Row="0" x:Name="x_name"  Grid.ColumnSpan="2"
+                         materialDesign:HintAssist.Hint="ПІБ"
+                         Text="{Binding Analis.Patient.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                         TextChanged="x_tbName_TextChanged"
+                         KeyUp="TextBox_KeyUp"/>
 
-                                    <TextBox Grid.Column="1" Grid.Row="1" x:Name="x_lastName" Margin="0 10 0 0"
-                                         materialDesign:HintAssist.Hint="Призвище" 
-                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        <TextBox Grid.Column="4" Grid.Row="1" x:Name="x_yearOfBirth" 
+                         Text="{Binding Analis.Patient.Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToIntConverter}}"
+                         materialDesign:HintAssist.Hint="Рік народження"
+                         KeyUp="TextBox_KeyUp"/>
 
-                                    <TextBox Grid.Column="1" Grid.Row="2" x:Name="x_firstName" Margin="0 10 0 0"
-                                         materialDesign:HintAssist.Hint="Ім'я" 
-                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        <TextBox Grid.Column="5" Grid.Row="1" x:Name="x_agePatient"  
+                         Text="{Binding Analis.AgePatient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToIntConverter}}"
+                         materialDesign:HintAssist.Hint="Вік"
+                         KeyUp="TextBox_KeyUp"/>
 
-                                    <TextBox Grid.Column="1" Grid.Row="3" x:Name="x_middleName" Margin="0 10 0 0"
-                                         materialDesign:HintAssist.Hint="По-батькові" 
-                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        <StackPanel VerticalAlignment="Bottom" Grid.Column="5" Grid.Row="1" HorizontalAlignment="Right">
+                            <RadioButton x:Name="x_maleRB" GroupName="sexGroup" Content="ч" Checked="x_male_Checked"/>
+                            <RadioButton x:Name="x_fameRB" GroupName="sexGroup" Content="ж" Checked="x_male_Checked"/>
+                        </StackPanel>
 
-                                    <TextBox Grid.Column="1" Grid.Row="4" x:Name="x_yearOfBirth" Margin="0 10 0 0"
-                                         materialDesign:HintAssist.Hint="Рік народження" 
-                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        <TextBox Grid.Column="4" Grid.Row="2" x:Name="x_adress" Grid.ColumnSpan="2"
+                         Text="{Binding Analis.Patient.Adress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                         materialDesign:HintAssist.Hint="Адреса" KeyUp="TextBox_KeyUp"/>
 
-                                   
-                                     <ComboBox Grid.Column="1" Grid.Row="5" x:Name="x_district" Margin="0 10 0 0"
-                                         materialDesign:HintAssist.Hint="Район"  
-                                         IsTextSearchEnabled="True"
-                                         Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
-                                  
-                                    <TextBox Grid.Column="1" Grid.Row="6" x:Name="x_adress" Margin="0 10 0 0"
-                                         materialDesign:HintAssist.Hint="Адреса" 
-                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        <TextBox Grid.Column="4" Grid.Row="3" x:Name="x_phone" Grid.ColumnSpan="2"
+                         Text="{Binding Analis.Patient.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         materialDesign:HintAssist.Hint="Телефон" KeyUp="TextBox_KeyUp"/>
 
-                                    <TextBox Grid.Column="1" Grid.Row="7" x:Name="x_phone" Margin="0 10 0 0"
-                                         materialDesign:HintAssist.Hint="Телефон" 
-                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        <TextBox Grid.Column="4" Grid.Row="4" x:Name="x_email" Grid.ColumnSpan="2"
+                         Text="{Binding Analis.Patient.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         materialDesign:HintAssist.Hint="e-mail" KeyUp="TextBox_KeyUp"/>
 
-                                    <TextBox Grid.Column="1" Grid.Row="8" x:Name="x_email" Margin="0 10 0 0"
-                                         materialDesign:HintAssist.Hint="e-mail" 
-                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-
-                                    <TextBox Grid.Column="3" Grid.Row="8" x:Name="x_jobPlace" Margin="0 10 0 0"
-                                         materialDesign:HintAssist.Hint="Місце роботи" 
-                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-
-                                    <ComboBox Grid.Column="3" Grid.Row="1" x:Name="x_institution" Margin="0 10 0 0"
-                                         materialDesign:HintAssist.Hint="Медичний заклад" 
-                                         IsTextSearchEnabled="True"
-                                         Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
-
-                                    <ComboBox Grid.Column="3" Grid.Row="2" x:Name="x_department" Margin="0 10 0 0"
-                                         materialDesign:HintAssist.Hint="Відділення"
-                                         IsTextSearchEnabled="True"
-                                         Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
-
-                                    <ComboBox Grid.Column="3" Grid.Row="3" x:Name="x_diagnosis" Margin="0 10 0 0"
-                                         materialDesign:HintAssist.Hint="Діагноз" 
-                                         IsTextSearchEnabled="True"
-                                         Style="{StaticResource MaterialDesignFloatingHintComboBox}" />
-
-                                    <ComboBox Grid.Column="3" Grid.Row="4" x:Name="x_categoryOfPatient" Margin="0 10 0 0"
-                                         materialDesign:HintAssist.Hint="Категорія пацієнта" 
-                                         IsTextSearchEnabled="True"
-                                         Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
-
-                                    <TextBox Grid.Column="3" Grid.Row="5" x:Name="x_numMedCards" Margin="0 10 0 0"
-                                         materialDesign:HintAssist.Hint="Номер мед.карти" 
-                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-
-                                    <TextBox Grid.Column="3" Grid.Row="6" x:Name="x_sentDoctor" Margin="0 10 0 0"
-                                         materialDesign:HintAssist.Hint="Лікар" 
-                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-
-                                </Grid>
-                            </materialDesign:Card>
-
-                            <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Button Style="{DynamicResource MaterialDesignRaisedButton}"
-                                Margin="0 0 10 0"
-                                materialDesign:ShadowAssist.ShadowDepth="Depth4">
-                                    Зберегти
-                                </Button>
-                                <Button Style="{DynamicResource MaterialDesignRaisedButton}"
-                                Margin="0 0 10 0"
-                                materialDesign:ShadowAssist.ShadowDepth="Depth4">Очистити</Button>
+                      
+                        <StackPanel x:Name="x_RB_Stack" Grid.Column="4" Grid.Row="5" Grid.ColumnSpan="2" Visibility="Hidden" Orientation="Horizontal"  HorizontalAlignment="Stretch"  VerticalAlignment="Bottom" >
+                            <StackPanel  Margin="5 0 5 0">
+                                <RadioButton x:Name="x_gosp_IRB" GroupName="gospGroup" Content="перв." FontSize="16"  Checked="x_RB_Checked"/>
+                                <RadioButton x:Name="x_gosp_IIRB" GroupName="gospGroup" Content="повт." FontSize="16"  Checked="x_RB_Checked"/>
                             </StackPanel>
 
-                            <materialDesign:Card Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" 
-                                             Margin="10 10 10 10" 
-                                             Padding="8" MinHeight="2" >
+                            <StackPanel Margin="5 0 5 0">
+                                <RadioButton x:Name="x_less48RB" GroupName="do48Group" Content="&lt; 48г." FontSize="16"  Checked="x_RB_Checked"/>
+                                <RadioButton x:Name="x_more48RB" GroupName="do48Group" Content="> 48г." FontSize="16"  Checked="x_RB_Checked"/>
+                            </StackPanel>
 
-                                <dragablz:TabablzControl  
-                                        x:Name="StudyTabControl"
-                                        BorderThickness="1">
-                                </dragablz:TabablzControl>
+                            <StackPanel Margin="5 0 5 0">
+                                <RadioButton x:Name="x_less72RB" GroupName="do72Group" Content="&lt; 72г." FontSize="16"  Checked="x_RB_Checked"/>
+                                <RadioButton x:Name="x_more72RB" GroupName="do72Group" Content="> 72г." FontSize="16"  Checked="x_RB_Checked"/>
+                            </StackPanel>
 
-                            </materialDesign:Card>
+                            <StackPanel Margin="5 0 5 0">
+                                <RadioButton x:Name="x_BacRB" GroupName="bacGroup" Content="бак.є" FontSize="16"  Checked="x_RB_Checked"/>
+                                <RadioButton x:Name="x_noBacRB" GroupName="bacGroup" Content="відс." FontSize="16"  Checked="x_RB_Checked"/>
+                            </StackPanel>
+                        </StackPanel>
 
-                        </Grid>
-                    
-         
+                        <ComboBox Grid.Column="4" Grid.Row="6" x:Name="x_ab1" Visibility="Hidden"
+                                SelectedItem="{Binding Analis.AB1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                materialDesign:HintAssist.Hint="Догоспіт.АБ" 
+                                KeyUp="TextBox_KeyUp" TextSearch.TextPath="name" 
+                                ItemTemplate="{StaticResource itemsComboBoxName}" />
+                        <ComboBox Grid.Column="5" Grid.Row="6" x:Name="x_ab2" Visibility="Hidden"
+                                SelectedItem="{Binding Analis.AB2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                materialDesign:HintAssist.Hint="Догоспіт.АБ" 
+                                KeyUp="TextBox_KeyUp" TextSearch.TextPath="name" 
+                                ItemTemplate="{StaticResource itemsComboBoxName}" />
+                        <ComboBox Grid.Column="4" Grid.Row="7" x:Name="x_ab3" Visibility="Hidden"
+                                SelectedItem="{Binding Analis.AB3, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                materialDesign:HintAssist.Hint="Признач.АБ" 
+                                KeyUp="TextBox_KeyUp" TextSearch.TextPath="name" 
+                                ItemTemplate="{StaticResource itemsComboBoxName}" />
+                        <ComboBox Grid.Column="5" Grid.Row="7" x:Name="x_ab4" Visibility="Hidden"
+                                SelectedItem="{Binding Analis.AB4, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                materialDesign:HintAssist.Hint="Признач.АБ" 
+                                KeyUp="TextBox_KeyUp" TextSearch.TextPath="name" 
+                                ItemTemplate="{StaticResource itemsComboBoxName}" />
 
-    
+                        <ComboBox Grid.Column="4" Grid.Row="7" x:Name="x_institutionLab" Grid.ColumnSpan="2"
+                          SelectedItem="{Binding Analis.InstitutionLab, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          materialDesign:HintAssist.Hint="Лабораторія" Visibility="Hidden"
+                          KeyUp="TextBox_KeyUp" TextSearch.TextPath="abbr" 
+                          ItemTemplate="{StaticResource itemsComboBoxAbbr}"/>
 
-</UserControl>
+                        <TextBox Grid.Column="4" Grid.Row="8" x:Name="x_comment" MaxLength="50" Grid.ColumnSpan="2"
+                                 materialDesign:TextFieldAssist.CharacterCounterVisibility="Collapsed"
+                                 Text="{Binding Analis.Comment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="Додати" 
+                                 KeyUp="TextBox_KeyUp"/>
+
+                        <ComboBox Grid.Column="5" Grid.Row="9" x:Name="x_subdivision" Visibility="Hidden"
+                                  SelectedItem="{Binding Analis.Subdivisions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  materialDesign:HintAssist.Hint="Підрозділ" VerticalAlignment="Center" 
+                                  KeyUp="TextBox_KeyUp" TextSearch.TextPath="abbr"
+                                  ItemTemplate="{StaticResource itemsComboBoxAbbr}"/>
+
+                        <!--<ComboBox Grid.Column="5" Grid.Row="9" x:Name="x_brakerage"
+                                  SelectedItem="{Binding Analis.Brakerage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  materialDesign:HintAssist.Hint="Бракераж"
+                                  KeyUp="TextBox_KeyUp" TextSearch.TextPath="abbr"
+                                  ItemTemplate="{StaticResource itemsComboBox}"/>-->
+
+                        <Button Grid.Column="6" Grid.Row="9" x:Name="x_addBrakerage"  Margin="5" 
+                                Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                                HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                ToolTip="Додати" Width="Auto" Height="Auto" 
+                                materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                Click="X_addItem_Click">
+                            <materialDesign:PackIcon Kind="PlusCircleOutline" />
+                        </Button>
+
+                        <CheckBox Grid.Column="4" Grid.Row="9" x:Name="x_fixCheckBox" 
+                                  FontSize="16" FontWeight="Bold" 
+                                  IsChecked="{Binding CheckFix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            Фіксувати</CheckBox>
+                        
+                        <CheckBox Grid.Column="4" Grid.Row="9" x:Name="x_sendCheckBox"  Visibility="Hidden"
+                                  FontSize="16" FontWeight="Bold" VerticalAlignment="Center"
+                                  IsChecked="{Binding Analis.SendAnalis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            Видан</CheckBox>
+
+                        <Button Grid.Column="4" Grid.Row="10" x:Name="x_saveBTN" Grid.ColumnSpan="2"
+                                Click="x_saveBTN_Click">Зберегти</Button>
+
+                        <Button Grid.Column="0" Grid.Row="10" x:Name="x_deleteBTN" Grid.ColumnSpan="2"
+                                Click="X_deleteBTN_Click">
+                            Видалити</Button>
+                    </Grid>
+                </materialDesign:DialogHost>
+            </materialDesign:Card>
+
+            <materialDesign:Card Grid.Row="1" Grid.Column="1" Margin="5 5 10 10" >
+                <dragablz:TabablzControl x:Name="x_analisisTabControl" BorderThickness="1"/>
+            </materialDesign:Card>
+
+            <materialDesign:Card x:Name="SearchCard" Grid.Row="0" Grid.Column="1" Margin="5 10 10 5">
+                <DataGrid x:Name="x_SearchGrid" 
+                          CanUserAddRows="False"
+                          SelectedCellsChanged="x_SearchGrid_SelectedCellsChanged" >
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Паціент" IsReadOnly="True" Binding="{Binding name}" />
+                        <DataGridTextColumn Header="Рік" IsReadOnly="True" Binding="{Binding year}"/>
+                        <DataGridTextColumn Header="Адреса" IsReadOnly="True" Binding="{Binding adress}"/>
+                        <DataGridTextColumn Header="Телефон" IsReadOnly="True" Binding="{Binding phone}"/>
+                        <DataGridTextColumn Header="Email" IsReadOnly="True" Binding="{Binding email}"/>
+                        <DataGridTemplateColumn Header="Дослідження">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Height="auto" Width="auto" Tag="{Binding id}" ToolTip ="Показати аналізи"
+                                        Click="ShowAnalizes_Click">
+                                        <materialDesign:PackIcon Kind="PlaylistCheck" />
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </materialDesign:Card>
+        </Grid>
+    </materialDesign:DialogHost>
+</controls:MetroWindow>

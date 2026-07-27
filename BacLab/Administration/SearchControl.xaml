@@ -1,0 +1,187 @@
+﻿<UserControl x:Class="BacLab.Administration.SearchControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" >
+    <UserControl.Resources>
+        <ControlTemplate x:Key="itemComboBox" >
+            <TextBlock Text="{Binding abbr}" />
+        </ControlTemplate>
+        <DataTemplate x:Key="itemsComboBox">
+            <Control Template="{StaticResource itemComboBox}" />
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid Background="White" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <DatePicker Grid.Row="0" Margin="10 0 5 0"
+                            x:Name="x_dateDelivery" KeyUp="x_KeyUp"
+                            materialDesign:HintAssist.Hint="Дата доставки з" />
+        <DatePicker Grid.Column="1" Grid.Row="0" Margin="5 0 10 0"
+                            x:Name="x_dateDelivery2" KeyUp="x_KeyUp"
+                            materialDesign:HintAssist.Hint="по" />
+
+        <DatePicker Grid.Row="1" Margin="10 0 5 0"
+                            x:Name="x_dateEnd" KeyUp="x_KeyUp"
+                            materialDesign:HintAssist.Hint="Дата завершення з"/>
+        <DatePicker Grid.Column="1" Grid.Row="1" Margin="5 0 10 0"
+                            x:Name="x_dateEnd2" KeyUp="x_KeyUp"
+                            materialDesign:HintAssist.Hint="по"/>
+
+        <TextBox Grid.Row="2" x:Name="x_labNum" KeyUp="x_KeyUp"
+                         materialDesign:HintAssist.Hint="Номер"/>
+
+        <TextBox Grid.Row="3" 
+                         x:Name="x_numMedCards" KeyUp="x_KeyUp"
+                         materialDesign:HintAssist.Hint="Номер мед.карти"/>
+
+        <TextBox Grid.Column="1" Grid.Row="2" 
+                         x:Name="x_id" KeyUp="x_KeyUp"
+                         materialDesign:HintAssist.Hint="id"/>
+
+        <ComboBox Grid.Column="1" Grid.Row="3" 
+                          x:Name="x_Subdivisions" KeyUp="x_KeyUp"
+                          materialDesign:HintAssist.Hint="Підрозділ" 
+                          TextSearch.TextPath="abbr"
+                          ItemTemplate="{StaticResource itemsComboBox}" />
+
+        <ComboBox Grid.Column="2" Grid.Row="0" 
+                          x:Name="x_institution" KeyUp="x_KeyUp"
+                          materialDesign:HintAssist.Hint="Медичний заклад" 
+                          TextSearch.TextPath="abbr"
+                          ItemTemplate="{StaticResource itemsComboBox}" 
+                  SelectionChanged="x_institution_SelectionChanged"/>
+
+        <ComboBox Grid.Column="2" Grid.Row="1" 
+                          x:Name="x_department" KeyUp="x_KeyUp"
+                          materialDesign:HintAssist.Hint="Відділення" 
+                          TextSearch.TextPath="abbr"
+                          ItemTemplate="{StaticResource itemsComboBox}"/>
+
+        <ComboBox Grid.Column="2" Grid.Row="2" 
+                          x:Name="x_material" KeyUp="x_KeyUp"
+                          materialDesign:HintAssist.Hint="Матеріал" 
+                          TextSearch.TextPath="abbr"
+                          ItemTemplate="{StaticResource itemsComboBox}" />
+
+        <ComboBox Grid.Column="2" Grid.Row="3" 
+                          x:Name="x_purpose" KeyUp="x_KeyUp"
+                          materialDesign:HintAssist.Hint="Мета дослідження" 
+                          TextSearch.TextPath="abbr"
+                          ItemTemplate="{StaticResource itemsComboBox}" />
+
+        <ComboBox Grid.Column="3" Grid.Row="1" 
+                          x:Name="x_diagnosis" KeyUp="x_KeyUp"
+                          materialDesign:HintAssist.Hint="Діагноз" 
+                          TextSearch.TextPath="abbr" 
+                          ItemTemplate="{StaticResource itemsComboBox}"/>
+
+        <ComboBox Grid.Column="3" Grid.Row="0" 
+                          x:Name="x_patientStatus" KeyUp="x_KeyUp"
+                          materialDesign:HintAssist.Hint="Категорія пацієнта" 
+                          TextSearch.TextPath="abbr"
+                          ItemTemplate="{StaticResource itemsComboBox}"/>
+
+        <ComboBox Grid.Column="3" Grid.Row="2" 
+                          x:Name="x_sentPerson" KeyUp="x_KeyUp"
+                          materialDesign:HintAssist.Hint="Направив" 
+                          TextSearch.TextPath="abbr" 
+                          ItemTemplate="{StaticResource itemsComboBox}"/>
+
+        <TextBox Grid.Column="3" Grid.Row="3" 
+                         x:Name="x_comment" 
+                         materialDesign:HintAssist.Hint="Додатково"/>
+
+        <TextBox Grid.Column="4" Grid.Row="0" 
+                         x:Name="x_name" KeyUp="x_KeyUp"
+                         materialDesign:HintAssist.Hint="ПІБ"/>
+
+        <TextBox Grid.Column="4" Grid.Row="1" 
+                         x:Name="x_yearOfBirth" KeyUp="x_KeyUp"
+                         materialDesign:HintAssist.Hint="Рік народження"/>
+
+        <TextBox Grid.Column="4" Grid.Row="2" 
+                         x:Name="x_adress" KeyUp="x_KeyUp"
+                         materialDesign:HintAssist.Hint="Адреса" />
+
+        <TextBox Grid.Column="4" Grid.Row="3" 
+                         x:Name="x_phone" KeyUp="x_KeyUp" 
+                         materialDesign:HintAssist.Hint="Телефон"/>
+
+        <ComboBox Grid.Column="5" Grid.Row="0" 
+                          x:Name="x_jobDistrict" KeyUp="x_KeyUp"
+                          materialDesign:HintAssist.Hint="Район місця роботи" 
+                          TextSearch.TextPath="abbr" 
+                          ItemTemplate="{StaticResource itemsComboBox}"
+                  SelectionChanged="x_jobDistrict_SelectionChanged"/>
+
+        <ComboBox Grid.Column="5" Grid.Row="1" 
+                          x:Name="x_jobPlace" KeyUp="x_KeyUp"
+                          materialDesign:HintAssist.Hint="Місце роботи" 
+                          TextSearch.TextPath="abbr" 
+                          ItemTemplate="{StaticResource itemsComboBox}" />
+
+        <ComboBox Grid.Column="5" Grid.Row="2" 
+                          x:Name="x_job" KeyUp="x_KeyUp"
+                          materialDesign:HintAssist.Hint="Посада" 
+                          TextSearch.TextPath="abbr" 
+                          ItemTemplate="{StaticResource itemsComboBox}" />
+
+        <ComboBox Grid.Column="5" Grid.Row="3" 
+                          x:Name="x_finance" KeyUp="x_KeyUp"
+                          materialDesign:HintAssist.Hint="Фінансування" 
+                          TextSearch.TextPath="abbr"
+                          ItemTemplate="{StaticResource itemsComboBox}" />
+
+
+
+        <TextBox Grid.Column="6" Grid.Row="3" IsEnabled="False"
+                         x:Name="x_count" 
+                         materialDesign:HintAssist.Hint="Кількість записів"/>
+
+        <ComboBox Grid.Row="0" Grid.Column="6" x:Name="x_whoPay"
+                                  materialDesign:HintAssist.Hint="Сплачує:" 
+                                  TextSearch.TextPath="abbr" KeyUp="x_KeyUp"
+                                  ItemTemplate="{StaticResource itemsComboBox}"/>
+        <ComboBox Grid.Row="1" Grid.Column="6" x:Name="x_jobStatus"
+                                  materialDesign:HintAssist.Hint="Статус:" 
+                                  TextSearch.TextPath="abbr" KeyUp="x_KeyUp"
+                                  ItemTemplate="{StaticResource itemsComboBox}"/>
+        <ComboBox Grid.Row="2" Grid.Column="6" x:Name="x_jobPlaceGroup"
+                                  materialDesign:HintAssist.Hint="Категорія:" 
+                                  TextSearch.TextPath="abbr" KeyUp="x_KeyUp"
+                                  ItemTemplate="{StaticResource itemsComboBox}"/>
+
+        <Button Grid.Row="4" Grid.ColumnSpan="8" x:Name="x_searchBTN" Click="x_searchBTN_Click" 
+                Margin="10" VerticalAlignment="Stretch">Знайти</Button>
+
+        <StackPanel Grid.Column="6" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button HorizontalAlignment="Right" x:Name="x_UploadFileTerraBTN" Click="x_UploadFileTerraBTN_Click" 
+                Margin="5" VerticalAlignment="Stretch" Visibility="Collapsed" ToolTip="Вивантажити в Terra">
+                <materialDesign:PackIcon Kind="Upload" />
+            </Button>
+            <Button  HorizontalAlignment="Right" x:Name="x_PrintJournalBTN" Click="PrintJournal_Button_Click" 
+                 Margin="5" VerticalAlignment="Stretch" ToolTip="Надрукувати журнал">
+                <materialDesign:PackIcon Kind="Printer"/>
+            </Button>
+        </StackPanel>
+       
+    </Grid>
+</UserControl>
