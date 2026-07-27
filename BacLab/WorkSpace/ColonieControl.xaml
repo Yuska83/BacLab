@@ -1,0 +1,316 @@
+﻿<UserControl x:Class="BacLab.WorkSpace.ColonieControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:Models="clr-namespace:BacLab.Models"
+             xmlns:local="clr-namespace:BacLab.WorkSpace"
+             mc:Ignorable="d" Loaded="UserControl_Loaded"
+             d:DataContext="{d:DesignInstance local:ColonieControl, IsDesignTimeCreatable=False}">
+
+    <UserControl.Resources>
+        <Models:StringToBoolConverter x:Key="StringToBoolConverter"/>
+        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
+            <Setter Property="Margin" Value="10 0 10 0"/>
+            <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+        </Style>
+        <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignFloatingHintComboBox}">
+            <Setter Property="Margin" Value="10 0 10 0"/>
+            <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="IsTextSearchEnabled" Value="True"/>
+        </Style>
+        <ControlTemplate x:Key="itemComboBox" >
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding abbr}" />
+            </StackPanel>
+        </ControlTemplate>
+        <DataTemplate x:Key="itemsComboBox">
+            <Control Template="{StaticResource itemComboBox}" />
+        </DataTemplate>
+
+        <ControlTemplate x:Key="itemComboBoxNameDisk" >
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding a_Antibiotic.nameDisk}" />
+            </StackPanel>
+        </ControlTemplate>
+        <DataTemplate x:Key="itemsComboBoxNameDisk">
+            <Control Template="{StaticResource itemComboBoxNameDisk}" />
+        </DataTemplate>
+
+        <ControlTemplate x:Key="itemComboBoxName" >
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding name}" />
+            </StackPanel>
+        </ControlTemplate>
+        <DataTemplate x:Key="itemsComboBoxName">
+            <Control Template="{StaticResource itemComboBoxName}" />
+        </DataTemplate>
+
+        <ControlTemplate x:Key="itemComboBoxCulture" >
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding d_Microorganism.abbr}" />
+            </StackPanel>
+        </ControlTemplate>
+        <DataTemplate x:Key="itemsComboBoxCulture">
+            <Control Template="{StaticResource itemComboBoxCulture}" />
+        </DataTemplate>
+
+        <Style TargetType="Button" x:Key="MaterialDesignFloatingActionMiniButton" BasedOn="{StaticResource MaterialDesignFloatingActionMiniButton}">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="ToolTip" Value="Додати"/>
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="Height" Value="Auto"/>
+            <Setter Property="Foreground" Value="Gray"/>
+            <Setter Property="Margin" Value="10 12 5 0"/>
+            <Setter Property="materialDesign:ShadowAssist.ShadowDepth" Value="Depth0"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Border BorderBrush="Gray" Background="White"  BorderThickness="1" Padding="10">
+        <Grid Background="White">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <ComboBox x:Name="x_cb_typeColony" Grid.Column="0" Grid.Row="1" 
+                      IsEditable="True" 
+                      materialDesign:HintAssist.Hint="тип колоний"
+                      ItemsSource="{Binding ListTypeColonies}"
+                      Text="{Binding Colonie.typeColony, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      />
+
+            <ComboBox x:Name="x_quntity" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"
+                      IsEditable="True"
+                      materialDesign:HintAssist.Hint="кількість"
+                      Text="{Binding Colonie.quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                      ItemsSource="{Binding ListQuantity}"
+                       />
+
+            <ComboBox x:Name="x_cb_morphology" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"
+                      IsEditable="True" 
+                      materialDesign:HintAssist.Hint="мікроскопія"
+                      ItemsSource="{Binding ListMorfology}"
+                      Text="{Binding Colonie.morphology, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      />
+
+            <ComboBox x:Name="x_haemolis" Grid.Column="1" Grid.Row="1"  Margin="0 0 10 0"
+                      IsEditable="True"
+                      materialDesign:HintAssist.Hint="гем"
+                      ItemsSource="{Binding ListHemolysis}"
+                      Text="{Binding Colonie.hemolysis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <ComboBox x:Name="x_TestsPanelNameCB" Grid.Column="2" Grid.Row="1" Width="100"
+                  materialDesign:HintAssist.Hint="набір тестів"
+                  ItemTemplate="{StaticResource itemsComboBox}"
+                  ItemsSource="{Binding ListTestsPanelName}"
+                      SelectedItem="{Binding SelectedPanelTests, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      SelectionChanged="TestsPanelNameCB_SelectionChanged"
+                 />
+
+            <ComboBox x:Name="x_BiovariantComboBox" Grid.Column="2" Grid.Row="2" Width="100"
+                  ItemTemplate="{StaticResource itemsComboBoxName}"
+                  SelectedItem="{Binding Colonie.d_Biovariant}"
+                  materialDesign:HintAssist.Hint="біоваріант" />
+
+            <TextBlock x:Name="x_addTestTextBlock" Text="тести" Foreground="Gray" Grid.Column="3" Grid.Row="0"
+                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <WrapPanel x:Name="x_TestWrapPanel" Grid.Column="3" Grid.Row="1" Grid.RowSpan="3" Width="200"  
+                   Orientation="Horizontal" VerticalAlignment="Top">
+                <Button  x:Name="x_addTestButton" 
+                     Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                     Click="x_addTestButton_Click">
+                    <materialDesign:PackIcon Kind="PlusCircleOutline"/>
+                </Button>
+            </WrapPanel>
+
+            <ComboBox x:Name="x_cb_groupMicroorganism" Grid.Column="4" Grid.Row="1" Width="150"
+                  materialDesign:HintAssist.Hint="група мікроорганізмів"
+                  SelectedItem="{Binding Colonie.d_MicroorganismGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ItemTemplate="{StaticResource itemsComboBox}"
+                  ItemsSource="{Binding ListMicroorganismGroup}"
+                      SelectionChanged="x_cb_groupMicroorganism_SelectionChanged"/>
+
+            <ComboBox x:Name="x_cb_Microorganism"  Grid.Column="4" Grid.Row="2" Width="150"
+                  materialDesign:HintAssist.Hint="мікроорганізм"
+                  SelectedItem="{Binding Colonie.d_Microorganism, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ItemTemplate="{StaticResource itemsComboBox}"
+                      SelectionChanged="x_cb_Microorganism_SelectionChanged"/>
+
+            <TextBlock x:Name="x_addABTextBlock" Text="антибіотики" Foreground="Gray"
+                        Grid.Column="5" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <ScrollViewer Grid.Column="5" Grid.RowSpan="3" VerticalAlignment="Top" Width="680"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Hidden" Grid.Row="1">
+                <StackPanel x:Name="x_ABStackPanel" Orientation="Horizontal">
+                    <Button  x:Name="x_addABButton" 
+                         Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                         Click="x_addABButton_Click">
+                        <materialDesign:PackIcon Kind="PlusCircleOutline"/>
+                    </Button>
+                </StackPanel>
+            </ScrollViewer>
+
+            <ComboBox x:Name="x_PanelAB"  Grid.Column="4" Grid.Row="3"
+                      ItemTemplate="{StaticResource itemsComboBoxName}"
+                      SelectedItem="{Binding SelectedPanelAB,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                      materialDesign:HintAssist.Hint="набір АБ" 
+                      SelectionChanged="x_PanelAB_SelectionChanged"/>
+
+            <ComboBox x:Name="x_SerotypeComboBox"  Grid.Column="6" Grid.Row="1"
+                  ItemTemplate="{StaticResource itemsComboBoxName}"
+                  SelectedItem="{Binding Colonie.d_Serotype,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                  materialDesign:HintAssist.Hint="серотип" />
+            
+            <TextBox Text="{Binding Colonie.comment,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
+                     Grid.Column="6" Grid.Row="2"
+                     materialDesign:HintAssist.Hint="коментар"/>
+            
+            <CheckBox Grid.Column="6" Grid.Row="3" Content="не враховувати культуру" 
+                      Margin="10 0 0 0"  VerticalAlignment="Bottom" Foreground="Gray"
+                      IsChecked="{Binding Colonie.notTake, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBlock x:Name="x_addSerumTextBlock" Text="сироватки" Foreground="Gray"
+                       Grid.Column="7" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <WrapPanel x:Name="x_SerumWrapPanel" Grid.Column="7" Grid.Row="1"  Width="200" Grid.RowSpan="3"
+                   Orientation="Horizontal" VerticalAlignment="Top">
+                <Button  x:Name="x_addSerumButton" 
+                     Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                     Click="x_addSerumButton_Click">
+                    <materialDesign:PackIcon Kind="PlusCircleOutline" />
+                </Button>
+            </WrapPanel>
+        </Grid>
+    </Border>
+</UserControl>
+
+
+<!--<Grid Grid.Column="2" Grid.Row="0" Grid.RowSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel  Margin="0 5 0 0" VerticalAlignment="Top">
+                <CheckBox x:Name="x_rbMore"  >
+                    <materialDesign:PackIcon Kind="ChevronRight" />
+                </CheckBox>
+                <CheckBox x:Name="x_rbLess">
+                    <materialDesign:PackIcon Kind="ChevronLeft" />
+                </CheckBox>
+            </StackPanel>
+
+            <ComboBox  x:Name="x_n1" Grid.Column="1"  Margin="5 0 0 0"
+                       materialDesign:HintAssist.Hint="Кіл">
+                <ComboBox.Items>
+                    <ComboBoxItem>1</ComboBoxItem>
+                    <ComboBoxItem>2</ComboBoxItem>
+                    <ComboBoxItem>3</ComboBoxItem>
+                    <ComboBoxItem>4</ComboBoxItem>
+                    <ComboBoxItem>5</ComboBoxItem>
+                    <ComboBoxItem>6</ComboBoxItem>
+                    <ComboBoxItem>7</ComboBoxItem>
+                    <ComboBoxItem>8</ComboBoxItem>
+                    <ComboBoxItem>9</ComboBoxItem>
+                </ComboBox.Items>
+            </ComboBox>
+
+            <ComboBox x:Name="x_n2" Grid.Column="2" Margin="5 0 0 0"
+                      materialDesign:HintAssist.Hint="*10">
+                <ComboBox.Items>
+                    <ComboBoxItem>1</ComboBoxItem>
+                    <ComboBoxItem>2</ComboBoxItem>
+                    <ComboBoxItem>3</ComboBoxItem>
+                    <ComboBoxItem>4</ComboBoxItem>
+                    <ComboBoxItem>5</ComboBoxItem>
+                    <ComboBoxItem>6</ComboBoxItem>
+                    <ComboBoxItem>7</ComboBoxItem>
+                    <ComboBoxItem>8</ComboBoxItem>
+                    <ComboBoxItem>9</ComboBoxItem>
+                </ComboBox.Items>
+            </ComboBox>
+        </Grid>-->
+
+
+<!--<ComboBox x:Name="x_olkenickiy" Grid.Column="9" Margin="5 0 0 0"
+                  materialDesign:HintAssist.Hint="Олькеницькій">
+            <ComboBox.Items>
+                <ComboBoxItem>к/кг-</ComboBoxItem>
+                <ComboBoxItem>-/кг-</ComboBoxItem>
+                <ComboBoxItem>к/к-</ComboBoxItem>
+                <ComboBoxItem>-/к-</ComboBoxItem>
+                <ComboBoxItem>к/кг+</ComboBoxItem>
+                <ComboBoxItem>-/кг+</ComboBoxItem>
+                <ComboBoxItem>-/-</ComboBoxItem>
+                <ComboBoxItem>-/-+</ComboBoxItem>
+            </ComboBox.Items>
+        </ComboBox>-->
+
+<!--<ScrollViewer Grid.Column="14" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <Grid x:Name="x_mainGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="Назва" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"/>
+                <TextBlock Grid.Row="1" Text="Діапазон" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"/>
+                <TextBlock Grid.Row="2" Text="Результат" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"/>
+                <TextBlock Grid.Row="3" Text="мм" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"/>
+                
+            </Grid>
+        </ScrollViewer>-->
+
+    

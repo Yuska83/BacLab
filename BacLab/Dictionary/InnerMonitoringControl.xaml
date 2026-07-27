@@ -1,0 +1,469 @@
+﻿<UserControl x:Class="BacLab.Dictionary.InnerMonitoringControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:Models="clr-namespace:BacLab.Models"
+             mc:Ignorable="d" >
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Models:DateTimeToDateShotConverter x:Key="myDateConverter"/>
+            <Models:DiapazonConverter x:Key="myDiapazonConverter"/>
+            <Models:BoolToStringConverter x:Key="BoolToStringConverter"/>
+            <ControlTemplate x:Key="itemComboBoxName" >
+                <TextBlock Text="{Binding Key.name}" VerticalAlignment="Center"/>
+            </ControlTemplate>
+            <DataTemplate x:Key="itemsComboBoxName">
+                <Control Template="{StaticResource itemComboBoxName}" />
+            </DataTemplate>
+            <ControlTemplate x:Key="itemComboBoxAbbr" >
+                <TextBlock Text="{Binding abbr}" VerticalAlignment="Center"/>
+            </ControlTemplate>
+            <DataTemplate x:Key="itemsComboBoxAbbr">
+                <Control Template="{StaticResource itemComboBoxAbbr}" />
+            </DataTemplate>
+            <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignCaptionTextBlock}">
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}"/>
+            </Style>
+            <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}">
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}"/>
+                <Setter Property="Tag" Value="{Binding Id}"/>
+                <Setter Property="Text" Value="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <EventSetter Event="LostFocus" Handler="x_TextBlock_LostFocus"/>
+            </Style>
+            <Style TargetType="{x:Type DataGridRow}">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                        <Setter Property="Foreground" Value="Black" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="False">
+                        <Setter Property="Foreground" Value="LightGray" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+
+    <Grid x:Name="x_MainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width ="Auto" />
+            <ColumnDefinition Width ="1*" />
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <materialDesign:Card Grid.RowSpan="3">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <StackPanel Grid.Row="1" x:Name="x_StackBTN" Margin="10" />
+            </ScrollViewer>
+        </materialDesign:Card>
+
+        <TextBlock x:Name="x_nameRoomTB" Grid.Column="1" Grid.ColumnSpan="2" Margin="0 10 0 10" FontSize="20" />
+
+        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="0 10 0 10" HorizontalAlignment="Left">
+            <CheckBox x:Name="x_cb_visibilityId" Content="Id" 
+                      Click="x_cb_visibilityId_Click" Margin="10 0 0 0" />
+            <DatePicker x:Name="x_date"  Width="100" Margin="10 0 0 0"
+                        materialDesign:HintAssist.Hint="Дата" 
+                        HorizontalAlignment="left" 
+                        SelectedDateChanged="x_date_SelectedDateChanged"/>
+            <Button x:Name="x_saveBTN" Click="x_saveBTN_Click" ToolTip ="Зберегти" Margin="20 0 0 0">
+                <materialDesign:PackIcon Kind="ContentSave" />
+            </Button>
+        </StackPanel>
+
+        <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal" Margin="0 10 30 10" HorizontalAlignment="Right">
+            <ComboBox x:Name="x_cb_Equipment" Margin="10 0 0 0"
+                    ItemTemplate="{StaticResource itemsComboBoxName}" 
+                    materialDesign:HintAssist.Hint="Оберить обладнання"/>
+            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" >
+                <DatePicker x:Name="x_dateFrom" VerticalAlignment="Top" Margin="10 0 0 0" MinWidth="100" materialDesign:HintAssist.Hint="з"/>
+                <DatePicker x:Name="x_dateTo"  VerticalAlignment="Top" Margin="20 0 0 0" MinWidth="100" materialDesign:HintAssist.Hint="по"/>
+            </StackPanel>
+            <CheckBox x:Name="x_cb_nonСompliance" Content="тільки невідповідності" Margin="10 0 0 0" />
+            <Button x:Name="x_dateBTN" Click="x_dateBTN_Click" ToolTip ="Обрати" Margin="20 0 0 0">
+                <materialDesign:PackIcon Kind="Check" />
+            </Button>
+        </StackPanel>
+
+
+        <ScrollViewer Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
+            <StackPanel>
+                <materialDesign:Card >
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Button x:Name="x_RoomTemp_BTN" Click="PrintButton_Click"  ToolTip ="Обрати" HorizontalAlignment="Right" Margin="0 0 10 0">
+                            <materialDesign:PackIcon Kind="Printer" />
+                        </Button>
+                        <TextBlock x:Name="x_jTR"/>
+
+                        <DataGrid  x:Name="x_RoomTemp" Grid.Row="1" CanUserAddRows="False">
+                            <DataGrid.CommandBindings>
+                                <CommandBinding Command="ApplicationCommands.Delete" PreviewCanExecute="CommandBinding_CanExecuteDelete" Executed="CommandBinding_ExecutedDelete"/>
+                            </DataGrid.CommandBindings>
+                            
+                            <DataGrid.Columns>
+                                <DataGridTextColumn IsReadOnly="True" Visibility="Collapsed" Header="Id" Binding="{Binding Id}" />
+                                <DataGridTextColumn Header="Дата" Binding="{Binding Date,Converter={StaticResource myDateConverter}}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Обладнання" Binding="{Binding EquipmentName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" />
+                                <DataGridTemplateColumn Header="Режим,&#186;&#67;" SortMemberPath="CurrentMode">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="x_CurrentModeTextBlock"  MouseLeftButtonUp="x_TextBlock_MouseLeftButtonUp" Tag="x_TempT"
+                                           Text="{Binding CurrentMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Покази,&#186;&#67;" >
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBox/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Відповідальна особа" Binding="{Binding Staff.abbr}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Невідповідність" Binding="{Binding Comment}" IsReadOnly="True">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </materialDesign:Card>
+
+                <materialDesign:Card >
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Button x:Name="x_RoomHumidity_BTN" Click="PrintButton_Click"  ToolTip ="Обрати" HorizontalAlignment="Right" Margin="0 0 10 0">
+                            <materialDesign:PackIcon Kind="Printer" />
+                        </Button>
+                        <TextBlock x:Name="x_jHR"/>
+                        <DataGrid x:Name="x_RoomHumidity" Grid.Row="1" CanUserAddRows="False">
+                            <DataGrid.CommandBindings>
+                                <CommandBinding Command="ApplicationCommands.Delete" PreviewCanExecute="CommandBinding_CanExecuteDelete" Executed="CommandBinding_ExecutedDelete"/>
+                            </DataGrid.CommandBindings>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn IsReadOnly="True" Visibility="Collapsed" Header="Id" Binding="{Binding Id}" />
+                                <DataGridTextColumn Header="Дата" Binding="{Binding Date,Converter={StaticResource myDateConverter}}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Обладнання" Binding="{Binding EquipmentName}" IsReadOnly="True" />
+                                <DataGridTemplateColumn Header="Режим,%" SortMemberPath="CurrentMode">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="x_CurrentModeTextBlock"  MouseLeftButtonUp="x_TextBlock_MouseLeftButtonUp" Tag="x_TempT"
+                                           Text="{Binding CurrentMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Покази,%" >
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBox />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Відповідальна особа" Binding="{Binding Staff.abbr}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Невідповідність" Binding="{Binding Comment}" IsReadOnly="True">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </materialDesign:Card>
+
+                <materialDesign:Card  >
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Button x:Name="x_TempT_BTN" Click="PrintButton_Click"  ToolTip ="Обрати" HorizontalAlignment="Right" Margin="0 0 10 0">
+                            <materialDesign:PackIcon Kind="Printer" />
+                        </Button>
+                        <TextBlock x:Name="x_jTT"/>
+
+                        <DataGrid x:Name="x_TempT"  Grid.Row="1" CanUserAddRows="False">
+                            <DataGrid.CommandBindings>
+                                <CommandBinding Command="ApplicationCommands.Delete" PreviewCanExecute="CommandBinding_CanExecuteDelete" />
+                            </DataGrid.CommandBindings>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn IsReadOnly="True" Visibility="Collapsed" Header="Id" Binding="{Binding Id}" />
+                                <DataGridTextColumn Header="Дата" Binding="{Binding Date,Converter={StaticResource myDateConverter}}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Обладнання" Binding="{Binding EquipmentName}" IsReadOnly="True" />
+                                <!--<DataGridTextColumn Header="Термометр, зав.№" Binding="{Binding Termometer.zavNum}" IsReadOnly="True" >
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>-->
+                                <DataGridTemplateColumn Header="Режим,&#186;&#67;" SortMemberPath="CurrentMode">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="x_CurrentModeTextBlock"  MouseLeftButtonUp="x_TextBlock_MouseLeftButtonUp" Tag="x_TempT"
+                                           Text="{Binding CurrentMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Покази,&#186;&#67;" >
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBox IsEnabled="{Binding IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Стан обладнання" SortMemberPath="EquipmentState.abbr">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="x_StateTextBlock"  MouseLeftButtonUp="x_TextBlock_MouseLeftButtonUp" Tag="x_TempT"
+                                           Text="{Binding EquipmentState.abbr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Відповідальна особа" Binding="{Binding Staff.abbr}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Невідповідність" Binding="{Binding Comment}" IsReadOnly="True" >
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </materialDesign:Card>
+
+                <materialDesign:Card  >
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Button x:Name="x_TempX_BTN" Click="PrintButton_Click"  ToolTip ="Обрати" HorizontalAlignment="Right" Margin="0 0 10 0">
+                            <materialDesign:PackIcon Kind="Printer" />
+                        </Button>
+                        <TextBlock x:Name="x_jTX"/>
+                        
+                        <DataGrid x:Name="x_TempX" Grid.Row="1" CanUserAddRows="False">
+                            <DataGrid.CommandBindings>
+                                <CommandBinding Command="ApplicationCommands.Delete" PreviewCanExecute="CommandBinding_CanExecuteDelete" Executed="CommandBinding_ExecutedDelete"/>
+                            </DataGrid.CommandBindings>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn IsReadOnly="True" Visibility="Collapsed" Header="Id" Binding="{Binding Id}" />
+                                <DataGridTextColumn Header="Дата" Binding="{Binding Date,Converter={StaticResource myDateConverter}}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Обладнання" Binding="{Binding EquipmentName}" IsReadOnly="True"  />
+                                <!--<DataGridTextColumn Header="Термометр, зав.№" Binding="{Binding Termometer.zavNum}" IsReadOnly="True" >
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>-->
+                                <DataGridTemplateColumn Header="Режим,&#186;&#67;" SortMemberPath="CurrentMode">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="x_CurrentModeTextBlock"  MouseLeftButtonUp="x_TextBlock_MouseLeftButtonUp" Tag="x_TempX"
+                                           Text="{Binding CurrentMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Покази,&#186;&#67;" >
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBox IsEnabled="{Binding IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Стан обладнання" SortMemberPath="EquipmentState.abbr">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="x_StateTextBlock"  MouseLeftButtonUp="x_TextBlock_MouseLeftButtonUp" Tag="x_TempX"
+                                           Text="{Binding EquipmentState.abbr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Відповідальна особа" Binding="{Binding Staff.abbr}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Невідповідність" Binding="{Binding Comment}" IsReadOnly="True" >
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </materialDesign:Card>
+
+                <materialDesign:Card >
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Button x:Name="x_LampTime_BTN" Click="PrintButton_Click"  ToolTip ="Обрати" HorizontalAlignment="Right" Margin="0 0 10 0">
+                            <materialDesign:PackIcon Kind="Printer" />
+                        </Button>
+                        <TextBlock x:Name="x_jUFO"/>
+
+                        <DataGrid x:Name="x_LampTime" Grid.Row="1" CanUserAddRows="False">
+                            <DataGrid.CommandBindings>
+                                <CommandBinding Command="ApplicationCommands.Delete" PreviewCanExecute="CommandBinding_CanExecuteDelete" Executed="CommandBinding_ExecutedDelete"/>
+                            </DataGrid.CommandBindings>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn IsReadOnly="True" Visibility="Collapsed" Header="Id" Binding="{Binding Id}" />
+                                <DataGridTextColumn Header="Дата" Binding="{Binding Date,Converter={StaticResource myDateConverter}}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Обладнання" Binding="{Binding EquipmentName}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Норма,хв." Binding="{Binding CurrentMode}" IsReadOnly="True" />
+                                <DataGridTemplateColumn Header="Час роботи, хв." >
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBox IsEnabled="{Binding IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Час роботи всього" Binding="{Binding TimeCommon}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Відповідальна особа" Binding="{Binding Staff.abbr}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Невідповідність" Binding="{Binding Comment}" IsReadOnly="True">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </materialDesign:Card>
+
+                <materialDesign:Card >
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Button x:Name="x_EquipmentDisinf_BTN" Click="PrintButton_Click"  ToolTip ="Обрати" HorizontalAlignment="Right" Margin="0 0 10 0">
+                            <materialDesign:PackIcon Kind="Printer" />
+                        </Button>
+                        <TextBlock x:Name="x_jDesEq"/>
+
+                        <DataGrid x:Name="x_EquipmentDisinf" Grid.Row="1" CanUserAddRows="False">
+                            <DataGrid.CommandBindings>
+                                <CommandBinding Command="ApplicationCommands.Delete" PreviewCanExecute="CommandBinding_CanExecuteDelete" Executed="CommandBinding_ExecutedDelete"/>
+                            </DataGrid.CommandBindings>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn IsReadOnly="True" Visibility="Collapsed" Header="Id" Binding="{Binding Id}" />
+                                <DataGridTextColumn Header="Дата" Binding="{Binding Date,Converter={StaticResource myDateConverter}}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Обладнання" Binding="{Binding EquipmentName}" IsReadOnly="True"  />
+                                <DataGridTemplateColumn Header="Дез.засіб,конц" SortMemberPath="Disinfectants.abbr">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="x_DisinfectantTextBlock"  MouseLeftButtonUp="x_TextBlock_MouseLeftButtonUp" Tag="x_EquipmentDisinf"
+                                           Text="{Binding Disinfectants.abbr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Норма,хв." Binding="{Binding CurrentMode}" IsReadOnly="True" />
+                                <DataGridTemplateColumn Header="Час,хв." >
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBox IsEnabled="{Binding IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Стан обладнання" SortMemberPath="EquipmentState.abbr">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="x_StateTextBlock"  MouseLeftButtonUp="x_TextBlock_MouseLeftButtonUp"
+                                           Text="{Binding EquipmentState.abbr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Відповідальна особа" Binding="{Binding Staff.abbr}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Невідповідність" Binding="{Binding Comment}" IsReadOnly="True" >
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </materialDesign:Card>
+
+                <materialDesign:Card >
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Button x:Name="x_RoomCleaning_BTN" Click="PrintButton_Click"  ToolTip ="Обрати" HorizontalAlignment="Right" Margin="0 0 10 0">
+                            <materialDesign:PackIcon Kind="Printer" />
+                        </Button>
+                        <TextBlock x:Name="x_jCleaning"/>
+
+                        <DataGrid x:Name="x_RoomCleaning" Grid.Row="1" CanUserAddRows="False">
+                            <DataGrid.CommandBindings>
+                                <CommandBinding Command="ApplicationCommands.Delete" PreviewCanExecute="CommandBinding_CanExecuteDelete" Executed="CommandBinding_ExecutedDelete"/>
+                            </DataGrid.CommandBindings>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn IsReadOnly="True" Visibility="Collapsed" Header="Id" Binding="{Binding Id}" />
+                                <DataGridTextColumn Header="Дата" Binding="{Binding Date,Converter={StaticResource myDateConverter}}" IsReadOnly="True" />
+                                <DataGridTemplateColumn Header="Генеральне прибирання" >
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBox />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Відповідальна особа" Binding="{Binding Staff.abbr}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Невідповідність" Binding="{Binding Comment}" IsReadOnly="True">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </materialDesign:Card>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

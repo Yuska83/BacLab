@@ -1,0 +1,123 @@
+﻿<UserControl x:Class="BacLab.Dialogs.Dialog_ABInterpritation"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             mc:Ignorable="d" Height="400" Width="800"
+             xmlns:Dialog="clr-namespace:BacLab.Dialogs"
+             d:DataContext="{d:DesignInstance Dialog:Dialog_ABInterpritation, IsDesignTimeCreatable=True}">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="itemListBox" >
+            <Border HorizontalAlignment="Stretch" Width="200" BorderBrush="Black">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="BorderThickness" Value="0 0 0 0"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Separator}" Value="True">
+                                <Setter Property="BorderThickness" Value="0 0 0 1"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <TextBlock Text="{Binding Name}" FontSize="12" />
+            </Border>
+        </ControlTemplate>
+        <DataTemplate x:Key="itemsListBox">
+            <Control Template="{StaticResource itemListBox}" />
+        </DataTemplate>
+        <ControlTemplate x:Key="itemListBox2" >
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Width="200">
+                <TextBlock Text="{Binding Rule}" FontSize="12" />
+                <TextBlock Text="{Binding Name}" FontSize="12" />
+            </StackPanel>
+        </ControlTemplate>
+        <DataTemplate x:Key="itemsListBox2">
+            <Control Template="{StaticResource itemListBox2}" />
+        </DataTemplate>
+        
+        
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock x:Name="x_nameAB"  Grid.Column="1"   FontWeight="Bold" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        
+        <materialDesign:Card Grid.Row="1" Grid.Column="0">
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="10*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Правило"  FontWeight="Bold" FontSize="12"/>
+                <ListBox Grid.Row="1" Margin="5" 
+                         ItemsSource="{Binding ListRules}"
+                         SelectedItem="{Binding SelectedRule}"/>
+                </Grid>
+        </materialDesign:Card>
+        
+        <materialDesign:Card Grid.Row="1" Grid.Column="1">
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="10*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Всі АБ"  FontWeight="Bold" FontSize="12"/>
+                <ListBox  Grid.Row="1" Margin="5"
+                          ItemTemplate="{StaticResource itemsListBox}"
+                          ItemsSource="{Binding ListAllAB}"
+                          SelectedItem="{Binding SelectedAB}"/>
+            </Grid>
+        </materialDesign:Card>
+
+        <materialDesign:Card Grid.Row="1" Grid.Column="3">
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="10*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Інтерпритація"  FontWeight="Bold" FontSize="12"/>
+                <ListBox Grid.Row="1" Margin="5" x:Name="x_listInterpritation"
+                         ItemsSource="{Binding ListABInterpritation}"
+                         SelectedItem="{Binding SelectedABInterpritation}"
+                         ItemTemplate="{StaticResource itemsListBox2}"/>
+            </Grid>
+        </materialDesign:Card>
+
+        <StackPanel Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" >
+            <Button x:Name="x_AddAB" Click="x_AddAB_Click"
+                VerticalAlignment="Center" >
+                <materialDesign:PackIcon Kind="ArrowRightBold" />
+            </Button>
+            <Button x:Name="x_DelAB" Click="x_DelAB_Click"
+                    VerticalAlignment="Center" >
+                <materialDesign:PackIcon Kind="ArrowLeftBold" />
+            </Button>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button  Click="SaveButton_Click"
+                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}" >Зберегти
+            </Button>
+            <Button IsCancel="True" Margin="8 0 0 0"
+                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}" >
+                <Button.CommandParameter>
+                    <system:String>False</system:String>
+                </Button.CommandParameter>
+                Відмінити
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,70 @@
+﻿<UserControl x:Class="BacLab.Dialogs.Dialog_EditItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+             mc:Ignorable="d" 
+             >
+    <UserControl.Resources>
+        <ControlTemplate x:Key="itemComboBox" >
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding abbr}" FontSize="12"/>
+            </StackPanel>
+        </ControlTemplate>
+        <DataTemplate x:Key="itemsComboBox">
+            <Control Template="{StaticResource itemComboBox}" />
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" x:Name="x_title" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center" 
+                   FontWeight="Bold" FontSize="20" />
+
+
+        <ComboBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"  x:Name="x_item" 
+                  FontSize="12"
+                  ItemTemplate="{StaticResource itemsComboBox}"  />
+
+        <TextBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"  x:Name="x_abbr"  Text="{Binding ElementName=x_item, Path=Text, Mode=TwoWay}"/>
+
+        <CheckBox Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" x:Name="x_isChange" 
+                  Content="змінити на" Margin="10 10 10 0" FontSize="12"/>
+
+        <ComboBox Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"  x:Name="x_itemChange" 
+                  FontSize="12"
+                  ItemTemplate="{StaticResource itemsComboBox}"  />
+
+        <TextBox Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2"  x:Name="x_abbrChange" Text="{Binding ElementName=x_itemChange, Path=Text, Mode=TwoWay}" />
+
+        <StackPanel Grid.Row="6" Orientation="Horizontal" Margin="10 0 10 0">
+            <Button IsDefault="True" 
+                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}"
+                    Click="Button_Click">
+                Зберегти
+            </Button>
+            <Button IsCancel="True" Margin="8 0 0 0" 
+                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}"
+                    Click="ButtonCancel_Click">
+                Відмінити
+            </Button>
+        </StackPanel>
+
+    </Grid>
+    
+   
+</UserControl>

@@ -17,16 +17,16 @@ namespace BacLab
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public d_Diagnosis()
         {
-            this.Analyses = new HashSet<Analysis>();
+            this.d_Analyzes = new HashSet<d_Analyzes>();
         }
     
         public int id { get; set; }
-        public string diagnosis { get; set; }
+        public string name { get; set; }
         public string abbr { get; set; }
-        public Nullable<int> id_diagnosis_group { get; set; }
+        public Nullable<int> index { get; set; }
+        public Nullable<bool> show { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Analysis> Analyses { get; set; }
-        public virtual d_Diagnosis_group d_Diagnosis_group { get; set; }
+        public virtual ICollection<d_Analyzes> d_Analyzes { get; set; }
     }
 }

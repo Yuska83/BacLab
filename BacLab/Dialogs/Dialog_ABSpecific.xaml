@@ -1,0 +1,86 @@
+﻿<UserControl x:Class="BacLab.Dialogs.Dialog_ABSpecific"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             mc:Ignorable="d" Height="400" Width="800">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="itemListBox" >
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding name}" FontSize="12"/>
+            </StackPanel>
+        </ControlTemplate>
+        <DataTemplate x:Key="itemsListBox">
+            <Control Template="{StaticResource itemListBox}" />
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock x:Name="x_nameAB" Grid.ColumnSpan="3" FontWeight="Bold" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <materialDesign:Card Grid.Row="1" Grid.Column="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="8*"/>
+                </Grid.RowDefinitions>
+
+                <ComboBox x:Name="x_nameСriteria" Margin="5" FontSize="12"
+                          materialDesign:HintAssist.Hint="Оберіть крітерій"
+                          SelectionChanged="x_nameСriteria_SelectionChanged">
+                    <ComboBoxItem>матеріал</ComboBoxItem>
+                    <ComboBoxItem>діагноз</ComboBoxItem>
+                    <ComboBoxItem>шлях введення</ComboBoxItem>
+                    <ComboBoxItem>мікроорганізм</ComboBoxItem>
+                    <ComboBoxItem>скринінг</ComboBoxItem>
+                </ComboBox>
+                <ListBox  x:Name="x_listСriteria" Grid.Row="1" Margin="2" />
+            </Grid>
+        </materialDesign:Card>
+
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,50,0,0" >
+            <RadioButton GroupName="Mode" x:Name="x_onlyRBT" Content="тільки" IsChecked="True"/>
+            <RadioButton GroupName="Mode" x:Name="x_unlessRBT" Content="окрім"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" >
+            <Button x:Name="x_AddAB" Click="x_AddAB_Click"
+                VerticalAlignment="Center" >
+                <materialDesign:PackIcon Kind="ArrowRightBold" />
+            </Button>
+            <Button x:Name="x_DelAB" Click="x_DelAB_Click"
+                    VerticalAlignment="Center" >
+                <materialDesign:PackIcon Kind="ArrowLeftBold" />
+            </Button>
+        </StackPanel>
+
+        <materialDesign:Card Grid.Row="1" Grid.Column="2">
+            <ListBox  x:Name="x_listSpecific"  Margin="5"/>
+        </materialDesign:Card>
+
+        <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button  Click="SaveButton_Click"
+                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}" >Зберегти
+            </Button>
+            <Button IsCancel="True" Margin="8 0 0 0"
+                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}" >
+                <Button.CommandParameter>
+                    <system:String>False</system:String>
+                </Button.CommandParameter>
+                Відмінити
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,150 @@
+﻿<UserControl x:Class="BacLab.Dictionary.LaboratoryControl"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             xmlns:local="clr-namespace:BacLab.Dictionary"
+             d:DataContext="{d:DesignInstance local:LaboratoryControl, IsDesignTimeCreatable=False}">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <GridSplitter Height="Auto" Width="20" Margin="0 10 0 10" Grid.Row="2"
+                      HorizontalAlignment="Right" VerticalAlignment="Stretch" ResizeDirection="Columns"/>
+
+        <materialDesign:Card Grid.ColumnSpan="3" >
+            <Grid x:Name="x_nameLabGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="9*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock  Text="Назва лабораторії" VerticalAlignment ="Center" HorizontalAlignment="Left"/>
+                <TextBox Text="{Binding nameLab}"  Grid.Column="1" Grid.Row="0" FontWeight="Bold" 
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}" TextWrapping="Wrap"/>
+                <TextBlock  Text="Назва скорочено" Grid.Column="0" Grid.Row="1" VerticalAlignment ="Center" HorizontalAlignment="Left"/>
+                <TextBox Text="{Binding abbrLab}"  Grid.Column="1" Grid.Row="1" FontWeight="Bold"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}" TextWrapping="Wrap"/>
+                <TextBlock  Text="Адреса лабораторії" Grid.Column="0" Grid.Row="2" VerticalAlignment ="Center" HorizontalAlignment="Left"/>
+                <TextBox Text="{Binding adress}" Grid.Column="1" Grid.Row="2" FontWeight="Bold"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}" TextWrapping="Wrap"/>
+             
+                <Button x:Name="x_labSaveBTN" Grid.Column="1" Grid.Row="5" Click="x_emailSaveBTN_Click" ToolTip ="Зберегти" HorizontalAlignment="Right">
+                    <materialDesign:PackIcon Kind="ContentSave"/>
+                </Button>
+            </Grid>
+        </materialDesign:Card >
+
+        <materialDesign:Card  Grid.Row="1"  >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock  Text="Шаблони" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="5" VerticalAlignment ="Center" HorizontalAlignment="Center" FontWeight="Bold" />
+
+                <DataGrid x:Name="x_templateGrid" Grid.Row="1" Grid.ColumnSpan="3"
+                          AddingNewItem="x_MainGrid_AddingNewItem"
+                         >
+
+                    <DataGrid.CommandBindings>
+                        <CommandBinding Command="ApplicationCommands.Delete" PreviewCanExecute="CommandBinding_CanExecuteDelete" Executed="CommandBinding_ExecutedDelete"/>
+                    </DataGrid.CommandBindings>
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Назва" Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTemplateColumn >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Click="x_showBTN_Click" ToolTip ="Показати" >
+                                        <materialDesign:PackIcon Kind="FileDocument"/>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Click="x_printBTN_Click" ToolTip="Надрукувати" >
+                                        <materialDesign:PackIcon Kind="Printer"/>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Click="x_saveBTN_Click" ToolTip="Завантажити новий">
+                                        <materialDesign:PackIcon Kind="LeadPencil"/>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Button x:Name="x_tempSaveBTN" Grid.Column="3" Grid.Row="2" Click="x_tempSaveBTN_Click" 
+                        ToolTip ="Зберегти" HorizontalAlignment="Right">
+                    <materialDesign:PackIcon Kind="ContentSave"/>
+                </Button>
+            </Grid>
+        </materialDesign:Card >
+        
+        <materialDesign:Card Grid.Column="1" Grid.Row="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <TextBlock  Text="Email лабораторії" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" VerticalAlignment ="Center" HorizontalAlignment="Center" FontWeight="Bold" />
+                <TextBlock  Text="пошта" Grid.Column="0" Grid.Row="1" VerticalAlignment ="Center" HorizontalAlignment="Left"/>
+                <TextBox x:Name="x_emailTB" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"/>
+                <TextBlock  Text="пароль" Grid.Column="0" Grid.Row="2" VerticalAlignment ="Center" HorizontalAlignment="Left"/>
+                <TextBox x:Name="x_emailParolTB" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2"/>
+                <Button x:Name="x_emailSaveBTN" Grid.Column="2" Grid.Row="3" Click="x_emailSaveBTN_Click" 
+                        ToolTip ="Зберегти" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                    <materialDesign:PackIcon Kind="ContentSave"/>
+                </Button>
+            </Grid>
+        </materialDesign:Card >
+
+        <materialDesign:Card Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Bottom">
+                <CheckBox x:Name="x_isA5_CB" Content="Друк А5" FontWeight="Bold" FontFamily="12" Margin="0 0 20 50"/>
+                <Button x:Name="x_PrintSaveBTN"  Click="x_emailSaveBTN_Click" ToolTip ="Зберегти" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                    <materialDesign:PackIcon Kind="ContentSave"/>
+                </Button>
+            </StackPanel>
+        </materialDesign:Card >
+
+    </Grid>
+</UserControl>

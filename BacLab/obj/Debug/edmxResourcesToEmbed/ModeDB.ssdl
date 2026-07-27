@@ -1,0 +1,583 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище BacLab_DBModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="d_Analyzes">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="labNum" Type="int" Nullable="false" />
+    <Property Name="finance" Type="int" />
+    <Property Name="dateSampling" Type="datetime" />
+    <Property Name="dateDelivery" Type="datetime" />
+    <Property Name="idPatient" Type="int" />
+    <Property Name="idInstitution" Type="int" />
+    <Property Name="idDepartment" Type="int" />
+    <Property Name="numMedCard" Type="nvarchar" MaxLength="20" />
+    <Property Name="idDiagnosis" Type="int" />
+    <Property Name="idPatientStatus" Type="int" />
+    <Property Name="sentPerson" Type="int" />
+    <Property Name="idGMP" Type="int" />
+  </EntityType>
+  <EntityType Name="d_Antibiotics">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="id_group" Type="int" />
+    <Property Name="mkg" Type="nchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="d_Antibiotics_groups">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="d_Dictionary">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="abbr" Type="nvarchar" MaxLength="255" />
+    <Property Name="index" Type="int" />
+    <Property Name="show" Type="bit" />
+    <Property Name="dictionaryId" Type="int" />
+  </EntityType>
+  <EntityType Name="d_DictionaryName">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="index" Type="int" />
+    <Property Name="show" Type="bit" />
+  </EntityType>
+  <EntityType Name="d_Institution">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="abbr" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="index" Type="int" />
+    <Property Name="show" Type="int" />
+  </EntityType>
+  <EntityType Name="d_Microorganisms">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="id_group" Type="int" />
+  </EntityType>
+  <EntityType Name="d_Microorganisms_groups">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="d_Patients">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="year" Type="int" />
+    <Property Name="district" Type="int" />
+    <Property Name="adress" Type="nvarchar" MaxLength="255" />
+    <Property Name="jobDistrict" Type="int" />
+    <Property Name="jobPlace" Type="nvarchar" MaxLength="255" />
+    <Property Name="job" Type="nvarchar" MaxLength="50" />
+    <Property Name="email" Type="nvarchar" MaxLength="255" />
+    <Property Name="phone" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="d_Raxunok">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="num" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="idInstitution" Type="int" />
+    <Property Name="n12" Type="int" />
+    <Property Name="n13" Type="int" />
+    <Property Name="n141" Type="int" />
+    <Property Name="n142" Type="int" />
+    <Property Name="n144" Type="int" />
+    <Property Name="n146" Type="int" />
+    <Property Name="n147" Type="int" />
+    <Property Name="n148" Type="int" />
+    <Property Name="n149" Type="int" />
+    <Property Name="n18" Type="int" />
+    <Property Name="n201" Type="int" />
+    <Property Name="date" Type="date" />
+    <Property Name="dateEnd" Type="date" />
+  </EntityType>
+  <EntityType Name="d_Staff">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="lastName" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="firstName" Type="nvarchar" MaxLength="20" />
+    <Property Name="middleName" Type="nvarchar" MaxLength="20" />
+    <Property Name="id_category" Type="int" Nullable="false" />
+    <Property Name="birthday" Type="datetime" />
+    <Property Name="adress" Type="nvarchar" MaxLength="100" />
+    <Property Name="telephon1" Type="nvarchar" MaxLength="20" />
+    <Property Name="telephon2" Type="nvarchar" MaxLength="20" />
+    <Property Name="telephon3" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="d_Staff_category">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="d_StyleApp">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_staff" Type="int" />
+    <Property Name="style" Type="nvarchar" MaxLength="50" />
+    <Property Name="isDark" Type="nvarchar" MaxLength="50" />
+    <Property Name="primary_color" Type="nvarchar" MaxLength="50" />
+    <Property Name="accent_color" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="p_AB_MO_group_profile">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_AB" Type="int" Nullable="false" />
+    <Property Name="id_group_MO" Type="int" />
+    <Property Name="Res" Type="int" />
+    <Property Name="Sen" Type="int" />
+  </EntityType>
+  <EntityType Name="p_Group_Material_Purpose">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_group" Type="int" Nullable="false" />
+    <Property Name="id_material" Type="int" Nullable="false" />
+    <Property Name="id_purpose" Type="int" Nullable="false" />
+    <Property Name="show" Type="bit" />
+  </EntityType>
+  <EntityType Name="p_Group_Material_Purpose_Medium">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_GMP" Type="int" Nullable="false" />
+    <Property Name="id_medium" Type="int" Nullable="false" />
+    <Property Name="is_main" Type="bit" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <Association Name="FK__d_Analyze__finan__4944D3CA">
+    <End Role="d_Dictionary" Type="Self.d_Dictionary" Multiplicity="0..1" />
+    <End Role="d_Analyzes" Type="Self.d_Analyzes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Dictionary">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Analyzes">
+        <PropertyRef Name="finance" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Analyze__idDep__4C214075">
+    <End Role="d_Dictionary" Type="Self.d_Dictionary" Multiplicity="0..1" />
+    <End Role="d_Analyzes" Type="Self.d_Analyzes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Dictionary">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Analyzes">
+        <PropertyRef Name="idDepartment" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Analyze__idDia__4D1564AE">
+    <End Role="d_Dictionary" Type="Self.d_Dictionary" Multiplicity="0..1" />
+    <End Role="d_Analyzes" Type="Self.d_Analyzes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Dictionary">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Analyzes">
+        <PropertyRef Name="idDiagnosis" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Analyze__idGMP__4FF1D159">
+    <End Role="p_Group_Material_Purpose" Type="Self.p_Group_Material_Purpose" Multiplicity="0..1" />
+    <End Role="d_Analyzes" Type="Self.d_Analyzes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="p_Group_Material_Purpose">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Analyzes">
+        <PropertyRef Name="idGMP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Analyze__idIns__4B2D1C3C">
+    <End Role="d_Dictionary" Type="Self.d_Dictionary" Multiplicity="0..1" />
+    <End Role="d_Analyzes" Type="Self.d_Analyzes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Dictionary">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Analyzes">
+        <PropertyRef Name="idInstitution" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Analyze__idPat__4A38F803">
+    <End Role="d_Patients" Type="Self.d_Patients" Multiplicity="0..1" />
+    <End Role="d_Analyzes" Type="Self.d_Analyzes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Patients">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Analyzes">
+        <PropertyRef Name="idPatient" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Analyze__idPat__4E0988E7">
+    <End Role="d_Dictionary" Type="Self.d_Dictionary" Multiplicity="0..1" />
+    <End Role="d_Analyzes" Type="Self.d_Analyzes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Dictionary">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Analyzes">
+        <PropertyRef Name="idPatientStatus" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Analyze__sentP__4EFDAD20">
+    <End Role="d_Dictionary" Type="Self.d_Dictionary" Multiplicity="0..1" />
+    <End Role="d_Analyzes" Type="Self.d_Analyzes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Dictionary">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Analyzes">
+        <PropertyRef Name="sentPerson" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Antibio__id_gr__32767D0B">
+    <End Role="d_Antibiotics_groups" Type="Self.d_Antibiotics_groups" Multiplicity="0..1" />
+    <End Role="d_Antibiotics" Type="Self.d_Antibiotics" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Antibiotics_groups">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Antibiotics">
+        <PropertyRef Name="id_group" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Diction__dicti__45A94D10">
+    <End Role="d_DictionaryName" Type="Self.d_DictionaryName" Multiplicity="0..1" />
+    <End Role="d_Dictionary" Type="Self.d_Dictionary" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_DictionaryName">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Dictionary">
+        <PropertyRef Name="dictionaryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Microor__id_gr__43F60EC8">
+    <End Role="d_Microorganisms_groups" Type="Self.d_Microorganisms_groups" Multiplicity="0..1" />
+    <End Role="d_Microorganisms" Type="Self.d_Microorganisms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Microorganisms_groups">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Microorganisms">
+        <PropertyRef Name="id_group" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Patient__distr__7DEDA633">
+    <End Role="d_Dictionary" Type="Self.d_Dictionary" Multiplicity="0..1" />
+    <End Role="d_Patients" Type="Self.d_Patients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Dictionary">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Patients">
+        <PropertyRef Name="district" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Patient__jobDi__7EE1CA6C">
+    <End Role="d_Dictionary" Type="Self.d_Dictionary" Multiplicity="0..1" />
+    <End Role="d_Patients" Type="Self.d_Patients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Dictionary">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Patients">
+        <PropertyRef Name="jobDistrict" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Raxunok__idIns__705EA0EB">
+    <End Role="d_Dictionary" Type="Self.d_Dictionary" Multiplicity="0..1" />
+    <End Role="d_Raxunok" Type="Self.d_Raxunok" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Dictionary">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Raxunok">
+        <PropertyRef Name="idInstitution" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__p_Group_M__id_GM__457442E6">
+    <End Role="p_Group_Material_Purpose" Type="Self.p_Group_Material_Purpose" Multiplicity="1" />
+    <End Role="p_Group_Material_Purpose_Medium" Type="Self.p_Group_Material_Purpose_Medium" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="p_Group_Material_Purpose">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Group_Material_Purpose_Medium">
+        <PropertyRef Name="id_GMP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__p_Group_M__id_gr__40AF8DC9">
+    <End Role="d_Dictionary" Type="Self.d_Dictionary" Multiplicity="1" />
+    <End Role="p_Group_Material_Purpose" Type="Self.p_Group_Material_Purpose" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Dictionary">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Group_Material_Purpose">
+        <PropertyRef Name="id_group" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__p_Group_M__id_ma__41A3B202">
+    <End Role="d_Dictionary" Type="Self.d_Dictionary" Multiplicity="1" />
+    <End Role="p_Group_Material_Purpose" Type="Self.p_Group_Material_Purpose" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Dictionary">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Group_Material_Purpose">
+        <PropertyRef Name="id_material" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__p_Group_M__id_me__4668671F">
+    <End Role="d_Dictionary" Type="Self.d_Dictionary" Multiplicity="1" />
+    <End Role="p_Group_Material_Purpose_Medium" Type="Self.p_Group_Material_Purpose_Medium" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Dictionary">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Group_Material_Purpose_Medium">
+        <PropertyRef Name="id_medium" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__p_Group_M__id_pu__4297D63B">
+    <End Role="d_Dictionary" Type="Self.d_Dictionary" Multiplicity="1" />
+    <End Role="p_Group_Material_Purpose" Type="Self.p_Group_Material_Purpose" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Dictionary">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Group_Material_Purpose">
+        <PropertyRef Name="id_purpose" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Staff__id_catego__7849DB76">
+    <End Role="d_Staff_category" Type="Self.d_Staff_category" Multiplicity="1" />
+    <End Role="d_Staff" Type="Self.d_Staff" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Staff_category">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Staff">
+        <PropertyRef Name="id_category" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="id_group_MO">
+    <End Role="d_Microorganisms_groups" Type="Self.d_Microorganisms_groups" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="p_AB_MO_group_profile" Type="Self.p_AB_MO_group_profile" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Microorganisms_groups">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_AB_MO_group_profile">
+        <PropertyRef Name="id_group_MO" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="myFK_id_AB">
+    <End Role="d_Antibiotics" Type="Self.d_Antibiotics" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="p_AB_MO_group_profile" Type="Self.p_AB_MO_group_profile" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Antibiotics">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_AB_MO_group_profile">
+        <PropertyRef Name="id_AB" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="StyleStaff_FK">
+    <End Role="d_Staff" Type="Self.d_Staff" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="d_StyleApp" Type="Self.d_StyleApp" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Staff">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_StyleApp">
+        <PropertyRef Name="id_staff" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Хранилище BacLab_DBModelContainer">
+    <EntitySet Name="d_Analyzes" EntityType="Self.d_Analyzes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="d_Antibiotics" EntityType="Self.d_Antibiotics" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="d_Antibiotics_groups" EntityType="Self.d_Antibiotics_groups" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="d_Dictionary" EntityType="Self.d_Dictionary" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="d_DictionaryName" EntityType="Self.d_DictionaryName" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="d_Institution" EntityType="Self.d_Institution" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="d_Microorganisms" EntityType="Self.d_Microorganisms" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="d_Microorganisms_groups" EntityType="Self.d_Microorganisms_groups" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="d_Patients" EntityType="Self.d_Patients" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="d_Raxunok" EntityType="Self.d_Raxunok" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="d_Staff" EntityType="Self.d_Staff" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="d_Staff_category" EntityType="Self.d_Staff_category" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="d_StyleApp" EntityType="Self.d_StyleApp" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="p_AB_MO_group_profile" EntityType="Self.p_AB_MO_group_profile" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="p_Group_Material_Purpose" EntityType="Self.p_Group_Material_Purpose" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="p_Group_Material_Purpose_Medium" EntityType="Self.p_Group_Material_Purpose_Medium" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__d_Analyze__finan__4944D3CA" Association="Self.FK__d_Analyze__finan__4944D3CA">
+      <End Role="d_Dictionary" EntitySet="d_Dictionary" />
+      <End Role="d_Analyzes" EntitySet="d_Analyzes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Analyze__idDep__4C214075" Association="Self.FK__d_Analyze__idDep__4C214075">
+      <End Role="d_Dictionary" EntitySet="d_Dictionary" />
+      <End Role="d_Analyzes" EntitySet="d_Analyzes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Analyze__idDia__4D1564AE" Association="Self.FK__d_Analyze__idDia__4D1564AE">
+      <End Role="d_Dictionary" EntitySet="d_Dictionary" />
+      <End Role="d_Analyzes" EntitySet="d_Analyzes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Analyze__idGMP__4FF1D159" Association="Self.FK__d_Analyze__idGMP__4FF1D159">
+      <End Role="p_Group_Material_Purpose" EntitySet="p_Group_Material_Purpose" />
+      <End Role="d_Analyzes" EntitySet="d_Analyzes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Analyze__idIns__4B2D1C3C" Association="Self.FK__d_Analyze__idIns__4B2D1C3C">
+      <End Role="d_Dictionary" EntitySet="d_Dictionary" />
+      <End Role="d_Analyzes" EntitySet="d_Analyzes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Analyze__idPat__4A38F803" Association="Self.FK__d_Analyze__idPat__4A38F803">
+      <End Role="d_Patients" EntitySet="d_Patients" />
+      <End Role="d_Analyzes" EntitySet="d_Analyzes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Analyze__idPat__4E0988E7" Association="Self.FK__d_Analyze__idPat__4E0988E7">
+      <End Role="d_Dictionary" EntitySet="d_Dictionary" />
+      <End Role="d_Analyzes" EntitySet="d_Analyzes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Analyze__sentP__4EFDAD20" Association="Self.FK__d_Analyze__sentP__4EFDAD20">
+      <End Role="d_Dictionary" EntitySet="d_Dictionary" />
+      <End Role="d_Analyzes" EntitySet="d_Analyzes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Antibio__id_gr__32767D0B" Association="Self.FK__d_Antibio__id_gr__32767D0B">
+      <End Role="d_Antibiotics_groups" EntitySet="d_Antibiotics_groups" />
+      <End Role="d_Antibiotics" EntitySet="d_Antibiotics" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Diction__dicti__45A94D10" Association="Self.FK__d_Diction__dicti__45A94D10">
+      <End Role="d_DictionaryName" EntitySet="d_DictionaryName" />
+      <End Role="d_Dictionary" EntitySet="d_Dictionary" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Microor__id_gr__43F60EC8" Association="Self.FK__d_Microor__id_gr__43F60EC8">
+      <End Role="d_Microorganisms_groups" EntitySet="d_Microorganisms_groups" />
+      <End Role="d_Microorganisms" EntitySet="d_Microorganisms" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Patient__distr__7DEDA633" Association="Self.FK__d_Patient__distr__7DEDA633">
+      <End Role="d_Dictionary" EntitySet="d_Dictionary" />
+      <End Role="d_Patients" EntitySet="d_Patients" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Patient__jobDi__7EE1CA6C" Association="Self.FK__d_Patient__jobDi__7EE1CA6C">
+      <End Role="d_Dictionary" EntitySet="d_Dictionary" />
+      <End Role="d_Patients" EntitySet="d_Patients" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Raxunok__idIns__705EA0EB" Association="Self.FK__d_Raxunok__idIns__705EA0EB">
+      <End Role="d_Dictionary" EntitySet="d_Dictionary" />
+      <End Role="d_Raxunok" EntitySet="d_Raxunok" />
+    </AssociationSet>
+    <AssociationSet Name="FK__p_Group_M__id_GM__457442E6" Association="Self.FK__p_Group_M__id_GM__457442E6">
+      <End Role="p_Group_Material_Purpose" EntitySet="p_Group_Material_Purpose" />
+      <End Role="p_Group_Material_Purpose_Medium" EntitySet="p_Group_Material_Purpose_Medium" />
+    </AssociationSet>
+    <AssociationSet Name="FK__p_Group_M__id_gr__40AF8DC9" Association="Self.FK__p_Group_M__id_gr__40AF8DC9">
+      <End Role="d_Dictionary" EntitySet="d_Dictionary" />
+      <End Role="p_Group_Material_Purpose" EntitySet="p_Group_Material_Purpose" />
+    </AssociationSet>
+    <AssociationSet Name="FK__p_Group_M__id_ma__41A3B202" Association="Self.FK__p_Group_M__id_ma__41A3B202">
+      <End Role="d_Dictionary" EntitySet="d_Dictionary" />
+      <End Role="p_Group_Material_Purpose" EntitySet="p_Group_Material_Purpose" />
+    </AssociationSet>
+    <AssociationSet Name="FK__p_Group_M__id_me__4668671F" Association="Self.FK__p_Group_M__id_me__4668671F">
+      <End Role="d_Dictionary" EntitySet="d_Dictionary" />
+      <End Role="p_Group_Material_Purpose_Medium" EntitySet="p_Group_Material_Purpose_Medium" />
+    </AssociationSet>
+    <AssociationSet Name="FK__p_Group_M__id_pu__4297D63B" Association="Self.FK__p_Group_M__id_pu__4297D63B">
+      <End Role="d_Dictionary" EntitySet="d_Dictionary" />
+      <End Role="p_Group_Material_Purpose" EntitySet="p_Group_Material_Purpose" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Staff__id_catego__7849DB76" Association="Self.FK__Staff__id_catego__7849DB76">
+      <End Role="d_Staff_category" EntitySet="d_Staff_category" />
+      <End Role="d_Staff" EntitySet="d_Staff" />
+    </AssociationSet>
+    <AssociationSet Name="id_group_MO" Association="Self.id_group_MO">
+      <End Role="d_Microorganisms_groups" EntitySet="d_Microorganisms_groups" />
+      <End Role="p_AB_MO_group_profile" EntitySet="p_AB_MO_group_profile" />
+    </AssociationSet>
+    <AssociationSet Name="myFK_id_AB" Association="Self.myFK_id_AB">
+      <End Role="d_Antibiotics" EntitySet="d_Antibiotics" />
+      <End Role="p_AB_MO_group_profile" EntitySet="p_AB_MO_group_profile" />
+    </AssociationSet>
+    <AssociationSet Name="StyleStaff_FK" Association="Self.StyleStaff_FK">
+      <End Role="d_Staff" EntitySet="d_Staff" />
+      <End Role="d_StyleApp" EntitySet="d_StyleApp" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

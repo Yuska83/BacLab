@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="BacLab.Dialogs.ShowOtherAnalisisPacienta"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:Models="clr-namespace:BacLab.Models"
+             mc:Ignorable="d" >
+    <UserControl.Resources>
+        <Models:DateTimeToDateConverter x:Key="DateTimeToDateConverter"/>
+        <Models:CulturesToStringlConverter x:Key="CulturesToStringlConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="x_nameTB" FontSize="16" FontWeight="Bold" Margin="10"/>
+
+        <materialDesign:Card Grid.Row="1"  Margin="10">
+            <DataGrid x:Name="x_patientAnalisisGrid"
+                          CanUserAddRows="False" 
+                          CanUserDeleteRows="False"
+                          IsReadOnly="True" >
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Дата" Binding="{Binding dateDelivery,Converter={StaticResource DateTimeToDateConverter}}" />
+                    <DataGridTextColumn Header="Номер" Binding="{Binding labNum}" />
+                    <DataGridTextColumn Header="Заклад" Binding="{Binding d_Institution.abbr}"/>
+                    <DataGridTextColumn Header="Відділення" Binding="{Binding d_Department.abbr}"/>
+                    <DataGridTextColumn Header="Матеріал" Binding="{Binding p_Group_Material_Purpose.d_Material.abbr}"/>
+                    <DataGridTextColumn Header="Мета" Binding="{Binding p_Group_Material_Purpose.d_Purpose.abbr}"/>
+                    <DataGridTextColumn Header="Результат" Binding="{Binding d_ResTemplate.abbr}"/>
+                    <DataGridTextColumn Header="Культури" Binding="{Binding p_Analises_Cultures, Converter={StaticResource CulturesToStringlConverter} }"/>
+                    <DataGridTemplateColumn Header="Бланк" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button x:Name="x_printBTN" 
+                                            Click="x_ShowRezult_Click"  IsEnabled="{Binding sendAnalis}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="15" Height="15">
+                                    <materialDesign:PackIcon Kind="CheckCircleOutline" />
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Коментар" Binding="{Binding comment}"/>
+                    <DataGridTextColumn Header="Підрозділ" Binding="{Binding d_Subdivisions.abbr}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </materialDesign:Card>
+
+        <Button IsDefault="True" Grid.Row="2"
+                Command="{x:Static wpf:DialogHost.CloseDialogCommand}" HorizontalAlignment="Right">
+            <Button.CommandParameter>
+                <system:Boolean>True</system:Boolean>
+            </Button.CommandParameter>
+            Закрити
+        </Button>
+    </Grid>
+</UserControl>

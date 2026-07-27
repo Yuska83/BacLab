@@ -15,10 +15,17 @@ namespace BacLab
     public partial class p_Group_Material_Purpose_Medium
     {
         public int id { get; set; }
-        public int id_group_material_purpose { get; set; }
-        public int id_Medium { get; set; }
+        public int id_GMP { get; set; }
+        public Nullable<bool> is_main { get; set; }
+        public Nullable<int> idMedium { get; set; }
+        public Nullable<int> idMethodInoculation { get; set; }
+        public string timeInoculation { get; set; }
+        public string timeIncubation { get; set; }
+        public Nullable<int> index { get; set; }
+        public string timeObservation { get; set; }
     
         public virtual d_Medium d_Medium { get; set; }
+        public virtual d_MethodsInoculation d_MethodsInoculation { get; set; }
         public virtual p_Group_Material_Purpose p_Group_Material_Purpose { get; set; }
     }
 }

@@ -1,0 +1,126 @@
+﻿<UserControl x:Class="BacLab.Dialogs.Dialog_ABPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             xmlns:Dialogs="clr-namespace:BacLab.Dialogs" 
+             d:DataContext="{d:DesignInstance Type=Dialogs:Dialog_ABPanel}"
+             mc:Ignorable="d" Height="450" Width="800">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="itemListBox" >
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding name}" FontSize="12"/>
+            </StackPanel>
+        </ControlTemplate>
+        <DataTemplate x:Key="itemsListBox">
+            <Control Template="{StaticResource itemListBox}" />
+        </DataTemplate>
+        <ControlTemplate x:Key="itemComboBox" >
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Name}" FontSize="12">
+                    
+                </TextBlock>
+            </StackPanel>
+        </ControlTemplate>
+        <DataTemplate x:Key="itemsComboBox">
+            <Control Template="{StaticResource itemComboBox}" />
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="Панелі" Grid.ColumnSpan="3" FontWeight="Bold" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Focusable="True"/>
+
+        <TextBox x:Name="x_newABPanelName"  Grid.Row="1" Margin="20 0 20 0"
+                 materialDesign:HintAssist.Hint="Додати панель" />
+        <TextBox x:Name="x_editABPanelName"  Grid.Row="1" Grid.Column="2" 
+                 materialDesign:HintAssist.Hint="Редагувати назву" Margin="20 0 20 0"
+                 TextChanged="x_editABPanelName_TextChanged"/>
+
+        <Button x:Name="x_addNamePanelAB" Grid.Row="1" Grid.Column="1" Margin="10 0 10 0"
+                ToolTip="Додати" Click="x_addNamePanelAB_Click" >
+            <materialDesign:PackIcon Kind="Plus" />
+        </Button>
+        <materialDesign:Card Grid.Row="2" Grid.Column="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="8*"/>
+                </Grid.RowDefinitions>
+
+                <ComboBox x:Name="x_nameСriteria" Margin="5" FontSize="16"
+                          materialDesign:HintAssist.Hint="Оберіть крітерій"
+                          SelectionChanged="x_nameСriteria_SelectionChanged">
+                    <ComboBoxItem>матеріал</ComboBoxItem>
+                    <ComboBoxItem>заклад</ComboBoxItem>
+                </ComboBox>
+                <ListBox  x:Name="x_listСriteria" Grid.Row="1" Margin="2"/>
+            </Grid>
+        </materialDesign:Card>
+
+        <StackPanel Grid.Row="2" Grid.Column="1" Margin="0,20,0,0" >
+            <RadioButton GroupName="Mode" x:Name="x_onlyRBT" Content="тільки" IsChecked="True"/>
+            <RadioButton GroupName="Mode" x:Name="x_unlessRBT" Content="окрім"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" >
+            <Button x:Name="x_AddAB" Click="x_AddAB_Click"
+                VerticalAlignment="Center" >
+                <materialDesign:PackIcon Kind="ArrowRightBold" />
+            </Button>
+            <Button x:Name="x_DelAB" Click="x_DelAB_Click"
+                    VerticalAlignment="Center" >
+                <materialDesign:PackIcon Kind="ArrowLeftBold" />
+            </Button>
+        </StackPanel>
+
+        <materialDesign:Card Grid.Row="2" Grid.Column="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="8*"/>
+                </Grid.RowDefinitions>
+                <ComboBox x:Name="x_ABPanelNames" 
+                          Margin="5,0,5,5" FontSize="16"
+                          materialDesign:HintAssist.Hint="Оберіть панель"
+                          ItemTemplate="{StaticResource itemsComboBox}"
+                          SelectionChanged="x_ABPanelNames_SelectionChanged"
+                          ItemsSource="{Binding ListItemsNames}">
+                    <ComboBox.ContextMenu>
+                        <ContextMenu Name="Menu">
+                            <MenuItem Header="Видалити" Click="x_Delete_Click"/>
+                        </ContextMenu>
+                    </ComboBox.ContextMenu>
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ComboBoxItem}">
+                            <EventSetter Event="MouseMove" Handler="ComboBoxItem_MouseMove" />
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                </ComboBox>
+                <ListBox  x:Name="x_listSpecific" Grid.Row="1" Margin="5"/>
+            </Grid>
+        </materialDesign:Card>
+
+        <Button x:Name="x_saveBTN" Click="x_saveBTN_Click" Grid.Row="3" Grid.Column="2"
+                Command="{x:Static wpf:DialogHost.CloseDialogCommand}" Margin="0 0 20 0" 
+                HorizontalAlignment="Right">
+            <Button.CommandParameter>
+                <system:Boolean>True</system:Boolean>
+            </Button.CommandParameter>
+            OK
+        </Button>
+    </Grid>
+</UserControl>

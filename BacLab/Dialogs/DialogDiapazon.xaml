@@ -1,0 +1,102 @@
+﻿<UserControl x:Class="BacLab.Dialogs.DialogDiapazon"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             xmlns:Dialogs="clr-namespace:BacLab.Dialogs" 
+             mc:Ignorable="d" Height="Auto" Width="Auto"
+             d:DataContext="{d:DesignInstance Type=Dialogs:DialogDiapazon}">
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="20 0 10 0"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Введіть діапазон" FontSize="20"  HorizontalAlignment="Center" Margin="0" />
+        <TextBlock x:Name="x_name" Grid.Row="1" HorizontalAlignment="Center" Margin="0"  />
+        
+        <materialDesign:Card x:Name="x_mainCard" Grid.Row="2">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                    <RadioButton x:Name="x_1" GroupName="x_RB" Content="=" FontSize="16" FontWeight="Bold" IsChecked="True"/>
+                    <StackPanel VerticalAlignment="Center" Margin="10 0 0 0">
+                        <RadioButton x:Name="x_plusEquals" GroupName="EqualsRB" Content="+"  IsChecked="True" IsEnabled="{Binding ElementName=x_1, Path=IsChecked}"/>
+                        <RadioButton x:Name="x_minusEquals" GroupName="EqualsRB" Content="-" IsEnabled="{Binding ElementName=x_1, Path=IsChecked}"/>
+                    </StackPanel>
+                    <TextBox x:Name="x_equals" Width="50" MaxLength="3" 
+                             materialDesign:TextFieldAssist.CharacterCounterVisibility="Collapsed" 
+                             IsEnabled="{Binding ElementName=x_1, Path=IsChecked}" />
+                    <TextBlock Text="±"/>
+                    <TextBox x:Name="x_plusMinus" Width="50" MaxLength="1" 
+                             materialDesign:TextFieldAssist.CharacterCounterVisibility="Collapsed" 
+                             IsEnabled="{Binding ElementName=x_1, Path=IsChecked}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                    <RadioButton x:Name="x_2" GroupName="x_RB" Content=">" FontSize="16" FontWeight="Bold"/>
+                    <StackPanel VerticalAlignment="Center" Margin="10 0 0 0">
+                        <RadioButton x:Name="x_plusMore" GroupName="MoreRB" Content="+" IsChecked="True" IsEnabled="{Binding ElementName=x_2, Path=IsChecked}"/>
+                        <RadioButton x:Name="x_minusMore" GroupName="MoreRB" Content="-" IsEnabled="{Binding ElementName=x_2, Path=IsChecked}"/>
+                    </StackPanel>
+                    <TextBox x:Name="x_more" Width="50" MaxLength="3" 
+                             materialDesign:TextFieldAssist.CharacterCounterVisibility="Collapsed" 
+                             IsEnabled="{Binding ElementName=x_2, Path=IsChecked}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                    <RadioButton x:Name="x_3" GroupName="x_RB" Content="&lt;"  FontSize="16" FontWeight="Bold"/>
+                    <StackPanel VerticalAlignment="Center" Margin="10 0 0 0">
+                        <RadioButton x:Name="x_plusLess" GroupName="LessRB" Content="+" IsChecked="True" IsEnabled="{Binding ElementName=x_3, Path=IsChecked}"/>
+                        <RadioButton x:Name="x_minusLess" GroupName="LessRB" Content="-" IsEnabled="{Binding ElementName=x_3, Path=IsChecked}"/>
+                    </StackPanel>
+                    <TextBox x:Name="x_less" Width="50" MaxLength="3" 
+                             materialDesign:TextFieldAssist.CharacterCounterVisibility="Collapsed" 
+                             IsEnabled="{Binding ElementName=x_3, Path=IsChecked}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                    <RadioButton x:Name="x_4" GroupName="x_RB"  Margin="0 0 20 0" Content=" "/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                        <StackPanel VerticalAlignment="Center">
+                            <RadioButton x:Name="x_plusMin" GroupName="minRB" Content="+" IsEnabled="{Binding ElementName=x_4, Path=IsChecked}"/>
+                            <RadioButton x:Name="x_minusMin" GroupName="minRB" Content="-" IsEnabled="{Binding ElementName=x_4, Path=IsChecked}"/>
+                        </StackPanel>
+                        <TextBox x:Name="x_min" Width="100" MaxLength="3" 
+                                 materialDesign:TextFieldAssist.CharacterCounterVisibility="Collapsed" 
+                                 IsEnabled="{Binding ElementName=x_4, Path=IsChecked}"/>
+                        <TextBlock Text="-" VerticalAlignment="Center" Margin="20 0 20 0"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <RadioButton x:Name="x_plusMax" GroupName="maxRB" Content="+" IsChecked="True" IsEnabled="{Binding ElementName=x_4, Path=IsChecked}"/>
+                            <RadioButton x:Name="x_minusMax" GroupName="maxRB" Content="-" IsEnabled="{Binding ElementName=x_4, Path=IsChecked}"/>
+                        </StackPanel>
+                        <TextBox x:Name="x_max" Width="100" Margin="10 0 0 0" MaxLength="3" 
+                                 materialDesign:TextFieldAssist.CharacterCounterVisibility="Collapsed"
+                                 IsEnabled="{Binding ElementName=x_4, Path=IsChecked}"/>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </materialDesign:Card>
+        
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button  Click="Button_Click"
+                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}" >Зберегти
+            </Button>
+            <Button IsCancel="True" Margin="8 0 0 0"
+                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}" >
+                <Button.CommandParameter>
+                    <system:String>False</system:String>
+                </Button.CommandParameter>
+                Відмінити
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

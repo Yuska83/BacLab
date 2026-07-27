@@ -1,0 +1,250 @@
+﻿<UserControl x:Class="BacLab.Dictionary.ABEucastControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" 
+             xmlns:Directory="clr-namespace:BacLab.Dictionary"
+             DataContext="ABPanelControl"
+             d:DataContext="{d:DesignInstance Directory:ABEucastControl,IsDesignTimeCreatable=False}">
+
+    <UserControl.Resources>
+        <ControlTemplate x:Key="itemListBox" >
+            <TextBlock Text="{Binding a_AntibioticMicroorganismGroup.d_Consumables.name}" FontSize="12"/>
+        </ControlTemplate>
+        <DataTemplate x:Key="itemsListBox">
+            <Control Template="{StaticResource itemListBox}" />
+        </DataTemplate>
+
+        <ControlTemplate x:Key="itemListBox2" >
+            <Border HorizontalAlignment="Stretch" Width="200" BorderBrush="Black">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="BorderThickness" Value="0 0 0 0"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Separator}" Value="True">
+                                <Setter Property="BorderThickness" Value="0 0 0 1"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <TextBlock Text="{Binding Name}" FontSize="12" />
+            </Border>
+        </ControlTemplate>
+        <DataTemplate x:Key="itemsListBox2">
+            <Control Template="{StaticResource itemListBox2}" />
+        </DataTemplate>
+
+        <ControlTemplate x:Key="itemComboBox" >
+            <TextBlock Text="{Binding name}" />
+        </ControlTemplate>
+        <DataTemplate x:Key="itemsComboBox">
+            <Control Template="{StaticResource itemComboBox}" />
+        </DataTemplate>
+
+    </UserControl.Resources>
+
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+
+
+        <ComboBox x:Name="x_GroupMO" Margin="10 0 200 0" 
+          materialDesign:HintAssist.Hint="Оберіть групу" 
+          SelectionChanged="x_groupMO_SelectionChanged" 
+          ItemTemplate="{StaticResource itemsComboBox}"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button HorizontalAlignment="Right"  Margin="0,0,10,0" ToolTip ="Зберегти" Click="SaveButton_Click">
+                <materialDesign:PackIcon Kind="ContentSave" />
+            </Button>
+            <Button HorizontalAlignment="Right"  Margin="0,0,10,0" ToolTip="Надрукувати" Click="PrintButton_Click">
+                <materialDesign:PackIcon Kind="Printer"/>
+            </Button>
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="10*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Expander ExpandDirection="Left" Background="White">
+                <Expander.Header>
+                    <TextBlock  Text="Всі антибіотики" RenderTransformOrigin=".5,.5">
+                        <TextBlock.LayoutTransform>
+                            <RotateTransform  Angle="270" />
+                        </TextBlock.LayoutTransform>
+                    </TextBlock>
+                </Expander.Header>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:Card >
+                        <ListBox  Margin="2" 
+                                  ItemsSource="{Binding ListAllAB}"
+                                  SelectedItem="{Binding SelectedAB}"
+                                  ItemTemplate="{StaticResource itemsListBox2}" >
+                        </ListBox>
+                    </materialDesign:Card>
+                    <StackPanel Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                        <Button x:Name="x_AddAB" Click="x_AddAB_Click" VerticalAlignment="Center" >
+                            <materialDesign:PackIcon Kind="ArrowRightBold" />
+                        </Button>
+                        <Button x:Name="x_DelAB" Click="x_DelAB_Click" VerticalAlignment="Center" >
+                            <materialDesign:PackIcon Kind="ArrowLeftBold" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Expander>
+
+            <materialDesign:Card Grid.Column="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="10*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Групові антибіотики" FontWeight="Bold" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+                    <DataGrid Grid.Row="1" x:Name="x_MainGrid"
+                              ItemsSource="{Binding ListABMOGroup}"
+                              SelectedItem="{Binding SelectedABMOItem,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                              CanUserAddRows="False" >
+
+                        <DataGrid.CommandBindings>
+                            <CommandBinding Command="ApplicationCommands.Delete" PreviewCanExecute="CommandBinding_CanExecuteDelete" Executed="CommandBinding_ExecutedDelete"/>
+                        </DataGrid.CommandBindings>
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Id" Visibility="Visible" Binding="{Binding Id, UpdateSourceTrigger=LostFocus, NotifyOnSourceUpdated=True}" IsReadOnly="True"  />
+                            <DataGridTextColumn Header="№" Binding="{Binding Index, UpdateSourceTrigger=LostFocus, NotifyOnSourceUpdated=True}" IsReadOnly="True" />
+                            <DataGridTextColumn Header="Назва" Binding="{Binding ABDisk.name, UpdateSourceTrigger=LostFocus, NotifyOnSourceUpdated=True}" IsReadOnly="True" />
+                            <DataGridTextColumn Header="Ч>=" Binding="{Binding Sen, Mode=TwoWay, UpdateSourceTrigger=LostFocus, NotifyOnSourceUpdated=True}" />
+                            <DataGridTextColumn Header="P&lt;" Binding="{Binding Res, Mode=TwoWay, UpdateSourceTrigger=LostFocus, NotifyOnSourceUpdated=True}" />
+                            <DataGridTemplateColumn  Header="Специфічність" >
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock x:Name="x_SpecificTextblock"  MouseLeftButtonUp="x_SpecificTextblock_MouseLeftButtonDown"  
+                                               Text="{Binding Specificity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, NotifyOnSourceUpdated=True}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn  Header="Інтерпретація">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock x:Name="x_InterpretationTextblock" MouseLeftButtonUp="x_SpecificTextblock_MouseLeftButtonDown"  
+                                               Text="{Binding Interpretation, Mode=TwoWay, UpdateSourceTrigger=LostFocus, NotifyOnSourceUpdated=True}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Примітка" Binding="{Binding Comments, Mode=TwoWay, UpdateSourceTrigger=LostFocus, NotifyOnSourceUpdated=True}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </materialDesign:Card>
+
+            <Expander ExpandDirection="Right"  Grid.Column="2"  Background="White">
+                <Expander.Header>
+                    <TextBlock  Text="Пенелі антибіотиків" >
+                        <TextBlock.LayoutTransform>
+                            <RotateTransform  Angle="90" />
+                        </TextBlock.LayoutTransform>
+                    </TextBlock>
+                </Expander.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                        <Button x:Name="x_AddAB1st" Click="x_ArrowABPanel_Click" VerticalAlignment="Center" >
+                            <materialDesign:PackIcon Kind="ArrowRightBold" />
+                        </Button>
+                        <Button x:Name="x_DelAB1st" Click="x_ArrowABPanel_Click"  VerticalAlignment="Center" >
+                            <materialDesign:PackIcon Kind="ArrowLeftBold" />
+                        </Button>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button x:Name="x_AddAB2nd" Click="x_ArrowABPanel_Click">
+                            <materialDesign:PackIcon Kind="ArrowRightBold" />
+                        </Button>
+                        <Button x:Name="x_DelAB2nd" Click="x_ArrowABPanel_Click">
+                            <materialDesign:PackIcon Kind="ArrowLeftBold" />
+                        </Button>
+                    </StackPanel>
+
+                    <Button Grid.Row="1"  x:Name="x_printPanels" Click="x_printPanels_Click"  VerticalAlignment="Bottom" Margin="0 0 0 20">
+                        <materialDesign:PackIcon Kind="Printer" />
+                    </Button>
+
+                    <materialDesign:Card x:Name="x_abPanelCard" Grid.Column="1" Grid.RowSpan="2" >
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="9*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:DialogHost Identifier="MsgDialogPanel" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="5" />
+                            <ComboBox x:Name="x_namePanelAB" Margin="5" FontSize="12" 
+                                      materialDesign:HintAssist.Hint="Оберіть панель" 
+                                      TextSearch.TextPath="name"
+                                      SelectionChanged="x_namePanelAB_SelectionChanged"
+                                      ItemTemplate="{StaticResource itemsComboBox}"/>
+                            <Button Grid.Column="1"  x:Name="x_editNamePanelAB" Margin="2"
+                                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}" 
+                                    BorderBrush="White" HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center" Background="White"
+                                    ToolTip="Додати" Width="Auto" Height="Auto"
+                                    materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                    Click="x_editNamePanelAB_Click">
+                                <materialDesign:PackIcon Kind="PlusCircleOutline" />
+                            </Button>
+
+                            <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="5" VerticalAlignment="Center" >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*"/>
+                                    <RowDefinition Height="10*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Основні АБ"  FontWeight="Bold" FontSize="12"/>
+                                <ListBox  x:Name="x_1thABList" Grid.Row="1" Margin="2" VerticalAlignment="Stretch"
+                                          ItemsSource="{Binding List1thAB, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          SelectedItem="{Binding SelectedAB}"
+                                          ItemTemplate="{StaticResource itemsListBox}" Height="270" />
+                            </Grid>
+
+                            <Grid Grid.Row="2"  Grid.ColumnSpan="2" Margin="5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*"/>
+                                    <RowDefinition Height="10*" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Додадкові АБ" FontWeight="Bold" FontSize="12" />
+                                <ListBox  x:Name="x_2ndABList" Grid.Row="1" Margin="2" 
+                                          ItemsSource="{Binding List2ndAB, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          SelectedItem="{Binding SelectedAB}"
+                                          ItemTemplate="{StaticResource itemsListBox}" Height="270"/>
+                            </Grid>
+                        </Grid>
+                    </materialDesign:Card>
+                </Grid>
+            </Expander>
+        </Grid>
+    </Grid>
+</UserControl>

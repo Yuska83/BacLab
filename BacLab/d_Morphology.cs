@@ -15,6 +15,9 @@ namespace BacLab
     public partial class d_Morphology
     {
         public int id { get; set; }
-        public string microscopy { get; set; }
+        public Nullable<int> index { get; set; }
+        public Nullable<bool> show { get; set; }
+        public string name { get; set; }
+        public string abbr { get; set; }
     }
 }

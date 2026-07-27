@@ -1,0 +1,153 @@
+﻿<UserControl x:Class="BacLab.Dictionary.TestControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:Dictionary="clr-namespace:BacLab.Dictionary"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Dictionary:TestControl,IsDesignTimeCreatable=False}">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="itemComboBox" >
+            <TextBlock Text="{Binding name}" FontSize="14"/>
+        </ControlTemplate>
+        <DataTemplate x:Key="itemsComboBox">
+            <Control Template="{StaticResource itemComboBox}" />
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        
+        <materialDesign:Card x:Name="x_Card" Grid.Column="2"/>
+
+        <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button x:Name="x_addBTN" Click="x_addBTN_Click" ToolTip="Додати">
+                <materialDesign:PackIcon Kind="ArrowLeftBold" />
+            </Button>
+            <Button x:Name="x_delBTN" Click="x_delBTN_Click" ToolTip="Видалити">
+                <materialDesign:PackIcon Kind="ArrowRightBold" />
+            </Button>
+        </StackPanel>
+
+        <materialDesign:Card Grid.Column="0"  >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+               
+                <TextBlock Text="Набори тестів" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+                <StackPanel  Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 10 0">
+                    <Button HorizontalAlignment="Right"  Margin="0 0 10 0" ToolTip ="Зберегти" Click="SaveButton_Click">
+                        <materialDesign:PackIcon Kind="ContentSave" />
+                    </Button>
+                    <Button HorizontalAlignment="Right"  ToolTip="Надрукувати" Click="PrintButton_Click">
+                        <materialDesign:PackIcon Kind="Printer"/>
+                    </Button>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal" >
+                    <ComboBox x:Name="x_cb_testPanelName"
+                          materialDesign:HintAssist.Hint="Оберіть набір" 
+                          SelectionChanged="x_testPanelName_SelectionChanged"
+                          ItemsSource="{Binding ListTestsPanelName}"
+                          ItemTemplate="{StaticResource itemsComboBox}"/>
+                    <Button   x:Name="x_editNamePanel" Margin="5 0 0 0"
+                          Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                          BorderBrush="White" HorizontalAlignment="Center" 
+                          VerticalAlignment="Bottom" Background="White"
+                          ToolTip="Додати" Width="Auto" Height="Auto"
+                          materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                          Click="x_editNamePanel_Click">
+                        <materialDesign:PackIcon Kind="PlusCircleOutline" />
+                    </Button>
+                </StackPanel>
+                
+                
+
+                <DataGrid Grid.Row="2" Grid.ColumnSpan="3"
+                          ItemsSource="{Binding ListTestsPanel}"
+                          SelectedItem="{Binding SelectedTestPanel}"
+                          CanUserAddRows="False">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="№" Binding="{Binding index, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTextColumn Header="Абревіатура" Binding="{Binding d_TestAndAntibiotic.abbr}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Назва тесту" Binding="{Binding d_TestAndAntibiotic.name}" IsReadOnly="True"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </Grid>
+        </materialDesign:Card>
+
+        <StackPanel Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button x:Name="x_addBTN_2" Click="x_addBTN_2_Click"  ToolTip="Додати">
+                <materialDesign:PackIcon Kind="ArrowRightBold" />
+            </Button>
+            <Button x:Name="x_delBTN_2" Click="x_delBTN_2_Click"  ToolTip="Видалити">
+                <materialDesign:PackIcon Kind="ArrowLeftBold" />
+            </Button>
+        </StackPanel>
+
+        <materialDesign:Card Grid.Column="4">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+              
+                <TextBlock Text="Результати тестів" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+                <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 10 0">
+                    <Button HorizontalAlignment="Right"  Margin="0 0 10 0" ToolTip ="Зберегти" Click="SaveButton_Click">
+                        <materialDesign:PackIcon Kind="ContentSave" />
+                    </Button>
+                    <Button HorizontalAlignment="Right"  ToolTip="Надрукувати" Click="PrintButton_Click">
+                        <materialDesign:PackIcon Kind="Printer"/>
+                    </Button>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1">
+                    <ComboBox  x:Name="x_cb_listMicroorganism" 
+                               materialDesign:HintAssist.Hint="Оберіть мікроорганізм" 
+                               SelectionChanged="x_cb_listMicroorganism_SelectionChanged"
+                               ItemsSource="{Binding ListMicroorganism}"
+                               ItemTemplate="{StaticResource itemsComboBox}"/>
+                    <ComboBox  x:Name="x_cb_testPanelName_2"
+                               materialDesign:HintAssist.Hint="Оберіть набір" 
+                               SelectionChanged="x_testPanelName_2_SelectionChanged"
+                               ItemsSource="{Binding ListTestsPanelName}"
+                               ItemTemplate="{StaticResource itemsComboBox}"/>
+                    <ComboBox  x:Name="x_cb_morfology" IsEditable="True" FontSize="14"
+                               materialDesign:HintAssist.Hint="морфологія"
+                               ItemsSource="{Binding ListMorphology}"/>
+                </StackPanel>
+
+                <DataGrid x:Name="x_MainGrid" Grid.Row="2" 
+                          ItemsSource="{Binding ListTestsResults}"
+                          SelectedItem="{Binding SelectedTestResult}"
+                          CanUserAddRows="False">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Абревіатура" Binding="{Binding d_TestAndAntibiotic.abbr}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Назва тесту" Binding="{Binding d_TestAndAntibiotic.name}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Результат" Binding="{Binding res,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </Grid>
+        </materialDesign:Card>
+    </Grid>
+</UserControl>

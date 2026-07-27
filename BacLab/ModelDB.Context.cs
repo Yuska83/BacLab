@@ -12,6 +12,8 @@ namespace BacLab
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class BacLab_DBEntities : DbContext
     {
@@ -25,44 +27,401 @@ namespace BacLab
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Analysis> Analyses { get; set; }
-        public virtual DbSet<Britrany> Britranies { get; set; }
-        public virtual DbSet<d_Antibiotics> d_Antibiotics { get; set; }
-        public virtual DbSet<d_Antibiotics_groups> d_Antibiotics_groups { get; set; }
-        public virtual DbSet<d_Category_of_patient> d_Category_of_patient { get; set; }
+        public virtual DbSet<a_AntibioticControl> a_AntibioticControl { get; set; }
+        public virtual DbSet<a_AntibioticGroup> a_AntibioticGroup { get; set; }
+        public virtual DbSet<a_AntibioticNorms> a_AntibioticNorms { get; set; }
+        public virtual DbSet<a_AntibioticPanel> a_AntibioticPanel { get; set; }
+        public virtual DbSet<a_AntibioticPanelName> a_AntibioticPanelName { get; set; }
+        public virtual DbSet<d_Action> d_Action { get; set; }
+        public virtual DbSet<d_Analyzes> d_Analyzes { get; set; }
+        public virtual DbSet<d_Biovariant> d_Biovariant { get; set; }
+        public virtual DbSet<d_Brakerage> d_Brakerage { get; set; }
+        public virtual DbSet<d_Consumables> d_Consumables { get; set; }
+        public virtual DbSet<d_ConsumablesGroup> d_ConsumablesGroup { get; set; }
+        public virtual DbSet<d_ConsumableWritingOff> d_ConsumableWritingOff { get; set; }
         public virtual DbSet<d_Department> d_Department { get; set; }
         public virtual DbSet<d_Diagnosis> d_Diagnosis { get; set; }
-        public virtual DbSet<d_Diagnosis_group> d_Diagnosis_group { get; set; }
+        public virtual DbSet<d_Disinfectants> d_Disinfectants { get; set; }
         public virtual DbSet<d_District> d_District { get; set; }
+        public virtual DbSet<d_DragMetal> d_DragMetal { get; set; }
+        public virtual DbSet<d_Equipment> d_Equipment { get; set; }
+        public virtual DbSet<d_EquipmentGroup> d_EquipmentGroup { get; set; }
+        public virtual DbSet<d_EquipmentState> d_EquipmentState { get; set; }
         public virtual DbSet<d_Finance> d_Finance { get; set; }
-        public virtual DbSet<d_Gramm> d_Gramm { get; set; }
-        public virtual DbSet<d_Group_of_Study> d_Group_of_Study { get; set; }
+        public virtual DbSet<d_GroupResearch> d_GroupResearch { get; set; }
         public virtual DbSet<d_Institution> d_Institution { get; set; }
+        public virtual DbSet<d_Job> d_Job { get; set; }
+        public virtual DbSet<d_JobPlace> d_JobPlace { get; set; }
+        public virtual DbSet<d_JobPlaceGroup> d_JobPlaceGroup { get; set; }
+        public virtual DbSet<d_JobStatus> d_JobStatus { get; set; }
+        public virtual DbSet<d_Journals> d_Journals { get; set; }
+        public virtual DbSet<d_Laboratoria> d_Laboratoria { get; set; }
         public virtual DbSet<d_Material> d_Material { get; set; }
+        public virtual DbSet<d_MaterialGroup> d_MaterialGroup { get; set; }
         public virtual DbSet<d_Medium> d_Medium { get; set; }
-        public virtual DbSet<d_Microorganisms> d_Microorganisms { get; set; }
-        public virtual DbSet<d_Microorganisms_genus> d_Microorganisms_genus { get; set; }
-        public virtual DbSet<d_Microorganisms_groups> d_Microorganisms_groups { get; set; }
+        public virtual DbSet<d_MethodsInoculation> d_MethodsInoculation { get; set; }
+        public virtual DbSet<d_Microorganism> d_Microorganism { get; set; }
+        public virtual DbSet<d_MicroorganismGroup> d_MicroorganismGroup { get; set; }
         public virtual DbSet<d_Morphology> d_Morphology { get; set; }
-        public virtual DbSet<d_Name_Test_Set> d_Name_Test_Set { get; set; }
-        public virtual DbSet<d_Olkenickiy> d_Olkenickiy { get; set; }
-        public virtual DbSet<d_Purpose_of_study> d_Purpose_of_study { get; set; }
-        public virtual DbSet<d_Staff_category> d_Staff_category { get; set; }
-        public virtual DbSet<d_Test_result> d_Test_result { get; set; }
-        public virtual DbSet<d_Tests> d_Tests { get; set; }
-        public virtual DbSet<d_Type_Colonyy> d_Type_Colonyy { get; set; }
-        public virtual DbSet<p_AB_MO_group_profile> p_AB_MO_group_profile { get; set; }
-        public virtual DbSet<p_Group_Material> p_Group_Material { get; set; }
+        public virtual DbSet<d_PathUseAB> d_PathUseAB { get; set; }
+        public virtual DbSet<d_Patients> d_Patients { get; set; }
+        public virtual DbSet<d_PatientStatus> d_PatientStatus { get; set; }
+        public virtual DbSet<d_Period> d_Period { get; set; }
+        public virtual DbSet<d_PriceList> d_PriceList { get; set; }
+        public virtual DbSet<d_Producer> d_Producer { get; set; }
+        public virtual DbSet<d_Purpose> d_Purpose { get; set; }
+        public virtual DbSet<d_Quantity> d_Quantity { get; set; }
+        public virtual DbSet<d_ReferenceInterval> d_ReferenceInterval { get; set; }
+        public virtual DbSet<d_ResTemplate> d_ResTemplate { get; set; }
+        public virtual DbSet<d_RezTemplateMedium> d_RezTemplateMedium { get; set; }
+        public virtual DbSet<d_Room> d_Room { get; set; }
+        public virtual DbSet<d_SentPerson> d_SentPerson { get; set; }
+        public virtual DbSet<d_Serotype> d_Serotype { get; set; }
+        public virtual DbSet<d_Serum> d_Serum { get; set; }
+        public virtual DbSet<d_SerumStock> d_SerumStock { get; set; }
+        public virtual DbSet<d_Staff> d_Staff { get; set; }
+        public virtual DbSet<d_StaffGroup> d_StaffGroup { get; set; }
+        public virtual DbSet<d_StyleApp> d_StyleApp { get; set; }
+        public virtual DbSet<d_Subdivisions> d_Subdivisions { get; set; }
+        public virtual DbSet<d_Template> d_Template { get; set; }
+        public virtual DbSet<d_TestAndAntibiotic> d_TestAndAntibiotic { get; set; }
+        public virtual DbSet<d_TestGroup> d_TestGroup { get; set; }
+        public virtual DbSet<d_TestsPanel> d_TestsPanel { get; set; }
+        public virtual DbSet<d_TestsPanelName> d_TestsPanelName { get; set; }
+        public virtual DbSet<d_TypeColony> d_TypeColony { get; set; }
+        public virtual DbSet<d_Units> d_Units { get; set; }
+        public virtual DbSet<d_WhoPay> d_WhoPay { get; set; }
+        public virtual DbSet<g_ABDisk_ABTest_Interpritation> g_ABDisk_ABTest_Interpritation { get; set; }
+        public virtual DbSet<g_Equipment_DragMatal> g_Equipment_DragMatal { get; set; }
+        public virtual DbSet<g_Institution_Department> g_Institution_Department { get; set; }
+        public virtual DbSet<g_Institution_Email_Print> g_Institution_Email_Print { get; set; }
+        public virtual DbSet<g_Institution_SentPerson> g_Institution_SentPerson { get; set; }
+        public virtual DbSet<g_Microorganism_ABResSen> g_Microorganism_ABResSen { get; set; }
+        public virtual DbSet<g_Microorganism_TestsResults> g_Microorganism_TestsResults { get; set; }
+        public virtual DbSet<g_MicroorganismGroup_Microorganism> g_MicroorganismGroup_Microorganism { get; set; }
+        public virtual DbSet<l_log> l_log { get; set; }
+        public virtual DbSet<p_Analises_Cultures> p_Analises_Cultures { get; set; }
+        public virtual DbSet<p_Analises_Cultures_ABDisk> p_Analises_Cultures_ABDisk { get; set; }
+        public virtual DbSet<p_Analises_Cultures_ABTest> p_Analises_Cultures_ABTest { get; set; }
+        public virtual DbSet<p_Analises_DB> p_Analises_DB { get; set; }
+        public virtual DbSet<p_Analises_Mediums> p_Analises_Mediums { get; set; }
+        public virtual DbSet<p_Analises_Mediums_Date> p_Analises_Mediums_Date { get; set; }
+        public virtual DbSet<p_Analises_Mediums_Date_Colonies> p_Analises_Mediums_Date_Colonies { get; set; }
+        public virtual DbSet<p_Analises_Mediums_Date_Colonies_AB> p_Analises_Mediums_Date_Colonies_AB { get; set; }
+        public virtual DbSet<p_Analises_Mediums_Date_Colonies_Serums> p_Analises_Mediums_Date_Colonies_Serums { get; set; }
+        public virtual DbSet<p_Analises_Mediums_Date_Colonies_Tests> p_Analises_Mediums_Date_Colonies_Tests { get; set; }
         public virtual DbSet<p_Group_Material_Purpose> p_Group_Material_Purpose { get; set; }
         public virtual DbSet<p_Group_Material_Purpose_Medium> p_Group_Material_Purpose_Medium { get; set; }
-        public virtual DbSet<p_Identification_Table> p_Identification_Table { get; set; }
-        public virtual DbSet<p_Institution_Department_District> p_Institution_Department_District { get; set; }
-        public virtual DbSet<p_Purpose_CategoryPatient> p_Purpose_CategoryPatient { get; set; }
-        public virtual DbSet<p_Test_Set> p_Test_Set { get; set; }
-        public virtual DbSet<Patient> Patients { get; set; }
-        public virtual DbSet<Staff> Staffs { get; set; }
-        public virtual DbSet<StyleApp> StyleApps { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
-        public virtual DbSet<Template_Results> Template_Results { get; set; }
+        public virtual DbSet<p_Inner_Control> p_Inner_Control { get; set; }
+        public virtual DbSet<s_CustomerGroup> s_CustomerGroup { get; set; }
+        public virtual DbSet<s_Document> s_Document { get; set; }
+        public virtual DbSet<s_FoodGroup> s_FoodGroup { get; set; }
+        public virtual DbSet<s_Markers> s_Markers { get; set; }
+        public virtual DbSet<s_Orders> s_Orders { get; set; }
+        public virtual DbSet<s_Orders_Analyzes> s_Orders_Analyzes { get; set; }
+        public virtual DbSet<s_Orders_Analyzes_Markers> s_Orders_Analyzes_Markers { get; set; }
+        public virtual DbSet<s_Point> s_Point { get; set; }
+        public virtual DbSet<s_Preserve> s_Preserve { get; set; }
+        public virtual DbSet<s_ProductGroup> s_ProductGroup { get; set; }
+        public virtual DbSet<s_ResearchGroup> s_ResearchGroup { get; set; }
+        public virtual DbSet<s_ResearchType> s_ResearchType { get; set; }
+        public virtual DbSet<s_Storage> s_Storage { get; set; }
+        public virtual DbSet<s_Tara> s_Tara { get; set; }
+        public virtual DbSet<s_Transport> s_Transport { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
+        public virtual DbSet<a_AntibioticMicroorganismGroup> a_AntibioticMicroorganismGroup { get; set; }
+        public virtual DbSet<d_ConsumablesStock> d_ConsumablesStock { get; set; }
+        public virtual DbSet<d_ConsumablesOrder> d_ConsumablesOrder { get; set; }
+    
+        public virtual int PR_Analyzes(Nullable<int> idfinance, Nullable<System.DateTime> dateDelivery, Nullable<System.DateTime> dateDelivery2, Nullable<int> year, Nullable<int> year2, string idDistrictList, string jobDistrictList, string jobPlaceList, string jobList, string idInstitutionList, string idDepartmentList, string idDiagnosisList, string idPatientStatusList, string idSentPersonList, string idGroupList, string idMaterialList, string idPurposeList, string idResTemplateList)
+        {
+            var idfinanceParameter = idfinance.HasValue ?
+                new ObjectParameter("idfinance", idfinance) :
+                new ObjectParameter("idfinance", typeof(int));
+    
+            var dateDeliveryParameter = dateDelivery.HasValue ?
+                new ObjectParameter("dateDelivery", dateDelivery) :
+                new ObjectParameter("dateDelivery", typeof(System.DateTime));
+    
+            var dateDelivery2Parameter = dateDelivery2.HasValue ?
+                new ObjectParameter("dateDelivery2", dateDelivery2) :
+                new ObjectParameter("dateDelivery2", typeof(System.DateTime));
+    
+            var yearParameter = year.HasValue ?
+                new ObjectParameter("year", year) :
+                new ObjectParameter("year", typeof(int));
+    
+            var year2Parameter = year2.HasValue ?
+                new ObjectParameter("year2", year2) :
+                new ObjectParameter("year2", typeof(int));
+    
+            var idDistrictListParameter = idDistrictList != null ?
+                new ObjectParameter("idDistrictList", idDistrictList) :
+                new ObjectParameter("idDistrictList", typeof(string));
+    
+            var jobDistrictListParameter = jobDistrictList != null ?
+                new ObjectParameter("jobDistrictList", jobDistrictList) :
+                new ObjectParameter("jobDistrictList", typeof(string));
+    
+            var jobPlaceListParameter = jobPlaceList != null ?
+                new ObjectParameter("jobPlaceList", jobPlaceList) :
+                new ObjectParameter("jobPlaceList", typeof(string));
+    
+            var jobListParameter = jobList != null ?
+                new ObjectParameter("jobList", jobList) :
+                new ObjectParameter("jobList", typeof(string));
+    
+            var idInstitutionListParameter = idInstitutionList != null ?
+                new ObjectParameter("idInstitutionList", idInstitutionList) :
+                new ObjectParameter("idInstitutionList", typeof(string));
+    
+            var idDepartmentListParameter = idDepartmentList != null ?
+                new ObjectParameter("idDepartmentList", idDepartmentList) :
+                new ObjectParameter("idDepartmentList", typeof(string));
+    
+            var idDiagnosisListParameter = idDiagnosisList != null ?
+                new ObjectParameter("idDiagnosisList", idDiagnosisList) :
+                new ObjectParameter("idDiagnosisList", typeof(string));
+    
+            var idPatientStatusListParameter = idPatientStatusList != null ?
+                new ObjectParameter("idPatientStatusList", idPatientStatusList) :
+                new ObjectParameter("idPatientStatusList", typeof(string));
+    
+            var idSentPersonListParameter = idSentPersonList != null ?
+                new ObjectParameter("idSentPersonList", idSentPersonList) :
+                new ObjectParameter("idSentPersonList", typeof(string));
+    
+            var idGroupListParameter = idGroupList != null ?
+                new ObjectParameter("idGroupList", idGroupList) :
+                new ObjectParameter("idGroupList", typeof(string));
+    
+            var idMaterialListParameter = idMaterialList != null ?
+                new ObjectParameter("idMaterialList", idMaterialList) :
+                new ObjectParameter("idMaterialList", typeof(string));
+    
+            var idPurposeListParameter = idPurposeList != null ?
+                new ObjectParameter("idPurposeList", idPurposeList) :
+                new ObjectParameter("idPurposeList", typeof(string));
+    
+            var idResTemplateListParameter = idResTemplateList != null ?
+                new ObjectParameter("idResTemplateList", idResTemplateList) :
+                new ObjectParameter("idResTemplateList", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PR_Analyzes", idfinanceParameter, dateDeliveryParameter, dateDelivery2Parameter, yearParameter, year2Parameter, idDistrictListParameter, jobDistrictListParameter, jobPlaceListParameter, jobListParameter, idInstitutionListParameter, idDepartmentListParameter, idDiagnosisListParameter, idPatientStatusListParameter, idSentPersonListParameter, idGroupListParameter, idMaterialListParameter, idPurposeListParameter, idResTemplateListParameter);
+        }
+    
+        public virtual int PR_Analyzes2(Nullable<int> idfinance, Nullable<System.DateTime> dateDelivery, Nullable<System.DateTime> dateDelivery2, Nullable<int> year, Nullable<int> year2, string idDistrictList, string jobDistrictList, string jobPlaceList, string jobList, string idInstitutionList, string idDepartmentList, string idDiagnosisList, string idPatientStatusList, string idSentPersonList, string idGroupList, string idMaterialList, string idPurposeList, string idResTemplateList)
+        {
+            var idfinanceParameter = idfinance.HasValue ?
+                new ObjectParameter("idfinance", idfinance) :
+                new ObjectParameter("idfinance", typeof(int));
+    
+            var dateDeliveryParameter = dateDelivery.HasValue ?
+                new ObjectParameter("dateDelivery", dateDelivery) :
+                new ObjectParameter("dateDelivery", typeof(System.DateTime));
+    
+            var dateDelivery2Parameter = dateDelivery2.HasValue ?
+                new ObjectParameter("dateDelivery2", dateDelivery2) :
+                new ObjectParameter("dateDelivery2", typeof(System.DateTime));
+    
+            var yearParameter = year.HasValue ?
+                new ObjectParameter("year", year) :
+                new ObjectParameter("year", typeof(int));
+    
+            var year2Parameter = year2.HasValue ?
+                new ObjectParameter("year2", year2) :
+                new ObjectParameter("year2", typeof(int));
+    
+            var idDistrictListParameter = idDistrictList != null ?
+                new ObjectParameter("idDistrictList", idDistrictList) :
+                new ObjectParameter("idDistrictList", typeof(string));
+    
+            var jobDistrictListParameter = jobDistrictList != null ?
+                new ObjectParameter("jobDistrictList", jobDistrictList) :
+                new ObjectParameter("jobDistrictList", typeof(string));
+    
+            var jobPlaceListParameter = jobPlaceList != null ?
+                new ObjectParameter("jobPlaceList", jobPlaceList) :
+                new ObjectParameter("jobPlaceList", typeof(string));
+    
+            var jobListParameter = jobList != null ?
+                new ObjectParameter("jobList", jobList) :
+                new ObjectParameter("jobList", typeof(string));
+    
+            var idInstitutionListParameter = idInstitutionList != null ?
+                new ObjectParameter("idInstitutionList", idInstitutionList) :
+                new ObjectParameter("idInstitutionList", typeof(string));
+    
+            var idDepartmentListParameter = idDepartmentList != null ?
+                new ObjectParameter("idDepartmentList", idDepartmentList) :
+                new ObjectParameter("idDepartmentList", typeof(string));
+    
+            var idDiagnosisListParameter = idDiagnosisList != null ?
+                new ObjectParameter("idDiagnosisList", idDiagnosisList) :
+                new ObjectParameter("idDiagnosisList", typeof(string));
+    
+            var idPatientStatusListParameter = idPatientStatusList != null ?
+                new ObjectParameter("idPatientStatusList", idPatientStatusList) :
+                new ObjectParameter("idPatientStatusList", typeof(string));
+    
+            var idSentPersonListParameter = idSentPersonList != null ?
+                new ObjectParameter("idSentPersonList", idSentPersonList) :
+                new ObjectParameter("idSentPersonList", typeof(string));
+    
+            var idGroupListParameter = idGroupList != null ?
+                new ObjectParameter("idGroupList", idGroupList) :
+                new ObjectParameter("idGroupList", typeof(string));
+    
+            var idMaterialListParameter = idMaterialList != null ?
+                new ObjectParameter("idMaterialList", idMaterialList) :
+                new ObjectParameter("idMaterialList", typeof(string));
+    
+            var idPurposeListParameter = idPurposeList != null ?
+                new ObjectParameter("idPurposeList", idPurposeList) :
+                new ObjectParameter("idPurposeList", typeof(string));
+    
+            var idResTemplateListParameter = idResTemplateList != null ?
+                new ObjectParameter("idResTemplateList", idResTemplateList) :
+                new ObjectParameter("idResTemplateList", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PR_Analyzes2", idfinanceParameter, dateDeliveryParameter, dateDelivery2Parameter, yearParameter, year2Parameter, idDistrictListParameter, jobDistrictListParameter, jobPlaceListParameter, jobListParameter, idInstitutionListParameter, idDepartmentListParameter, idDiagnosisListParameter, idPatientStatusListParameter, idSentPersonListParameter, idGroupListParameter, idMaterialListParameter, idPurposeListParameter, idResTemplateListParameter);
+        }
+    
+        public virtual int PR_Material_Culture(Nullable<int> idInstitution, Nullable<System.DateTime> dateStart, Nullable<System.DateTime> dateEnd)
+        {
+            var idInstitutionParameter = idInstitution.HasValue ?
+                new ObjectParameter("idInstitution", idInstitution) :
+                new ObjectParameter("idInstitution", typeof(int));
+    
+            var dateStartParameter = dateStart.HasValue ?
+                new ObjectParameter("dateStart", dateStart) :
+                new ObjectParameter("dateStart", typeof(System.DateTime));
+    
+            var dateEndParameter = dateEnd.HasValue ?
+                new ObjectParameter("dateEnd", dateEnd) :
+                new ObjectParameter("dateEnd", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PR_Material_Culture", idInstitutionParameter, dateStartParameter, dateEndParameter);
+        }
+    
+        public virtual int PR_Material_Culture2(Nullable<int> idInstitution, Nullable<System.DateTime> dateStart, Nullable<System.DateTime> dateEnd)
+        {
+            var idInstitutionParameter = idInstitution.HasValue ?
+                new ObjectParameter("idInstitution", idInstitution) :
+                new ObjectParameter("idInstitution", typeof(int));
+    
+            var dateStartParameter = dateStart.HasValue ?
+                new ObjectParameter("dateStart", dateStart) :
+                new ObjectParameter("dateStart", typeof(System.DateTime));
+    
+            var dateEndParameter = dateEnd.HasValue ?
+                new ObjectParameter("dateEnd", dateEnd) :
+                new ObjectParameter("dateEnd", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PR_Material_Culture2", idInstitutionParameter, dateStartParameter, dateEndParameter);
+        }
+    
+        public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_alterdiagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
+        }
+    
+        public virtual int sp_creatediagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_creatediagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
+        }
+    
+        public virtual int sp_dropdiagram(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_dropdiagram", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual int sp_helpdiagramdefinition(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_helpdiagramdefinition", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual int sp_helpdiagrams(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_helpdiagrams", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual int sp_renamediagram(string diagramname, Nullable<int> owner_id, string new_diagramname)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var new_diagramnameParameter = new_diagramname != null ?
+                new ObjectParameter("new_diagramname", new_diagramname) :
+                new ObjectParameter("new_diagramname", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_renamediagram", diagramnameParameter, owner_idParameter, new_diagramnameParameter);
+        }
+    
+        public virtual int sp_upgraddiagrams()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
+        }
     }
 }

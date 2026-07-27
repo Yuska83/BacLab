@@ -1,0 +1,778 @@
+﻿<UserControl x:Class="BacLab.Reports.ReportAnalyzes"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:Models="clr-namespace:BacLab.Models"
+             xmlns:Reports="clr-namespace:BacLab.Reports"
+             DataContext="ReportAnalyzes"
+             d:DataContext="{d:DesignInstance Reports:ReportAnalyzes,IsDesignTimeCreatable=False}"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <Models:DateTimeToDateConverter x:Key="myDateConverter"/>
+
+        <Style TargetType="Expander" BasedOn="{StaticResource MaterialDesignExpander}">
+            <Setter Property="ExpandDirection" Value="Down"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Margin" Value="10 0 10 0"/>
+            <EventSetter Event="Expanded" Handler="Expander_Expanded" />
+        </Style>
+
+        <ItemsPanelTemplate x:Key="itemsPanelTemplate">
+            <WrapPanel Height="250" Width="Auto" Margin="2"
+                       Orientation="Vertical" Background="#FFF2F7F7" 
+                       ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                       ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
+        </ItemsPanelTemplate>
+
+        <ItemsPanelTemplate x:Key="itemsPanelTemplateCulture">
+            <WrapPanel Height="Auto" Width="Auto" Margin="2"
+                       Orientation="Vertical" Background="#FFF2F7F7" 
+                       ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                       ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
+        </ItemsPanelTemplate>
+
+
+        <Style TargetType="ListBox" BasedOn="{StaticResource MaterialDesignListBox}">
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True"/>
+            <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling"/>
+        </Style>
+
+        <ControlTemplate x:Key="itemListBox" >
+            <CheckBox IsChecked="{Binding show, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding abbr}" />
+        </ControlTemplate>
+        <DataTemplate x:Key="itemsListBox">
+            <Control Template="{StaticResource itemListBox}" />
+        </DataTemplate>
+
+        <ControlTemplate x:Key="itemListBoxName" >
+            <CheckBox IsChecked="{Binding show, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding name}" />
+        </ControlTemplate>
+        <DataTemplate x:Key="itemsListBoxName">
+            <Control Template="{StaticResource itemListBoxName}" />
+        </DataTemplate>
+
+        <Style TargetType="CheckBox" x:Key="CheckBoxAllStyle" BasedOn="{StaticResource MaterialDesignCheckBox}">
+            <Setter Property="Content" Value="Всі"/>
+            <Setter Property="IsChecked" Value="True"/>
+            <Setter Property="IsEnabled" Value="False"/>
+            <Setter Property="Margin" Value="5 0 10 0"/>
+            <Setter Property="Grid.Column" Value="1"/>
+            <EventSetter Event="Checked" Handler="CheckBoxAll_Checked"/>
+            <EventSetter Event="Unchecked" Handler="CheckBoxAll_Checked"/>
+        </Style>
+        <Style TargetType="CheckBox" x:Key="CheckBoxAllCulture" BasedOn="{StaticResource MaterialDesignCheckBox}">
+            <Setter Property="Content" Value="Всі"/>
+            <Setter Property="Margin" Value="5 0 0 0"/>
+            <Setter Property="Grid.Column" Value="1"/>
+            <Setter Property="IsChecked" Value="{Binding IsShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <EventSetter Event="Checked" Handler="CheckBoxAllCultures_Checked"/>
+            <EventSetter Event="Unchecked" Handler="CheckBoxAllCultures_Checked"/>
+        </Style>
+        <Style TargetType="CheckBox" x:Key="CheckBoxGroup1" BasedOn="{StaticResource MaterialDesignCheckBox}">
+            <Setter Property="Content" Value="1 рівня"/>
+            <Setter Property="IsEnabled" Value="False"/>
+            <Setter Property="Margin" Value="5 0 0 0"/>
+            <Setter Property="Grid.Column" Value="3"/>
+            <EventSetter Event="Checked" Handler="CheckBoxGroup1_Checked"/>
+            <EventSetter Event="Unchecked" Handler="CheckBoxGroup1_Checked"/>
+        </Style>
+        <Style TargetType="CheckBox" x:Key="CheckBoxGroup2" BasedOn="{StaticResource MaterialDesignCheckBox}">
+            <Setter Property="Content" Value="2 рівня"/>
+            <Setter Property="IsEnabled" Value="False"/>
+            <Setter Property="Margin" Value="5 0 0 0"/>
+            <Setter Property="Grid.Column" Value="4"/>
+            <EventSetter Event="Checked" Handler="CheckBoxGroup2_Checked"/>
+            <EventSetter Event="Unchecked" Handler="CheckBoxGroup2_Checked"/>
+        </Style>
+        <Style TargetType="CheckBox" x:Key="CheckBoxGroup3" BasedOn="{StaticResource MaterialDesignCheckBox}">
+            <Setter Property="Content" Value="3 рівня"/>
+            <Setter Property="IsEnabled" Value="False"/>
+            <Setter Property="Margin" Value="5 0 0 0"/>
+            <Setter Property="Grid.Column" Value="5"/>
+            <EventSetter Event="Checked" Handler="CheckBoxGroup3_Checked"/>
+            <EventSetter Event="Unchecked" Handler="CheckBoxGroup3_Checked"/>
+        </Style>
+
+
+        <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignBody2TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5 0 0 0"/>
+        </Style>
+
+        <ControlTemplate x:Key="itemListBox2" >
+            <CheckBox IsChecked="{Binding IsShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding Abbr}" />
+        </ControlTemplate>
+        <DataTemplate x:Key="itemsListBox2">
+            <Control Template="{StaticResource itemListBox2}" />
+        </DataTemplate>
+
+        <ControlTemplate x:Key="itemListBoxCulture">
+            <Expander Width="230">
+                <Expander.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock  Text="{Binding Name}"/>
+                        <CheckBox x:Name="CheckBoxAll" Style="{StaticResource CheckBoxAllCulture}" Grid.Column="1"/>
+                    </Grid>
+                </Expander.Header>
+                <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                    <ListBox x:Name="x_listMO" ItemsSource="{Binding ListItems}"
+                                     ItemTemplate="{StaticResource itemsListBox2}"
+                                     ItemsPanel="{StaticResource itemsPanelTemplateCulture}">
+                    </ListBox>
+                </ScrollViewer>
+            </Expander>
+        </ControlTemplate>
+        <DataTemplate x:Key="itemsListBoxCulture">
+            <Control Template="{StaticResource itemListBoxCulture}"/>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid  x:Name="MainGrid" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <materialDesign:Card x:Name="x_1Card" Grid.Row="0" Padding="10 10 10 20" >
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Дата доставки" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="10 10 10 0"/>
+                <DatePicker Grid.Column="0" Grid.Row="1" Margin="10 0 5 0"
+                            x:Name="x_dateDelivery"
+                            materialDesign:HintAssist.Hint="з" />
+                <DatePicker Grid.Column="1" Grid.Row="1" Margin="5 0 10 0"
+                            x:Name="x_dateDelivery2"
+                            materialDesign:HintAssist.Hint="по" />
+
+                <TextBlock Text="Рік народження" Grid.Column="0" Grid.Row="2"  Grid.ColumnSpan="2" Margin="10 10 10 0"/>
+                <TextBox Grid.Column="0" Grid.Row="3" Margin="10 0 5 0"
+                         x:Name="x_year"
+                         materialDesign:HintAssist.Hint="з"/>
+                <TextBox Grid.Column="1" Grid.Row="3" Margin="5 0 10 0"
+                         x:Name="x_year2"
+                         materialDesign:HintAssist.Hint="по"/>
+
+                <TextBlock Text="Вік" Grid.Column="0" Grid.Row="4"  Grid.ColumnSpan="2" Margin="10 10 10 0"/>
+                <TextBox Grid.Column="0" Grid.Row="5" Margin="10 0 5 0"
+                         x:Name="x_age"
+                         materialDesign:HintAssist.Hint="з"/>
+                <TextBox Grid.Column="1" Grid.Row="5" Margin="5 0 10 0"
+                         x:Name="x_age2"
+                         materialDesign:HintAssist.Hint="по"/>
+            </Grid>
+        </materialDesign:Card>
+
+        <materialDesign:Card Grid.Row="1">
+            <Expander x:Name ="VBDExpander" Margin="0">
+                <Expander.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <CheckBox x:Name="x_cbVBD" FontWeight="Bold" FontSize="14" Content="Поранені ВБД" Margin="0 0 10 0" IsChecked="False"/>
+                        <Button Margin="10 0 0 0" Content="Очистити" Click="Button_Click" Grid.Column="1"/>
+                    </Grid>
+                </Expander.Header>
+                <StackPanel x:Name="x_RB_Stack" Margin="10" IsEnabled="{Binding ElementName=x_cbVBD, Path=IsChecked}" Orientation="Horizontal"  HorizontalAlignment="Stretch"  VerticalAlignment="Bottom" >
+                    <StackPanel  Margin="5 0 5 0">
+                        <RadioButton x:Name="x_gosp_IRB" GroupName="gospGroup" Content="первинна" FontSize="16"  />
+                        <RadioButton x:Name="x_gosp_IIRB" GroupName="gospGroup" Content="повторна" FontSize="16" />
+                    </StackPanel>
+                    <StackPanel Margin="5 0 5 0">
+                        <RadioButton x:Name="x_less48RB" GroupName="do48Group" Content="&lt; 48год." FontSize="16"  />
+                        <RadioButton x:Name="x_more48RB" GroupName="do48Group" Content="> 48год." FontSize="16"  />
+                    </StackPanel>
+                    <StackPanel Margin="5 0 5 0">
+                        <RadioButton x:Name="x_less72RB" GroupName="do72Group" Content="&lt; 72год." FontSize="16"/>
+                        <RadioButton x:Name="x_more72RB" GroupName="do72Group" Content="> 72год." FontSize="16" />
+                    </StackPanel>
+                    <StackPanel Margin="5 0 5 0">
+                        <RadioButton x:Name="x_BacRB" GroupName="bacGroup" Content="бак.є" FontSize="16" />
+                        <RadioButton x:Name="x_noBacRB" GroupName="bacGroup" Content="немає" FontSize="16"/>
+                    </StackPanel>
+                </StackPanel>
+            </Expander>
+        </materialDesign:Card>
+
+        <Button  Grid.Column="0" Grid.Row="2" Margin="10 5 10 0"
+                 x:Name="x_countBTN" Click="x_countBTN_Click" 
+                 >Підрахувати</Button>
+        <Button  Grid.Column="0" Grid.Row="3" Margin="10 5 10 0"
+                 x:Name="x_WHONET" Click="x_countBTN_Click" 
+                 >Файл для WHONET</Button>
+        <Button  Grid.Column="0" Grid.Row="4" Margin="10 5 10 0"
+                 x:Name="x_WHONETALL" Click="x_WHONET_Click" 
+                 >Файли для WHONET ВСІ</Button>
+        <Button  Grid.Column="0" Grid.Row="5" Margin="10 5 10 0"
+                 x:Name="x_WHONET_BD" Click="x_countBTN_Click" 
+                 >Файл для WHONET поранені</Button>
+        <Button  Grid.Column="0" Grid.Row="6" Margin="10 5 10 0"
+                 x:Name="x_countVBD" Click="x_countVBD_Click" 
+                 >Звіт по поранененим ВБД</Button>
+
+
+        <materialDesign:Card  x:Name="x_2Card" Grid.Row="0" Grid.Column="1" Grid.RowSpan="8" >
+            <ScrollViewer x:Name="x_scrollViewer"  HorizontalScrollBarVisibility="Disabled"  VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <Expander x:Name ="subdivisionExpander">
+                        <Expander.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock  Text="Сортування" Grid.Column="2" VerticalAlignment ="Center" HorizontalAlignment="Right"/>
+                                <TextBlock  Text="Підрозділи"/>
+                                <CheckBox x:Name="subdivisionCheskBoxAll" Style="{StaticResource CheckBoxAllStyle}" IsEnabled="True"/>
+                                <CheckBox x:Name="subdivisionCheskBoxGroup1" Style="{StaticResource CheckBoxGroup1}" Tag="Підрозділи" IsEnabled="True"/>
+                                <CheckBox x:Name="subdivisionCheskBoxGroup2" Style="{StaticResource CheckBoxGroup2}" Tag="Підрозділи" IsEnabled="True"/>
+                                <CheckBox x:Name="subdivisionCheskBoxGroup3" Style="{StaticResource CheckBoxGroup3}" Tag="Підрозділи" IsEnabled="True"/>
+                            </Grid>
+                        </Expander.Header>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <ListBox x:Name="x_listSubdivisions"
+                                     ItemTemplate="{StaticResource itemsListBox}"
+                                     ItemsPanel="{StaticResource itemsPanelTemplate}">
+                            </ListBox>
+                        </ScrollViewer>
+                    </Expander>
+                    <Expander x:Name ="financeExpander">
+                        <Expander.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock  Text="Сортування" Grid.Column="2" VerticalAlignment ="Center" HorizontalAlignment="Right"/>
+                                <TextBlock  Text="Фінансування"/>
+                                <CheckBox x:Name="financeCheskBoxAll" Style="{StaticResource CheckBoxAllStyle}"/>
+                                <CheckBox x:Name="financeCheskBoxGroup1" Style="{StaticResource CheckBoxGroup1}" Tag="Фінансування"/>
+                                <CheckBox x:Name="financeCheskBoxGroup2" Style="{StaticResource CheckBoxGroup2}" Tag="Фінансування"/>
+                                <CheckBox x:Name="financeCheskBoxGroup3" Style="{StaticResource CheckBoxGroup3}" Tag="Фінансування"/>
+                            </Grid>
+                        </Expander.Header>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <ListBox x:Name="x_listFinance"
+                                     ItemTemplate="{StaticResource itemsListBox}"
+                                     ItemsPanel="{StaticResource itemsPanelTemplate}">
+                            </ListBox>
+                        </ScrollViewer>
+                    </Expander>
+                    <Expander x:Name ="institutionExpander">
+                        <Expander.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock  Text="Сортування" Grid.Column="2" VerticalAlignment ="Center" HorizontalAlignment="Right"/>
+                                <TextBlock  Text="Медичний заклад"/>
+                                <CheckBox x:Name="institutionCheskBoxAll" Style="{StaticResource CheckBoxAllStyle}"/>
+                                <CheckBox x:Name="institutionCheskBoxGroup1" Style="{StaticResource CheckBoxGroup1}" Tag="Медичний заклад"/>
+                                <CheckBox x:Name="institutionCheskBoxGroup2" Style="{StaticResource CheckBoxGroup2}" Tag="Медичний заклад"/>
+                                <CheckBox x:Name="institutionCheskBoxGroup3" Style="{StaticResource CheckBoxGroup3}" Tag="Медичний заклад"/>
+                            </Grid>
+                        </Expander.Header>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <ListBox x:Name="x_listInstitution" 
+                                     ItemTemplate="{StaticResource itemsListBox}"
+                                     ItemsPanel="{StaticResource itemsPanelTemplate}">
+                            </ListBox>
+                        </ScrollViewer>
+                    </Expander>
+                    <Expander x:Name ="departmentExpander">
+                        <Expander.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock  Text="Сортування" Grid.Column="2" VerticalAlignment ="Center" HorizontalAlignment="Right"/>
+                                <TextBlock  Text="Відділення"/>
+                                <CheckBox x:Name="departmentCheskBoxAll" Style="{StaticResource CheckBoxAllStyle}"/>
+                                <CheckBox x:Name="departmentCheskBoxGroup1" Style="{StaticResource CheckBoxGroup1}" Tag="Відділення"/>
+                                <CheckBox x:Name="departmentCheskBoxGroup2" Style="{StaticResource CheckBoxGroup2}" Tag="Відділення"/>
+                                <CheckBox x:Name="departmentCheskBoxGroup3" Style="{StaticResource CheckBoxGroup3}" Tag="Відділення"/>
+                            </Grid>
+                        </Expander.Header>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <ListBox x:Name="x_listDepartment"
+                                     ItemTemplate="{StaticResource itemsListBox}"
+                                     ItemsPanel="{StaticResource itemsPanelTemplate}">
+                            </ListBox>
+                        </ScrollViewer>
+                    </Expander>
+
+                    <Expander x:Name ="diagnosisExpander">
+                        <Expander.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock  Text="Сортування" Grid.Column="2" VerticalAlignment ="Center" HorizontalAlignment="Right"/>
+                                <TextBlock  Text="Діагнози"/>
+                                <CheckBox x:Name="diagnosisCheskBoxAll" Style="{StaticResource CheckBoxAllStyle}"/>
+                                <CheckBox  x:Name="diagnosisCheskBoxGroup1" Style="{StaticResource CheckBoxGroup1}" Tag="Діагноз"/>
+                                <CheckBox  x:Name="diagnosisCheskBoxGroup2" Style="{StaticResource CheckBoxGroup2}" Tag="Діагноз"/>
+                                <CheckBox  x:Name="diagnosisCheskBoxGroup3" Style="{StaticResource CheckBoxGroup3}" Tag="Діагноз"/>
+                            </Grid>
+                        </Expander.Header>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <ListBox x:Name="x_listDiagnosis" 
+                                     ItemTemplate="{StaticResource itemsListBox}"
+                                     ItemsPanel="{StaticResource itemsPanelTemplate}">
+                            </ListBox>
+                        </ScrollViewer>
+                    </Expander>
+
+                    <Expander x:Name ="patientStatusExpander">
+                        <Expander.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock  Text="Сортування" Grid.Column="2" VerticalAlignment ="Center" HorizontalAlignment="Right"/>
+                                <TextBlock  Text="Категорія пацієнта"/>
+                                <CheckBox x:Name="patientStatusCheskBoxAll" Style="{StaticResource CheckBoxAllStyle}"/>
+                                <CheckBox x:Name="patientStatusCheskBoxGroup1" Style="{StaticResource CheckBoxGroup1}" Tag="Статус пацієнта"/>
+                                <CheckBox x:Name="patientStatusCheskBoxGroup2" Style="{StaticResource CheckBoxGroup2}" Tag="Статус пацієнта"/>
+                                <CheckBox x:Name="patientStatusCheskBoxGroup3" Style="{StaticResource CheckBoxGroup3}" Tag="Статус пацієнта"/>
+                            </Grid>
+                        </Expander.Header>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <ListBox x:Name="x_listPatientStatus"
+                                     ItemTemplate="{StaticResource itemsListBox}"
+                                     ItemsPanel="{StaticResource itemsPanelTemplate}">
+                            </ListBox>
+                        </ScrollViewer>
+                    </Expander>
+
+                    <Expander x:Name ="sentPersonExpander">
+                        <Expander.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock  Text="Сортування" Grid.Column="2" VerticalAlignment ="Center" HorizontalAlignment="Right"/>
+                                <TextBlock  Text="Направив"/>
+                                <CheckBox x:Name="sentPersonCheskBoxAll" Style="{StaticResource CheckBoxAllStyle}"/>
+                                <CheckBox x:Name="sentPersonCheskBoxGroup1" Style="{StaticResource CheckBoxGroup1}" Tag="Особа, яка направила"/>
+                                <CheckBox x:Name="sentPersonCheskBoxGroup2" Style="{StaticResource CheckBoxGroup2}" Tag="Особа, яка направила"/>
+                                <CheckBox x:Name="sentPersonCheskBoxGroup3" Style="{StaticResource CheckBoxGroup3}" Tag="Особа, яка направила"/>
+                            </Grid>
+                        </Expander.Header>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <ListBox x:Name="x_listSentPerson" 
+                                     ItemTemplate="{StaticResource itemsListBox}"
+                                     ItemsPanel="{StaticResource itemsPanelTemplate}">
+                            </ListBox>
+                        </ScrollViewer>
+
+                    </Expander>
+
+                    <Expander x:Name ="groupResearchExpander">
+                        <Expander.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock  Text="Сортування" Grid.Column="2" VerticalAlignment ="Center" HorizontalAlignment="Right"/>
+                                <TextBlock  Text="Група досліджень"/>
+                                <CheckBox x:Name="groupResearchCheskBoxAll" Style="{StaticResource CheckBoxAllStyle}"/>
+                                <CheckBox x:Name="groupResearchCheskBoxGroup1" Style="{StaticResource CheckBoxGroup1}" Tag="Група дослідження"/>
+                                <CheckBox x:Name="groupResearchCheskBoxGroup2" Style="{StaticResource CheckBoxGroup2}" Tag="Група дослідження"/>
+                                <CheckBox x:Name="groupResearchCheskBoxGroup3" Style="{StaticResource CheckBoxGroup3}" Tag="Група дослідження"/>
+                            </Grid>
+                        </Expander.Header>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <ListBox x:Name="x_listGroupResearch"
+                                     ItemTemplate="{StaticResource itemsListBox}"
+                                     ItemsPanel="{StaticResource itemsPanelTemplate}">
+                            </ListBox>
+                        </ScrollViewer>
+                    </Expander>
+
+                    <Expander x:Name ="materialExpander">
+                        <Expander.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock  Text="Матеріал"/>
+                                    <CheckBox x:Name="x_GroupByGroupMaterial" Content="По групах" Margin="10 0 0 0" />
+                                </StackPanel>
+                                <TextBlock  Text="Сортування" Grid.Column="2" VerticalAlignment ="Center" HorizontalAlignment="Right"/>
+                                <CheckBox x:Name="materialCheskBoxAll" Style="{StaticResource CheckBoxAllStyle}"/>
+                                <CheckBox x:Name="materialCheskBoxGroup1" Style="{StaticResource CheckBoxGroup1}" Tag="Біоматеріал"/>
+                                <CheckBox x:Name="materialCheskBoxGroup2" Style="{StaticResource CheckBoxGroup2}" Tag="Біоматеріал"/>
+                                <CheckBox x:Name="materialCheskBoxGroup3" Style="{StaticResource CheckBoxGroup3}" Tag="Біоматеріал"/>
+                            </Grid>
+                        </Expander.Header>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <ListBox x:Name="x_listMaterial" 
+                                     ItemTemplate="{StaticResource itemsListBox}"
+                                     ItemsPanel="{StaticResource itemsPanelTemplate}">
+                            </ListBox>
+                        </ScrollViewer>
+                    </Expander>
+
+                    <Expander x:Name ="purposeExpander">
+                        <Expander.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock  Text="Сортування" Grid.Column="2" VerticalAlignment ="Center" HorizontalAlignment="Right"/>
+                                <TextBlock  Text="Мета дослідження"/>
+                                <CheckBox x:Name="purposeCheskBoxAll" Style="{StaticResource CheckBoxAllStyle}"/>
+                                <CheckBox x:Name="purposeCheskBoxGroup1" Style="{StaticResource CheckBoxGroup1}" Tag="Мета дослідження"/>
+                                <CheckBox x:Name="purposeCheskBoxGroup2" Style="{StaticResource CheckBoxGroup2}" Tag="Мета дослідження"/>
+                                <CheckBox x:Name="purposeCheskBoxGroup3" Style="{StaticResource CheckBoxGroup3}" Tag="Мета дослідження"/>
+                            </Grid>
+                        </Expander.Header>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <ListBox x:Name="x_listPurpose" 
+                                     ItemTemplate="{StaticResource itemsListBox}"
+                                     ItemsPanel="{StaticResource itemsPanelTemplate}">
+                            </ListBox>
+                        </ScrollViewer>
+                    </Expander>
+                  
+                    <Expander x:Name ="jobStatusExpander">
+                        <Expander.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock  Text="Сортування" Grid.Column="2" VerticalAlignment ="Center" HorizontalAlignment="Right"/>
+                                <TextBlock  Text="Статус проф.контингента"/>
+                                <CheckBox x:Name="jobStatusCheskBoxAll" Style="{StaticResource CheckBoxAllStyle}"/>
+                                <CheckBox x:Name="jobStatusCheskBoxGroup1" Style="{StaticResource CheckBoxGroup1}" Tag="Статус проф.контингента"/>
+                                <CheckBox x:Name="jobStatusCheskBoxGroup2" Style="{StaticResource CheckBoxGroup2}" Tag="Статус проф.контингента"/>
+                                <CheckBox x:Name="jobStatusCheskBoxGroup3" Style="{StaticResource CheckBoxGroup3}" Tag="Статус проф.контингента"/>
+                            </Grid>
+                        </Expander.Header>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <ListBox x:Name="x_listJobStatus"  
+                                     ItemTemplate="{StaticResource itemsListBox}"
+                                     ItemsPanel="{StaticResource itemsPanelTemplate}">
+                            </ListBox>
+                        </ScrollViewer>
+                    </Expander>
+
+                    <Expander x:Name ="jobPlaceGroupExpander">
+                        <Expander.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock  Text="Сортування" Grid.Column="2" VerticalAlignment ="Center" HorizontalAlignment="Right"/>
+                                <TextBlock  Text="Категорія проф.контингента"/>
+                                <CheckBox x:Name="jobPlaceGroupCheskBoxAll" Style="{StaticResource CheckBoxAllStyle}"/>
+                                <CheckBox x:Name="jobPlaceGroupCheskBoxGroup1" Style="{StaticResource CheckBoxGroup1}" Tag="Категорія проф.контингента"/>
+                                <CheckBox x:Name="jobPlaceGroupCheskBoxGroup2" Style="{StaticResource CheckBoxGroup2}" Tag="Категорія проф.контингента"/>
+                                <CheckBox x:Name="jobPlaceGroupCheskBoxGroup3" Style="{StaticResource CheckBoxGroup3}" Tag="Категорія проф.контингента"/>
+                            </Grid>
+                        </Expander.Header>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <ListBox x:Name="x_listJobPlaceGroup"  
+                                     ItemTemplate="{StaticResource itemsListBox}"
+                                     ItemsPanel="{StaticResource itemsPanelTemplate}">
+                            </ListBox>
+                        </ScrollViewer>
+                    </Expander>
+
+                    <Expander x:Name ="districtExpander">
+                        <Expander.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock  Text="Сортування" Grid.Column="2" VerticalAlignment ="Center" HorizontalAlignment="Right"/>
+                                <TextBlock  Text="Район проживання"/>
+                                <CheckBox x:Name="districtCheskBoxAll" Style="{StaticResource CheckBoxAllStyle}"/>
+                                <CheckBox x:Name="districtCheskBoxGroup1" Style="{StaticResource CheckBoxGroup1}" Tag="Район проживання"/>
+                                <CheckBox x:Name="districtCheskBoxGroup2" Style="{StaticResource CheckBoxGroup2}" Tag="Район проживання"/>
+                                <CheckBox x:Name="districtCheskBoxGroup3" Style="{StaticResource CheckBoxGroup3}" Tag="Район проживання"/>
+                            </Grid>
+                        </Expander.Header>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <ListBox x:Name="x_listDistrict"  
+                                     ItemTemplate="{StaticResource itemsListBox}"
+                                     ItemsPanel="{StaticResource itemsPanelTemplate}">
+                            </ListBox>
+                        </ScrollViewer>
+                    </Expander>
+
+                    <Expander x:Name ="jobDistrictExpander">
+                        <Expander.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock  Text="Сортування" Grid.Column="2" VerticalAlignment ="Center" HorizontalAlignment="Right"/>
+                                <TextBlock  Text="Район місця роботи"/>
+                                <CheckBox x:Name="jobDistrictCheskBoxAll" Style="{StaticResource CheckBoxAllStyle}"/>
+                                <CheckBox x:Name="jobDistrictCheskBoxGroup1" Style="{StaticResource CheckBoxGroup1}" Tag="Район місця роботи"/>
+                                <CheckBox x:Name="jobDistrictCheskBoxGroup2" Style="{StaticResource CheckBoxGroup2}" Tag="Район місця роботи"/>
+                                <CheckBox x:Name="jobDistrictCheskBoxGroup3" Style="{StaticResource CheckBoxGroup3}" Tag="Район місця роботи"/>
+                            </Grid>
+                        </Expander.Header>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <ListBox x:Name="x_listJobDistrict"  
+                                     ItemTemplate="{StaticResource itemsListBox}"
+                                     ItemsPanel="{StaticResource itemsPanelTemplate}">
+                            </ListBox>
+                        </ScrollViewer>
+                    </Expander>
+
+                    <Expander x:Name ="jobPlaceExpander">
+                        <Expander.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock  Text="Сортування" Grid.Column="2" VerticalAlignment ="Center" HorizontalAlignment="Right"/>
+                                <TextBlock  Text="Місце роботи"/>
+                                <CheckBox x:Name="jobPlaceCheskBoxAll" Style="{StaticResource CheckBoxAllStyle}"/>
+                                <CheckBox x:Name="jobPlaceCheskBoxGroup1" Style="{StaticResource CheckBoxGroup1}" Tag="Місце роботи"/>
+                                <CheckBox x:Name="jobPlaceCheskBoxGroup2" Style="{StaticResource CheckBoxGroup2}" Tag="Місце роботи"/>
+                                <CheckBox x:Name="jobPlaceCheskBoxGroup3" Style="{StaticResource CheckBoxGroup3}" Tag="Місце роботи"/>
+                            </Grid>
+                        </Expander.Header>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <ListBox x:Name="x_listJobPlace"
+                                     ItemTemplate="{StaticResource itemsListBox}"
+                                     ItemsPanel="{StaticResource itemsPanelTemplate}">
+                            </ListBox>
+                        </ScrollViewer>
+                    </Expander>
+
+                    <Expander x:Name ="jobExpander">
+                        <Expander.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock  Text="Сортування" Grid.Column="2" VerticalAlignment ="Center" HorizontalAlignment="Right"/>
+                                <TextBlock  Text="Посада"/>
+                                <CheckBox x:Name="jobCheskBoxAll" Style="{StaticResource CheckBoxAllStyle}"/>
+                                <CheckBox x:Name="jobCheskBoxGroup1" Style="{StaticResource CheckBoxGroup1}" Tag="Посада"/>
+                                <CheckBox x:Name="jobCheskBoxGroup2" Style="{StaticResource CheckBoxGroup2}" Tag="Посада"/>
+                                <CheckBox x:Name="jobCheskBoxGroup3" Style="{StaticResource CheckBoxGroup3}" Tag="Посада"/>
+                            </Grid>
+                        </Expander.Header>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <ListBox x:Name="x_listJob"
+                                     ItemTemplate="{StaticResource itemsListBox}"
+                                     ItemsPanel="{StaticResource itemsPanelTemplate}">
+                            </ListBox>
+                        </ScrollViewer>
+                    </Expander>
+
+                    <Expander x:Name ="brakerageExpander">
+                        <Expander.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock  Text="Сортування" Grid.Column="2" VerticalAlignment ="Center" HorizontalAlignment="Right"/>
+                                <TextBlock  Text="Бракераж"/>
+                                <CheckBox x:Name="brakerageCheskBoxAll" Style="{StaticResource CheckBoxAllStyle}"/>
+                                <CheckBox x:Name="brakerageCheskBoxGroup1" Style="{StaticResource CheckBoxGroup1}" Tag="Бракераж"/>
+                                <CheckBox x:Name="brakerageCheskBoxGroup2" Style="{StaticResource CheckBoxGroup2}" Tag="Бракераж"/>
+                                <CheckBox x:Name="brakerageCheskBoxGroup3" Style="{StaticResource CheckBoxGroup3}" Tag="Бракераж"/>
+                            </Grid>
+                        </Expander.Header>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <ListBox x:Name="x_listBrakerage"
+                                     ItemTemplate="{StaticResource itemsListBox}"
+                                     ItemsPanel="{StaticResource itemsPanelTemplate}">
+                            </ListBox>
+                        </ScrollViewer>
+                    </Expander>
+
+                    <Expander x:Name ="groupMOExpander">
+                        <Expander.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                    <TextBlock  Text="Культури" Margin="0 0 25 0"/>
+                                    <TextBlock Text="Види"/>
+                                    <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                                  x:Name="x_toggleButtonMO"  Margin="10 0 0 0"/>
+                                    <TextBlock Text="Роди"/>
+                                </StackPanel>
+                                <TextBlock  Text="Сортування" Grid.Column="2" VerticalAlignment ="Center" HorizontalAlignment="Right"/>
+                                <CheckBox x:Name="groupMOCheskBoxAll" Style="{StaticResource CheckBoxAllStyle}" IsEnabled="True"/>
+                                <CheckBox x:Name="groupMOCheskBoxGroup1" Style="{StaticResource CheckBoxGroup1}" Tag="Види мікроорганізмів" IsEnabled="True"/>
+                                <CheckBox x:Name="groupMOCheskBoxGroup2" Style="{StaticResource CheckBoxGroup2}" Tag="Види мікроорганізмів" IsEnabled="True"/>
+                                <CheckBox x:Name="groupMOCheskBoxGroup3" Style="{StaticResource CheckBoxGroup3}" Tag="Види мікроорганізмів" IsEnabled="True"/>
+                            </Grid>
+                        </Expander.Header>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <ListBox x:Name="x_GroupMOList"  ItemsSource="{Binding GroupMOList}" 
+                                     ItemTemplate="{StaticResource itemsListBoxCulture}" Width="Auto"
+                                     ItemsPanel="{StaticResource itemsPanelTemplate}">
+                            </ListBox>
+                        </ScrollViewer>
+                    </Expander>
+                    <Expander x:Name ="abExpander">
+                        <Expander.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                    <TextBlock  Text="Антибіотики" Margin="0 0 10 0"/>
+                                    <TextBlock Text="Всі"/>
+                                    <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                                  Checked="ToggleButton_Checked"
+                                                  Unchecked="ToggleButton_Checked"
+                                                  x:Name="x_toggleButtonAB"  Margin="10 0 0 0"/>
+                                    <TextBlock Text="Диски"/>
+                                    <CheckBox x:Name="x_GroupByGroupABCheckBox" Content="По групах" Margin="10 0 0 0" />
+                                </StackPanel>
+                                <TextBlock  Text="Сортування" Grid.Column="2" VerticalAlignment ="Center" HorizontalAlignment="Right"/>
+                                <CheckBox x:Name="abCheskBoxAll" Style="{StaticResource CheckBoxAllStyle}" IsEnabled="True"/>
+                                <CheckBox x:Name="abCheskBoxGroup1" Style="{StaticResource CheckBoxGroup1}" Tag="Антибіотики" IsEnabled="True"/>
+                                <CheckBox x:Name="abCheskBoxGroup2" Style="{StaticResource CheckBoxGroup2}" Tag="Антибіотики" IsEnabled="True"/>
+                                <CheckBox x:Name="abCheskBoxGroup3" Style="{StaticResource CheckBoxGroup3}" Tag="Антибіотики" IsEnabled="True"/>
+                            </Grid>
+                        </Expander.Header>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <ListBox x:Name="x_listAB"
+                                     ItemTemplate="{StaticResource itemsListBoxName}"
+                                     ItemsPanel="{StaticResource itemsPanelTemplate}">
+                            </ListBox>
+                        </ScrollViewer>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+        </materialDesign:Card>
+    </Grid>
+</UserControl>

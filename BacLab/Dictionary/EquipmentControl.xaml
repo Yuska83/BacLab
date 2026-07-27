@@ -1,0 +1,229 @@
+﻿<UserControl x:Class="BacLab.Dictionary.EquipmentControl"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:Models="clr-namespace:BacLab.Models"
+             xmlns:Dictionary="clr-namespace:BacLab.Dictionary"
+             mc:Ignorable="d" >
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Models:DateTimeToDateShotConverter x:Key="myDateConverter"/>
+            <Models:BoolToVisibilityBackConvector2 x:Key="BoolToVisibilityBackConvector2"/>
+            <Models:StringToIntConverter x:Key="StringToIntConverter"/>
+            <ControlTemplate x:Key="itemComboBox" >
+                <TextBlock Text="{Binding abbr}"/>
+            </ControlTemplate>
+            <DataTemplate x:Key="itemsComboBox">
+                <Control Template="{StaticResource itemComboBox}" />
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Журнал обліку ЗВТ та ВУ    Ф-ПР-6.4-01" 
+                   TextAlignment="Center" FontWeight="Bold" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="1" x:Name="x_name" TextAlignment="Center" FontWeight="Bold" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
+
+        <Grid Grid.Row="2"   Margin="10 0 10 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <CheckBox Grid.Column="0" x:Name="x_cb_visibilityId" Content="Id"  Visibility="Visible" Click="x_cb_visibilityId_Click" Margin="10 0 0 0" />
+
+            <StackPanel Grid.Column="9" Orientation="Horizontal" HorizontalAlignment="Right" >
+                <Button HorizontalAlignment="Right"  Click="SaveButton_Click" ToolTip ="Зберегти">
+                    <materialDesign:PackIcon Kind="ContentSave" />
+                </Button>
+                <Button HorizontalAlignment="Right"  Click="PrintButton_Click" ToolTip="Надрукувати">
+                    <materialDesign:PackIcon Kind="Printer"/>
+                </Button>
+                <Button HorizontalAlignment="Right"  Click="PrintLabelButton_Click" ToolTip="Етикетки">
+                    <materialDesign:PackIcon Kind="TableMultiple" />
+                </Button>
+            </StackPanel>
+
+            <ComboBox Grid.Column="1" x:Name="x_cb_groupEquipment" Margin="10 0 0 10" 
+                      SelectedItem="{Binding EquipmentGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      ItemTemplate="{StaticResource itemsComboBox}" 
+                      VerticalAlignment="Center" HorizontalAlignment="Left"
+                      KeyUp="x_cb_groupEquipment_KeyUp"
+                      materialDesign:HintAssist.Hint="Оберить категорію" />
+            <ComboBox Grid.Column="2" x:Name="x_cb_roomEquipment" Margin="10 0 0 10" 
+                      SelectedItem="{Binding Room, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      ItemTemplate="{StaticResource itemsComboBox}" 
+                      VerticalAlignment="Center" HorizontalAlignment="Left"
+                      KeyUp="x_cb_groupEquipment_KeyUp"
+                      materialDesign:HintAssist.Hint="Оберить приміщення" />
+
+            <StackPanel Grid.Column="3" Margin="5 0 0 0" VerticalAlignment="Center">
+                <CheckBox IsChecked="{Binding IsAccreditation}" Content="акредітація"/>
+                <CheckBox IsChecked="{Binding IsInventarization}" Content="інвентарізація"/>
+            </StackPanel>
+            <CheckBox Grid.Column="4" x:Name="x_cb_common" IsChecked="{Binding IsCommon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True, NotifyOnSourceUpdated=True}" Content="основне+малоцінне" VerticalAlignment="Center"/>
+            <Button Grid.Column="6" x:Name="x_FilterBTN" Click="x_FilterBTN_Click" ToolTip ="Показати" Margin="10 0 5 0">
+                <materialDesign:PackIcon Kind="Check" />
+            </Button>
+            <!--<StackPanel Grid.Column="7" Orientation="Horizontal"  HorizontalAlignment="Right">
+                <Button x:Name="x_RoomBTN" Margin="10,0,0,0" Content="кімнати" Click="x_RoomBTN_Click"/>
+                <Button x:Name="x_DragMetalBTN" Margin="10,0,0,0" Content="драг.метали" Click="x_RoomBTN_Click"/>
+                <Button x:Name="x_ThermometerBTN" Margin="10,0,0,0" Content="термометри" Click="x_RoomBTN_Click"/>
+            </StackPanel>-->
+        </Grid>
+
+        <materialDesign:Card Grid.Row="3">
+            <DataGrid x:Name="x_MainGrid" Margin="5" 
+                      ItemsSource="{Binding ListItems}" 
+                      FrozenColumnCount="3"
+                      AddingNewItem="x_MainGrid_AddingNewItem"
+                      MouseLeftButtonUp="x_MainGrid_MouseLeftButtonUp"
+                      EnableRowVirtualization="True">
+
+                <DataGrid.RowStyle>
+                    <Style TargetType="{x:Type DataGridRow}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsAccreditation, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                <Setter Property="Foreground" Value="Red" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsAccreditation, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="False">
+                                <Setter Property="Foreground" Value="Black" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.CommandBindings>
+                    <CommandBinding Command="ApplicationCommands.Delete" PreviewCanExecute="CommandBinding_CanExecuteDelete" Executed="CommandBinding_ExecutedDelete"/>
+                </DataGrid.CommandBindings>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id" Binding="{Binding Id}" IsReadOnly="True" Visibility="Collapsed" />
+                    <DataGridTextColumn Header="№" Binding="{Binding Index, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="Назва" Binding="{Binding Name}" />
+                    <DataGridTextColumn Header="Кіл-ть" Binding="{Binding Quantity}" />
+                    <DataGridTextColumn Header="Лаб №" Binding="{Binding LabNum}" />
+                    <DataGridTextColumn Header="Зав №" Binding="{Binding ZavNum}" />
+                    <DataGridTextColumn Header="Інв №" Binding="{Binding InvNum}" />
+                    <DataGridTemplateColumn Header="Кімната" SortMemberPath="Room.name">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock x:Name="x_RoomTextBlock"  MouseLeftButtonUp="x_TextBlock_MouseLeftButtonUp"
+                                           Text="{Binding Room.abbr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridCheckBoxColumn Header="Пас." 
+                                        Binding="{Binding IsPassport}"
+                                        ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
+                                        EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"/>
+                    <DataGridTextColumn Header="Виробник" Binding="{Binding Manufacturer}" />
+                    <DataGridTextColumn Header="Рік&#x0a;виг." Binding="{Binding YearManufacturer, Converter={StaticResource StringToIntConverter}}" />
+                    <DataGridTextColumn Header="Рік&#x0a;вст." Binding="{Binding YearІnstallation, Converter={StaticResource StringToIntConverter}}" />
+                    <DataGridTextColumn Header="Дата повірки,атестації,&#x0a;калібрування" Binding="{Binding Atestation}" />
+                    <DataGridTextColumn Header="Дата калібрування" Binding="{Binding DateCalibration}" />
+                    <DataGridTextColumn Header="Дата наступного калібруванн" Binding="{Binding DateCalibrationNext}" />
+                    <DataGridTemplateColumn  Header="Дорог.&#x0a;метали" SortMemberPath="IsDragMetal">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock x:Name="x_DragMetalTextBlock" MouseLeftButtonUp="x_TextBlock_MouseLeftButtonUp"  
+                                           Text="{Binding IsDragMetal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Коментар" Binding="{Binding Comment}"/>
+                    <DataGridTemplateColumn Header="Режим,&#x0a;&#186;&#67;" SortMemberPath="CurrentMode">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock x:Name="x_CurrentModeTextBlock"  MouseLeftButtonUp="x_TextBlock_MouseLeftButtonUp"
+                                           Text="{Binding CurrentMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Діапазон,&#x0a;&#186;&#67;" SortMemberPath="PassportMode" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock x:Name="x_PassportModeTextBlock"  MouseLeftButtonUp="x_TextBlock_MouseLeftButtonUp"
+                                           Text="{Binding PassportMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Тех.хар-ки" Binding="{Binding TechnicalCharacteristics}" />
+                    <DataGridTextColumn Header="Робочий режим" Binding="{Binding WorkMode}" />
+                    <DataGridTemplateColumn Header="Термометр,&#x0a;лаб №" SortMemberPath="Thermometer.labNum">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock x:Name="x_ThermometerTextBlock" MouseLeftButtonUp="x_TextBlock_MouseLeftButtonUp"
+                                           Text="{Binding Thermometer.labNum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Група" SortMemberPath="EquipmentGroup.abbr">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock x:Name="x_GroupTextBlock"  MouseLeftButtonUp="x_TextBlock_MouseLeftButtonUp"
+                                           Text="{Binding EquipmentGroup.abbr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Стан" SortMemberPath="EquipmentState.abbr">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock x:Name="x_StateTextBlock"  MouseLeftButtonUp="x_TextBlock_MouseLeftButtonUp"
+                                           Text="{Binding EquipmentState.abbr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Дез.засіб,&#x0a;концентрація" SortMemberPath="Disinfectant.abbr">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock x:Name="x_DisinfectantTextBlock"  MouseLeftButtonUp="x_TextBlock_MouseLeftButtonUp"
+                                           Text="{Binding Disinfectant.abbr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Час обробки,&#x0a;хв." Binding="{Binding TimeDisinfectants}"/>
+                    <DataGridTemplateColumn Header="Загальний час&#x0a;роботи УФЛ" SortMemberPath="TimeWorkUFO">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock x:Name="x_TimeWorkUFOTextBlock"  MouseLeftButtonUp="x_TextBlock_MouseLeftButtonUp"
+                                           Text="{Binding TimeWorkUFO, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Потужність,&#x0a;вт." Binding="{Binding Power}"/>
+                    <DataGridTextColumn Header="Ресурс,&#x0a;год." Binding="{Binding Resource}"/>
+                    <DataGridTextColumn Header="Сумарний&#x0a;бактер.потік" Binding="{Binding BactericidalFlow}"/>
+                    <DataGridTextColumn Header="Коеф-т викор.&#x0a;бактер.потока" Binding="{Binding Coefficient}"/>
+                    
+                    <DataGridCheckBoxColumn Header="Осн" 
+                                        Binding="{Binding IsMain}" 
+                                        ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
+                                        EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"/>
+                    <DataGridCheckBoxColumn Header="Акр"
+                                        Binding="{Binding IsAccreditation}" 
+                                        ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
+                                        EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"/>
+
+                </DataGrid.Columns>
+            </DataGrid>
+        </materialDesign:Card>
+    </Grid>
+</UserControl>
+
+

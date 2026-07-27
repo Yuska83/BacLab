@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="BacLab.Dialogs.Dialog_AddItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             mc:Ignorable="d" 
+             >
+    <StackPanel>
+        <TextBox Grid.Row="1" x:Name="x_abbr"  TextChanged="X_abbr_TextChanged"/>
+        <ListBox Grid.Row="2" x:Name="x_abbrList" SelectionChanged="x_abbrList_SelectionChanged" MaxHeight="600"/>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="10 0 10 0">
+            <Button IsDefault="True" 
+                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}"
+                    Click="Button_Click">
+                Зберегти
+            </Button>
+            <Button IsCancel="True" Margin="8 0 0 0" 
+                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}"
+                    Click="ButtonCancel_Click">
+                Відмінити
+            </Button>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

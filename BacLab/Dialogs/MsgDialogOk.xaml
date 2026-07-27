@@ -7,17 +7,16 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300"
-             MaxWidth="400">
+             >
     <Grid Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <TextBlock x:Name="Message" 
-                   Margin="0 6 0 6"
-                   FontSize="18" Grid.Row="0"/>
-
+        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <TextBlock x:Name="x_message" 
+                   Margin="0 6 0 6"/>
+        </ScrollViewer>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" >
 
             <Button IsDefault="True" 

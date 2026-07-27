@@ -17,19 +17,19 @@ namespace BacLab
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public d_District()
         {
-            this.p_Institution_Department_District = new HashSet<p_Institution_Department_District>();
-            this.Patients = new HashSet<Patient>();
-            this.Patients1 = new HashSet<Patient>();
+            this.d_JobPlace = new HashSet<d_JobPlace>();
+            this.d_Patients = new HashSet<d_Patients>();
         }
     
         public int id { get; set; }
-        public string district { get; set; }
+        public string name { get; set; }
+        public string abbr { get; set; }
+        public Nullable<int> index { get; set; }
+        public Nullable<bool> show { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<p_Institution_Department_District> p_Institution_Department_District { get; set; }
+        public virtual ICollection<d_JobPlace> d_JobPlace { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Patient> Patients { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Patient> Patients1 { get; set; }
+        public virtual ICollection<d_Patients> d_Patients { get; set; }
     }
 }

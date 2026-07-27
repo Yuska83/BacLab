@@ -1,0 +1,28 @@
+﻿<Window x:Class="BacLab.Dialogs.DialogStackCheckBoxWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        ShowInTaskbar="False" Width="Auto"
+        WindowStartupLocation="CenterOwner" SizeToContent="Width" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="x_nameTB" FontWeight="Bold" FontSize="20"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10 0 10 5" Padding="5 0 5 0"/>
+        <TextBlock x:Name="x_tabNameTB" Grid.Row="1" FontWeight="Bold" FontSize="16"  HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="10 5 10 5" />
+        <materialDesign:Card x:Name="x_mainCard" Grid.Row="2">
+            <ScrollViewer Margin="5" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
+                <StackPanel x:Name="x_stackPanel" Width="Auto"/>
+            </ScrollViewer>
+        </materialDesign:Card>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="saveBTN" Click="Button_Click" IsDefault="True">Зберегти
+            </Button>
+            <Button x:Name="CancelBTN" Click="Button_Click" Margin="8 0 0 0" >Відмінити
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>

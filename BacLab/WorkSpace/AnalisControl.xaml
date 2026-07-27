@@ -1,0 +1,114 @@
+﻿<UserControl x:Class="BacLab.WorkSpace.AnalisControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:Models="clr-namespace:BacLab.Models"
+             xmlns:WorkSpace="clr-namespace:BacLab.WorkSpace"
+             d:DataContext="{d:DesignInstance WorkSpace:AnalisControl, IsDesignTimeCreatable=False}"
+             mc:Ignorable="d"  Width="1300">
+
+    <UserControl.Resources>
+        <Models:AnalisStringConverter x:Key="AnalisStringConverter" />
+        <Models:DateTimeToDateConverter x:Key="DateTimeToDateConverter" />
+        <Models:BoolToVisibilityBackConvector x:Key="BoolToVisibilityBackConvector"/>
+        <Models:CountToVisibilityConvector x:Key="CountToVisibilityConvector"/>
+        <ControlTemplate x:Key="itemComboBox" >
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding abbr}" />
+            </StackPanel>
+        </ControlTemplate>
+        <DataTemplate x:Key="itemsComboBox">
+            <Control Template="{StaticResource itemComboBox}" />
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="350"/>
+            <ColumnDefinition MinWidth="150"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="150"/>
+        </Grid.ColumnDefinitions>
+
+
+        <TextBox x:Name="x_LabNum"  VerticalAlignment="Bottom" Margin="10 0 10 0"
+                 ToolTip="{Binding Analis, Converter={StaticResource AnalisStringConverter}}"
+                 PreviewKeyDown="x_LabNum_PreviewKeyDown"
+                 KeyDown="x_LabNum_PreviewKeyDown"/>
+
+        <ComboBox Grid.Column="1"
+                  x:Name="x_result"
+                  materialDesign:HintAssist.Hint="Результат" 
+                  ItemTemplate="{StaticResource itemsComboBox}" 
+                  SelectedItem="{Binding Analis.d_ResTemplate, Mode =TwoWay,  UpdateSourceTrigger=PropertyChanged}"/>
+
+        <Button x:Name="x_saveBTN" Grid.Column="2"
+                materialDesign:HintAssist.Hint="Відправити"
+                Click="x_saveBtn_Click">
+            <materialDesign:PackIcon Kind="Check" />
+        </Button>
+
+        <Button x:Name="x_editAnalisBTN" Grid.Column="2" Visibility="Hidden"
+                materialDesign:HintAssist.Hint="Відправити"
+                Click="x_editAnalisBTN_Click">
+            <materialDesign:PackIcon Kind="FileEdit" />
+        </Button>
+
+        <CheckBox Grid.Column="3"  Visibility="Visible"  FontSize="16"
+                  VerticalAlignment="Top" Margin="10 0 10 0"
+                  IsChecked="{Binding NoSend, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" >
+            <materialDesign:PackIcon Kind="EmailOff" />
+        </CheckBox>
+        <CheckBox Grid.Column="3"  Visibility="Visible"  FontSize="16"
+                  VerticalAlignment="Bottom" Margin="10 0 10 0"
+                  IsChecked="{Binding NoPrint, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" >
+            <materialDesign:PackIcon Kind="PrinterOff" />
+        </CheckBox>
+        <Button x:Name="x_editRegistrationBTN" Grid.Column="4"
+                materialDesign:HintAssist.Hint="Інші аналізи пацієнта"
+                Click="x_editRegistrationBTN_Click">
+            <materialDesign:PackIcon Kind="Pencil" />
+        </Button>
+        <Button x:Name="x_showOtherAnalisisBTN" Grid.Column="5"
+                Visibility="{Binding Analis, Converter={StaticResource CountToVisibilityConvector}}"
+                materialDesign:HintAssist.Hint="Інші аналізи пацієнта"
+                Click="x_showOtherAnalisisBTN_Click">
+            <materialDesign:PackIcon Kind="FileDocumentBox" />
+        </Button>
+        <Button x:Name="x_emailBTN"  Grid.Column="6"
+                ToolTip="Відправити на пошту" Visibility="Hidden"
+                Click="x_SentEmail_Click"  IsEnabled="{Binding Analis.sendAnalis}">
+            <materialDesign:PackIcon Kind="Email" />
+        </Button>
+        <Button x:Name="x_printBTN"  Grid.Column="7"
+                ToolTip="Надрукувати" Visibility="Hidden"
+                Click="x_PrintRezult_Click"  IsEnabled="{Binding Analis.sendAnalis,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+            <materialDesign:PackIcon Kind="Printer" />
+        </Button>
+        <Button  x:Name="x_blankBTN"  Grid.Column="8" Visibility="Hidden"
+                 Click="x_ShowRezult_Click"  IsEnabled="{Binding Analis.sendAnalis,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+            <materialDesign:PackIcon Kind="FileDocument" />
+        </Button>
+
+        <DatePicker Grid.Column="9" x:Name="x_dateEnd" VerticalAlignment="Center"
+                    Visibility="{Binding Analis.sendAnalis, Converter={StaticResource BooleanToVisibilityConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                    materialDesign:HintAssist.Hint="Дата виписки"
+                    SelectedDate="{Binding Analis.dateEnd, Converter={StaticResource DateTimeToDateConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged }">
+        </DatePicker>
+
+        <TextBox Grid.Column="10" x:Name="x_doctorSend" VerticalAlignment="Bottom" Margin="10 0 10 0" 
+                 Text="{Binding Analis.d_Staff.abbr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 Visibility="{Binding Analis.sendAnalis, Converter={StaticResource BooleanToVisibilityConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                 materialDesign:HintAssist.Hint="Лікар"
+                 IsEnabled="False"/>
+    </Grid>
+</UserControl>

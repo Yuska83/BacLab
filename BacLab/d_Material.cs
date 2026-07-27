@@ -17,16 +17,18 @@ namespace BacLab
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public d_Material()
         {
-            this.Analyses = new HashSet<Analysis>();
-            this.p_Group_Material = new HashSet<p_Group_Material>();
+            this.p_Group_Material_Purpose = new HashSet<p_Group_Material_Purpose>();
         }
     
         public int id { get; set; }
-        public string material { get; set; }
+        public string name { get; set; }
+        public string abbr { get; set; }
+        public Nullable<int> index { get; set; }
+        public Nullable<bool> show { get; set; }
+        public Nullable<int> idMaterialGroup { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Analysis> Analyses { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<p_Group_Material> p_Group_Material { get; set; }
+        public virtual ICollection<p_Group_Material_Purpose> p_Group_Material_Purpose { get; set; }
+        public virtual d_MaterialGroup d_MaterialGroup { get; set; }
     }
 }

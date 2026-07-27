@@ -1,0 +1,125 @@
+﻿<UserControl x:Class="BacLab.Dictionary.ABResSenControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:Dictionary="clr-namespace:BacLab.Dictionary"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Dictionary:ABResSenControl,IsDesignTimeCreatable=False}">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="itemComboBox" >
+            <TextBlock Text="{Binding name}" FontSize="14"/>
+        </ControlTemplate>
+        <DataTemplate x:Key="itemsComboBox">
+            <Control Template="{StaticResource itemComboBox}" />
+        </DataTemplate>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Очікувані фенотипи резистентності та чутливості" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="5"/>
+        <ComboBox  x:Name="x_cb_listMicroorganism" Grid.Row="1"
+                   materialDesign:HintAssist.Hint="Оберіть мікроорганізм" 
+                   SelectionChanged="x_cb_listMicroorganism_SelectionChanged"
+                   ItemsSource="{Binding ListMicroorganism}"
+                   ItemTemplate="{StaticResource itemsComboBox}"/>
+
+        <StackPanel Grid.Column="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 10 0">
+            <Button HorizontalAlignment="Right"  Margin="0 0 10 0" ToolTip ="Зберегти" Click="SaveButton_Click">
+                <materialDesign:PackIcon Kind="ContentSave" />
+            </Button>
+            <Button HorizontalAlignment="Right"  ToolTip="Надрукувати" Click="PrintButton_Click">
+                <materialDesign:PackIcon Kind="Printer"/>
+            </Button>
+        </StackPanel>
+
+        <materialDesign:Card Grid.Column="0" Grid.Row="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Фенотип чутливості" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <DataGrid x:Name="x_ABSenGrid" Grid.Row="2" 
+                          ItemsSource="{Binding ListABSen}"
+                          SelectedItem="{Binding SelectedABSen}"
+                          CanUserAddRows="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Назва антибіотика" Binding="{Binding d_TestAndAntibiotic.name}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Примітка" Binding="{Binding comment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </materialDesign:Card>
+
+        <StackPanel Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button x:Name="x_addBTN" Click="x_addSen_Click" ToolTip="Додати">
+                <materialDesign:PackIcon Kind="ArrowLeftBold" />
+            </Button>
+            <Button x:Name="x_delBTN" Click="x_delSen_Click" ToolTip="Видалити">
+                <materialDesign:PackIcon Kind="ArrowRightBold" />
+            </Button>
+        </StackPanel>
+
+        <materialDesign:Card Grid.Column="2" Grid.Row="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Антибіотики" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                
+                <DataGrid x:Name="x_ABGrid" Grid.Row="2" 
+                          ItemsSource="{Binding ListAB}"
+                          SelectedItem="{Binding SelectedAB}"
+                          CanUserAddRows="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Назва антибіотика" Binding="{Binding name}" IsReadOnly="True"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </materialDesign:Card>
+
+        <StackPanel Grid.Column="3" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button x:Name="x_addBTN_2" Click="x_addRes_Click"  ToolTip="Додати">
+                <materialDesign:PackIcon Kind="ArrowRightBold" />
+            </Button>
+            <Button x:Name="x_delBTN_2" Click="x_delRes_Click"  ToolTip="Видалити">
+                <materialDesign:PackIcon Kind="ArrowLeftBold" />
+            </Button>
+        </StackPanel>
+
+        <materialDesign:Card Grid.Column="4" Grid.Row="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Фенотип резистентності" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <DataGrid x:Name="x_ABResGrid" Grid.Row="2" 
+                          ItemsSource="{Binding ListABRes}"
+                          SelectedItem="{Binding SelectedABRes}"
+                          CanUserAddRows="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Назва антибіотика" Binding="{Binding d_TestAndAntibiotic.name}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Примітка" Binding="{Binding comment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </materialDesign:Card>
+
+    </Grid>
+</UserControl>

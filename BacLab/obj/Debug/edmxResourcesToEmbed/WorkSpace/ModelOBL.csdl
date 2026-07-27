@@ -1,0 +1,2615 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BacLab_DB_OBLModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="a_Antibiotic">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="nameDisk" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="abbr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="doseSt" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="doseHi" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <Property Name="id_AntibioticGroup" Type="Int32" />
+    <Property Name="dose" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="doseStandartPerOr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="doseStandart_Vv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="doseHighPerOr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="doseHigh_Vv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="a_AntibioticGroup" Relationship="Self.FK__a_Antibio__id_An__302F0D3D" FromRole="a_Antibiotic" ToRole="a_AntibioticGroup" />
+    <NavigationProperty Name="a_AntibioticMicroorganismGroup" Relationship="Self.FK__a_Antibiot__idAB__461E4E5C" FromRole="a_Antibiotic" ToRole="a_AntibioticMicroorganismGroup" />
+    <NavigationProperty Name="a_AntibioticNorms" Relationship="Self.FK_a_AntibioticNorms_a_Antibiotic" FromRole="a_Antibiotic" ToRole="a_AntibioticNorms" />
+    <NavigationProperty Name="a_AntibioticStock" Relationship="Self.FK_a_AntibioticStock_a_Antibiotic" FromRole="a_Antibiotic" ToRole="a_AntibioticStock" />
+    <NavigationProperty Name="p_Analises_Mediums_Cultures_AB" Relationship="Self.FK_p_Analises_Mediums_Cultures_AB_a_Antibiotic" FromRole="a_Antibiotic" ToRole="p_Analises_Mediums_Cultures_AB" />
+    <NavigationProperty Name="p_Analises_Mediums_Date_Cultures_AB" Relationship="Self.FK_p_Analises_Mediums_Date_Cultures_AB_a_Antibiotic" FromRole="a_Antibiotic" ToRole="p_Analises_Mediums_Date_Cultures_AB" />
+  </EntityType>
+  <EntityType Name="a_AntibioticControl">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="idABCurrent" Type="Int32" Nullable="false" />
+    <Property Name="idCulture" Type="Int32" Nullable="false" />
+    <Property Name="valuePermissiblemMin" Type="Int32" />
+    <Property Name="valuePermissiblemMax" Type="Int32" />
+    <Property Name="valueTargetMin" Type="Int32" />
+    <Property Name="valueTargetMax" Type="Int32" />
+    <Property Name="valueCurrent" Type="Int32" />
+    <NavigationProperty Name="a_AntibioticStock" Relationship="Self.FK_a_AntibioticControl_a_AntibioticControl" FromRole="a_AntibioticControl" ToRole="a_AntibioticStock" />
+    <NavigationProperty Name="d_Microorganism" Relationship="Self.FK_a_AntibioticControl_d_Microorganism" FromRole="a_AntibioticControl" ToRole="d_Microorganism" />
+  </EntityType>
+  <EntityType Name="a_AntibioticGroup">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="a_Antibiotic" Relationship="Self.FK__a_Antibio__id_An__302F0D3D" FromRole="a_AntibioticGroup" ToRole="a_Antibiotic" />
+  </EntityType>
+  <EntityType Name="a_AntibioticMicroorganismGroup">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idGroupMO" Type="Int32" />
+    <Property Name="idAB" Type="Int32" />
+    <Property Name="sen" Type="Int32" />
+    <Property Name="res" Type="Int32" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <Property Name="comments" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="specificity" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+    <Property Name="interpretation" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="a_Antibiotic" Relationship="Self.FK__a_Antibiot__idAB__461E4E5C" FromRole="a_AntibioticMicroorganismGroup" ToRole="a_Antibiotic" />
+    <NavigationProperty Name="a_AntibioticPanel" Relationship="Self.FK__a_Antibio__id_AB__7C7A5F0D" FromRole="a_AntibioticMicroorganismGroup" ToRole="a_AntibioticPanel" />
+    <NavigationProperty Name="d_MicroorganismGroup" Relationship="Self.FK__a_Antibio__idGro__452A2A23" FromRole="a_AntibioticMicroorganismGroup" ToRole="d_MicroorganismGroup" />
+  </EntityType>
+  <EntityType Name="a_AntibioticNorms">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idAB" Type="Int32" Nullable="false" />
+    <Property Name="idCulture" Type="Int32" Nullable="false" />
+    <Property Name="valuePermissiblemMin" Type="Int32" />
+    <Property Name="valuePermissiblemMax" Type="Int32" />
+    <Property Name="valueTargetMin" Type="Int32" />
+    <Property Name="valueTargetMax" Type="Int32" />
+    <Property Name="index" Type="Int32" />
+    <NavigationProperty Name="a_Antibiotic" Relationship="Self.FK_a_AntibioticNorms_a_Antibiotic" FromRole="a_AntibioticNorms" ToRole="a_Antibiotic" />
+    <NavigationProperty Name="d_Microorganism" Relationship="Self.FK_a_AntibioticNorms_d_Microorganism" FromRole="a_AntibioticNorms" ToRole="d_Microorganism" />
+  </EntityType>
+  <EntityType Name="a_AntibioticPanel">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idAntibioticPanelName" Type="Int32" />
+    <Property Name="fistLine" Type="Boolean" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <Property Name="id_ABMOGroup" Type="Int32" />
+    <NavigationProperty Name="a_AntibioticMicroorganismGroup" Relationship="Self.FK__a_Antibio__id_AB__7C7A5F0D" FromRole="a_AntibioticPanel" ToRole="a_AntibioticMicroorganismGroup" />
+    <NavigationProperty Name="a_AntibioticPanelName" Relationship="Self.FK__a_Antibio__idAnt__5B196B42" FromRole="a_AntibioticPanel" ToRole="a_AntibioticPanelName" />
+  </EntityType>
+  <EntityType Name="a_AntibioticPanelName">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="idGroupMO" Type="Int32" />
+    <Property Name="specificity" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="a_AntibioticPanel" Relationship="Self.FK__a_Antibio__idAnt__5B196B42" FromRole="a_AntibioticPanelName" ToRole="a_AntibioticPanel" />
+    <NavigationProperty Name="d_MicroorganismGroup" Relationship="Self.FK__a_Antibio__idGro__583CFE97" FromRole="a_AntibioticPanelName" ToRole="d_MicroorganismGroup" />
+  </EntityType>
+  <EntityType Name="a_AntibioticStock">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idAB" Type="Int32" Nullable="false" />
+    <Property Name="series" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="termin" Type="DateTime" Precision="0" />
+    <Property Name="show" Type="Boolean" />
+    <Property Name="conclusion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="dateDelivery" Type="DateTime" Precision="0" />
+    <Property Name="idProducer" Type="Int32" />
+    <NavigationProperty Name="a_Antibiotic" Relationship="Self.FK_a_AntibioticStock_a_Antibiotic" FromRole="a_AntibioticStock" ToRole="a_Antibiotic" />
+    <NavigationProperty Name="a_AntibioticControl" Relationship="Self.FK_a_AntibioticControl_a_AntibioticControl" FromRole="a_AntibioticStock" ToRole="a_AntibioticControl" />
+    <NavigationProperty Name="d_Producer" Relationship="Self.FK_a_AntibioticStock_d_Producer" FromRole="a_AntibioticStock" ToRole="d_Producer" />
+  </EntityType>
+  <EntityType Name="d_Analyzes">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="labNum" Type="Int32" Nullable="false" />
+    <Property Name="dateSampling" Type="DateTime" Precision="0" />
+    <Property Name="dateDelivery" Type="DateTime" Precision="0" />
+    <Property Name="idPatient" Type="Int32" />
+    <Property Name="numMedCard" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="idGMP" Type="Int32" />
+    <Property Name="dateEnd" Type="DateTime" Precision="0" />
+    <Property Name="timeSampling" Type="Time" Precision="7" />
+    <Property Name="timeDelivery" Type="Time" Precision="7" />
+    <Property Name="timeEnd" Type="Time" Precision="7" />
+    <Property Name="sendAnalis" Type="Boolean" />
+    <Property Name="rezult" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="idFinance" Type="Int32" />
+    <Property Name="idInstitution" Type="Int32" />
+    <Property Name="idDepartment" Type="Int32" />
+    <Property Name="idDiagnosis" Type="Int32" />
+    <Property Name="idPatientStatus" Type="Int32" />
+    <Property Name="idSentPerson" Type="Int32" />
+    <Property Name="idResTemplate" Type="Int32" />
+    <Property Name="idDoctor" Type="Int32" />
+    <Property Name="agePatient" Type="Int32" />
+    <Property Name="idInstitutionLaboratorii" Type="Int32" />
+    <Property Name="comment" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="d_Staff" Relationship="Self.FK__d_Analyze__id_Do__35B2DC69" FromRole="d_Analyzes" ToRole="d_Staff" />
+    <NavigationProperty Name="d_Department" Relationship="Self.FK__d_Analyze__idDep__11DF9047" FromRole="d_Analyzes" ToRole="d_Department" />
+    <NavigationProperty Name="d_Diagnosis" Relationship="Self.FK__d_Analyze__idDia__12D3B480" FromRole="d_Analyzes" ToRole="d_Diagnosis" />
+    <NavigationProperty Name="d_Finance" Relationship="Self.FK__d_Analyze__idFin__0FF747D5" FromRole="d_Analyzes" ToRole="d_Finance" />
+    <NavigationProperty Name="p_Group_Material_Purpose" Relationship="Self.FK__d_Analyze__idGMP__6C5905DD" FromRole="d_Analyzes" ToRole="p_Group_Material_Purpose" />
+    <NavigationProperty Name="d_Institution" Relationship="Self.FK__d_Analyze__idIns__10EB6C0E" FromRole="d_Analyzes" ToRole="d_Institution" />
+    <NavigationProperty Name="d_PatientStatus" Relationship="Self.FK__d_Analyze__idPat__13C7D8B9" FromRole="d_Analyzes" ToRole="d_PatientStatus" />
+    <NavigationProperty Name="d_Patients" Relationship="Self.FK__d_Analyze__idPat__66A02C87" FromRole="d_Analyzes" ToRole="d_Patients" />
+    <NavigationProperty Name="d_ResTemplate" Relationship="Self.FK__d_Analyze__idRes__15B0212B" FromRole="d_Analyzes" ToRole="d_ResTemplate" />
+    <NavigationProperty Name="d_SentPerson" Relationship="Self.FK__d_Analyze__idSen__14BBFCF2" FromRole="d_Analyzes" ToRole="d_SentPerson" />
+    <NavigationProperty Name="p_Analises_DB" Relationship="Self.FK__p_Analise__idAnalis" FromRole="d_Analyzes" ToRole="p_Analises_DB" />
+    <NavigationProperty Name="d_Institution1" Relationship="Self.FK_d_Analyzes_d_Institution" FromRole="d_Analyzes" ToRole="d_Institution" />
+    <NavigationProperty Name="p_Analises_Mediums" Relationship="Self.FK_p_Analis_Mediums_d_Analyzes" FromRole="d_Analyzes" ToRole="p_Analises_Mediums" />
+  </EntityType>
+  <EntityType Name="d_Biovariant">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="idMicroorganism" Type="Int32" />
+    <Property Name="idSerotype" Type="Int32" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <Property Name="idMicroorganismGroup" Type="Int32" />
+    <NavigationProperty Name="d_Microorganism" Relationship="Self.FK__d_Biovari__idMic__03E676AB" FromRole="d_Biovariant" ToRole="d_Microorganism" />
+    <NavigationProperty Name="d_Serotype" Relationship="Self.FK__d_Biovari__idSer__04DA9AE4" FromRole="d_Biovariant" ToRole="d_Serotype" />
+    <NavigationProperty Name="d_MicroorganismGroup" Relationship="Self.FK_d_Biovariant_d_MicroorganismGroup" FromRole="d_Biovariant" ToRole="d_MicroorganismGroup" />
+    <NavigationProperty Name="p_Analises_Mediums_Cultures" Relationship="Self.FK_p_Analises_Mediums_Cultures_d_Biovariant" FromRole="d_Biovariant" ToRole="p_Analises_Mediums_Cultures" />
+    <NavigationProperty Name="p_Analises_Mediums_Date_Cultures" Relationship="Self.FK_p_Analises_Mediums_Date_Cultures_d_Biovariant" FromRole="d_Biovariant" ToRole="p_Analises_Mediums_Date_Cultures" />
+  </EntityType>
+  <EntityType Name="d_Department">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="d_Analyzes" Relationship="Self.FK__d_Analyze__idDep__11DF9047" FromRole="d_Department" ToRole="d_Analyzes" />
+    <NavigationProperty Name="g_Institution_Department" Relationship="Self.FK__g_Institu__idIte__3434A84B" FromRole="d_Department" ToRole="g_Institution_Department" />
+  </EntityType>
+  <EntityType Name="d_Diagnosis">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="d_Analyzes" Relationship="Self.FK__d_Analyze__idDia__12D3B480" FromRole="d_Diagnosis" ToRole="d_Analyzes" />
+  </EntityType>
+  <EntityType Name="d_Disinfectants">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="d_District">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="d_Patients" Relationship="Self.FK__d_Patient__idDic__4A23E96A" FromRole="d_District" ToRole="d_Patients" />
+    <NavigationProperty Name="d_Patients1" Relationship="Self.FK__d_Patient__idJob__4B180DA3" FromRole="d_District" ToRole="d_Patients" />
+  </EntityType>
+  <EntityType Name="d_DragMetal">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="g_Equipment_DragMatal" Relationship="Self.FK_g_Equipment_DragMatal_d_DragMetal" FromRole="d_DragMetal" ToRole="g_Equipment_DragMatal" />
+  </EntityType>
+  <EntityType Name="d_Equipment">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="show" Type="Boolean" Nullable="false" />
+    <Property Name="isMain" Type="Boolean" Nullable="false" />
+    <Property Name="idRoom" Type="Int32" Nullable="false" />
+    <Property Name="idEquipmentGroup" Type="Int32" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="model" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="labNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="zavNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="invNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="isPassport" Type="Boolean" />
+    <Property Name="yearManufacturer" Type="DateTime" Precision="0" />
+    <Property Name="manufacturer" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="yearІnstallation" Type="DateTime" Precision="0" />
+    <Property Name="comment" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="quantity" Type="Int32" />
+    <Property Name="isAccreditation" Type="Boolean" />
+    <Property Name="currentMode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="passportMode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="idThermometer" Type="Int32" />
+    <NavigationProperty Name="d_Equipment1" Relationship="Self.FK_d_Equipment_d_Equipment" FromRole="d_Equipment" ToRole="d_Equipment1" />
+    <NavigationProperty Name="d_Equipment2" Relationship="Self.FK_d_Equipment_d_Equipment" FromRole="d_Equipment1" ToRole="d_Equipment" />
+    <NavigationProperty Name="d_EquipmentGroup" Relationship="Self.FK_d_Equipment_d_EquipmentGroup" FromRole="d_Equipment" ToRole="d_EquipmentGroup" />
+    <NavigationProperty Name="d_Room" Relationship="Self.FK_d_Equipment_d_Room" FromRole="d_Equipment" ToRole="d_Room" />
+    <NavigationProperty Name="g_Equipment_Thermometer" Relationship="Self.FK_Equipment_Thermometer" FromRole="d_Equipment" ToRole="g_Equipment_Thermometer" />
+    <NavigationProperty Name="g_Equipment_Thermometer1" Relationship="Self.FK_g_Equipment__d_Equipment" FromRole="d_Equipment" ToRole="g_Equipment_Thermometer" />
+    <NavigationProperty Name="g_Equipment_DragMatal" Relationship="Self.FK_g_Equipment_DragMatal_d_Equipment" FromRole="d_Equipment" ToRole="g_Equipment_DragMatal" />
+    <NavigationProperty Name="p_Room_Equipment_Temperature" Relationship="Self.FK_p_Room_Equipment_Temperature_d_Equipment" FromRole="d_Equipment" ToRole="p_Room_Equipment_Temperature" />
+    <NavigationProperty Name="p_Room_Equipment_Temperature1" Relationship="Self.FK_p_Room_Equipment_Temperature_d_Equipment1" FromRole="d_Equipment" ToRole="p_Room_Equipment_Temperature" />
+  </EntityType>
+  <EntityType Name="d_EquipmentGroup">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="d_Equipment" Relationship="Self.FK_d_Equipment_d_EquipmentGroup" FromRole="d_EquipmentGroup" ToRole="d_Equipment" />
+  </EntityType>
+  <EntityType Name="d_Finance">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="d_Analyzes" Relationship="Self.FK__d_Analyze__idFin__0FF747D5" FromRole="d_Finance" ToRole="d_Analyzes" />
+  </EntityType>
+  <EntityType Name="d_GroupResearch">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="p_Group_Material_Purpose" Relationship="Self.FK__p_Group_M__idGro__455F344D" FromRole="d_GroupResearch" ToRole="p_Group_Material_Purpose" />
+  </EntityType>
+  <EntityType Name="d_Institution">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="d_Analyzes" Relationship="Self.FK__d_Analyze__idIns__10EB6C0E" FromRole="d_Institution" ToRole="d_Analyzes" />
+    <NavigationProperty Name="d_Analyzes1" Relationship="Self.FK_d_Analyzes_d_Institution" FromRole="d_Institution" ToRole="d_Analyzes" />
+    <NavigationProperty Name="g_Institution_SentPerson" Relationship="Self.FK__g_Institu__idGro__2F6FF32E" FromRole="d_Institution" ToRole="g_Institution_SentPerson" />
+    <NavigationProperty Name="g_Institution_Department" Relationship="Self.FK__g_Institu__idGro__33408412" FromRole="d_Institution" ToRole="g_Institution_Department" />
+  </EntityType>
+  <EntityType Name="d_Job">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="d_Patients" Relationship="Self.FK__d_Patient__idJob__4282C7A2" FromRole="d_Job" ToRole="d_Patients" />
+  </EntityType>
+  <EntityType Name="d_JobPlace">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="d_Patients" Relationship="Self.FK__d_Patient__idJob__4376EBDB" FromRole="d_JobPlace" ToRole="d_Patients" />
+  </EntityType>
+  <EntityType Name="d_Laboratoria">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="adress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="d_Material">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="p_Group_Material_Purpose" Relationship="Self.FK__p_Group_M__idMat__46535886" FromRole="d_Material" ToRole="p_Group_Material_Purpose" />
+  </EntityType>
+  <EntityType Name="d_Medium">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="p_Group_Material_Purpose_Medium" Relationship="Self.FK__p_Group_M__idMed__483BA0F8" FromRole="d_Medium" ToRole="p_Group_Material_Purpose_Medium" />
+    <NavigationProperty Name="p_Analises_Mediums" Relationship="Self.FK_p_Analis_Mediums_d_Medium" FromRole="d_Medium" ToRole="p_Analises_Mediums" />
+  </EntityType>
+  <EntityType Name="d_MethodsInoculation">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="p_Analises_Mediums" Relationship="Self.FK_p_Analis_Mediums_d_MethodsInoculation" FromRole="d_MethodsInoculation" ToRole="p_Analises_Mediums" />
+    <NavigationProperty Name="p_Group_Material_Purpose_Medium" Relationship="Self.FK_p_Group_Material_Purpose_Medium_d_MethodsInoculation" FromRole="d_MethodsInoculation" ToRole="p_Group_Material_Purpose_Medium" />
+  </EntityType>
+  <EntityType Name="d_Microorganism">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="a_AntibioticControl" Relationship="Self.FK_a_AntibioticControl_d_Microorganism" FromRole="d_Microorganism" ToRole="a_AntibioticControl" />
+    <NavigationProperty Name="a_AntibioticNorms" Relationship="Self.FK_a_AntibioticNorms_d_Microorganism" FromRole="d_Microorganism" ToRole="a_AntibioticNorms" />
+    <NavigationProperty Name="d_Biovariant" Relationship="Self.FK__d_Biovari__idMic__03E676AB" FromRole="d_Microorganism" ToRole="d_Biovariant" />
+    <NavigationProperty Name="d_Serotype" Relationship="Self.FK__d_Serotyp__idMic__19169DBB" FromRole="d_Microorganism" ToRole="d_Serotype" />
+    <NavigationProperty Name="g_MicroorganismGroup_Microorganism" Relationship="Self.FK__g_Microor__idIte__3BD5CA13" FromRole="d_Microorganism" ToRole="g_MicroorganismGroup_Microorganism" />
+    <NavigationProperty Name="p_Analises_Mediums_Cultures" Relationship="Self.FK_p_Analises_Mediums_Cultures_d_Microorganism" FromRole="d_Microorganism" ToRole="p_Analises_Mediums_Cultures" />
+    <NavigationProperty Name="p_Analises_Mediums_Date_Cultures" Relationship="Self.FK_p_Analises_Mediums_Date_Cultures_d_Microorganism" FromRole="d_Microorganism" ToRole="p_Analises_Mediums_Date_Cultures" />
+  </EntityType>
+  <EntityType Name="d_MicroorganismGroup">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="a_AntibioticMicroorganismGroup" Relationship="Self.FK__a_Antibio__idGro__452A2A23" FromRole="d_MicroorganismGroup" ToRole="a_AntibioticMicroorganismGroup" />
+    <NavigationProperty Name="a_AntibioticPanelName" Relationship="Self.FK__a_Antibio__idGro__583CFE97" FromRole="d_MicroorganismGroup" ToRole="a_AntibioticPanelName" />
+    <NavigationProperty Name="d_Biovariant" Relationship="Self.FK_d_Biovariant_d_MicroorganismGroup" FromRole="d_MicroorganismGroup" ToRole="d_Biovariant" />
+    <NavigationProperty Name="g_MicroorganismGroup_Microorganism" Relationship="Self.FK__g_Microor__idGro__3AE1A5DA" FromRole="d_MicroorganismGroup" ToRole="g_MicroorganismGroup_Microorganism" />
+  </EntityType>
+  <EntityType Name="d_Morphology">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="abbr" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+  </EntityType>
+  <EntityType Name="d_PathUseAB">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="abbr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="d_Patients">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="year" Type="Int32" />
+    <Property Name="adress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="idJob" Type="Int32" />
+    <Property Name="idJobPlace" Type="Int32" />
+    <Property Name="idDictrict" Type="Int32" />
+    <Property Name="idJobDictrict" Type="Int32" />
+    <Property Name="sex" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="d_Analyzes" Relationship="Self.FK__d_Analyze__idPat__66A02C87" FromRole="d_Patients" ToRole="d_Analyzes" />
+    <NavigationProperty Name="d_District" Relationship="Self.FK__d_Patient__idDic__4A23E96A" FromRole="d_Patients" ToRole="d_District" />
+    <NavigationProperty Name="d_District1" Relationship="Self.FK__d_Patient__idJob__4B180DA3" FromRole="d_Patients" ToRole="d_District" />
+    <NavigationProperty Name="d_Job" Relationship="Self.FK__d_Patient__idJob__4282C7A2" FromRole="d_Patients" ToRole="d_Job" />
+    <NavigationProperty Name="d_JobPlace" Relationship="Self.FK__d_Patient__idJob__4376EBDB" FromRole="d_Patients" ToRole="d_JobPlace" />
+  </EntityType>
+  <EntityType Name="d_PatientStatus">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="d_Analyzes" Relationship="Self.FK__d_Analyze__idPat__13C7D8B9" FromRole="d_PatientStatus" ToRole="d_Analyzes" />
+  </EntityType>
+  <EntityType Name="d_Producer">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="abbr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="show" Type="Boolean" />
+    <Property Name="index" Type="Int32" />
+    <NavigationProperty Name="a_AntibioticStock" Relationship="Self.FK_a_AntibioticStock_d_Producer" FromRole="d_Producer" ToRole="a_AntibioticStock" />
+  </EntityType>
+  <EntityType Name="d_Purpose">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="p_Group_Material_Purpose" Relationship="Self.FK__p_Group_M__idPur__47477CBF" FromRole="d_Purpose" ToRole="p_Group_Material_Purpose" />
+  </EntityType>
+  <EntityType Name="d_Quantity">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="abbr" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+  </EntityType>
+  <EntityType Name="d_ResTemplate">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="d_Analyzes" Relationship="Self.FK__d_Analyze__idRes__15B0212B" FromRole="d_ResTemplate" ToRole="d_Analyzes" />
+  </EntityType>
+  <EntityType Name="d_RezTemplateMedium">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="abbr" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Int32" />
+    <NavigationProperty Name="p_Analises_Mediums_Date" Relationship="Self.FK_p_Analises_Mediums_Date_d_RezTemplateMedium" FromRole="d_RezTemplateMedium" ToRole="p_Analises_Mediums_Date" />
+  </EntityType>
+  <EntityType Name="d_Room">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="d_Equipment" Relationship="Self.FK_d_Equipment_d_Room" FromRole="d_Room" ToRole="d_Equipment" />
+    <NavigationProperty Name="g_Room_Staff" Relationship="Self.FK_g_Room_Staff_d_Room" FromRole="d_Room" ToRole="g_Room_Staff" />
+    <NavigationProperty Name="p_Room_Equipment_Temperature" Relationship="Self.FK_p_Room_Equipment_Temperature_d_Room" FromRole="d_Room" ToRole="p_Room_Equipment_Temperature" />
+  </EntityType>
+  <EntityType Name="d_SentPerson">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="d_Analyzes" Relationship="Self.FK__d_Analyze__idSen__14BBFCF2" FromRole="d_SentPerson" ToRole="d_Analyzes" />
+    <NavigationProperty Name="g_Institution_SentPerson" Relationship="Self.FK__g_Institu__idIte__30641767" FromRole="d_SentPerson" ToRole="g_Institution_SentPerson" />
+  </EntityType>
+  <EntityType Name="d_Serotype">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="55" FixedLength="false" Unicode="true" />
+    <Property Name="idMicroorganism" Type="Int32" />
+    <Property Name="sepogroup" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="subspecies" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="O_antigen" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="H_phase_1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="H_phase_2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="old" Type="Boolean" />
+    <Property Name="fate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="d_Biovariant" Relationship="Self.FK__d_Biovari__idSer__04DA9AE4" FromRole="d_Serotype" ToRole="d_Biovariant" />
+    <NavigationProperty Name="d_Microorganism" Relationship="Self.FK__d_Serotyp__idMic__19169DBB" FromRole="d_Serotype" ToRole="d_Microorganism" />
+    <NavigationProperty Name="p_Analises_Mediums_Cultures" Relationship="Self.FK_p_Analises_Mediums_Cultures_d_Serotype" FromRole="d_Serotype" ToRole="p_Analises_Mediums_Cultures" />
+    <NavigationProperty Name="p_Analises_Mediums_Date_Cultures" Relationship="Self.FK_p_Analises_Mediums_Date_Cultures_d_Serotype" FromRole="d_Serotype" ToRole="p_Analises_Mediums_Date_Cultures" />
+  </EntityType>
+  <EntityType Name="d_Serum">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Ig" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="GroupMO" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="p_Analises_Mediums_Cultures_Serums" Relationship="Self.FK_p_Analises_Mediums_Cultures_Serums_d_Serum" FromRole="d_Serum" ToRole="p_Analises_Mediums_Cultures_Serums" />
+    <NavigationProperty Name="p_Analises_Mediums_Date_Cultures_Serums" Relationship="Self.FK_p_Analises_Mediums_Date_Cultures_Serums_d_Serum" FromRole="d_Serum" ToRole="p_Analises_Mediums_Date_Cultures_Serums" />
+  </EntityType>
+  <EntityType Name="d_Staff">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_category" Type="Int32" Nullable="false" />
+    <Property Name="birthday" Type="DateTime" Precision="3" />
+    <Property Name="adress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="telephon1" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="telephon2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="telephon3" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="abbr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <Property Name="parol" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="date_employment" Type="DateTime" Precision="0" />
+    <Property Name="date_dismissal" Type="DateTime" Precision="0" />
+    <Property Name="idStaffAlarm" Type="Int32" />
+    <NavigationProperty Name="d_Analyzes" Relationship="Self.FK__d_Analyze__id_Do__35B2DC69" FromRole="d_Staff" ToRole="d_Analyzes" />
+    <NavigationProperty Name="d_StaffGroup" Relationship="Self.FK__Staff__id_catego__7849DB76" FromRole="d_Staff" ToRole="d_StaffGroup" />
+    <NavigationProperty Name="d_Staff1" Relationship="Self.FK_d_Staff_d_Staff" FromRole="d_Staff" ToRole="d_Staff1" />
+    <NavigationProperty Name="d_Staff2" Relationship="Self.FK_d_Staff_d_Staff" FromRole="d_Staff1" ToRole="d_Staff" />
+    <NavigationProperty Name="g_Room_Staff" Relationship="Self.FK_g_Room_Staff_d_Staff" FromRole="d_Staff" ToRole="g_Room_Staff" />
+    <NavigationProperty Name="p_Room_Equipment_Temperature" Relationship="Self.FK_p_Room_Equipment_Temperature_d_Staff" FromRole="d_Staff" ToRole="p_Room_Equipment_Temperature" />
+    <NavigationProperty Name="d_StyleApp" Relationship="Self.StyleStaff_FK" FromRole="d_Staff" ToRole="d_StyleApp" />
+  </EntityType>
+  <EntityType Name="d_StaffGroup">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="d_Staff" Relationship="Self.FK__Staff__id_catego__7849DB76" FromRole="d_StaffGroup" ToRole="d_Staff" />
+  </EntityType>
+  <EntityType Name="d_StyleApp">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_staff" Type="Int32" />
+    <Property Name="style" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="isDark" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="primary_color" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="accent_color" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="staly_staff" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <NavigationProperty Name="d_Staff" Relationship="Self.StyleStaff_FK" FromRole="d_StyleApp" ToRole="d_Staff" />
+  </EntityType>
+  <EntityType Name="d_Template">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="temp" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="d_Tests">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="d_TestsPanel" Relationship="Self.FK_d_TestsPanel_d_Tests" FromRole="d_Tests" ToRole="d_TestsPanel" />
+    <NavigationProperty Name="p_Analises_Mediums_Cultures_Tests" Relationship="Self.FK_p_Analises_Mediums_Cultures_Tests_d_Tests" FromRole="d_Tests" ToRole="p_Analises_Mediums_Cultures_Tests" />
+    <NavigationProperty Name="p_Analises_Mediums_Date_Cultures_Tests" Relationship="Self.FK_p_Analises_Mediums_Date_Cultures_Tests_d_Tests" FromRole="d_Tests" ToRole="p_Analises_Mediums_Date_Cultures_Tests" />
+  </EntityType>
+  <EntityType Name="d_TestsPanel">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idTestsPanelName" Type="Int32" Nullable="false" />
+    <Property Name="idTest" Type="Int32" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <NavigationProperty Name="d_Tests" Relationship="Self.FK_d_TestsPanel_d_Tests" FromRole="d_TestsPanel" ToRole="d_Tests" />
+    <NavigationProperty Name="d_TestsPanelName" Relationship="Self.FK_d_TestsPanel_d_TestsPanelName" FromRole="d_TestsPanel" ToRole="d_TestsPanelName" />
+  </EntityType>
+  <EntityType Name="d_TestsPanelName">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <Property Name="abbr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="d_TestsPanel" Relationship="Self.FK_d_TestsPanel_d_TestsPanelName" FromRole="d_TestsPanelName" ToRole="d_TestsPanel" />
+  </EntityType>
+  <EntityType Name="d_TypeColony">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="abbr" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="show" Type="Boolean" />
+    <Property Name="index" Type="Int32" />
+  </EntityType>
+  <EntityType Name="g_Equipment_DragMatal">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idEquipment" Type="Int32" Nullable="false" />
+    <Property Name="idDragMetal" Type="Int32" Nullable="false" />
+    <Property Name="quantity" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="d_DragMetal" Relationship="Self.FK_g_Equipment_DragMatal_d_DragMetal" FromRole="g_Equipment_DragMatal" ToRole="d_DragMetal" />
+    <NavigationProperty Name="d_Equipment" Relationship="Self.FK_g_Equipment_DragMatal_d_Equipment" FromRole="g_Equipment_DragMatal" ToRole="d_Equipment" />
+  </EntityType>
+  <EntityType Name="g_Equipment_Thermometer">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idEquipment" Type="Int32" Nullable="false" />
+    <Property Name="idThermometer" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="d_Equipment" Relationship="Self.FK_Equipment_Thermometer" FromRole="g_Equipment_Thermometer" ToRole="d_Equipment" />
+    <NavigationProperty Name="d_Equipment1" Relationship="Self.FK_g_Equipment__d_Equipment" FromRole="g_Equipment_Thermometer" ToRole="d_Equipment" />
+  </EntityType>
+  <EntityType Name="g_Institution_Department">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idGroup" Type="Int32" />
+    <Property Name="idItem" Type="Int32" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <Property Name="additionalName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="d_Department" Relationship="Self.FK__g_Institu__idIte__3434A84B" FromRole="g_Institution_Department" ToRole="d_Department" />
+    <NavigationProperty Name="d_Institution" Relationship="Self.FK__g_Institu__idGro__33408412" FromRole="g_Institution_Department" ToRole="d_Institution" />
+  </EntityType>
+  <EntityType Name="g_Institution_Email_Print">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idInstitution" Type="Int32" />
+    <Property Name="idDepartment" Type="Int32" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <Property Name="isPrint" Type="Boolean" />
+    <Property Name="isSend" Type="Boolean" />
+    <Property Name="comment" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="g_Institution_SentPerson">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idGroup" Type="Int32" />
+    <Property Name="idItem" Type="Int32" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <Property Name="additionalName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="d_Institution" Relationship="Self.FK__g_Institu__idGro__2F6FF32E" FromRole="g_Institution_SentPerson" ToRole="d_Institution" />
+    <NavigationProperty Name="d_SentPerson" Relationship="Self.FK__g_Institu__idIte__30641767" FromRole="g_Institution_SentPerson" ToRole="d_SentPerson" />
+  </EntityType>
+  <EntityType Name="g_MicroorganismGroup_Microorganism">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idGroup" Type="Int32" />
+    <Property Name="idItem" Type="Int32" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="show" Type="Boolean" />
+    <Property Name="additionalName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="d_Microorganism" Relationship="Self.FK__g_Microor__idIte__3BD5CA13" FromRole="g_MicroorganismGroup_Microorganism" ToRole="d_Microorganism" />
+    <NavigationProperty Name="d_MicroorganismGroup" Relationship="Self.FK__g_Microor__idGro__3AE1A5DA" FromRole="g_MicroorganismGroup_Microorganism" ToRole="d_MicroorganismGroup" />
+  </EntityType>
+  <EntityType Name="g_Room_Staff">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idRoom" Type="Int32" Nullable="false" />
+    <Property Name="idStaff" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="d_Room" Relationship="Self.FK_g_Room_Staff_d_Room" FromRole="g_Room_Staff" ToRole="d_Room" />
+    <NavigationProperty Name="d_Staff" Relationship="Self.FK_g_Room_Staff_d_Staff" FromRole="g_Room_Staff" ToRole="d_Staff" />
+  </EntityType>
+  <EntityType Name="p_Analises_DB">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idAnalysis" Type="Int32" />
+    <Property Name="bif" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="lac" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="ent" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="coli1" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="coli2" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="coli3" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="d_Analyzes" Relationship="Self.FK__p_Analise__idAnalis" FromRole="p_Analises_DB" ToRole="d_Analyzes" />
+  </EntityType>
+  <EntityType Name="p_Analises_Mediums">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idAnalis" Type="Int32" Nullable="false" />
+    <Property Name="idMedium" Type="Int32" Nullable="false" />
+    <Property Name="isMain" Type="Boolean" />
+    <Property Name="idMethodInoculation" Type="Int32" />
+    <Property Name="timeInoculation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="timeIncubation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="d_Analyzes" Relationship="Self.FK_p_Analis_Mediums_d_Analyzes" FromRole="p_Analises_Mediums" ToRole="d_Analyzes" />
+    <NavigationProperty Name="d_Medium" Relationship="Self.FK_p_Analis_Mediums_d_Medium" FromRole="p_Analises_Mediums" ToRole="d_Medium" />
+    <NavigationProperty Name="d_MethodsInoculation" Relationship="Self.FK_p_Analis_Mediums_d_MethodsInoculation" FromRole="p_Analises_Mediums" ToRole="d_MethodsInoculation" />
+    <NavigationProperty Name="p_Analises_Mediums_Cultures" Relationship="Self.FK_p_Analises_Mediums_Cultures_p_Analises_Mediums" FromRole="p_Analises_Mediums" ToRole="p_Analises_Mediums_Cultures" />
+    <NavigationProperty Name="p_Analises_Mediums_Date" Relationship="Self.FK_p_Analises_Mediums_Date_p_Analises_Mediums" FromRole="p_Analises_Mediums" ToRole="p_Analises_Mediums_Date" />
+  </EntityType>
+  <EntityType Name="p_Analises_Mediums_Cultures">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idAnalisesMediums" Type="Int32" Nullable="false" />
+    <Property Name="idCulture" Type="Int32" Nullable="false" />
+    <Property Name="idSerotype" Type="Int32" />
+    <Property Name="idBiovariant" Type="Int32" />
+    <Property Name="quantity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="typeColony" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="morphology" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="hemolysis" Type="Boolean" />
+    <Property Name="proteolysis" Type="Boolean" />
+    <Property Name="lacPlusMinus" Type="Boolean" />
+    <Property Name="lacMinus" Type="Boolean" />
+    <Property Name="pat" Type="Boolean" />
+    <Property Name="betalactamase" Type="Boolean" />
+    <Property Name="blrs" Type="Boolean" />
+    <Property Name="carbopenemase" Type="Boolean" />
+    <Property Name="mrsa" Type="Boolean" />
+    <Property Name="pzb" Type="Boolean" />
+    <Property Name="vre" Type="Boolean" />
+    <NavigationProperty Name="d_Biovariant" Relationship="Self.FK_p_Analises_Mediums_Cultures_d_Biovariant" FromRole="p_Analises_Mediums_Cultures" ToRole="d_Biovariant" />
+    <NavigationProperty Name="d_Microorganism" Relationship="Self.FK_p_Analises_Mediums_Cultures_d_Microorganism" FromRole="p_Analises_Mediums_Cultures" ToRole="d_Microorganism" />
+    <NavigationProperty Name="d_Serotype" Relationship="Self.FK_p_Analises_Mediums_Cultures_d_Serotype" FromRole="p_Analises_Mediums_Cultures" ToRole="d_Serotype" />
+    <NavigationProperty Name="p_Analises_Mediums" Relationship="Self.FK_p_Analises_Mediums_Cultures_p_Analises_Mediums" FromRole="p_Analises_Mediums_Cultures" ToRole="p_Analises_Mediums" />
+    <NavigationProperty Name="p_Analises_Mediums_Cultures_AB" Relationship="Self.FK_p_Analises_Mediums_Cultures_AB_p_Analises_Mediums_Cultures" FromRole="p_Analises_Mediums_Cultures" ToRole="p_Analises_Mediums_Cultures_AB" />
+    <NavigationProperty Name="p_Analises_Mediums_Cultures_Serums" Relationship="Self.FK_p_Analises_Mediums_Cultures_Serums_p_Analises_Mediums_Cultures" FromRole="p_Analises_Mediums_Cultures" ToRole="p_Analises_Mediums_Cultures_Serums" />
+    <NavigationProperty Name="p_Analises_Mediums_Cultures_Tests" Relationship="Self.FK_p_Analises_Mediums_Cultures_Tests_p_Analises_Mediums_Cultures" FromRole="p_Analises_Mediums_Cultures" ToRole="p_Analises_Mediums_Cultures_Tests" />
+  </EntityType>
+  <EntityType Name="p_Analises_Mediums_Cultures_AB">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idAnalisesMediumsCultures" Type="Int32" Nullable="false" />
+    <Property Name="idAB" Type="Int32" Nullable="false" />
+    <Property Name="pm" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="mm" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="disk" Type="Boolean" />
+    <Property Name="forScrining" Type="Boolean" />
+    <Property Name="ferment" Type="Boolean" />
+    <Property Name="fag" Type="Boolean" />
+    <Property Name="sinergizm" Type="Boolean" />
+    <Property Name="comment" Type="Boolean" />
+    <Property Name="onlyPerOr" Type="Boolean" />
+    <Property Name="onlyVV" Type="Boolean" />
+    <NavigationProperty Name="a_Antibiotic" Relationship="Self.FK_p_Analises_Mediums_Cultures_AB_a_Antibiotic" FromRole="p_Analises_Mediums_Cultures_AB" ToRole="a_Antibiotic" />
+    <NavigationProperty Name="p_Analises_Mediums_Cultures" Relationship="Self.FK_p_Analises_Mediums_Cultures_AB_p_Analises_Mediums_Cultures" FromRole="p_Analises_Mediums_Cultures_AB" ToRole="p_Analises_Mediums_Cultures" />
+  </EntityType>
+  <EntityType Name="p_Analises_Mediums_Cultures_Serums">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idAnalisesMediumsCultures" Type="Int32" Nullable="false" />
+    <Property Name="idSerum" Type="Int32" Nullable="false" />
+    <Property Name="res" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="comment" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="d_Serum" Relationship="Self.FK_p_Analises_Mediums_Cultures_Serums_d_Serum" FromRole="p_Analises_Mediums_Cultures_Serums" ToRole="d_Serum" />
+    <NavigationProperty Name="p_Analises_Mediums_Cultures" Relationship="Self.FK_p_Analises_Mediums_Cultures_Serums_p_Analises_Mediums_Cultures" FromRole="p_Analises_Mediums_Cultures_Serums" ToRole="p_Analises_Mediums_Cultures" />
+  </EntityType>
+  <EntityType Name="p_Analises_Mediums_Cultures_Tests">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idAnalisesMediumsCultures" Type="Int32" Nullable="false" />
+    <Property Name="idTest" Type="Int32" Nullable="false" />
+    <Property Name="res" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="comment" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="d_Tests" Relationship="Self.FK_p_Analises_Mediums_Cultures_Tests_d_Tests" FromRole="p_Analises_Mediums_Cultures_Tests" ToRole="d_Tests" />
+    <NavigationProperty Name="p_Analises_Mediums_Cultures" Relationship="Self.FK_p_Analises_Mediums_Cultures_Tests_p_Analises_Mediums_Cultures" FromRole="p_Analises_Mediums_Cultures_Tests" ToRole="p_Analises_Mediums_Cultures" />
+  </EntityType>
+  <EntityType Name="p_Analises_Mediums_Date">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idAnalisesMediums" Type="Int32" Nullable="false" />
+    <Property Name="date" Type="DateTime" Precision="0" />
+    <Property Name="idRezTemplateMedium" Type="Int32" />
+    <NavigationProperty Name="d_RezTemplateMedium" Relationship="Self.FK_p_Analises_Mediums_Date_d_RezTemplateMedium" FromRole="p_Analises_Mediums_Date" ToRole="d_RezTemplateMedium" />
+    <NavigationProperty Name="p_Analises_Mediums" Relationship="Self.FK_p_Analises_Mediums_Date_p_Analises_Mediums" FromRole="p_Analises_Mediums_Date" ToRole="p_Analises_Mediums" />
+    <NavigationProperty Name="p_Analises_Mediums_Date_Cultures" Relationship="Self.FK_p_Analises_Mediums_Date_Cultures_p_Analises_Mediums_Date" FromRole="p_Analises_Mediums_Date" ToRole="p_Analises_Mediums_Date_Cultures" />
+  </EntityType>
+  <EntityType Name="p_Analises_Mediums_Date_Cultures">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idAnalisesMediumsDate" Type="Int32" Nullable="false" />
+    <Property Name="idCulture" Type="Int32" />
+    <Property Name="idSerotype" Type="Int32" />
+    <Property Name="idBiovariant" Type="Int32" />
+    <Property Name="quantity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="typeColony" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="morphology" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="hemolysis" Type="Boolean" />
+    <Property Name="proteolysis" Type="Boolean" />
+    <Property Name="lacPlusMinus" Type="Boolean" />
+    <Property Name="lacMinus" Type="Boolean" />
+    <Property Name="pat" Type="Boolean" />
+    <Property Name="betalactamase" Type="Boolean" />
+    <Property Name="blrs" Type="Boolean" />
+    <Property Name="carbopenemase" Type="Boolean" />
+    <Property Name="mrsa" Type="Boolean" />
+    <Property Name="pzb" Type="Boolean" />
+    <Property Name="vre" Type="Boolean" />
+    <NavigationProperty Name="d_Biovariant" Relationship="Self.FK_p_Analises_Mediums_Date_Cultures_d_Biovariant" FromRole="p_Analises_Mediums_Date_Cultures" ToRole="d_Biovariant" />
+    <NavigationProperty Name="d_Microorganism" Relationship="Self.FK_p_Analises_Mediums_Date_Cultures_d_Microorganism" FromRole="p_Analises_Mediums_Date_Cultures" ToRole="d_Microorganism" />
+    <NavigationProperty Name="d_Serotype" Relationship="Self.FK_p_Analises_Mediums_Date_Cultures_d_Serotype" FromRole="p_Analises_Mediums_Date_Cultures" ToRole="d_Serotype" />
+    <NavigationProperty Name="p_Analises_Mediums_Date" Relationship="Self.FK_p_Analises_Mediums_Date_Cultures_p_Analises_Mediums_Date" FromRole="p_Analises_Mediums_Date_Cultures" ToRole="p_Analises_Mediums_Date" />
+    <NavigationProperty Name="p_Analises_Mediums_Date_Cultures_AB" Relationship="Self.FK_p_Analises_Mediums_Date_Cultures_AB_p_Analises_Mediums_Date_Cultures" FromRole="p_Analises_Mediums_Date_Cultures" ToRole="p_Analises_Mediums_Date_Cultures_AB" />
+    <NavigationProperty Name="p_Analises_Mediums_Date_Cultures_Serums" Relationship="Self.FK_p_Analises_Mediums_Date_Cultures_Serums_p_Analises_Mediums_Date_Cultures" FromRole="p_Analises_Mediums_Date_Cultures" ToRole="p_Analises_Mediums_Date_Cultures_Serums" />
+    <NavigationProperty Name="p_Analises_Mediums_Date_Cultures_Tests" Relationship="Self.FK_p_Analises_Mediums_Date_Cultures_Tests_p_Analises_Mediums_Date_Cultures" FromRole="p_Analises_Mediums_Date_Cultures" ToRole="p_Analises_Mediums_Date_Cultures_Tests" />
+  </EntityType>
+  <EntityType Name="p_Analises_Mediums_Date_Cultures_AB">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idAnalisesMediumsDateCultures" Type="Int32" Nullable="false" />
+    <Property Name="idAB" Type="Int32" Nullable="false" />
+    <Property Name="pm" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="mm" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="index" Type="Int32" />
+    <Property Name="disk" Type="Boolean" />
+    <Property Name="forScrining" Type="Boolean" />
+    <Property Name="ferment" Type="Boolean" />
+    <Property Name="fag" Type="Boolean" />
+    <Property Name="sinergizm" Type="Boolean" />
+    <Property Name="comment" Type="Boolean" />
+    <Property Name="onlyPerOr" Type="Boolean" />
+    <Property Name="onlyVV" Type="Boolean" />
+    <NavigationProperty Name="a_Antibiotic" Relationship="Self.FK_p_Analises_Mediums_Date_Cultures_AB_a_Antibiotic" FromRole="p_Analises_Mediums_Date_Cultures_AB" ToRole="a_Antibiotic" />
+    <NavigationProperty Name="p_Analises_Mediums_Date_Cultures" Relationship="Self.FK_p_Analises_Mediums_Date_Cultures_AB_p_Analises_Mediums_Date_Cultures" FromRole="p_Analises_Mediums_Date_Cultures_AB" ToRole="p_Analises_Mediums_Date_Cultures" />
+  </EntityType>
+  <EntityType Name="p_Analises_Mediums_Date_Cultures_Serums">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idAnalisesMediumsDateCultures" Type="Int32" Nullable="false" />
+    <Property Name="idSerum" Type="Int32" Nullable="false" />
+    <Property Name="res" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="comment" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="d_Serum" Relationship="Self.FK_p_Analises_Mediums_Date_Cultures_Serums_d_Serum" FromRole="p_Analises_Mediums_Date_Cultures_Serums" ToRole="d_Serum" />
+    <NavigationProperty Name="p_Analises_Mediums_Date_Cultures" Relationship="Self.FK_p_Analises_Mediums_Date_Cultures_Serums_p_Analises_Mediums_Date_Cultures" FromRole="p_Analises_Mediums_Date_Cultures_Serums" ToRole="p_Analises_Mediums_Date_Cultures" />
+  </EntityType>
+  <EntityType Name="p_Analises_Mediums_Date_Cultures_Tests">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idAnalisesMediumsDateCultures" Type="Int32" Nullable="false" />
+    <Property Name="idTest" Type="Int32" Nullable="false" />
+    <Property Name="res" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="comment" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="d_Tests" Relationship="Self.FK_p_Analises_Mediums_Date_Cultures_Tests_d_Tests" FromRole="p_Analises_Mediums_Date_Cultures_Tests" ToRole="d_Tests" />
+    <NavigationProperty Name="p_Analises_Mediums_Date_Cultures" Relationship="Self.FK_p_Analises_Mediums_Date_Cultures_Tests_p_Analises_Mediums_Date_Cultures" FromRole="p_Analises_Mediums_Date_Cultures_Tests" ToRole="p_Analises_Mediums_Date_Cultures" />
+  </EntityType>
+  <EntityType Name="p_Group_Material_Purpose">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="show" Type="Boolean" />
+    <Property Name="idGroup" Type="Int32" />
+    <Property Name="idMaterial" Type="Int32" />
+    <Property Name="idPurpose" Type="Int32" />
+    <Property Name="index" Type="Int32" />
+    <NavigationProperty Name="d_Analyzes" Relationship="Self.FK__d_Analyze__idGMP__6C5905DD" FromRole="p_Group_Material_Purpose" ToRole="d_Analyzes" />
+    <NavigationProperty Name="d_GroupResearch" Relationship="Self.FK__p_Group_M__idGro__455F344D" FromRole="p_Group_Material_Purpose" ToRole="d_GroupResearch" />
+    <NavigationProperty Name="d_Material" Relationship="Self.FK__p_Group_M__idMat__46535886" FromRole="p_Group_Material_Purpose" ToRole="d_Material" />
+    <NavigationProperty Name="d_Purpose" Relationship="Self.FK__p_Group_M__idPur__47477CBF" FromRole="p_Group_Material_Purpose" ToRole="d_Purpose" />
+    <NavigationProperty Name="p_Group_Material_Purpose_Medium" Relationship="Self.FK__p_Group_M__id_GM__457442E6" FromRole="p_Group_Material_Purpose" ToRole="p_Group_Material_Purpose_Medium" />
+  </EntityType>
+  <EntityType Name="p_Group_Material_Purpose_Medium">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_GMP" Type="Int32" Nullable="false" />
+    <Property Name="is_main" Type="Boolean" />
+    <Property Name="idMedium" Type="Int32" />
+    <Property Name="idMethodInoculation" Type="Int32" />
+    <Property Name="timeInoculation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="timeIncubation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="index" Type="Int32" />
+    <NavigationProperty Name="d_Medium" Relationship="Self.FK__p_Group_M__idMed__483BA0F8" FromRole="p_Group_Material_Purpose_Medium" ToRole="d_Medium" />
+    <NavigationProperty Name="d_MethodsInoculation" Relationship="Self.FK_p_Group_Material_Purpose_Medium_d_MethodsInoculation" FromRole="p_Group_Material_Purpose_Medium" ToRole="d_MethodsInoculation" />
+    <NavigationProperty Name="p_Group_Material_Purpose" Relationship="Self.FK__p_Group_M__id_GM__457442E6" FromRole="p_Group_Material_Purpose_Medium" ToRole="p_Group_Material_Purpose" />
+  </EntityType>
+  <EntityType Name="p_Room_Equipment_Temperature">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="idRoom" Type="Int32" Nullable="false" />
+    <Property Name="idEquipment" Type="Int32" Nullable="false" />
+    <Property Name="idThermometer" Type="Int32" Nullable="false" />
+    <Property Name="idStaff" Type="Int32" Nullable="false" />
+    <Property Name="temperature" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="d_Equipment" Relationship="Self.FK_p_Room_Equipment_Temperature_d_Equipment" FromRole="p_Room_Equipment_Temperature" ToRole="d_Equipment" />
+    <NavigationProperty Name="d_Equipment1" Relationship="Self.FK_p_Room_Equipment_Temperature_d_Equipment1" FromRole="p_Room_Equipment_Temperature" ToRole="d_Equipment" />
+    <NavigationProperty Name="d_Room" Relationship="Self.FK_p_Room_Equipment_Temperature_d_Room" FromRole="p_Room_Equipment_Temperature" ToRole="d_Room" />
+    <NavigationProperty Name="d_Staff" Relationship="Self.FK_p_Room_Equipment_Temperature_d_Staff" FromRole="p_Room_Equipment_Temperature" ToRole="d_Staff" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK__a_Antibio__id_An__302F0D3D">
+    <End Role="a_AntibioticGroup" Type="Self.a_AntibioticGroup" Multiplicity="0..1" />
+    <End Role="a_Antibiotic" Type="Self.a_Antibiotic" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="a_AntibioticGroup">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="a_Antibiotic">
+        <PropertyRef Name="id_AntibioticGroup" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__a_Antibiot__idAB__461E4E5C">
+    <End Role="a_Antibiotic" Type="Self.a_Antibiotic" Multiplicity="0..1" />
+    <End Role="a_AntibioticMicroorganismGroup" Type="Self.a_AntibioticMicroorganismGroup" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="a_Antibiotic">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="a_AntibioticMicroorganismGroup">
+        <PropertyRef Name="idAB" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_a_AntibioticNorms_a_Antibiotic">
+    <End Role="a_Antibiotic" Type="Self.a_Antibiotic" Multiplicity="1" />
+    <End Role="a_AntibioticNorms" Type="Self.a_AntibioticNorms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="a_Antibiotic">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="a_AntibioticNorms">
+        <PropertyRef Name="idAB" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_a_AntibioticStock_a_Antibiotic">
+    <End Role="a_Antibiotic" Type="Self.a_Antibiotic" Multiplicity="1" />
+    <End Role="a_AntibioticStock" Type="Self.a_AntibioticStock" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="a_Antibiotic">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="a_AntibioticStock">
+        <PropertyRef Name="idAB" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analises_Mediums_Cultures_AB_a_Antibiotic">
+    <End Role="a_Antibiotic" Type="Self.a_Antibiotic" Multiplicity="1" />
+    <End Role="p_Analises_Mediums_Cultures_AB" Type="Self.p_Analises_Mediums_Cultures_AB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="a_Antibiotic">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums_Cultures_AB">
+        <PropertyRef Name="idAB" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analises_Mediums_Date_Cultures_AB_a_Antibiotic">
+    <End Role="a_Antibiotic" Type="Self.a_Antibiotic" Multiplicity="1" />
+    <End Role="p_Analises_Mediums_Date_Cultures_AB" Type="Self.p_Analises_Mediums_Date_Cultures_AB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="a_Antibiotic">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums_Date_Cultures_AB">
+        <PropertyRef Name="idAB" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_a_AntibioticControl_a_AntibioticControl">
+    <End Role="a_AntibioticStock" Type="Self.a_AntibioticStock" Multiplicity="1" />
+    <End Role="a_AntibioticControl" Type="Self.a_AntibioticControl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="a_AntibioticStock">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="a_AntibioticControl">
+        <PropertyRef Name="idABCurrent" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_a_AntibioticControl_d_Microorganism">
+    <End Role="d_Microorganism" Type="Self.d_Microorganism" Multiplicity="1" />
+    <End Role="a_AntibioticControl" Type="Self.a_AntibioticControl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Microorganism">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="a_AntibioticControl">
+        <PropertyRef Name="idCulture" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__a_Antibio__id_AB__7C7A5F0D">
+    <End Role="a_AntibioticMicroorganismGroup" Type="Self.a_AntibioticMicroorganismGroup" Multiplicity="0..1" />
+    <End Role="a_AntibioticPanel" Type="Self.a_AntibioticPanel" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="a_AntibioticMicroorganismGroup">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="a_AntibioticPanel">
+        <PropertyRef Name="id_ABMOGroup" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__a_Antibio__idGro__452A2A23">
+    <End Role="d_MicroorganismGroup" Type="Self.d_MicroorganismGroup" Multiplicity="0..1" />
+    <End Role="a_AntibioticMicroorganismGroup" Type="Self.a_AntibioticMicroorganismGroup" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_MicroorganismGroup">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="a_AntibioticMicroorganismGroup">
+        <PropertyRef Name="idGroupMO" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_a_AntibioticNorms_d_Microorganism">
+    <End Role="d_Microorganism" Type="Self.d_Microorganism" Multiplicity="1" />
+    <End Role="a_AntibioticNorms" Type="Self.a_AntibioticNorms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Microorganism">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="a_AntibioticNorms">
+        <PropertyRef Name="idCulture" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__a_Antibio__idAnt__5B196B42">
+    <End Role="a_AntibioticPanelName" Type="Self.a_AntibioticPanelName" Multiplicity="0..1" />
+    <End Role="a_AntibioticPanel" Type="Self.a_AntibioticPanel" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="a_AntibioticPanelName">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="a_AntibioticPanel">
+        <PropertyRef Name="idAntibioticPanelName" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__a_Antibio__idGro__583CFE97">
+    <End Role="d_MicroorganismGroup" Type="Self.d_MicroorganismGroup" Multiplicity="0..1" />
+    <End Role="a_AntibioticPanelName" Type="Self.a_AntibioticPanelName" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_MicroorganismGroup">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="a_AntibioticPanelName">
+        <PropertyRef Name="idGroupMO" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_a_AntibioticStock_d_Producer">
+    <End Role="d_Producer" Type="Self.d_Producer" Multiplicity="0..1" />
+    <End Role="a_AntibioticStock" Type="Self.a_AntibioticStock" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Producer">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="a_AntibioticStock">
+        <PropertyRef Name="idProducer" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Analyze__id_Do__35B2DC69">
+    <End Role="d_Staff" Type="Self.d_Staff" Multiplicity="0..1" />
+    <End Role="d_Analyzes" Type="Self.d_Analyzes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Staff">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Analyzes">
+        <PropertyRef Name="idDoctor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Analyze__idDep__11DF9047">
+    <End Role="d_Department" Type="Self.d_Department" Multiplicity="0..1" />
+    <End Role="d_Analyzes" Type="Self.d_Analyzes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Department">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Analyzes">
+        <PropertyRef Name="idDepartment" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Analyze__idDia__12D3B480">
+    <End Role="d_Diagnosis" Type="Self.d_Diagnosis" Multiplicity="0..1" />
+    <End Role="d_Analyzes" Type="Self.d_Analyzes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Diagnosis">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Analyzes">
+        <PropertyRef Name="idDiagnosis" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Analyze__idFin__0FF747D5">
+    <End Role="d_Finance" Type="Self.d_Finance" Multiplicity="0..1" />
+    <End Role="d_Analyzes" Type="Self.d_Analyzes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Finance">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Analyzes">
+        <PropertyRef Name="idFinance" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Analyze__idGMP__6C5905DD">
+    <End Role="p_Group_Material_Purpose" Type="Self.p_Group_Material_Purpose" Multiplicity="0..1" />
+    <End Role="d_Analyzes" Type="Self.d_Analyzes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="p_Group_Material_Purpose">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Analyzes">
+        <PropertyRef Name="idGMP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Analyze__idIns__10EB6C0E">
+    <End Role="d_Institution" Type="Self.d_Institution" Multiplicity="0..1" />
+    <End Role="d_Analyzes" Type="Self.d_Analyzes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Institution">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Analyzes">
+        <PropertyRef Name="idInstitution" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Analyze__idPat__13C7D8B9">
+    <End Role="d_PatientStatus" Type="Self.d_PatientStatus" Multiplicity="0..1" />
+    <End Role="d_Analyzes" Type="Self.d_Analyzes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_PatientStatus">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Analyzes">
+        <PropertyRef Name="idPatientStatus" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Analyze__idPat__66A02C87">
+    <End Role="d_Patients" Type="Self.d_Patients" Multiplicity="0..1" />
+    <End Role="d_Analyzes" Type="Self.d_Analyzes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Patients">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Analyzes">
+        <PropertyRef Name="idPatient" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Analyze__idRes__15B0212B">
+    <End Role="d_ResTemplate" Type="Self.d_ResTemplate" Multiplicity="0..1" />
+    <End Role="d_Analyzes" Type="Self.d_Analyzes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_ResTemplate">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Analyzes">
+        <PropertyRef Name="idResTemplate" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Analyze__idSen__14BBFCF2">
+    <End Role="d_SentPerson" Type="Self.d_SentPerson" Multiplicity="0..1" />
+    <End Role="d_Analyzes" Type="Self.d_Analyzes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_SentPerson">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Analyzes">
+        <PropertyRef Name="idSentPerson" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__p_Analise__idAnalis">
+    <End Role="d_Analyzes" Type="Self.d_Analyzes" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="p_Analises_DB" Type="Self.p_Analises_DB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Analyzes">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_DB">
+        <PropertyRef Name="idAnalysis" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_d_Analyzes_d_Institution">
+    <End Role="d_Institution" Type="Self.d_Institution" Multiplicity="0..1" />
+    <End Role="d_Analyzes" Type="Self.d_Analyzes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Institution">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Analyzes">
+        <PropertyRef Name="idInstitutionLaboratorii" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analis_Mediums_d_Analyzes">
+    <End Role="d_Analyzes" Type="Self.d_Analyzes" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="p_Analises_Mediums" Type="Self.p_Analises_Mediums" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Analyzes">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums">
+        <PropertyRef Name="idAnalis" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Biovari__idMic__03E676AB">
+    <End Role="d_Microorganism" Type="Self.d_Microorganism" Multiplicity="0..1" />
+    <End Role="d_Biovariant" Type="Self.d_Biovariant" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Microorganism">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Biovariant">
+        <PropertyRef Name="idMicroorganism" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Biovari__idSer__04DA9AE4">
+    <End Role="d_Serotype" Type="Self.d_Serotype" Multiplicity="0..1" />
+    <End Role="d_Biovariant" Type="Self.d_Biovariant" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Serotype">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Biovariant">
+        <PropertyRef Name="idSerotype" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_d_Biovariant_d_MicroorganismGroup">
+    <End Role="d_MicroorganismGroup" Type="Self.d_MicroorganismGroup" Multiplicity="0..1" />
+    <End Role="d_Biovariant" Type="Self.d_Biovariant" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_MicroorganismGroup">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Biovariant">
+        <PropertyRef Name="idMicroorganismGroup" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analises_Mediums_Cultures_d_Biovariant">
+    <End Role="d_Biovariant" Type="Self.d_Biovariant" Multiplicity="0..1" />
+    <End Role="p_Analises_Mediums_Cultures" Type="Self.p_Analises_Mediums_Cultures" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Biovariant">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums_Cultures">
+        <PropertyRef Name="idBiovariant" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analises_Mediums_Date_Cultures_d_Biovariant">
+    <End Role="d_Biovariant" Type="Self.d_Biovariant" Multiplicity="0..1" />
+    <End Role="p_Analises_Mediums_Date_Cultures" Type="Self.p_Analises_Mediums_Date_Cultures" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Biovariant">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums_Date_Cultures">
+        <PropertyRef Name="idBiovariant" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__g_Institu__idIte__3434A84B">
+    <End Role="d_Department" Type="Self.d_Department" Multiplicity="0..1" />
+    <End Role="g_Institution_Department" Type="Self.g_Institution_Department" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Department">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="g_Institution_Department">
+        <PropertyRef Name="idItem" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Patient__idDic__4A23E96A">
+    <End Role="d_District" Type="Self.d_District" Multiplicity="0..1" />
+    <End Role="d_Patients" Type="Self.d_Patients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_District">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Patients">
+        <PropertyRef Name="idDictrict" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Patient__idJob__4B180DA3">
+    <End Role="d_District" Type="Self.d_District" Multiplicity="0..1" />
+    <End Role="d_Patients" Type="Self.d_Patients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_District">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Patients">
+        <PropertyRef Name="idJobDictrict" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_g_Equipment_DragMatal_d_DragMetal">
+    <End Role="d_DragMetal" Type="Self.d_DragMetal" Multiplicity="1" />
+    <End Role="g_Equipment_DragMatal" Type="Self.g_Equipment_DragMatal" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_DragMetal">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="g_Equipment_DragMatal">
+        <PropertyRef Name="idDragMetal" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_d_Equipment_d_Equipment">
+    <End Role="d_Equipment" Type="Self.d_Equipment" Multiplicity="0..1" />
+    <End Role="d_Equipment1" Type="Self.d_Equipment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Equipment">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Equipment1">
+        <PropertyRef Name="idThermometer" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_d_Equipment_d_EquipmentGroup">
+    <End Role="d_EquipmentGroup" Type="Self.d_EquipmentGroup" Multiplicity="0..1" />
+    <End Role="d_Equipment" Type="Self.d_Equipment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_EquipmentGroup">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Equipment">
+        <PropertyRef Name="idEquipmentGroup" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_d_Equipment_d_Room">
+    <End Role="d_Room" Type="Self.d_Room" Multiplicity="1" />
+    <End Role="d_Equipment" Type="Self.d_Equipment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Room">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Equipment">
+        <PropertyRef Name="idRoom" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Equipment_Thermometer">
+    <End Role="d_Equipment" Type="Self.d_Equipment" Multiplicity="1" />
+    <End Role="g_Equipment_Thermometer" Type="Self.g_Equipment_Thermometer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Equipment">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="g_Equipment_Thermometer">
+        <PropertyRef Name="idThermometer" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_g_Equipment__d_Equipment">
+    <End Role="d_Equipment" Type="Self.d_Equipment" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="g_Equipment_Thermometer" Type="Self.g_Equipment_Thermometer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Equipment">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="g_Equipment_Thermometer">
+        <PropertyRef Name="idEquipment" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_g_Equipment_DragMatal_d_Equipment">
+    <End Role="d_Equipment" Type="Self.d_Equipment" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="g_Equipment_DragMatal" Type="Self.g_Equipment_DragMatal" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Equipment">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="g_Equipment_DragMatal">
+        <PropertyRef Name="idEquipment" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Room_Equipment_Temperature_d_Equipment">
+    <End Role="d_Equipment" Type="Self.d_Equipment" Multiplicity="1" />
+    <End Role="p_Room_Equipment_Temperature" Type="Self.p_Room_Equipment_Temperature" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Equipment">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Room_Equipment_Temperature">
+        <PropertyRef Name="idEquipment" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Room_Equipment_Temperature_d_Equipment1">
+    <End Role="d_Equipment" Type="Self.d_Equipment" Multiplicity="1" />
+    <End Role="p_Room_Equipment_Temperature" Type="Self.p_Room_Equipment_Temperature" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Equipment">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Room_Equipment_Temperature">
+        <PropertyRef Name="idThermometer" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__p_Group_M__idGro__455F344D">
+    <End Role="d_GroupResearch" Type="Self.d_GroupResearch" Multiplicity="0..1" />
+    <End Role="p_Group_Material_Purpose" Type="Self.p_Group_Material_Purpose" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_GroupResearch">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Group_Material_Purpose">
+        <PropertyRef Name="idGroup" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__g_Institu__idGro__2F6FF32E">
+    <End Role="d_Institution" Type="Self.d_Institution" Multiplicity="0..1" />
+    <End Role="g_Institution_SentPerson" Type="Self.g_Institution_SentPerson" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Institution">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="g_Institution_SentPerson">
+        <PropertyRef Name="idGroup" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__g_Institu__idGro__33408412">
+    <End Role="d_Institution" Type="Self.d_Institution" Multiplicity="0..1" />
+    <End Role="g_Institution_Department" Type="Self.g_Institution_Department" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Institution">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="g_Institution_Department">
+        <PropertyRef Name="idGroup" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Patient__idJob__4282C7A2">
+    <End Role="d_Job" Type="Self.d_Job" Multiplicity="0..1" />
+    <End Role="d_Patients" Type="Self.d_Patients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Job">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Patients">
+        <PropertyRef Name="idJob" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Patient__idJob__4376EBDB">
+    <End Role="d_JobPlace" Type="Self.d_JobPlace" Multiplicity="0..1" />
+    <End Role="d_Patients" Type="Self.d_Patients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_JobPlace">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Patients">
+        <PropertyRef Name="idJobPlace" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__p_Group_M__idMat__46535886">
+    <End Role="d_Material" Type="Self.d_Material" Multiplicity="0..1" />
+    <End Role="p_Group_Material_Purpose" Type="Self.p_Group_Material_Purpose" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Material">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Group_Material_Purpose">
+        <PropertyRef Name="idMaterial" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__p_Group_M__idMed__483BA0F8">
+    <End Role="d_Medium" Type="Self.d_Medium" Multiplicity="0..1" />
+    <End Role="p_Group_Material_Purpose_Medium" Type="Self.p_Group_Material_Purpose_Medium" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Medium">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Group_Material_Purpose_Medium">
+        <PropertyRef Name="idMedium" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analis_Mediums_d_Medium">
+    <End Role="d_Medium" Type="Self.d_Medium" Multiplicity="1" />
+    <End Role="p_Analises_Mediums" Type="Self.p_Analises_Mediums" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Medium">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums">
+        <PropertyRef Name="idMedium" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analis_Mediums_d_MethodsInoculation">
+    <End Role="d_MethodsInoculation" Type="Self.d_MethodsInoculation" Multiplicity="0..1" />
+    <End Role="p_Analises_Mediums" Type="Self.p_Analises_Mediums" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_MethodsInoculation">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums">
+        <PropertyRef Name="idMethodInoculation" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Group_Material_Purpose_Medium_d_MethodsInoculation">
+    <End Role="d_MethodsInoculation" Type="Self.d_MethodsInoculation" Multiplicity="0..1" />
+    <End Role="p_Group_Material_Purpose_Medium" Type="Self.p_Group_Material_Purpose_Medium" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_MethodsInoculation">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Group_Material_Purpose_Medium">
+        <PropertyRef Name="idMethodInoculation" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__d_Serotyp__idMic__19169DBB">
+    <End Role="d_Microorganism" Type="Self.d_Microorganism" Multiplicity="0..1" />
+    <End Role="d_Serotype" Type="Self.d_Serotype" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Microorganism">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Serotype">
+        <PropertyRef Name="idMicroorganism" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__g_Microor__idIte__3BD5CA13">
+    <End Role="d_Microorganism" Type="Self.d_Microorganism" Multiplicity="0..1" />
+    <End Role="g_MicroorganismGroup_Microorganism" Type="Self.g_MicroorganismGroup_Microorganism" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Microorganism">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="g_MicroorganismGroup_Microorganism">
+        <PropertyRef Name="idItem" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analises_Mediums_Cultures_d_Microorganism">
+    <End Role="d_Microorganism" Type="Self.d_Microorganism" Multiplicity="1" />
+    <End Role="p_Analises_Mediums_Cultures" Type="Self.p_Analises_Mediums_Cultures" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Microorganism">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums_Cultures">
+        <PropertyRef Name="idCulture" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analises_Mediums_Date_Cultures_d_Microorganism">
+    <End Role="d_Microorganism" Type="Self.d_Microorganism" Multiplicity="0..1" />
+    <End Role="p_Analises_Mediums_Date_Cultures" Type="Self.p_Analises_Mediums_Date_Cultures" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Microorganism">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums_Date_Cultures">
+        <PropertyRef Name="idCulture" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__g_Microor__idGro__3AE1A5DA">
+    <End Role="d_MicroorganismGroup" Type="Self.d_MicroorganismGroup" Multiplicity="0..1" />
+    <End Role="g_MicroorganismGroup_Microorganism" Type="Self.g_MicroorganismGroup_Microorganism" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_MicroorganismGroup">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="g_MicroorganismGroup_Microorganism">
+        <PropertyRef Name="idGroup" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__p_Group_M__idPur__47477CBF">
+    <End Role="d_Purpose" Type="Self.d_Purpose" Multiplicity="0..1" />
+    <End Role="p_Group_Material_Purpose" Type="Self.p_Group_Material_Purpose" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Purpose">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Group_Material_Purpose">
+        <PropertyRef Name="idPurpose" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analises_Mediums_Date_d_RezTemplateMedium">
+    <End Role="d_RezTemplateMedium" Type="Self.d_RezTemplateMedium" Multiplicity="0..1" />
+    <End Role="p_Analises_Mediums_Date" Type="Self.p_Analises_Mediums_Date" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_RezTemplateMedium">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums_Date">
+        <PropertyRef Name="idRezTemplateMedium" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_g_Room_Staff_d_Room">
+    <End Role="d_Room" Type="Self.d_Room" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="g_Room_Staff" Type="Self.g_Room_Staff" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Room">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="g_Room_Staff">
+        <PropertyRef Name="idRoom" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Room_Equipment_Temperature_d_Room">
+    <End Role="d_Room" Type="Self.d_Room" Multiplicity="1" />
+    <End Role="p_Room_Equipment_Temperature" Type="Self.p_Room_Equipment_Temperature" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Room">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Room_Equipment_Temperature">
+        <PropertyRef Name="idRoom" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__g_Institu__idIte__30641767">
+    <End Role="d_SentPerson" Type="Self.d_SentPerson" Multiplicity="0..1" />
+    <End Role="g_Institution_SentPerson" Type="Self.g_Institution_SentPerson" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_SentPerson">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="g_Institution_SentPerson">
+        <PropertyRef Name="idItem" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analises_Mediums_Cultures_d_Serotype">
+    <End Role="d_Serotype" Type="Self.d_Serotype" Multiplicity="0..1" />
+    <End Role="p_Analises_Mediums_Cultures" Type="Self.p_Analises_Mediums_Cultures" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Serotype">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums_Cultures">
+        <PropertyRef Name="idSerotype" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analises_Mediums_Date_Cultures_d_Serotype">
+    <End Role="d_Serotype" Type="Self.d_Serotype" Multiplicity="0..1" />
+    <End Role="p_Analises_Mediums_Date_Cultures" Type="Self.p_Analises_Mediums_Date_Cultures" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Serotype">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums_Date_Cultures">
+        <PropertyRef Name="idSerotype" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analises_Mediums_Cultures_Serums_d_Serum">
+    <End Role="d_Serum" Type="Self.d_Serum" Multiplicity="1" />
+    <End Role="p_Analises_Mediums_Cultures_Serums" Type="Self.p_Analises_Mediums_Cultures_Serums" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Serum">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums_Cultures_Serums">
+        <PropertyRef Name="idSerum" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analises_Mediums_Date_Cultures_Serums_d_Serum">
+    <End Role="d_Serum" Type="Self.d_Serum" Multiplicity="1" />
+    <End Role="p_Analises_Mediums_Date_Cultures_Serums" Type="Self.p_Analises_Mediums_Date_Cultures_Serums" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Serum">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums_Date_Cultures_Serums">
+        <PropertyRef Name="idSerum" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Staff__id_catego__7849DB76">
+    <End Role="d_StaffGroup" Type="Self.d_StaffGroup" Multiplicity="1" />
+    <End Role="d_Staff" Type="Self.d_Staff" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_StaffGroup">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Staff">
+        <PropertyRef Name="id_category" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_d_Staff_d_Staff">
+    <End Role="d_Staff" Type="Self.d_Staff" Multiplicity="0..1" />
+    <End Role="d_Staff1" Type="Self.d_Staff" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Staff">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_Staff1">
+        <PropertyRef Name="idStaffAlarm" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_g_Room_Staff_d_Staff">
+    <End Role="d_Staff" Type="Self.d_Staff" Multiplicity="1" />
+    <End Role="g_Room_Staff" Type="Self.g_Room_Staff" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Staff">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="g_Room_Staff">
+        <PropertyRef Name="idStaff" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Room_Equipment_Temperature_d_Staff">
+    <End Role="d_Staff" Type="Self.d_Staff" Multiplicity="1" />
+    <End Role="p_Room_Equipment_Temperature" Type="Self.p_Room_Equipment_Temperature" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Staff">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Room_Equipment_Temperature">
+        <PropertyRef Name="idStaff" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="StyleStaff_FK">
+    <End Role="d_Staff" Type="Self.d_Staff" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="d_StyleApp" Type="Self.d_StyleApp" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Staff">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_StyleApp">
+        <PropertyRef Name="id_staff" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_d_TestsPanel_d_Tests">
+    <End Role="d_Tests" Type="Self.d_Tests" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="d_TestsPanel" Type="Self.d_TestsPanel" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Tests">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_TestsPanel">
+        <PropertyRef Name="idTest" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analises_Mediums_Cultures_Tests_d_Tests">
+    <End Role="d_Tests" Type="Self.d_Tests" Multiplicity="1" />
+    <End Role="p_Analises_Mediums_Cultures_Tests" Type="Self.p_Analises_Mediums_Cultures_Tests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Tests">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums_Cultures_Tests">
+        <PropertyRef Name="idTest" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analises_Mediums_Date_Cultures_Tests_d_Tests">
+    <End Role="d_Tests" Type="Self.d_Tests" Multiplicity="1" />
+    <End Role="p_Analises_Mediums_Date_Cultures_Tests" Type="Self.p_Analises_Mediums_Date_Cultures_Tests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_Tests">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums_Date_Cultures_Tests">
+        <PropertyRef Name="idTest" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_d_TestsPanel_d_TestsPanelName">
+    <End Role="d_TestsPanelName" Type="Self.d_TestsPanelName" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="d_TestsPanel" Type="Self.d_TestsPanel" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="d_TestsPanelName">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="d_TestsPanel">
+        <PropertyRef Name="idTestsPanelName" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analises_Mediums_Cultures_p_Analises_Mediums">
+    <End Role="p_Analises_Mediums" Type="Self.p_Analises_Mediums" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="p_Analises_Mediums_Cultures" Type="Self.p_Analises_Mediums_Cultures" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="p_Analises_Mediums">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums_Cultures">
+        <PropertyRef Name="idAnalisesMediums" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analises_Mediums_Date_p_Analises_Mediums">
+    <End Role="p_Analises_Mediums" Type="Self.p_Analises_Mediums" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="p_Analises_Mediums_Date" Type="Self.p_Analises_Mediums_Date" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="p_Analises_Mediums">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums_Date">
+        <PropertyRef Name="idAnalisesMediums" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analises_Mediums_Cultures_AB_p_Analises_Mediums_Cultures">
+    <End Role="p_Analises_Mediums_Cultures" Type="Self.p_Analises_Mediums_Cultures" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="p_Analises_Mediums_Cultures_AB" Type="Self.p_Analises_Mediums_Cultures_AB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="p_Analises_Mediums_Cultures">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums_Cultures_AB">
+        <PropertyRef Name="idAnalisesMediumsCultures" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analises_Mediums_Cultures_Serums_p_Analises_Mediums_Cultures">
+    <End Role="p_Analises_Mediums_Cultures" Type="Self.p_Analises_Mediums_Cultures" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="p_Analises_Mediums_Cultures_Serums" Type="Self.p_Analises_Mediums_Cultures_Serums" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="p_Analises_Mediums_Cultures">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums_Cultures_Serums">
+        <PropertyRef Name="idAnalisesMediumsCultures" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analises_Mediums_Cultures_Tests_p_Analises_Mediums_Cultures">
+    <End Role="p_Analises_Mediums_Cultures" Type="Self.p_Analises_Mediums_Cultures" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="p_Analises_Mediums_Cultures_Tests" Type="Self.p_Analises_Mediums_Cultures_Tests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="p_Analises_Mediums_Cultures">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums_Cultures_Tests">
+        <PropertyRef Name="idAnalisesMediumsCultures" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analises_Mediums_Date_Cultures_p_Analises_Mediums_Date">
+    <End Role="p_Analises_Mediums_Date" Type="Self.p_Analises_Mediums_Date" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="p_Analises_Mediums_Date_Cultures" Type="Self.p_Analises_Mediums_Date_Cultures" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="p_Analises_Mediums_Date">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums_Date_Cultures">
+        <PropertyRef Name="idAnalisesMediumsDate" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analises_Mediums_Date_Cultures_AB_p_Analises_Mediums_Date_Cultures">
+    <End Role="p_Analises_Mediums_Date_Cultures" Type="Self.p_Analises_Mediums_Date_Cultures" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="p_Analises_Mediums_Date_Cultures_AB" Type="Self.p_Analises_Mediums_Date_Cultures_AB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="p_Analises_Mediums_Date_Cultures">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums_Date_Cultures_AB">
+        <PropertyRef Name="idAnalisesMediumsDateCultures" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analises_Mediums_Date_Cultures_Serums_p_Analises_Mediums_Date_Cultures">
+    <End Role="p_Analises_Mediums_Date_Cultures" Type="Self.p_Analises_Mediums_Date_Cultures" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="p_Analises_Mediums_Date_Cultures_Serums" Type="Self.p_Analises_Mediums_Date_Cultures_Serums" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="p_Analises_Mediums_Date_Cultures">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums_Date_Cultures_Serums">
+        <PropertyRef Name="idAnalisesMediumsDateCultures" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_p_Analises_Mediums_Date_Cultures_Tests_p_Analises_Mediums_Date_Cultures">
+    <End Role="p_Analises_Mediums_Date_Cultures" Type="Self.p_Analises_Mediums_Date_Cultures" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="p_Analises_Mediums_Date_Cultures_Tests" Type="Self.p_Analises_Mediums_Date_Cultures_Tests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="p_Analises_Mediums_Date_Cultures">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Analises_Mediums_Date_Cultures_Tests">
+        <PropertyRef Name="idAnalisesMediumsDateCultures" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__p_Group_M__id_GM__457442E6">
+    <End Role="p_Group_Material_Purpose" Type="Self.p_Group_Material_Purpose" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="p_Group_Material_Purpose_Medium" Type="Self.p_Group_Material_Purpose_Medium" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="p_Group_Material_Purpose">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="p_Group_Material_Purpose_Medium">
+        <PropertyRef Name="id_GMP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="BacLab_DB_OBLEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="a_Antibiotic" EntityType="Self.a_Antibiotic" />
+    <EntitySet Name="a_AntibioticControl" EntityType="Self.a_AntibioticControl" />
+    <EntitySet Name="a_AntibioticGroup" EntityType="Self.a_AntibioticGroup" />
+    <EntitySet Name="a_AntibioticMicroorganismGroup" EntityType="Self.a_AntibioticMicroorganismGroup" />
+    <EntitySet Name="a_AntibioticNorms" EntityType="Self.a_AntibioticNorms" />
+    <EntitySet Name="a_AntibioticPanel" EntityType="Self.a_AntibioticPanel" />
+    <EntitySet Name="a_AntibioticPanelName" EntityType="Self.a_AntibioticPanelName" />
+    <EntitySet Name="a_AntibioticStock" EntityType="Self.a_AntibioticStock" />
+    <EntitySet Name="d_Analyzes" EntityType="Self.d_Analyzes" />
+    <EntitySet Name="d_Biovariant" EntityType="Self.d_Biovariant" />
+    <EntitySet Name="d_Department" EntityType="Self.d_Department" />
+    <EntitySet Name="d_Diagnosis" EntityType="Self.d_Diagnosis" />
+    <EntitySet Name="d_Disinfectants" EntityType="Self.d_Disinfectants" />
+    <EntitySet Name="d_District" EntityType="Self.d_District" />
+    <EntitySet Name="d_DragMetal" EntityType="Self.d_DragMetal" />
+    <EntitySet Name="d_Equipment" EntityType="Self.d_Equipment" />
+    <EntitySet Name="d_EquipmentGroup" EntityType="Self.d_EquipmentGroup" />
+    <EntitySet Name="d_Finance" EntityType="Self.d_Finance" />
+    <EntitySet Name="d_GroupResearch" EntityType="Self.d_GroupResearch" />
+    <EntitySet Name="d_Institution" EntityType="Self.d_Institution" />
+    <EntitySet Name="d_Job" EntityType="Self.d_Job" />
+    <EntitySet Name="d_JobPlace" EntityType="Self.d_JobPlace" />
+    <EntitySet Name="d_Laboratoria" EntityType="Self.d_Laboratoria" />
+    <EntitySet Name="d_Material" EntityType="Self.d_Material" />
+    <EntitySet Name="d_Medium" EntityType="Self.d_Medium" />
+    <EntitySet Name="d_MethodsInoculation" EntityType="Self.d_MethodsInoculation" />
+    <EntitySet Name="d_Microorganism" EntityType="Self.d_Microorganism" />
+    <EntitySet Name="d_MicroorganismGroup" EntityType="Self.d_MicroorganismGroup" />
+    <EntitySet Name="d_Morphology" EntityType="Self.d_Morphology" />
+    <EntitySet Name="d_PathUseAB" EntityType="Self.d_PathUseAB" />
+    <EntitySet Name="d_Patients" EntityType="Self.d_Patients" />
+    <EntitySet Name="d_PatientStatus" EntityType="Self.d_PatientStatus" />
+    <EntitySet Name="d_Producer" EntityType="Self.d_Producer" />
+    <EntitySet Name="d_Purpose" EntityType="Self.d_Purpose" />
+    <EntitySet Name="d_Quantity" EntityType="Self.d_Quantity" />
+    <EntitySet Name="d_ResTemplate" EntityType="Self.d_ResTemplate" />
+    <EntitySet Name="d_RezTemplateMedium" EntityType="Self.d_RezTemplateMedium" />
+    <EntitySet Name="d_Room" EntityType="Self.d_Room" />
+    <EntitySet Name="d_SentPerson" EntityType="Self.d_SentPerson" />
+    <EntitySet Name="d_Serotype" EntityType="Self.d_Serotype" />
+    <EntitySet Name="d_Serum" EntityType="Self.d_Serum" />
+    <EntitySet Name="d_Staff" EntityType="Self.d_Staff" />
+    <EntitySet Name="d_StaffGroup" EntityType="Self.d_StaffGroup" />
+    <EntitySet Name="d_StyleApp" EntityType="Self.d_StyleApp" />
+    <EntitySet Name="d_Template" EntityType="Self.d_Template" />
+    <EntitySet Name="d_Tests" EntityType="Self.d_Tests" />
+    <EntitySet Name="d_TestsPanel" EntityType="Self.d_TestsPanel" />
+    <EntitySet Name="d_TestsPanelName" EntityType="Self.d_TestsPanelName" />
+    <EntitySet Name="d_TypeColony" EntityType="Self.d_TypeColony" />
+    <EntitySet Name="g_Equipment_DragMatal" EntityType="Self.g_Equipment_DragMatal" />
+    <EntitySet Name="g_Equipment_Thermometer" EntityType="Self.g_Equipment_Thermometer" />
+    <EntitySet Name="g_Institution_Department" EntityType="Self.g_Institution_Department" />
+    <EntitySet Name="g_Institution_Email_Print" EntityType="Self.g_Institution_Email_Print" />
+    <EntitySet Name="g_Institution_SentPerson" EntityType="Self.g_Institution_SentPerson" />
+    <EntitySet Name="g_MicroorganismGroup_Microorganism" EntityType="Self.g_MicroorganismGroup_Microorganism" />
+    <EntitySet Name="g_Room_Staff" EntityType="Self.g_Room_Staff" />
+    <EntitySet Name="p_Analises_DB" EntityType="Self.p_Analises_DB" />
+    <EntitySet Name="p_Analises_Mediums" EntityType="Self.p_Analises_Mediums" />
+    <EntitySet Name="p_Analises_Mediums_Cultures" EntityType="Self.p_Analises_Mediums_Cultures" />
+    <EntitySet Name="p_Analises_Mediums_Cultures_AB" EntityType="Self.p_Analises_Mediums_Cultures_AB" />
+    <EntitySet Name="p_Analises_Mediums_Cultures_Serums" EntityType="Self.p_Analises_Mediums_Cultures_Serums" />
+    <EntitySet Name="p_Analises_Mediums_Cultures_Tests" EntityType="Self.p_Analises_Mediums_Cultures_Tests" />
+    <EntitySet Name="p_Analises_Mediums_Date" EntityType="Self.p_Analises_Mediums_Date" />
+    <EntitySet Name="p_Analises_Mediums_Date_Cultures" EntityType="Self.p_Analises_Mediums_Date_Cultures" />
+    <EntitySet Name="p_Analises_Mediums_Date_Cultures_AB" EntityType="Self.p_Analises_Mediums_Date_Cultures_AB" />
+    <EntitySet Name="p_Analises_Mediums_Date_Cultures_Serums" EntityType="Self.p_Analises_Mediums_Date_Cultures_Serums" />
+    <EntitySet Name="p_Analises_Mediums_Date_Cultures_Tests" EntityType="Self.p_Analises_Mediums_Date_Cultures_Tests" />
+    <EntitySet Name="p_Group_Material_Purpose" EntityType="Self.p_Group_Material_Purpose" />
+    <EntitySet Name="p_Group_Material_Purpose_Medium" EntityType="Self.p_Group_Material_Purpose_Medium" />
+    <EntitySet Name="p_Room_Equipment_Temperature" EntityType="Self.p_Room_Equipment_Temperature" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <AssociationSet Name="FK__a_Antibio__id_An__302F0D3D" Association="Self.FK__a_Antibio__id_An__302F0D3D">
+      <End Role="a_AntibioticGroup" EntitySet="a_AntibioticGroup" />
+      <End Role="a_Antibiotic" EntitySet="a_Antibiotic" />
+    </AssociationSet>
+    <AssociationSet Name="FK__a_Antibiot__idAB__461E4E5C" Association="Self.FK__a_Antibiot__idAB__461E4E5C">
+      <End Role="a_Antibiotic" EntitySet="a_Antibiotic" />
+      <End Role="a_AntibioticMicroorganismGroup" EntitySet="a_AntibioticMicroorganismGroup" />
+    </AssociationSet>
+    <AssociationSet Name="FK_a_AntibioticNorms_a_Antibiotic" Association="Self.FK_a_AntibioticNorms_a_Antibiotic">
+      <End Role="a_Antibiotic" EntitySet="a_Antibiotic" />
+      <End Role="a_AntibioticNorms" EntitySet="a_AntibioticNorms" />
+    </AssociationSet>
+    <AssociationSet Name="FK_a_AntibioticStock_a_Antibiotic" Association="Self.FK_a_AntibioticStock_a_Antibiotic">
+      <End Role="a_Antibiotic" EntitySet="a_Antibiotic" />
+      <End Role="a_AntibioticStock" EntitySet="a_AntibioticStock" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analises_Mediums_Cultures_AB_a_Antibiotic" Association="Self.FK_p_Analises_Mediums_Cultures_AB_a_Antibiotic">
+      <End Role="a_Antibiotic" EntitySet="a_Antibiotic" />
+      <End Role="p_Analises_Mediums_Cultures_AB" EntitySet="p_Analises_Mediums_Cultures_AB" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analises_Mediums_Date_Cultures_AB_a_Antibiotic" Association="Self.FK_p_Analises_Mediums_Date_Cultures_AB_a_Antibiotic">
+      <End Role="a_Antibiotic" EntitySet="a_Antibiotic" />
+      <End Role="p_Analises_Mediums_Date_Cultures_AB" EntitySet="p_Analises_Mediums_Date_Cultures_AB" />
+    </AssociationSet>
+    <AssociationSet Name="FK_a_AntibioticControl_a_AntibioticControl" Association="Self.FK_a_AntibioticControl_a_AntibioticControl">
+      <End Role="a_AntibioticStock" EntitySet="a_AntibioticStock" />
+      <End Role="a_AntibioticControl" EntitySet="a_AntibioticControl" />
+    </AssociationSet>
+    <AssociationSet Name="FK_a_AntibioticControl_d_Microorganism" Association="Self.FK_a_AntibioticControl_d_Microorganism">
+      <End Role="d_Microorganism" EntitySet="d_Microorganism" />
+      <End Role="a_AntibioticControl" EntitySet="a_AntibioticControl" />
+    </AssociationSet>
+    <AssociationSet Name="FK__a_Antibio__id_AB__7C7A5F0D" Association="Self.FK__a_Antibio__id_AB__7C7A5F0D">
+      <End Role="a_AntibioticMicroorganismGroup" EntitySet="a_AntibioticMicroorganismGroup" />
+      <End Role="a_AntibioticPanel" EntitySet="a_AntibioticPanel" />
+    </AssociationSet>
+    <AssociationSet Name="FK__a_Antibio__idGro__452A2A23" Association="Self.FK__a_Antibio__idGro__452A2A23">
+      <End Role="d_MicroorganismGroup" EntitySet="d_MicroorganismGroup" />
+      <End Role="a_AntibioticMicroorganismGroup" EntitySet="a_AntibioticMicroorganismGroup" />
+    </AssociationSet>
+    <AssociationSet Name="FK_a_AntibioticNorms_d_Microorganism" Association="Self.FK_a_AntibioticNorms_d_Microorganism">
+      <End Role="d_Microorganism" EntitySet="d_Microorganism" />
+      <End Role="a_AntibioticNorms" EntitySet="a_AntibioticNorms" />
+    </AssociationSet>
+    <AssociationSet Name="FK__a_Antibio__idAnt__5B196B42" Association="Self.FK__a_Antibio__idAnt__5B196B42">
+      <End Role="a_AntibioticPanelName" EntitySet="a_AntibioticPanelName" />
+      <End Role="a_AntibioticPanel" EntitySet="a_AntibioticPanel" />
+    </AssociationSet>
+    <AssociationSet Name="FK__a_Antibio__idGro__583CFE97" Association="Self.FK__a_Antibio__idGro__583CFE97">
+      <End Role="d_MicroorganismGroup" EntitySet="d_MicroorganismGroup" />
+      <End Role="a_AntibioticPanelName" EntitySet="a_AntibioticPanelName" />
+    </AssociationSet>
+    <AssociationSet Name="FK_a_AntibioticStock_d_Producer" Association="Self.FK_a_AntibioticStock_d_Producer">
+      <End Role="d_Producer" EntitySet="d_Producer" />
+      <End Role="a_AntibioticStock" EntitySet="a_AntibioticStock" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Analyze__id_Do__35B2DC69" Association="Self.FK__d_Analyze__id_Do__35B2DC69">
+      <End Role="d_Staff" EntitySet="d_Staff" />
+      <End Role="d_Analyzes" EntitySet="d_Analyzes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Analyze__idDep__11DF9047" Association="Self.FK__d_Analyze__idDep__11DF9047">
+      <End Role="d_Department" EntitySet="d_Department" />
+      <End Role="d_Analyzes" EntitySet="d_Analyzes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Analyze__idDia__12D3B480" Association="Self.FK__d_Analyze__idDia__12D3B480">
+      <End Role="d_Diagnosis" EntitySet="d_Diagnosis" />
+      <End Role="d_Analyzes" EntitySet="d_Analyzes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Analyze__idFin__0FF747D5" Association="Self.FK__d_Analyze__idFin__0FF747D5">
+      <End Role="d_Finance" EntitySet="d_Finance" />
+      <End Role="d_Analyzes" EntitySet="d_Analyzes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Analyze__idGMP__6C5905DD" Association="Self.FK__d_Analyze__idGMP__6C5905DD">
+      <End Role="p_Group_Material_Purpose" EntitySet="p_Group_Material_Purpose" />
+      <End Role="d_Analyzes" EntitySet="d_Analyzes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Analyze__idIns__10EB6C0E" Association="Self.FK__d_Analyze__idIns__10EB6C0E">
+      <End Role="d_Institution" EntitySet="d_Institution" />
+      <End Role="d_Analyzes" EntitySet="d_Analyzes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Analyze__idPat__13C7D8B9" Association="Self.FK__d_Analyze__idPat__13C7D8B9">
+      <End Role="d_PatientStatus" EntitySet="d_PatientStatus" />
+      <End Role="d_Analyzes" EntitySet="d_Analyzes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Analyze__idPat__66A02C87" Association="Self.FK__d_Analyze__idPat__66A02C87">
+      <End Role="d_Patients" EntitySet="d_Patients" />
+      <End Role="d_Analyzes" EntitySet="d_Analyzes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Analyze__idRes__15B0212B" Association="Self.FK__d_Analyze__idRes__15B0212B">
+      <End Role="d_ResTemplate" EntitySet="d_ResTemplate" />
+      <End Role="d_Analyzes" EntitySet="d_Analyzes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Analyze__idSen__14BBFCF2" Association="Self.FK__d_Analyze__idSen__14BBFCF2">
+      <End Role="d_SentPerson" EntitySet="d_SentPerson" />
+      <End Role="d_Analyzes" EntitySet="d_Analyzes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__p_Analise__idAnalis" Association="Self.FK__p_Analise__idAnalis">
+      <End Role="d_Analyzes" EntitySet="d_Analyzes" />
+      <End Role="p_Analises_DB" EntitySet="p_Analises_DB" />
+    </AssociationSet>
+    <AssociationSet Name="FK_d_Analyzes_d_Institution" Association="Self.FK_d_Analyzes_d_Institution">
+      <End Role="d_Institution" EntitySet="d_Institution" />
+      <End Role="d_Analyzes" EntitySet="d_Analyzes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analis_Mediums_d_Analyzes" Association="Self.FK_p_Analis_Mediums_d_Analyzes">
+      <End Role="d_Analyzes" EntitySet="d_Analyzes" />
+      <End Role="p_Analises_Mediums" EntitySet="p_Analises_Mediums" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Biovari__idMic__03E676AB" Association="Self.FK__d_Biovari__idMic__03E676AB">
+      <End Role="d_Microorganism" EntitySet="d_Microorganism" />
+      <End Role="d_Biovariant" EntitySet="d_Biovariant" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Biovari__idSer__04DA9AE4" Association="Self.FK__d_Biovari__idSer__04DA9AE4">
+      <End Role="d_Serotype" EntitySet="d_Serotype" />
+      <End Role="d_Biovariant" EntitySet="d_Biovariant" />
+    </AssociationSet>
+    <AssociationSet Name="FK_d_Biovariant_d_MicroorganismGroup" Association="Self.FK_d_Biovariant_d_MicroorganismGroup">
+      <End Role="d_MicroorganismGroup" EntitySet="d_MicroorganismGroup" />
+      <End Role="d_Biovariant" EntitySet="d_Biovariant" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analises_Mediums_Cultures_d_Biovariant" Association="Self.FK_p_Analises_Mediums_Cultures_d_Biovariant">
+      <End Role="d_Biovariant" EntitySet="d_Biovariant" />
+      <End Role="p_Analises_Mediums_Cultures" EntitySet="p_Analises_Mediums_Cultures" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analises_Mediums_Date_Cultures_d_Biovariant" Association="Self.FK_p_Analises_Mediums_Date_Cultures_d_Biovariant">
+      <End Role="d_Biovariant" EntitySet="d_Biovariant" />
+      <End Role="p_Analises_Mediums_Date_Cultures" EntitySet="p_Analises_Mediums_Date_Cultures" />
+    </AssociationSet>
+    <AssociationSet Name="FK__g_Institu__idIte__3434A84B" Association="Self.FK__g_Institu__idIte__3434A84B">
+      <End Role="d_Department" EntitySet="d_Department" />
+      <End Role="g_Institution_Department" EntitySet="g_Institution_Department" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Patient__idDic__4A23E96A" Association="Self.FK__d_Patient__idDic__4A23E96A">
+      <End Role="d_District" EntitySet="d_District" />
+      <End Role="d_Patients" EntitySet="d_Patients" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Patient__idJob__4B180DA3" Association="Self.FK__d_Patient__idJob__4B180DA3">
+      <End Role="d_District" EntitySet="d_District" />
+      <End Role="d_Patients" EntitySet="d_Patients" />
+    </AssociationSet>
+    <AssociationSet Name="FK_g_Equipment_DragMatal_d_DragMetal" Association="Self.FK_g_Equipment_DragMatal_d_DragMetal">
+      <End Role="d_DragMetal" EntitySet="d_DragMetal" />
+      <End Role="g_Equipment_DragMatal" EntitySet="g_Equipment_DragMatal" />
+    </AssociationSet>
+    <AssociationSet Name="FK_d_Equipment_d_Equipment" Association="Self.FK_d_Equipment_d_Equipment">
+      <End Role="d_Equipment" EntitySet="d_Equipment" />
+      <End Role="d_Equipment1" EntitySet="d_Equipment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_d_Equipment_d_EquipmentGroup" Association="Self.FK_d_Equipment_d_EquipmentGroup">
+      <End Role="d_EquipmentGroup" EntitySet="d_EquipmentGroup" />
+      <End Role="d_Equipment" EntitySet="d_Equipment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_d_Equipment_d_Room" Association="Self.FK_d_Equipment_d_Room">
+      <End Role="d_Room" EntitySet="d_Room" />
+      <End Role="d_Equipment" EntitySet="d_Equipment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Equipment_Thermometer" Association="Self.FK_Equipment_Thermometer">
+      <End Role="d_Equipment" EntitySet="d_Equipment" />
+      <End Role="g_Equipment_Thermometer" EntitySet="g_Equipment_Thermometer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_g_Equipment__d_Equipment" Association="Self.FK_g_Equipment__d_Equipment">
+      <End Role="d_Equipment" EntitySet="d_Equipment" />
+      <End Role="g_Equipment_Thermometer" EntitySet="g_Equipment_Thermometer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_g_Equipment_DragMatal_d_Equipment" Association="Self.FK_g_Equipment_DragMatal_d_Equipment">
+      <End Role="d_Equipment" EntitySet="d_Equipment" />
+      <End Role="g_Equipment_DragMatal" EntitySet="g_Equipment_DragMatal" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Room_Equipment_Temperature_d_Equipment" Association="Self.FK_p_Room_Equipment_Temperature_d_Equipment">
+      <End Role="d_Equipment" EntitySet="d_Equipment" />
+      <End Role="p_Room_Equipment_Temperature" EntitySet="p_Room_Equipment_Temperature" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Room_Equipment_Temperature_d_Equipment1" Association="Self.FK_p_Room_Equipment_Temperature_d_Equipment1">
+      <End Role="d_Equipment" EntitySet="d_Equipment" />
+      <End Role="p_Room_Equipment_Temperature" EntitySet="p_Room_Equipment_Temperature" />
+    </AssociationSet>
+    <AssociationSet Name="FK__p_Group_M__idGro__455F344D" Association="Self.FK__p_Group_M__idGro__455F344D">
+      <End Role="d_GroupResearch" EntitySet="d_GroupResearch" />
+      <End Role="p_Group_Material_Purpose" EntitySet="p_Group_Material_Purpose" />
+    </AssociationSet>
+    <AssociationSet Name="FK__g_Institu__idGro__2F6FF32E" Association="Self.FK__g_Institu__idGro__2F6FF32E">
+      <End Role="d_Institution" EntitySet="d_Institution" />
+      <End Role="g_Institution_SentPerson" EntitySet="g_Institution_SentPerson" />
+    </AssociationSet>
+    <AssociationSet Name="FK__g_Institu__idGro__33408412" Association="Self.FK__g_Institu__idGro__33408412">
+      <End Role="d_Institution" EntitySet="d_Institution" />
+      <End Role="g_Institution_Department" EntitySet="g_Institution_Department" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Patient__idJob__4282C7A2" Association="Self.FK__d_Patient__idJob__4282C7A2">
+      <End Role="d_Job" EntitySet="d_Job" />
+      <End Role="d_Patients" EntitySet="d_Patients" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Patient__idJob__4376EBDB" Association="Self.FK__d_Patient__idJob__4376EBDB">
+      <End Role="d_JobPlace" EntitySet="d_JobPlace" />
+      <End Role="d_Patients" EntitySet="d_Patients" />
+    </AssociationSet>
+    <AssociationSet Name="FK__p_Group_M__idMat__46535886" Association="Self.FK__p_Group_M__idMat__46535886">
+      <End Role="d_Material" EntitySet="d_Material" />
+      <End Role="p_Group_Material_Purpose" EntitySet="p_Group_Material_Purpose" />
+    </AssociationSet>
+    <AssociationSet Name="FK__p_Group_M__idMed__483BA0F8" Association="Self.FK__p_Group_M__idMed__483BA0F8">
+      <End Role="d_Medium" EntitySet="d_Medium" />
+      <End Role="p_Group_Material_Purpose_Medium" EntitySet="p_Group_Material_Purpose_Medium" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analis_Mediums_d_Medium" Association="Self.FK_p_Analis_Mediums_d_Medium">
+      <End Role="d_Medium" EntitySet="d_Medium" />
+      <End Role="p_Analises_Mediums" EntitySet="p_Analises_Mediums" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analis_Mediums_d_MethodsInoculation" Association="Self.FK_p_Analis_Mediums_d_MethodsInoculation">
+      <End Role="d_MethodsInoculation" EntitySet="d_MethodsInoculation" />
+      <End Role="p_Analises_Mediums" EntitySet="p_Analises_Mediums" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Group_Material_Purpose_Medium_d_MethodsInoculation" Association="Self.FK_p_Group_Material_Purpose_Medium_d_MethodsInoculation">
+      <End Role="d_MethodsInoculation" EntitySet="d_MethodsInoculation" />
+      <End Role="p_Group_Material_Purpose_Medium" EntitySet="p_Group_Material_Purpose_Medium" />
+    </AssociationSet>
+    <AssociationSet Name="FK__d_Serotyp__idMic__19169DBB" Association="Self.FK__d_Serotyp__idMic__19169DBB">
+      <End Role="d_Microorganism" EntitySet="d_Microorganism" />
+      <End Role="d_Serotype" EntitySet="d_Serotype" />
+    </AssociationSet>
+    <AssociationSet Name="FK__g_Microor__idIte__3BD5CA13" Association="Self.FK__g_Microor__idIte__3BD5CA13">
+      <End Role="d_Microorganism" EntitySet="d_Microorganism" />
+      <End Role="g_MicroorganismGroup_Microorganism" EntitySet="g_MicroorganismGroup_Microorganism" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analises_Mediums_Cultures_d_Microorganism" Association="Self.FK_p_Analises_Mediums_Cultures_d_Microorganism">
+      <End Role="d_Microorganism" EntitySet="d_Microorganism" />
+      <End Role="p_Analises_Mediums_Cultures" EntitySet="p_Analises_Mediums_Cultures" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analises_Mediums_Date_Cultures_d_Microorganism" Association="Self.FK_p_Analises_Mediums_Date_Cultures_d_Microorganism">
+      <End Role="d_Microorganism" EntitySet="d_Microorganism" />
+      <End Role="p_Analises_Mediums_Date_Cultures" EntitySet="p_Analises_Mediums_Date_Cultures" />
+    </AssociationSet>
+    <AssociationSet Name="FK__g_Microor__idGro__3AE1A5DA" Association="Self.FK__g_Microor__idGro__3AE1A5DA">
+      <End Role="d_MicroorganismGroup" EntitySet="d_MicroorganismGroup" />
+      <End Role="g_MicroorganismGroup_Microorganism" EntitySet="g_MicroorganismGroup_Microorganism" />
+    </AssociationSet>
+    <AssociationSet Name="FK__p_Group_M__idPur__47477CBF" Association="Self.FK__p_Group_M__idPur__47477CBF">
+      <End Role="d_Purpose" EntitySet="d_Purpose" />
+      <End Role="p_Group_Material_Purpose" EntitySet="p_Group_Material_Purpose" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analises_Mediums_Date_d_RezTemplateMedium" Association="Self.FK_p_Analises_Mediums_Date_d_RezTemplateMedium">
+      <End Role="d_RezTemplateMedium" EntitySet="d_RezTemplateMedium" />
+      <End Role="p_Analises_Mediums_Date" EntitySet="p_Analises_Mediums_Date" />
+    </AssociationSet>
+    <AssociationSet Name="FK_g_Room_Staff_d_Room" Association="Self.FK_g_Room_Staff_d_Room">
+      <End Role="d_Room" EntitySet="d_Room" />
+      <End Role="g_Room_Staff" EntitySet="g_Room_Staff" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Room_Equipment_Temperature_d_Room" Association="Self.FK_p_Room_Equipment_Temperature_d_Room">
+      <End Role="d_Room" EntitySet="d_Room" />
+      <End Role="p_Room_Equipment_Temperature" EntitySet="p_Room_Equipment_Temperature" />
+    </AssociationSet>
+    <AssociationSet Name="FK__g_Institu__idIte__30641767" Association="Self.FK__g_Institu__idIte__30641767">
+      <End Role="d_SentPerson" EntitySet="d_SentPerson" />
+      <End Role="g_Institution_SentPerson" EntitySet="g_Institution_SentPerson" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analises_Mediums_Cultures_d_Serotype" Association="Self.FK_p_Analises_Mediums_Cultures_d_Serotype">
+      <End Role="d_Serotype" EntitySet="d_Serotype" />
+      <End Role="p_Analises_Mediums_Cultures" EntitySet="p_Analises_Mediums_Cultures" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analises_Mediums_Date_Cultures_d_Serotype" Association="Self.FK_p_Analises_Mediums_Date_Cultures_d_Serotype">
+      <End Role="d_Serotype" EntitySet="d_Serotype" />
+      <End Role="p_Analises_Mediums_Date_Cultures" EntitySet="p_Analises_Mediums_Date_Cultures" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analises_Mediums_Cultures_Serums_d_Serum" Association="Self.FK_p_Analises_Mediums_Cultures_Serums_d_Serum">
+      <End Role="d_Serum" EntitySet="d_Serum" />
+      <End Role="p_Analises_Mediums_Cultures_Serums" EntitySet="p_Analises_Mediums_Cultures_Serums" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analises_Mediums_Date_Cultures_Serums_d_Serum" Association="Self.FK_p_Analises_Mediums_Date_Cultures_Serums_d_Serum">
+      <End Role="d_Serum" EntitySet="d_Serum" />
+      <End Role="p_Analises_Mediums_Date_Cultures_Serums" EntitySet="p_Analises_Mediums_Date_Cultures_Serums" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Staff__id_catego__7849DB76" Association="Self.FK__Staff__id_catego__7849DB76">
+      <End Role="d_StaffGroup" EntitySet="d_StaffGroup" />
+      <End Role="d_Staff" EntitySet="d_Staff" />
+    </AssociationSet>
+    <AssociationSet Name="FK_d_Staff_d_Staff" Association="Self.FK_d_Staff_d_Staff">
+      <End Role="d_Staff" EntitySet="d_Staff" />
+      <End Role="d_Staff1" EntitySet="d_Staff" />
+    </AssociationSet>
+    <AssociationSet Name="FK_g_Room_Staff_d_Staff" Association="Self.FK_g_Room_Staff_d_Staff">
+      <End Role="d_Staff" EntitySet="d_Staff" />
+      <End Role="g_Room_Staff" EntitySet="g_Room_Staff" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Room_Equipment_Temperature_d_Staff" Association="Self.FK_p_Room_Equipment_Temperature_d_Staff">
+      <End Role="d_Staff" EntitySet="d_Staff" />
+      <End Role="p_Room_Equipment_Temperature" EntitySet="p_Room_Equipment_Temperature" />
+    </AssociationSet>
+    <AssociationSet Name="StyleStaff_FK" Association="Self.StyleStaff_FK">
+      <End Role="d_Staff" EntitySet="d_Staff" />
+      <End Role="d_StyleApp" EntitySet="d_StyleApp" />
+    </AssociationSet>
+    <AssociationSet Name="FK_d_TestsPanel_d_Tests" Association="Self.FK_d_TestsPanel_d_Tests">
+      <End Role="d_Tests" EntitySet="d_Tests" />
+      <End Role="d_TestsPanel" EntitySet="d_TestsPanel" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analises_Mediums_Cultures_Tests_d_Tests" Association="Self.FK_p_Analises_Mediums_Cultures_Tests_d_Tests">
+      <End Role="d_Tests" EntitySet="d_Tests" />
+      <End Role="p_Analises_Mediums_Cultures_Tests" EntitySet="p_Analises_Mediums_Cultures_Tests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analises_Mediums_Date_Cultures_Tests_d_Tests" Association="Self.FK_p_Analises_Mediums_Date_Cultures_Tests_d_Tests">
+      <End Role="d_Tests" EntitySet="d_Tests" />
+      <End Role="p_Analises_Mediums_Date_Cultures_Tests" EntitySet="p_Analises_Mediums_Date_Cultures_Tests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_d_TestsPanel_d_TestsPanelName" Association="Self.FK_d_TestsPanel_d_TestsPanelName">
+      <End Role="d_TestsPanelName" EntitySet="d_TestsPanelName" />
+      <End Role="d_TestsPanel" EntitySet="d_TestsPanel" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analises_Mediums_Cultures_p_Analises_Mediums" Association="Self.FK_p_Analises_Mediums_Cultures_p_Analises_Mediums">
+      <End Role="p_Analises_Mediums" EntitySet="p_Analises_Mediums" />
+      <End Role="p_Analises_Mediums_Cultures" EntitySet="p_Analises_Mediums_Cultures" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analises_Mediums_Date_p_Analises_Mediums" Association="Self.FK_p_Analises_Mediums_Date_p_Analises_Mediums">
+      <End Role="p_Analises_Mediums" EntitySet="p_Analises_Mediums" />
+      <End Role="p_Analises_Mediums_Date" EntitySet="p_Analises_Mediums_Date" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analises_Mediums_Cultures_AB_p_Analises_Mediums_Cultures" Association="Self.FK_p_Analises_Mediums_Cultures_AB_p_Analises_Mediums_Cultures">
+      <End Role="p_Analises_Mediums_Cultures" EntitySet="p_Analises_Mediums_Cultures" />
+      <End Role="p_Analises_Mediums_Cultures_AB" EntitySet="p_Analises_Mediums_Cultures_AB" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analises_Mediums_Cultures_Serums_p_Analises_Mediums_Cultures" Association="Self.FK_p_Analises_Mediums_Cultures_Serums_p_Analises_Mediums_Cultures">
+      <End Role="p_Analises_Mediums_Cultures" EntitySet="p_Analises_Mediums_Cultures" />
+      <End Role="p_Analises_Mediums_Cultures_Serums" EntitySet="p_Analises_Mediums_Cultures_Serums" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analises_Mediums_Cultures_Tests_p_Analises_Mediums_Cultures" Association="Self.FK_p_Analises_Mediums_Cultures_Tests_p_Analises_Mediums_Cultures">
+      <End Role="p_Analises_Mediums_Cultures" EntitySet="p_Analises_Mediums_Cultures" />
+      <End Role="p_Analises_Mediums_Cultures_Tests" EntitySet="p_Analises_Mediums_Cultures_Tests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analises_Mediums_Date_Cultures_p_Analises_Mediums_Date" Association="Self.FK_p_Analises_Mediums_Date_Cultures_p_Analises_Mediums_Date">
+      <End Role="p_Analises_Mediums_Date" EntitySet="p_Analises_Mediums_Date" />
+      <End Role="p_Analises_Mediums_Date_Cultures" EntitySet="p_Analises_Mediums_Date_Cultures" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analises_Mediums_Date_Cultures_AB_p_Analises_Mediums_Date_Cultures" Association="Self.FK_p_Analises_Mediums_Date_Cultures_AB_p_Analises_Mediums_Date_Cultures">
+      <End Role="p_Analises_Mediums_Date_Cultures" EntitySet="p_Analises_Mediums_Date_Cultures" />
+      <End Role="p_Analises_Mediums_Date_Cultures_AB" EntitySet="p_Analises_Mediums_Date_Cultures_AB" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analises_Mediums_Date_Cultures_Serums_p_Analises_Mediums_Date_Cultures" Association="Self.FK_p_Analises_Mediums_Date_Cultures_Serums_p_Analises_Mediums_Date_Cultures">
+      <End Role="p_Analises_Mediums_Date_Cultures" EntitySet="p_Analises_Mediums_Date_Cultures" />
+      <End Role="p_Analises_Mediums_Date_Cultures_Serums" EntitySet="p_Analises_Mediums_Date_Cultures_Serums" />
+    </AssociationSet>
+    <AssociationSet Name="FK_p_Analises_Mediums_Date_Cultures_Tests_p_Analises_Mediums_Date_Cultures" Association="Self.FK_p_Analises_Mediums_Date_Cultures_Tests_p_Analises_Mediums_Date_Cultures">
+      <End Role="p_Analises_Mediums_Date_Cultures" EntitySet="p_Analises_Mediums_Date_Cultures" />
+      <End Role="p_Analises_Mediums_Date_Cultures_Tests" EntitySet="p_Analises_Mediums_Date_Cultures_Tests" />
+    </AssociationSet>
+    <AssociationSet Name="FK__p_Group_M__id_GM__457442E6" Association="Self.FK__p_Group_M__id_GM__457442E6">
+      <End Role="p_Group_Material_Purpose" EntitySet="p_Group_Material_Purpose" />
+      <End Role="p_Group_Material_Purpose_Medium" EntitySet="p_Group_Material_Purpose_Medium" />
+    </AssociationSet>
+    <FunctionImport Name="PR_Analyzes">
+      <Parameter Name="idfinance" Mode="In" Type="Int32" />
+      <Parameter Name="dateDelivery" Mode="In" Type="DateTime" />
+      <Parameter Name="dateDelivery2" Mode="In" Type="DateTime" />
+      <Parameter Name="year" Mode="In" Type="Int32" />
+      <Parameter Name="year2" Mode="In" Type="Int32" />
+      <Parameter Name="idDistrictList" Mode="In" Type="String" />
+      <Parameter Name="jobDistrictList" Mode="In" Type="String" />
+      <Parameter Name="jobPlaceList" Mode="In" Type="String" />
+      <Parameter Name="jobList" Mode="In" Type="String" />
+      <Parameter Name="idInstitutionList" Mode="In" Type="String" />
+      <Parameter Name="idDepartmentList" Mode="In" Type="String" />
+      <Parameter Name="idDiagnosisList" Mode="In" Type="String" />
+      <Parameter Name="idPatientStatusList" Mode="In" Type="String" />
+      <Parameter Name="idSentPersonList" Mode="In" Type="String" />
+      <Parameter Name="idGroupList" Mode="In" Type="String" />
+      <Parameter Name="idMaterialList" Mode="In" Type="String" />
+      <Parameter Name="idPurposeList" Mode="In" Type="String" />
+      <Parameter Name="idResTemplateList" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="PR_Analyzes2">
+      <Parameter Name="idfinance" Mode="In" Type="Int32" />
+      <Parameter Name="dateDelivery" Mode="In" Type="DateTime" />
+      <Parameter Name="dateDelivery2" Mode="In" Type="DateTime" />
+      <Parameter Name="year" Mode="In" Type="Int32" />
+      <Parameter Name="year2" Mode="In" Type="Int32" />
+      <Parameter Name="idDistrictList" Mode="In" Type="String" />
+      <Parameter Name="jobDistrictList" Mode="In" Type="String" />
+      <Parameter Name="jobPlaceList" Mode="In" Type="String" />
+      <Parameter Name="jobList" Mode="In" Type="String" />
+      <Parameter Name="idInstitutionList" Mode="In" Type="String" />
+      <Parameter Name="idDepartmentList" Mode="In" Type="String" />
+      <Parameter Name="idDiagnosisList" Mode="In" Type="String" />
+      <Parameter Name="idPatientStatusList" Mode="In" Type="String" />
+      <Parameter Name="idSentPersonList" Mode="In" Type="String" />
+      <Parameter Name="idGroupList" Mode="In" Type="String" />
+      <Parameter Name="idMaterialList" Mode="In" Type="String" />
+      <Parameter Name="idPurposeList" Mode="In" Type="String" />
+      <Parameter Name="idResTemplateList" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="PR_Material_Culture">
+      <Parameter Name="idInstitution" Mode="In" Type="Int32" />
+      <Parameter Name="dateStart" Mode="In" Type="DateTime" />
+      <Parameter Name="dateEnd" Mode="In" Type="DateTime" />
+    </FunctionImport>
+    <FunctionImport Name="PR_Material_Culture2">
+      <Parameter Name="idInstitution" Mode="In" Type="Int32" />
+      <Parameter Name="dateStart" Mode="In" Type="DateTime" />
+      <Parameter Name="dateEnd" Mode="In" Type="DateTime" />
+    </FunctionImport>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+  </EntityContainer>
+</Schema>

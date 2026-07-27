@@ -18,13 +18,18 @@ namespace BacLab
         public d_Medium()
         {
             this.p_Group_Material_Purpose_Medium = new HashSet<p_Group_Material_Purpose_Medium>();
+            this.p_Analises_Mediums = new HashSet<p_Analises_Mediums>();
         }
     
         public int id { get; set; }
-        public string medium { get; set; }
-        public string code { get; set; }
+        public string name { get; set; }
+        public string abbr { get; set; }
+        public Nullable<int> index { get; set; }
+        public Nullable<bool> show { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<p_Group_Material_Purpose_Medium> p_Group_Material_Purpose_Medium { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<p_Analises_Mediums> p_Analises_Mediums { get; set; }
     }
 }

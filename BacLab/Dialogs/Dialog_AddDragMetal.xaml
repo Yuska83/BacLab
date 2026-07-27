@@ -1,0 +1,99 @@
+﻿<UserControl x:Class="BacLab.Dialogs.Dialog_AddDragMetal"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             mc:Ignorable="d"  Height="Auto" Width="Auto">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="itemListBox" >
+            <TextBlock Text="{Binding name}" />
+        </ControlTemplate>
+        <DataTemplate x:Key="itemsListBox">
+            <Control Template="{StaticResource itemListBox}" />
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock x:Name="x_nameTB" Grid.ColumnSpan="3" FontWeight="Bold" FontSize="20"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <TextBlock Text="Дорогоцінні метали" Grid.ColumnSpan="3" Grid.Row="1" FontWeight="Bold" FontSize="16"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+        <CheckBox x:Name="x_cb_visibilityId" Content="Id"  Grid.Row="1" Click="x_cb_visibilityId_Click" Margin="10 0 0 0"/>
+        
+        <materialDesign:Card Grid.Row="2">
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="10*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Метали"  FontWeight="Bold" />
+                <ListBox  x:Name="x_listDragMetal" Grid.Row="1" Margin="5"
+                          ItemTemplate="{StaticResource itemsListBox}" />
+            </Grid>
+        </materialDesign:Card>
+
+        <materialDesign:Card Grid.Row="2" Grid.Column="2" >
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="10*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Обрані метали"  FontWeight="Bold" FontSize="12"/>
+
+                <DataGrid x:Name="x_MainGrid" Grid.Row="1" 
+                          ItemsSource="{Binding ListItems}"
+                          CanUserAddRows="False">
+                    <DataGrid.CommandBindings>
+                        <CommandBinding Command="ApplicationCommands.Delete"  Executed="CommandBinding_Executed"/>
+                    </DataGrid.CommandBindings>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Id" Visibility="Collapsed" Binding="{Binding id}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Назва" Binding="{Binding d_DragMetal.name}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Кількість" Binding="{Binding quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </materialDesign:Card>
+
+        <StackPanel Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" >
+
+            <Button x:Name="x_AddAB" Click="x_Add_Click" ToolTip="Додати"
+                VerticalAlignment="Center" >
+                <materialDesign:PackIcon Kind="ArrowRightBold" />
+            </Button>
+            <Button x:Name="x_DelAB" Click="x_Delete_Click"  ToolTip="Видалити"
+                    VerticalAlignment="Center" >
+                <materialDesign:PackIcon Kind="ArrowLeftBold" />
+            </Button>
+        </StackPanel>
+
+        <StackPanel Grid.Row="3" Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button  Command="{x:Static wpf:DialogHost.CloseDialogCommand}" Click="SaveButton_Click" >
+               Зберегти
+            </Button>
+            <Button IsCancel="True" Margin="8 0 0 0"
+                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}" >
+                <Button.CommandParameter>
+                    <system:Boolean>False</system:Boolean>
+                </Button.CommandParameter>
+                Відмінити
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>
+    
+    

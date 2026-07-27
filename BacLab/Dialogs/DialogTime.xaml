@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="BacLab.Dialogs.DialogTime"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             xmlns:Dialogs="clr-namespace:BacLab.Dialogs" 
+             mc:Ignorable="d" Height="Auto" Width="Auto"
+             d:DataContext="{d:DesignInstance Type=Dialogs:DialogTime}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Введіть час" FontWeight="Bold" FontSize="20"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <TextBlock x:Name="x_nameRoom" Grid.Row="1" FontWeight="Bold" FontSize="16"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <materialDesign:Card x:Name="x_mainCard" Grid.Row="2">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                <TextBox x:Name="x_hour" Width="100" 
+                         materialDesign:HintAssist.Hint="год."/>
+                <TextBox x:Name="x_min" Width="100" Margin="10 0 0 0"
+                         materialDesign:HintAssist.Hint="мін."/>
+            </StackPanel>
+
+        </materialDesign:Card>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button  Click="Button_Click"
+                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}" >Зберегти
+            </Button>
+            <Button IsCancel="True" Margin="8 0 0 0"
+                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}" >
+                <Button.CommandParameter>
+                    <system:String>False</system:String>
+                </Button.CommandParameter>
+                Відмінити
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>
+
+
+   
+
