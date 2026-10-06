@@ -35,17 +35,17 @@ namespace BacLab.Dictionary
             {
                 switch ((sender as Button).Name.ToString())
                 {
-                    case "a_AntibioticGroup": x_MainCard.Content = new DictionariControl(context, "a_AntibioticGroup"); break;
+                    case "a_AntibioticGroup": x_MainCard.Content = new DictionaryControl(context, "a_AntibioticGroup"); break;
                     case "x_ABTest": x_MainCard.Content = new AB_All(context, subdivisions); break;
-                    case "x_ABDisk": x_MainCard.Content = new DictionariControl(context, "x_ABDisk"); break;
+                    case "x_ABDisk": x_MainCard.Content = new DictionaryControl(context, "d_ABDisk"); break;
                     case "x_AB_EUCAST": x_MainCard.Content = new ABEucastControl(context, subdivisions); break;
-                    case "x_Norms": x_MainCard.Content = new ABNormsControl(context, subdivisions); break;
+                    case "x_Norms": x_MainCard.Content = new ABNormsControl(context, subdivisions,1); break;
                     case "x_ABResSen": x_MainCard.Content = new ABResSenControl(context); break;
-                    case "x_EnterControl": x_MainCard.Content = new ABEnterControl(context, subdivisions, staff,true); break;
-                    case "x_ABSeries": x_MainCard.Content = new ABEnterControl(context, subdivisions, staff, true); break;
+                    case "x_EnterControl": x_MainCard.Content = new ABEnterControl(context, subdivisions, staff); break;
+                    case "x_ABSeries": x_MainCard.Content = new ABEnterControl(context, subdivisions, staff); break;
                     case "x_Control": x_MainCard.Content = new ABMonitoringControl(context, subdivisions, staff); break;
-                    case "d_Producer": x_MainCard.Content = new DictionariControl(context, "d_Producer"); break;
-                    case "d_Period": x_MainCard.Content = new DictionariControl(context, "d_Period"); break;
+                    case "d_Producer": x_MainCard.Content = new DictionaryControl(context, "d_Producer"); break;
+                    case "d_Period": x_MainCard.Content = new DictionaryControl(context, "d_Period"); break;
                 }
             }
             catch (Exception ex)

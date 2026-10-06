@@ -84,14 +84,16 @@ namespace BacLab.WorkSpace
                     {
                         if (isDias)
                         {
-                            return context.d_Analyzes.Where(c => c.sendAnalis != true &&
+                            return context.d_Analyzes.Where(c => c.isEnd != true &&
                                 c.p_Group_Material_Purpose.d_GroupResearch.id == idGroupResearch && c.idInstitution == 26 &&
                                 c.d_Brakerage == null && c.idSubdivisions == subdivisions.id)
                                 .OrderBy(c => c.dateDelivery).ThenBy(c => c.labNum).AsQueryable();
                         }
                         else
                         {
-                            return context.d_Analyzes.Where(c => c.sendAnalis != true &&
+                           
+
+                            return context.d_Analyzes.Where(c => c.isEnd != true  &&
                                 c.p_Group_Material_Purpose.d_GroupResearch.id == idGroupResearch && c.idInstitution != 26 &&
                                 c.d_Brakerage == null && c.idSubdivisions == subdivisions.id)
                                 .OrderBy(c => c.dateDelivery).ThenBy(c => c.labNum).AsQueryable();
@@ -99,7 +101,7 @@ namespace BacLab.WorkSpace
                     }
                     else
                     {
-                        return context.d_Analyzes.Where(c => c.sendAnalis != true &&
+                        return context.d_Analyzes.Where(c => c.isEnd != true &&
                             c.p_Group_Material_Purpose.d_GroupResearch.id == idGroupResearch &&
                             c.d_Brakerage == null && c.idSubdivisions == subdivisions.id)
                             .OrderBy(c => c.dateDelivery).ThenBy(c => c.labNum).AsQueryable();
@@ -179,7 +181,7 @@ namespace BacLab.WorkSpace
                         dayShowDate = dateInoculation.AddDays(dayObservation);
 
                         //додаємо нові дати, якщо не виписан і немає росту
-                        if (Analis.Analyzes.sendAnalis != true)
+                        if (Analis.Analyzes.isEnd != true)
                             if (medium.p_Analises_Mediums_Date.Where(c => c.p_Analises_Mediums_Date_Colonies.Count() > 0).FirstOrDefault() == null)
                                 if (medium.p_Analises_Mediums_Date.Where(c => c.date.Value.Date >= DateTime.Now.Date).Count() < 1)
                                 {
@@ -311,19 +313,19 @@ namespace BacLab.WorkSpace
                 switch (SelectedItem.Name)
                 {
                     case "Analis":
-                        if (SelectedItem.Analyzes.sendAnalis != true)
+                        if (SelectedItem.Analyzes.isEnd != true)
                             x_TreeAnalises.ContextMenu = x_TreeAnalises.Resources["Analis"] as System.Windows.Controls.ContextMenu;
                         break;
                     case "Medium":
-                        if (SelectedItem.Analyzes.sendAnalis != true)
+                        if (SelectedItem.Analyzes.isEnd != true)
                             x_TreeAnalises.ContextMenu = x_TreeAnalises.Resources["Medium"] as System.Windows.Controls.ContextMenu;
                         break;
                     case "Date":
-                        if (SelectedItem.Analyzes.sendAnalis != true)
+                        if (SelectedItem.Analyzes.isEnd != true)
                             x_TreeAnalises.ContextMenu = x_TreeAnalises.Resources["Date"] as System.Windows.Controls.ContextMenu;
                         break;
                     case "Colonie":
-                        if (SelectedItem.Analyzes.sendAnalis != true)
+                        if (SelectedItem.Analyzes.isEnd != true)
                             x_TreeAnalises.ContextMenu = x_TreeAnalises.Resources["Colonie"] as System.Windows.Controls.ContextMenu;
                         break;
                 }
@@ -467,7 +469,7 @@ namespace BacLab.WorkSpace
             {
                 TreeModel treeViewItem = (sender as TreeViewItem).DataContext as TreeModel;
 
-                if ((treeViewItem.Analyzes.sendAnalis is bool boolean && boolean) == true)
+                if ((treeViewItem.Analyzes.isEnd is bool boolean && boolean) == true)
                 {
                     if (treeViewItem.Content is AnalisControl)
                     {
@@ -629,7 +631,7 @@ namespace BacLab.WorkSpace
 
                         xlRange.Cells[rowAnalis, column++] = item.Analyzes.d_ResTemplate?.name;
                         xlRange.Cells[rowAnalis, column++] = item.Analyzes.dateEnd;
-                        xlRange.Cells[rowAnalis, column++] = item.Analyzes.sendAnalis == true ? "так" : "ні";
+                        xlRange.Cells[rowAnalis, column++] = item.Analyzes.isEnd == true ? "так" : "ні";
                         xlRange.Cells[rowAnalis, column] = item.Analyzes.d_Staff?.abbr;
 
                         Excel.Range x1 = sheet.Cells[rowAnalis, 1];
@@ -692,7 +694,7 @@ namespace BacLab.WorkSpace
 
                 if (idGroupResearch != -1)
                 {
-                    if (isDias && context.d_Analyzes.Where(c => c.idInstitution == 26 && c.sendAnalis == true && c.isIssued != true).Count() > 0)
+                    if (isDias && context.d_Analyzes.Where(c => c.idInstitution == 26 && c.isEnd == true && c.isSendToTerra != true).Count() > 0)
                     {
                         string str = CommonClass.UploadFileTerra(context);
                         if (str != null)
@@ -752,7 +754,7 @@ namespace BacLab.WorkSpace
                 List<d_Analyzes> colAnalises;
                 if (isDias)
                 {
-                    colAnalises = context.d_Analyzes.Where(c => c.sendAnalis != true &&
+                    colAnalises = context.d_Analyzes.Where(c => c.isEnd != true &&
                     c.p_Group_Material_Purpose.d_GroupResearch.id == idGroupResearch && c.idInstitution == 26 &&
                     c.d_Brakerage == null && c.idSubdivisions == subdivisions.id).OrderBy(c => c.labNum).ToList();
 
@@ -760,7 +762,7 @@ namespace BacLab.WorkSpace
                 else
                 {
 
-                    colAnalises = context.d_Analyzes.Where(c => c.sendAnalis != true &&
+                    colAnalises = context.d_Analyzes.Where(c => c.isEnd != true &&
                     c.p_Group_Material_Purpose.d_GroupResearch.id == idGroupResearch && c.idInstitution != 26 &&
                     c.d_Brakerage == null && c.idSubdivisions == subdivisions.id).OrderBy(c => c.labNum).ToList();
                 }

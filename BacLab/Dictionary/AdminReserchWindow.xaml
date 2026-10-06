@@ -29,6 +29,8 @@
                 <Button x:Name="d_ReferenceInterval" Click="Button_Click">Референтні інтервали</Button>
                 <Button x:Name="d_Brakerage" Click="Button_Click">Бракераж</Button>
                 <Button x:Name="d_PriceList" Click="Button_Click">Прейскурант</Button>
+                <Button x:Name="d_TargetValuesControl" Click="Button_Click">Цільові значення контролю середовищ</Button>
+                <Button x:Name="d_AcreditationSearch" Click="Button_Click">Акредитовані дослідження</Button>
             </StackPanel>
         </materialDesign:Card >
         <materialDesign:Card x:Name="x_MainCard"  Grid.Column="1" Margin="5 10 10 10"/>

@@ -17,10 +17,6 @@ namespace BacLab
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public d_Staff()
         {
-            this.a_AntibioticControl = new HashSet<a_AntibioticControl>();
-            this.d_Analyzes = new HashSet<d_Analyzes>();
-            this.d_Analyzes1 = new HashSet<d_Analyzes>();
-            this.d_Analyzes2 = new HashSet<d_Analyzes>();
             this.d_ConsumableWritingOff = new HashSet<d_ConsumableWritingOff>();
             this.d_Room = new HashSet<d_Room>();
             this.d_Room1 = new HashSet<d_Room>();
@@ -31,6 +27,10 @@ namespace BacLab
             this.s_Orders = new HashSet<s_Orders>();
             this.s_Orders1 = new HashSet<s_Orders>();
             this.d_StyleApp = new HashSet<d_StyleApp>();
+            this.d_ConsumablesControls = new HashSet<d_ConsumablesControls>();
+            this.d_Analyzes = new HashSet<d_Analyzes>();
+            this.d_Analyzes1 = new HashSet<d_Analyzes>();
+            this.d_Analyzes2 = new HashSet<d_Analyzes>();
         }
     
         public int id { get; set; }
@@ -51,14 +51,6 @@ namespace BacLab
         public int idSubdivisions { get; set; }
         public Nullable<bool> isChief { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<a_AntibioticControl> a_AntibioticControl { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<d_Analyzes> d_Analyzes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<d_Analyzes> d_Analyzes1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<d_Analyzes> d_Analyzes2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<d_ConsumableWritingOff> d_ConsumableWritingOff { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -82,5 +74,13 @@ namespace BacLab
         public virtual ICollection<s_Orders> s_Orders1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<d_StyleApp> d_StyleApp { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<d_ConsumablesControls> d_ConsumablesControls { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<d_Analyzes> d_Analyzes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<d_Analyzes> d_Analyzes1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<d_Analyzes> d_Analyzes2 { get; set; }
     }
 }

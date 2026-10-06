@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="BacLab.Dictionary.DictionariControl"
+﻿<UserControl x:Class="BacLab.Dictionary.DictionaryControl"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,7 +7,7 @@
              xmlns:Dictionary="clr-namespace:BacLab.Dictionary"
              mc:Ignorable="d"
              DataContext="DictionariControl"
-             d:DataContext="{d:DesignInstance Dictionary:DictionariControl,IsDesignTimeCreatable=False}">
+             d:DataContext="{d:DesignInstance Dictionary:DictionaryControl,IsDesignTimeCreatable=False}">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -37,13 +37,18 @@
 
             <DataGrid.Columns>
                 <DataGridTextColumn IsReadOnly="True" Visibility="Collapsed" Header="Id" Binding="{Binding Id, UpdateSourceTrigger=PropertyChanged}" />
+                
                 <DataGridTextColumn  Header="№" Binding="{Binding Index, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                
                 <DataGridCheckBoxColumn Header="Доступно"
                                         Binding="{Binding IsShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                         ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
                                         EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"/>
+                
                 <DataGridTextColumn Header="Абревіатура" Binding="{Binding Abbr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SortMemberPath="Abbr"/>
+                
                 <DataGridTextColumn Header="Назва" Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SortMemberPath="Name"/>
+                
                 <DataGridTemplateColumn Header="Категорія" SortMemberPath="MaterialGroup.name" Visibility="Collapsed">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -52,6 +57,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
                 <DataGridTemplateColumn Header="Район" SortMemberPath="District.name" Visibility="Collapsed">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -60,7 +66,9 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
                 <DataGridTextColumn Header="Пункт" Binding="{Binding Point, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="Collapsed"/>
+                
                 <DataGridTemplateColumn Header="Пункт прейскуранту" SortMemberPath="Point" Visibility="Collapsed">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -69,13 +77,16 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
                 <DataGridTextColumn Header="Ціна без ПДВ" Binding="{Binding WithoutPDV , Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="Collapsed"/>
+                
                 <DataGridTextColumn Header="Ціна з ПДВ" Binding="{Binding WithPDV , Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="Collapsed"/>
+                
                 <DataGridCheckBoxColumn Header="Не рахувати культури" Visibility="Collapsed"
                                         Binding="{Binding NotCountPos, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                         ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
                                         EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"/>
-                <DataGridTextColumn Header="Доза" Binding="{Binding Dose, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="Collapsed"/>
+                
                 <DataGridTemplateColumn Header="Тестуємий АБ" SortMemberPath="TestAndAntibiotic.name" Visibility="Collapsed">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -84,6 +95,17 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
+                <DataGridTemplateColumn Header="Категорія" SortMemberPath="ConsumablesGroup.name" Visibility="Collapsed">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock x:Name="x_ConsumablesGroupTextBlock"  MouseLeftButtonUp="x_TextBlock_MouseLeftButtonUp"
+                            Text="{Binding ConsumablesGroup.name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                
+                <DataGridTextColumn Header="Коефіцієнт" Binding="{Binding Koef, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="Collapsed"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

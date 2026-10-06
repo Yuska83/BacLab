@@ -18,6 +18,7 @@ namespace BacLab
         public s_Storage()
         {
             this.s_Orders = new HashSet<s_Orders>();
+            this.d_Medium = new HashSet<d_Medium>();
         }
     
         public int id { get; set; }
@@ -28,5 +29,7 @@ namespace BacLab
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<s_Orders> s_Orders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<d_Medium> d_Medium { get; set; }
     }
 }

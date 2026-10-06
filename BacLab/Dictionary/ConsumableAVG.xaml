@@ -35,7 +35,7 @@
                                         Binding="{Binding InOrder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                         ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
                                         EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"/>
-                <DataGridTextColumn Header="Назва" Binding="{Binding Consumable.name}" SortMemberPath="Consumable.name"/>
+                <DataGridTextColumn Header="назва" Binding="{Binding Consumable.name}" SortMemberPath="Consumable.name"/>
                 <DataGridTextColumn Header="розхід" Binding="{Binding Avg}" SortMemberPath="Avg"/>
                 <DataGridTemplateColumn Header="од.вим." SortMemberPath="Unit.abbr" >
                     <DataGridTemplateColumn.CellTemplate>

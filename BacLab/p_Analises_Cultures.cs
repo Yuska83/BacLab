@@ -40,7 +40,6 @@ namespace BacLab
         public Nullable<bool> pzb { get; set; }
         public Nullable<bool> vre { get; set; }
     
-        public virtual d_Analyzes d_Analyzes { get; set; }
         public virtual d_Biovariant d_Biovariant { get; set; }
         public virtual d_Microorganism d_Microorganism { get; set; }
         public virtual d_Serotype d_Serotype { get; set; }
@@ -50,5 +49,6 @@ namespace BacLab
         public virtual ICollection<p_Analises_Cultures_ABTest> p_Analises_Cultures_ABTest { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<p_Analises_Mediums_Date_Colonies> p_Analises_Mediums_Date_Colonies { get; set; }
+        public virtual d_Analyzes d_Analyzes { get; set; }
     }
 }

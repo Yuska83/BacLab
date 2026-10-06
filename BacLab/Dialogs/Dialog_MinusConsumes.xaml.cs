@@ -15,14 +15,7 @@ namespace BacLab.Dialogs
         d_ConsumablesStock consumablesStock;
         d_Staff staff;
         string units;
-        public string Units { 
-            get => units; 
-            set
-            {
-                units = value;
-                OnPropertyChanged(nameof(Units));
-            }
-        }   
+        public string Units {  get => units; set { units = value;OnPropertyChanged(nameof(Units));}}   
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string name)
         {
@@ -38,10 +31,11 @@ namespace BacLab.Dialogs
             x_date.SelectedDate = DateTime.Now;
             consumablesStock = context.d_ConsumablesStock.Find(idconsumablesStock);
             
-            x_name.Text = consumablesStock.d_Consumables.name
+            x_name.Text =consumablesStock.d_Finance.name 
+                + "\n" + consumablesStock.d_Consumables.name
                 + "\n" + consumablesStock.d_Producer.abbr
-                + "\nс." + consumablesStock.series+
-                "\nдо: " + consumablesStock.termin.Value.ToShortDateString() 
+                + "\nс." + consumablesStock.series
+                + "\nдо: " + consumablesStock.termin.Value.ToShortDateString() 
                 + "\nкіль-ть: " + consumablesStock.quantityBecame;
             
             if (consumablesStock.conclusion?.Equals("непридатно") == true)

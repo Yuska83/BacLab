@@ -15,7 +15,6 @@
         <dockablz:Layout>
             <DockPanel >
                 <dragablz:TabablzControl BorderThickness="2" >
-                    
                     <TabItem Header="Лабораторія" x:Name="x_LabTabItem"/>
                     <TabItem Header="Заклади" x:Name="x_InstitutionTabItem"/>
                     <TabItem Header="Дослідження" x:Name="x_ReserchTabItem"/>
@@ -27,3 +26,4 @@
         </dockablz:Layout>
     </materialDesign:DialogHost>
 </controls:MetroWindow>
+

@@ -1,16 +1,17 @@
 ﻿using BacLab.Dialogs;
 using BacLab.Models;
+using Org.BouncyCastle.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using Excel = Microsoft.Office.Interop.Excel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using ZXing;
+using Excel = Microsoft.Office.Interop.Excel;
 
 
 namespace BacLab.Dictionary
@@ -27,16 +28,17 @@ namespace BacLab.Dictionary
         d_Finance selectedFinanceReport;
         d_Consumables selectedConsumable;
         d_ConsumablesGroup selectedConsumableGroup;
+        d_ConsumablesGroup selectedConsumableGroupReport;
         ConsumablesStock selectedConsumableStock;
         d_ConsumableWritingOff selectedConsumableWritingOff;
         DateTime selectedDate;
-        //ConsumablesStock oldItem;
         DateTime dateStart;
         DateTime dateEnd ;
         public d_Finance SelectedFinance { get { return selectedFinance; } set { selectedFinance = value; OnPropertyChanged("SelectedFinance"); } }
         public d_Finance SelectedFinanceReport { get { return selectedFinanceReport; } set { selectedFinanceReport = value; OnPropertyChanged("SelectedFinanceReport"); } }
         public d_Consumables SelectedConsumable { get { return selectedConsumable; } set { selectedConsumable = value; OnPropertyChanged("SelectedConsumable"); } }
         public d_ConsumablesGroup SelectedConsumableGroup { get { return selectedConsumableGroup; } set { selectedConsumableGroup = value; OnPropertyChanged("SelectedConsumableGroup"); } }
+        public d_ConsumablesGroup SelectedConsumableGroupReport { get { return selectedConsumableGroupReport; } set { selectedConsumableGroupReport = value; OnPropertyChanged("SelectedConsumableGroupReport"); } }
         public ConsumablesStock SelectedConsumableStock { get { return selectedConsumableStock; } set  {  selectedConsumableStock = value; OnPropertyChanged("SelectedConsumableStock"); } }
         public d_ConsumableWritingOff SelectedConsumableWritingOff { get { return selectedConsumableWritingOff; } set { selectedConsumableWritingOff = value; OnPropertyChanged("SelectedConsumableWritingOff"); } }
         public DateTime SelectedDate { get { return selectedDate; } set { selectedDate = value; OnPropertyChanged("SelectedDate"); } }
@@ -66,12 +68,19 @@ namespace BacLab.Dictionary
 
                 SelectedDate = DateTime.Now;
                 DateStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month-1, 1);  
-                x_cb_category.ItemsSource = context.d_ConsumablesGroup.Where(c => c.show == true).OrderBy(c => c.index).ToList();
-                x_cb_finance.ItemsSource = context.d_Finance.Where(c => c.show == true).OrderBy(c => c.index).ToList();
-                x_cb_financeReport.ItemsSource = context.d_Finance.Where(c => c.show == true).OrderBy(c => c.index).ToList();
+                var listFinance = context.d_Finance.Where(c => c.show == true).OrderBy(c => c.index).ToList();
+                var listConsumableGroup = context.d_ConsumablesGroup.Where(c => c.show == true).OrderBy(c => c.index).ToList();
+                x_cb_finance.ItemsSource = listFinance;
+                x_cb_financeReport.ItemsSource = listFinance;
+                x_cb_category.ItemsSource = listConsumableGroup;
+                x_cb_categoryReport.ItemsSource = listConsumableGroup;
+                x_cb_finance.ItemsSource = listFinance;
+                x_cb_financeReport.ItemsSource = listFinance;
                 this.PreviewKeyDown += MainWindow_PreviewKeyDown;
 
-                FillListConsumableStock();
+                SelectedConsumableGroup = context.d_ConsumablesGroup.Where(c => c.id == 3).FirstOrDefault();
+                //SelectedFinanceReport = context.d_Finance.Where(c => c.id == 1).FirstOrDefault();
+                //SelectedConsumableGroupReport = context.d_ConsumablesGroup.Where(c => c.id == 3).FirstOrDefault();
                 FillListConsumableWritingOff(true);
 
                 DataContext = this;
@@ -164,6 +173,7 @@ namespace BacLab.Dictionary
                         Id = item.id,
                         Show = item.show,
                         Consumable = item.d_Consumables,
+                        ConsumablesGroup = item.d_ConsumablesGroup,
                         Series = item.series,
                         Termin = item.termin,
                         DateDelivery = item.dateDelivery,
@@ -241,16 +251,20 @@ namespace BacLab.Dictionary
                     Message.Ok("Помилка. Запис не знайдено в базі даних.", "MsgDialog");
                     return;
                 }
+                bool? rez = false;
+                if (SelectedConsumableGroup.id != 3) // не спирт
+                    rez = await Message.Dialog_MinusConsumes(context, d_consumableStock.id, staff, "MsgDialog");
+                else// спирт
+                    rez= await Message.Dialog_MinusSpirt(context, d_consumableStock.id, subdivision.id, staff, SelectedConsumableWritingOff, "MsgDialog");
 
-                bool? rez = await Message.DialogNew_MinusConsumes(context, d_consumableStock.id,staff, "MsgDialog");
                 if (rez == true)
                 {
                     if (SelectedConsumableStock.Conclusion?.Equals("непридатно") == true)
                     {
                         d_consumableStock.show = false;
                         SelectedConsumableStock.Show = false;
-                    }  
-                   else
+                    }
+                    else
                     {
                         var col = context.d_ConsumablesStock.Where(c => c.idSubdivisions == subdivision.id
                         && c.idConsumable == d_consumableStock.idConsumable
@@ -344,21 +358,22 @@ namespace BacLab.Dictionary
             ConsumablesStock newStock = new ConsumablesStock()
             {
                 Id = 0,
-                Consumable = x_cb_consumable.SelectedItem as d_Consumables,
+                Subdivisions = subdivision,
+                DateDelivery = DateTime.Now,
+                Finance = SelectedFinance,
+                ConsumablesGroup = SelectedConsumableGroup,
+                Consumable = SelectedConsumable,
+                Producer = null,
                 Series = "",
                 Termin = null,
-                DateDelivery = DateTime.Now,
-                Producer = null,
-                Subdivisions = subdivision,
                 Conclusion = "",
                 Units = null,
-                Finance = x_cb_finance.SelectedItem as d_Finance,
                 Comment = "",
                 IsEnd = false,
                 Show = false
             };
 
-            newStock=await Message.DialogNew_AddConsumes(context,newStock,this, false, "MsgDialog");
+            newStock=await Message.Dialog_AddConsumes(context,newStock,this, false, "MsgDialog");
 
         }
 
@@ -375,8 +390,8 @@ namespace BacLab.Dictionary
 
                 d_Item.id = consumablesStock.Id;
                 d_Item.d_Consumables = consumablesStock.Consumable;
-                d_Item.d_ConsumablesGroup = consumablesStock.Consumable.d_ConsumablesGroup;
-                d_Item.idConsumablesGroup= consumablesStock.Consumable.d_ConsumablesGroup.id;
+                d_Item.d_ConsumablesGroup = consumablesStock.ConsumablesGroup;
+                d_Item.idConsumablesGroup= consumablesStock.ConsumablesGroup.id;
                 d_Item.series = consumablesStock.Series;
                 d_Item.termin = consumablesStock.Termin;
                 d_Item.dateDelivery = consumablesStock.DateDelivery;
@@ -408,14 +423,15 @@ namespace BacLab.Dictionary
                     if(d_Item.idConsumablesGroup == 1)
                     {
                         // створюємо вхідні контролі з кожною контрольою культурою для аб
-                        var colControlsCultures = context.a_AntibioticNorms.Where(c => c.idConsumable == consumablesStock.Consumable.id && c.d_Microorganism.show == true);
+                        var colControlsCultures = context.d_ConsumablesNorms.Where(c => c.idConsumable == consumablesStock.Consumable.id && c.d_Microorganism.show == true);
                         foreach (var controlCultura in colControlsCultures)
                         {
-                            d_Item.a_AntibioticControl.Add(new a_AntibioticControl
+                            d_Item.d_ConsumablesControls.Add(new d_ConsumablesControls
                             {
+                                idConsumableGroup= d_Item.idConsumablesGroup,
                                 date = (DateTime)d_Item.dateDelivery,
                                 d_Microorganism = controlCultura.d_Microorganism,
-                                idCulture = controlCultura.idCulture,
+                                idCulture =(int) controlCultura.idMicroorganism,
                                 valuePermissiblemMin = controlCultura.valuePermissiblemMin,
                                 valuePermissiblemMax = controlCultura.valuePermissiblemMax,
                                 valueTargetMin = controlCultura.valueTargetMin,
@@ -435,17 +451,18 @@ namespace BacLab.Dictionary
                 }
                 else // якщо редагування
                 {
-                    if (d_Item.idConsumablesGroup == 1 && context.a_AntibioticControl.Where(c => c.idConsumableStock == d_Item.id && c.isEnterControl == null).FirstOrDefault() != null)
+                    if (d_Item.idConsumablesGroup == 1 && context.d_ConsumablesControls.Where(c => c.idConsumableStock == d_Item.id && c.isEnterControl == null).FirstOrDefault() != null)
                     {
                         //якщо немає вхідного контролю, створюємо 
-                        var colControlsCultures = context.a_AntibioticNorms.Where(c => c.idConsumable == consumablesStock.Consumable.id && c.d_Microorganism.show == true);
+                        var colControlsCultures = context.d_ConsumablesNorms.Where(c => c.idConsumable == consumablesStock.Consumable.id && c.d_Microorganism.show == true);
                         foreach (var controlCultura in colControlsCultures)
                         {
-                            d_Item.a_AntibioticControl.Add(new a_AntibioticControl
+                            d_Item.d_ConsumablesControls.Add(new d_ConsumablesControls
                             {
+                                idConsumableGroup= d_Item.idConsumablesGroup,   
                                 date = (DateTime)d_Item.dateDelivery,
                                 d_Microorganism = controlCultura.d_Microorganism,
-                                idCulture = controlCultura.idCulture,
+                                idCulture = (int)controlCultura.idMicroorganism,
                                 valuePermissiblemMin = controlCultura.valuePermissiblemMin,
                                 valuePermissiblemMax = controlCultura.valuePermissiblemMax,
                                 valueTargetMin = controlCultura.valueTargetMin,
@@ -539,6 +556,27 @@ namespace BacLab.Dictionary
             
         }
 
+        private void x_listConsumableWritingOffGrid_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            try 
+            {
+                if (SelectedConsumableWritingOff == null)
+                    SelectedConsumableWritingOff = (d_ConsumableWritingOff)x_listConsumableWritingOffGrid.SelectedItem;
+                if (SelectedConsumableWritingOff == null)
+                    return;
+
+                ContextMenu contextMenu = new ContextMenu();
+                MenuItem editItem = new MenuItem { Header = "Перерахувати" };
+                editItem.Click += EditSpirtItem_Click;
+                contextMenu.Items.Add(editItem);
+                contextMenu.IsOpen = true;
+            }
+            catch (Exception ex)
+            {
+                Message.Ok(ex.Message + " " + ex.StackTrace, "MsgDialog");
+            }
+        }
+
         private async void DeleteItem_Click(object sender, RoutedEventArgs e)
         {
             bool rez =  await Message.MsgYesNo("Видалити цей запис?\n" + 
@@ -568,7 +606,22 @@ namespace BacLab.Dictionary
         {
             try
             {
-                var item = await Message.DialogNew_AddConsumes(context, SelectedConsumableStock, this,true, "MsgDialog");
+                var item = await Message.Dialog_AddConsumes(context, SelectedConsumableStock, this, true, "MsgDialog");
+                
+            }
+            catch (Exception ex)
+            {
+                Message.Ok(ex.Message + " " + ex.StackTrace, "MsgDialog");
+            }
+        }
+
+        private async void EditSpirtItem_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                bool? rez = await Message.Dialog_MinusSpirt(context, SelectedConsumableWritingOff.idConsumablesStock, subdivision.id, staff, SelectedConsumableWritingOff, "MsgDialog");
+                if (rez == true)
+                    Pererahunok(SelectedConsumableWritingOff.d_ConsumablesStock);
                 
             }
             catch (Exception ex)
@@ -597,9 +650,6 @@ namespace BacLab.Dictionary
         {
             try
             {
-                //var item = context.d_ConsumablesStock.Where(c => c.id == id).FirstOrDefault();
-                //if (item == null || item.a_Antibiotic == null)
-                //    return null;
 
                 int count = 6 - id.ToString().Length;
                 string padding = new string(' ', count > 0 ? count : 0);
@@ -780,7 +830,7 @@ namespace BacLab.Dictionary
 
 
         //Друк звіту за період/////////////////////////////////////////////////////////////////////////////
-        private async void PrintButton_Click(object sender, RoutedEventArgs e)
+        private async void ReportButton_Click(object sender, RoutedEventArgs e)
         {
             // Вивести повідомлення про формування звіту
             var waitDialog = new MsgProgressDialog("Формування звіту, будь ласка, зачекайте...");
@@ -788,14 +838,14 @@ namespace BacLab.Dictionary
 
             await System.Threading.Tasks.Task.Delay(100); // Дати UI оновитись
 
-            Excel.Application excel = new Excel.Application() { Visible = false };
+            Excel.Application excel = new Excel.Application() { Visible = true };
             Excel.Workbook newDoc = excel.Workbooks.Add();
             try
             {
                 var stocks = context.d_ConsumablesStock
                     .Where(s => s.idSubdivisions == subdivision.id)
                     .Where(s => s.dateDelivery <= dateEnd
-                        && (s.isEnd != true || s.dateEnd > dateStart))
+                        && (s.isEnd != true || s.dateEnd >= dateStart))
                     .OrderBy(c => c.d_Consumables.name).ToList();
 
                 string strChief = "Затверджую\n" +
@@ -806,9 +856,26 @@ namespace BacLab.Dictionary
                     context.d_Laboratoria.Where(c => c.idSubdivisions == subdivision.id)
                     .FirstOrDefault().chiefName + "\n\" _____\"_________________р.";
 
-                var listFinance = context.d_Finance.Where(f => f.show == true).OrderBy(f => f.index).ToList();
-                var listConsumablesGroup = context.d_ConsumablesGroup.Where(c => c.show == true).OrderBy(c => c.index).ToList();
+                string strAdd = "";
+                List<d_Finance> listFinance;
+                List<d_ConsumablesGroup> listConsumablesGroup;
 
+                if (selectedConsumableGroupReport == null)
+                    listConsumablesGroup = context.d_ConsumablesGroup.Where(c => c.show == true).OrderBy(c => c.index).ToList();
+                else
+                {
+                    listConsumablesGroup = context.d_ConsumablesGroup.Where(c => c.id == selectedConsumableGroupReport.id).ToList();
+                    strAdd += " " + selectedConsumableGroupReport.abbr;
+                }
+
+                if (SelectedFinanceReport == null)
+                    listFinance = context.d_Finance.Where(f => f.show == true).OrderBy(f => f.index).ToList();
+                else
+                {
+                    listFinance = context.d_Finance.Where(f => f.id == SelectedFinanceReport.id).ToList();
+                    strAdd += " " + SelectedFinanceReport.abbr;
+                }
+                  
                 int numSheet = 1;
                 foreach (var finance in listFinance)
                 {
@@ -823,7 +890,11 @@ namespace BacLab.Dictionary
 
                 // --- Сохранение на рабочий стол ---
                 string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-                string fileName = $"Списання {DateStart.ToString("MMMM yyyy")}.xlsx";
+                string fileName = $"Списання {DateStart:MMMM yyyy}{strAdd}.xlsx";
+                char[] invalidChars = new char[] { ':', '\\', '/', '?', '*', '[', ']' };
+                foreach (var ch in invalidChars)
+                    fileName = fileName.Replace(ch.ToString(), "");
+                
                 string filePath = System.IO.Path.Combine(desktopPath, fileName);
 
                 // Проверка на существование файла и удаление, если нужно
@@ -862,7 +933,6 @@ namespace BacLab.Dictionary
         {
             try
             {
-                // Проверяем, существует ли лист с нужным номером, если нет — добавляем
                 Excel.Worksheet sheet;
                 if (excel.Worksheets.Count < numSheet)
                 {
@@ -902,30 +972,35 @@ namespace BacLab.Dictionary
                     row++;
                     column = 1;
                     xlRange.Cells[row, column++] = index++;
-                    xlRange.Cells[row, column++] = item.Stock.d_Consumables.abbr;
+                    xlRange.Cells[row, column++] = item.Stock.d_Consumables.name;
                     xlRange.Cells[row, column++] = item.Stock.d_Units?.abbr;
-
+                    
+                    //кілограми, літри, метри
                     if (item.Stock.idUnits == 1 || item.Stock.idUnits == 2 || item.Stock.idUnits == 10)
                     {
                         // Вставка числових значень з форматом "Числовий" і 3 знаки після коми
                         Excel.Range qtyAtStartCell = sheet.Cells[row, column];
                         qtyAtStartCell.Value2 = item.QtyAtStart;
-                        qtyAtStartCell.NumberFormat = "0.000";
+                        if(item.QtyAtStart != 0)
+                            qtyAtStartCell.NumberFormat = "0.000";
                         column++;
 
                         Excel.Range receivedCell = sheet.Cells[row, column];
                         receivedCell.Value2 = item.Received;
-                        receivedCell.NumberFormat = "0.000";
+                        if(item.Received != 0)
+                            receivedCell.NumberFormat = "0.000";
                         column++;
 
                         Excel.Range writtenOffCell = sheet.Cells[row, column];
                         writtenOffCell.Value2 = item.WrittenOff;
-                        writtenOffCell.NumberFormat = "0.000";
+                        if(item.WrittenOff != 0)
+                            writtenOffCell.NumberFormat = "0.000";
                         column++;
 
                         Excel.Range qtyAtEndCell = sheet.Cells[row, column];
                         qtyAtEndCell.Value2 = item.QtyAtEnd;
-                        qtyAtEndCell.NumberFormat = "0.000";
+                        if(item.QtyAtEnd != 0)
+                            qtyAtEndCell.NumberFormat = "0.000";
                         column++;
                     }
                     else
@@ -952,11 +1027,11 @@ namespace BacLab.Dictionary
                 range.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
                 range.WrapText = true;
 
-                y1 = sheet.Cells[1, 1];
+                y1 = sheet.Cells[1, 5];
                 y2 = sheet.Cells[1, column];
                 range = sheet.get_Range(y1, y2);
                 range.Cells.Merge();
-                xlRange.Cells[1, 1] = strChief;
+                xlRange.Cells[1, 5] = strChief;
                 range.Cells.Font.Bold = true;
                 range.Cells.Font.Size = 10;
                 range.Cells.RowHeight = 60;
@@ -998,21 +1073,177 @@ namespace BacLab.Dictionary
                 range = sheet.get_Range(y1, y2);
                 range.Cells.Borders.Weight = Excel.XlBorderWeight.xlThin;
 
-                y1 = sheet.Cells[row+1, 1];
-                y2 = sheet.Cells[row+1, column];
+                // Додаємо фільтри на заголовки таблиці
+                range.AutoFilter(1, Type.Missing, Excel.XlAutoFilterOperator.xlAnd, Type.Missing, true);
+
+                if (group.id == 3)
+                {
+                    try
+                    {
+                        // Получаем записи d_Spirt за период для текущего підрозділу
+                        var spirtList = context.d_Spirt
+                            .Where(s => s.d_ConsumableWritingOff.d_ConsumablesStock.idSubdivisions == subdivision.id
+                            && s.d_ConsumableWritingOff.d_ConsumablesStock.idFinance == finance.id
+                            && s.data >= DateStart && s.data <= DateEnd)
+                            .ToList();
+
+                       
+                        int spirtRow = row + 2;
+                        row = row + 4;
+                        int num= 1;
+
+                        xlRange.Cells[row, 1] = num++;
+                        xlRange.Cells[row, 2] = "Дослідження матеріалу від людей";
+                        sheet.Cells[row, 3].Value2 = spirtList.Sum(c => (double?)c.vsyogoSearch);
+                        sheet.Cells[row, 5].Value2 = spirtList.Sum(c => (double?)c.spirtSearch);
+                        if (spirtList.Sum(c => (double?)c.vsyogoSearch) != 0)
+                            sheet.Cells[row, 4].Value2 = spirtList.Sum(c => (double?)c.spirtSearch) / spirtList.Sum(c => (double?)c.vsyogoSearch) ;
+                        row++;
+                        xlRange.Cells[row, 1] = num++;
+                        xlRange.Cells[row, 2] = "Санітарно-бактеріологічні дослідження";
+                        sheet.Cells[row, 3].Value2 = spirtList.Sum(c => (double?)c.vsyogoSBD);
+                        sheet.Cells[row, 5].Value2 = spirtList.Sum(c => (double?)c.spirtSBD);
+                        if (spirtList.Sum(c => (double?)c.vsyogoSBD) != 0)
+                            sheet.Cells[row, 4].Value2 = spirtList.Sum(c => (double?)c.spirtSBD) / spirtList.Sum(c => (double?)c.vsyogoSBD) ;
+                        row++;
+                        xlRange.Cells[row, 1] = num++;
+                        xlRange.Cells[row, 2] = "Контроль поживних середовищ";
+                        sheet.Cells[row, 3].Value2 = spirtList.Sum(c => (double?)c.controly);
+                        sheet.Cells[row, 5].Value2 = spirtList.Sum(c => (double?)c.spirtControly);
+                        if (spirtList.Sum(c => (double?)c.controly) != 0)
+                            sheet.Cells[row, 4].Value2 = spirtList.Sum(c => (double?)c.spirtControly) / spirtList.Sum(c => (double?)c.controly);
+                        row++;
+                        xlRange.Cells[row, 1] = num++;
+                        xlRange.Cells[row, 2] = "Фарбування мазків";
+                        sheet.Cells[row, 3].Value2 = spirtList.Sum(c => (double?)c.mazky);
+                        sheet.Cells[row, 5].Value2 = spirtList.Sum(c => (double?)c.spirtMazky);
+                        if (spirtList.Sum(c => (double?)c.mazky) != 0)
+                            sheet.Cells[row, 4].Value2 = spirtList.Sum(c => (double?)c.spirtMazky) / spirtList.Sum(c => (double?)c.mazky);
+                        row++;
+                        xlRange.Cells[row, 1] = num++;
+                        xlRange.Cells[row, 2] = "Обробка кранів перед забором води";
+                        sheet.Cells[row, 3].Value2 = spirtList.Sum(c => (double?)c.krany);
+                        sheet.Cells[row, 5].Value2 = spirtList.Sum(c => (double?)c.spirtKrany);
+                        if (spirtList.Sum(c => (double?)c.krany) != 0)
+                            sheet.Cells[row, 4].Value2 = spirtList.Sum(c => (double?)c.spirtKrany) / spirtList.Sum(c => (double?)c.krany) ;
+                        row++;
+                        xlRange.Cells[row, 1] = num++;
+                        xlRange.Cells[row, 2] = "Обробка фільтрувально апарату";
+                        sheet.Cells[row, 3].Value2 = spirtList.Sum(c => (double?)c.filtrApparat);
+                        sheet.Cells[row, 5].Value2 = spirtList.Sum(c => (double?)c.spirtFiltrAppart);
+                        if (spirtList.Sum(c => (double?)c.filtrApparat) != 0)
+                            sheet.Cells[row, 4].Value2 = spirtList.Sum(c => (double?)c.spirtFiltrAppart) / spirtList.Sum(c => (double?)c.filtrApparat) ;
+                        row++;
+                        xlRange.Cells[row, 1] = num++;
+                        xlRange.Cells[row, 2] = "Задачі";
+                        sheet.Cells[row, 3].Value2 = spirtList.Sum(c => (double?)c.zadachi);
+                        sheet.Cells[row, 5].Value2 = spirtList.Sum(c => (double?)c.spirtZadachi);
+                        if (spirtList.Sum(c => (double?)c.zadachi) != 0)
+                            sheet.Cells[row, 4].Value2 = spirtList.Sum(c => (double?)c.spirtZadachi) / spirtList.Sum(c => (double?)c.zadachi) ;
+                        row++;
+                        xlRange.Cells[row, 1] = num++;
+                        xlRange.Cells[row, 2] = "Обробка рук, столів";
+                        sheet.Cells[row, 5].Value2 = spirtList.Sum(c => (double?)c.spirtObrobkaHandTable);
+                        row++;
+                        xlRange.Cells[row, 1] = num++;
+                        xlRange.Cells[row, 2] = "Обробка термостатів, холодильників, ШББ";
+                        sheet.Cells[row, 5].Value2 = spirtList.Sum(c => (double?)c.spirtObrobkaTermostat);
+                        row++;
+                        xlRange.Cells[row, 1] = num++;
+                        xlRange.Cells[row, 2] = "Приготування реактивів";
+                        sheet.Cells[row, 5].Value2 = spirtList.Sum(c => (double?)c.spirtPrygotuvannyReactyviv);
+                        row++;
+                        xlRange.Cells[row, 1] = num++;
+                        xlRange.Cells[row, 2] = "Розхід ентомолога";
+                        sheet.Cells[row, 5].Value2 = spirtList.Sum(c => (double?)c.spirtEntomolog);
+                        row++;
+                        xlRange.Cells[row, 1] = num++;
+                        xlRange.Cells[row, 2] = "Внутришнє переміщення";
+                        sheet.Cells[row, 5].Value2 = spirtList.Sum(c => (double?)c.spirtVnutryshnePeremishenya);
+                        row++;
+                        xlRange.Cells[row, 1] = num++;
+                        xlRange.Cells[row, 2] = "Інші витрати";
+                        sheet.Cells[row, 5].Value2 = spirtList.Sum(c => (double?)c.spirtOther);
+
+                        // Заголовок секции
+                        y1 = sheet.Cells[spirtRow, 1];
+                        y2 = sheet.Cells[spirtRow, 5];
+                        range = sheet.get_Range(y1, y2);
+                        range.Cells.Merge();
+                        range.Cells.Font.Bold = true;
+                        range.Cells.Font.Size = 12;
+                        xlRange.Cells[spirtRow, 1] = "Зведення по спирту (літрів)";
+                        range.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+
+                        // Колонки заголовків
+                        spirtRow++;
+                        xlRange.Cells[spirtRow, 1] = "№";
+                        xlRange.Cells[spirtRow, 2] = "категорія";
+                        xlRange.Cells[spirtRow, 3] = "досліджень/шт";
+                        xlRange.Cells[spirtRow, 4] = "норма на 1, л";
+                        xlRange.Cells[spirtRow, 5] = "спирт, л";
+                        y1 = sheet.Cells[spirtRow, 1];
+                        y2 = sheet.Cells[spirtRow, 5];
+                        range = sheet.get_Range(y1, y2);
+                        range.Font.Bold = true;
+                        range.Borders.Weight = Excel.XlBorderWeight.xlThin;
+                        range.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+
+                        row++;
+                        xlRange.Cells[row, 1] = "Всього:";
+                        var totalCell = sheet.Cells[row, 5];
+                        totalCell.Formula = $"=SUM(E{(spirtRow + 1)}:E{row - 1})";
+                        totalCell.Font.Bold = true;
+
+                        y1 = sheet.Cells[spirtRow+1, 4];
+                        y2 = sheet.Cells[row, 5];
+                        range = sheet.get_Range(y1, y2);
+                        range.NumberFormat = "0.000";
+
+                        y1 = sheet.Cells[spirtRow , 1];
+                        y2 = sheet.Cells[row , 5];
+                        range = sheet.get_Range(y1, y2);
+                        range.Borders.Weight = Excel.XlBorderWeight.xlThin;
+
+                        ((Excel.Range)sheet.Columns[2]).AutoFit();
+                    }
+                    catch (Exception ex)
+                    {
+                        // Не критично: показываем сообщение, но продолжаем формирование отчета
+                        Message.Ok("Помилка формування зведення по спирту: " + ex.Message+ ex.StackTrace, "MsgDialog");
+                    }
+                }
+
+                y1 = sheet.Cells[row+2, 1];
+                y2 = sheet.Cells[row+2, column];
                 range = sheet.get_Range(y1, y2);
                 range.Cells.Merge();
-                xlRange.Cells[row+1, 1] = "Завідувач ________________ " + subdivision.d_Staff.Where(c=>c.id_category == 1).FirstOrDefault()?.abbr;
+                xlRange.Cells[row+2, 1] = "Завідувач ________________ " + subdivision.d_Staff.Where(c=>c.id_category == 1).FirstOrDefault()?.abbr;
                 range.Cells.HorizontalAlignment = Excel.XlHAlign.xlHAlignRight;
 
-                y1 = sheet.Cells[row + 2, 1];
-                y2 = sheet.Cells[row + 2, column];
+                y1 = sheet.Cells[row + 4, 1];
+                y2 = sheet.Cells[row + 4, column];
                 range = sheet.get_Range(y1, y2);
                 range.Cells.Merge();
-                xlRange.Cells[row + 2, 1] = "Старший лаборант ________________ " 
+                xlRange.Cells[row + 4, 1] = "Старший лаборант ________________ " 
                     + subdivision.d_Staff.Where(c => (c.id_category == 4 || c.id_category == 5) && c.isChief == true).FirstOrDefault()?.abbr;
                 range.Cells.HorizontalAlignment = Excel.XlHAlign.xlHAlignRight;
-
+                try
+                {
+                    y1 = sheet.Cells[1, 1];
+                    y2 = sheet.Cells[row + 5, column];
+                    Excel.Range printRange = sheet.get_Range(y1, y2);
+                    sheet.PageSetup.PrintArea = printRange.Address;
+                    sheet.PageSetup.Zoom = false; // вимикаємо ручне масштабування
+                    sheet.PageSetup.FitToPagesWide = 1;
+                    sheet.PageSetup.FitToPagesTall = 1;
+                    sheet.PageSetup.Orientation = Excel.XlPageOrientation.xlPortrait;
+                    sheet.PageSetup.PaperSize = Excel.XlPaperSize.xlPaperA4;
+                }
+                catch
+                {
+                    // Якщо не вдалось встановити PageSetup — не критично, продовжити формування звіту
+                }
             }
             catch (Exception ex)
             {
@@ -1020,6 +1251,13 @@ namespace BacLab.Dictionary
                 newDoc?.Close(SaveChanges: false);
                 excel?.Quit();
             }
+        }
+
+        private static void Coefficient(Excel.Worksheet sheet, int row)
+        {
+            var cellC = sheet.Cells[row, 3] as Excel.Range;
+            cellC.Formula = $"=IF(B{row}=0,0,D{row}/B{row}*1000)";
+            cellC.NumberFormat = "0.000";
         }
 
         private List<CountingItemConsumableReport> CountingRerort(List<d_ConsumablesStock> stocks)
@@ -1047,15 +1285,15 @@ namespace BacLab.Dictionary
                     // Кількість на DateStart
                     double? qtyAtStart = 0;
                     var earliestDelivery = group.Min(s => s.dateDelivery);
-                    if (earliestDelivery <= DateStart)
+                    if (earliestDelivery < DateStart)
                     {
                         qtyAtStart = group
-                            .Where(s => s.dateDelivery <= DateStart)
+                            .Where(s => s.dateDelivery < DateStart)
                             .Sum(s =>
                             {
                                 var writeOff = s.d_ConsumableWritingOff
                                     .OrderBy(w => w.date)
-                                    .LastOrDefault(w => w.date <= DateStart);
+                                    .LastOrDefault(w => w.date < DateStart);
                                 if (writeOff != null)
                                     return writeOff.quantityBecame ?? s.quantityWas ?? 0;
                                 return s.quantityWas ?? 0;
@@ -1069,14 +1307,14 @@ namespace BacLab.Dictionary
 
                     // Списано за період
                     double? writtenOff = allWriteOffs
-                        .Where(w => w.isPlus == false && w.date > DateStart && w.date <= DateEnd)
+                        .Where(w => w.isPlus == false && w.date >= DateStart && w.date <= DateEnd)
                         .Sum(w => w.quantity ?? 0);
 
                     // Залишок на DateEnd
                     double? qtyAtEnd = qtyAtStart + received - writtenOff;
-                    var lastBeforeEnd = allWriteOffs.LastOrDefault(w => w.date <= DateEnd);
-                    if (lastBeforeEnd != null)
-                        qtyAtEnd = lastBeforeEnd.quantityBecame ?? qtyAtEnd;
+                    //var lastBeforeEnd = allWriteOffs.LastOrDefault(w => w.date <= DateEnd);
+                    //if (lastBeforeEnd != null)
+                    //    qtyAtEnd = lastBeforeEnd.quantityBecame ?? qtyAtEnd;
 
                     stockStats.Add(new CountingItemConsumableReport(mainStock, qtyAtStart, received, writtenOff, qtyAtEnd));
                    
@@ -1089,6 +1327,213 @@ namespace BacLab.Dictionary
                 return null;
             }
         }
+
+        //Формування потреби для замовлення/////////////////////////////////////////////////////////
+        private async void NeedButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (selectedConsumableGroup == null)
+                {
+                    Message.Ok("Виберіть групу матеріалів для формування потреби.", "MsgDialog");
+                    return;
+                }
+
+                var waitDialog = new MsgProgressDialog("Формування звіту, будь ласка, зачекайте...");
+                waitDialog.Show();
+
+                await System.Threading.Tasks.Task.Delay(100); // Дати UI оновитись
+
+                Excel.Application excel = new Excel.Application() { Visible = false };
+                Excel.Workbook newDoc = excel.Workbooks.Add();
+
+                PrintNeedReport(excel, newDoc, selectedConsumableGroup);
+
+                // --- Сохранение на рабочий стол ---
+                string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+                string fileName = $"Потреба {DateStart.ToString("MMMM yyyy")}.xlsx";
+                string filePath = System.IO.Path.Combine(desktopPath, fileName);
+
+                // Проверка на существование файла и удаление, если нужно
+                if (System.IO.File.Exists(filePath))
+                {
+                    try
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
+                    catch (Exception ex)
+                    {
+                        waitDialog.Close();
+                        Message.Ok("Не вдалося перезаписати файл: " + ex.Message, "MsgDialog");
+                        return;
+                    }
+                }
+
+                newDoc.SaveAs(filePath);
+                excel.Visible = true;
+                excel.WindowState = Excel.XlWindowState.xlMinimized;
+                excel.WindowState = Excel.XlWindowState.xlMaximized;
+
+                waitDialog.Close();
+                Message.Ok($"Звіт збережено на робочому столі:\n{fileName}", "MsgDialog");
+
+            }
+            catch (Exception ex)
+            {
+                Message.Ok(ex.Message + " " + ex.StackTrace, "MsgDialog");
+
+            }
+        }
+
+        private void PrintNeedReport(Excel.Application excel, Excel.Workbook newDoc,d_ConsumablesGroup group)
+        {
+            var colOrder = context.d_ConsumablesOrder.Where(c => c.inOrder == true && c.idSubdivision == subdivision.id &&
+                    c.d_Consumables.idConsumablesGroup == selectedConsumableGroup.id).OrderBy(c => c.d_Consumables.name).ToList();
+
+            var colConsumablesStock = context.d_ConsumablesStock
+                .Where(c => c.d_Consumables.idConsumablesGroup == selectedConsumableGroup.id && (c.quantityBecame > 0 || c.show == true))
+                .GroupBy(c => c.d_Consumables)
+                .Select(g => new
+                {
+                    Consumable = g.Key,
+                    TotalQuantity = g.Sum(s => s.quantityBecame ?? 0)
+                })
+                .ToList();
+            
+            try
+            {
+                
+                Excel.Worksheet sheet;
+                sheet = (Excel.Worksheet)excel.Worksheets.get_Item(1);
+
+                string safeSheetName = $"{group.abbr}";
+                char[] invalidChars = new char[] { ':', '\\', '/', '?', '*', '[', ']' };
+                foreach (var ch in invalidChars)
+                {
+                    safeSheetName = safeSheetName.Replace(ch.ToString(), "");
+                }
+
+                sheet.Name = safeSheetName;
+
+                Excel.Range xlRange = sheet.UsedRange;
+
+                int column = 1;
+                int row = 4;
+                xlRange.Cells[row, column++] = "№\nз/п ";
+                xlRange.Cells[row, column++] = "Найменування";
+                xlRange.Cells[row, column++] = "од.виміру"; 
+                xlRange.Cells[row, column++] = "Середній\nрозхід";
+                xlRange.Cells[row, column++] = "період";
+                xlRange.Cells[row, column++] = "Залишок";
+                xlRange.Cells[row, column++] = "Вистачить на";
+                xlRange.Cells[row, column++] = "Замовлення";
+                xlRange.Cells[row, column++] = "Вистачить на";
+                xlRange.Cells[row, column++] = "Ціна";
+                xlRange.Cells[row, column++] = "Сума";
+
+                int index = 1;
+                foreach (var consumable in colOrder)
+                { 
+                    if (consumable == null) continue;
+                    row++;
+                    column = 1;
+                    var consumableStock = colConsumablesStock.FirstOrDefault(c => c.Consumable.id == consumable.idConsumable);
+                    if( consumableStock == null)
+                    {
+                        consumableStock = new
+                        {
+                            Consumable = consumable.d_Consumables,
+                            TotalQuantity = 0.0
+                        };
+                    }
+                    xlRange.Cells[row, column++] = index++;
+                    xlRange.Cells[row, column++] = consumable.d_Consumables.name;
+                    xlRange.Cells[row, column++] = consumable.d_Units?.abbr;
+                    xlRange.Cells[row, column++] = consumable.avarage;
+                    xlRange.Cells[row, column++] = consumable.d_Period?.abbr;
+                    xlRange.Cells[row, column++] = consumableStock.TotalQuantity;
+                    xlRange.Cells[row, column++] = Math.Round((double)(consumableStock.TotalQuantity/(consumable.avarage > 0 ? consumable.avarage : 1)), 1);
+
+                    column++;
+                    xlRange.Cells[row, column++] = $"=ROUND((F{row}+H{row})/D{row},1)";
+                    xlRange.Cells[row, column++] = 90;
+                    xlRange.Cells[row, column++] = $"=H{row}*J{row}";
+
+                }
+                column--;
+
+                ((Excel.Range)sheet.Columns[1]).AutoFit();
+                ((Excel.Range)sheet.Columns[2]).AutoFit();
+                for (int i = 3; i <= column; i++)
+                    ((Excel.Range)sheet.Columns[i]).ColumnWidth = 13;
+
+                Excel.Range y1 = sheet.Cells[1, 1];
+                Excel.Range y2 = sheet.Cells[row, column];
+                Excel.Range range = sheet.get_Range(y1, y2);
+                range.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                range.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+                range.WrapText = true;
+
+              
+                y1 = sheet.Cells[1, 1];
+                y2 = sheet.Cells[1, column];
+                range = sheet.get_Range(y1, y2);
+                range.Cells.Merge();
+                xlRange.Cells[1, 1] = "Пореба в поживних середовищах та хімреактивів";
+                range.Cells.Font.Bold = true;
+                range.Cells.Font.Size = 14;
+
+                y1 = sheet.Cells[2, 1];
+                y2 = sheet.Cells[2, column];
+                range = sheet.get_Range(y1, y2);
+                range.Cells.Merge();
+                xlRange.Cells[2, 1] = "(" + group.name +")";
+                range.Cells.Font.Bold = true;
+                range.Cells.Font.Size = 14;
+
+                y1 = sheet.Cells[3, 1];
+                y2 = sheet.Cells[3, column];
+                range = sheet.get_Range(y1, y2);
+                range.Cells.Merge();
+                xlRange.Cells[3, 1] = subdivision.name;
+                range.Cells.Font.Bold = true;
+                range.Cells.Font.Size = 14;
+
+                y1 = sheet.Cells[4, 1];
+                y2 = sheet.Cells[row, column];
+                range = sheet.get_Range(y1, y2);
+                range.Cells.Borders.Weight = Excel.XlBorderWeight.xlThin;
+                // Додаємо фільтри на заголовки таблиці
+                range.AutoFilter(1, Type.Missing, Excel.XlAutoFilterOperator.xlAnd, Type.Missing, true);
+
+                xlRange.Cells[row+1, column]= $"=SUM((K{5}:K{row}))";
+
+                y1 = sheet.Cells[row + 3, 1];
+                y2 = sheet.Cells[row + 3, column];
+                range = sheet.get_Range(y1, y2);
+                range.Cells.Merge();
+                xlRange.Cells[row + 3, 1] = "Завідувач ________________ " + subdivision.d_Staff.Where(c => c.id_category == 1).FirstOrDefault()?.abbr;
+                range.Cells.HorizontalAlignment = Excel.XlHAlign.xlHAlignRight;
+
+                y1 = sheet.Cells[row + 5, 1];
+                y2 = sheet.Cells[row + 5, column];
+                range = sheet.get_Range(y1, y2);
+                range.Cells.Merge();
+                xlRange.Cells[row + 5, 1] = "Старший лаборант ________________ " 
+                    + subdivision.d_Staff.Where(c => (c.id_category == 4 || c.id_category == 5) && c.isChief == true).FirstOrDefault()?.abbr;
+                range.Cells.HorizontalAlignment = Excel.XlHAlign.xlHAlignRight;
+
+            }
+            catch (Exception ex)
+            {
+                Message.Ok(ex.Message + " " + ex.StackTrace, "MsgDialog");
+                newDoc?.Close(SaveChanges: false);
+                excel?.Quit();
+            }
+        }
+
+
+      
 
         private void CommandBinding_ExecutedDelete(object sender, ExecutedRoutedEventArgs e)
         {
@@ -1130,6 +1575,8 @@ namespace BacLab.Dictionary
             else
                 x_listConsumablesStockGrid.Columns[0].Visibility = Visibility.Collapsed;
         }
+
+        
     }
 
 }

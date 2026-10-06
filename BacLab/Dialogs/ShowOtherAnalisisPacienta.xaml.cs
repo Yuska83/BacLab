@@ -22,7 +22,7 @@ namespace BacLab.Dialogs
                 string folderMain = Environment.CurrentDirectory;
                 if ((x_patientAnalisisGrid.SelectedItem as d_Analyzes).rezult == null) return;
                 d_Analyzes Analis = x_patientAnalisisGrid.SelectedItem as d_Analyzes;
-                CommonClass.ShowRezult(Analis.rezult, folderMain);
+                CommonClass.ShowRezult(Analis, folderMain);
 
             }
             catch (Exception ex)

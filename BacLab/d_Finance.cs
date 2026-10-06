@@ -17,8 +17,8 @@ namespace BacLab
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public d_Finance()
         {
-            this.d_Analyzes = new HashSet<d_Analyzes>();
             this.d_ConsumablesStock = new HashSet<d_ConsumablesStock>();
+            this.d_Analyzes = new HashSet<d_Analyzes>();
         }
     
         public int id { get; set; }
@@ -28,8 +28,8 @@ namespace BacLab
         public Nullable<bool> show { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<d_Analyzes> d_Analyzes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<d_ConsumablesStock> d_ConsumablesStock { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<d_Analyzes> d_Analyzes { get; set; }
     }
 }

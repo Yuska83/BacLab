@@ -18,6 +18,7 @@ namespace BacLab
         public d_Medium()
         {
             this.p_Group_Material_Purpose_Medium = new HashSet<p_Group_Material_Purpose_Medium>();
+            this.g_Medium_Consumables = new HashSet<g_Medium_Consumables>();
             this.p_Analises_Mediums = new HashSet<p_Analises_Mediums>();
         }
     
@@ -26,9 +27,24 @@ namespace BacLab
         public string abbr { get; set; }
         public Nullable<int> index { get; set; }
         public Nullable<bool> show { get; set; }
+        public string pH { get; set; }
+        public Nullable<int> idSterilization { get; set; }
+        public Nullable<int> idStorage { get; set; }
+        public string termin { get; set; }
+        public string recipe { get; set; }
+        public Nullable<int> idDocument { get; set; }
+        public Nullable<int> idMediumGroup { get; set; }
+        public Nullable<int> idTermin { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<p_Group_Material_Purpose_Medium> p_Group_Material_Purpose_Medium { get; set; }
+        public virtual d_MediumGroup d_MediumGroup { get; set; }
+        public virtual d_Sterilization d_Sterilization { get; set; }
+        public virtual d_Termin d_Termin { get; set; }
+        public virtual s_Document s_Document { get; set; }
+        public virtual s_Storage s_Storage { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<g_Medium_Consumables> g_Medium_Consumables { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<p_Analises_Mediums> p_Analises_Mediums { get; set; }
     }

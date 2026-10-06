@@ -1,6 +1,7 @@
 ﻿using BacLab.Administration;
 using BacLab.Dialogs;
 using BacLab.Models;
+using Org.BouncyCastle.Ocsp;
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -366,17 +367,17 @@ namespace BacLab.WorkSpace
                 //записуємо контролі для обл
                 if (Analis.idSubdivisions == 9)
                 {
-                    var listAntibioticControl = context.a_AntibioticControl.Where(c => c.idSubdivisions == Analis.idSubdivisions).ToList();
+                    var listAntibioticControl = context.d_ConsumablesControls.Where(c => c.idSubdivisions == Analis.idSubdivisions).ToList();
                     //шукаємо флакон
                     d_ConsumablesStock abStoct = context.d_ConsumablesStock.Where(c => c.idConsumable == abDisk.idConsumable && c.idSubdivisions == Analis.idSubdivisions && c.show == true).FirstOrDefault();
                     if (abStoct != null)
                         if (listAntibioticControl.Where(c => c.date == (DateTime)Analis.dateEnd && c.idConsumableStock == abStoct.id).FirstOrDefault() == null)
                         {
                             Random rnd = new Random();
-                            var colNormsCulture = context.a_AntibioticNorms.Where(c => c.idConsumable == abDisk.idConsumable);
+                            var colNormsCulture = context.d_ConsumablesNorms.Where(c => c.idConsumable == abDisk.idConsumable);
                             foreach (var itemNorms in colNormsCulture)
                             {
-                                context.a_AntibioticControl.Add(new a_AntibioticControl()
+                                context.d_ConsumablesControls.Add(new d_ConsumablesControls()
                                 {
                                     date = (DateTime)Analis.dateEnd,
                                     idConsumableStock = abStoct.id,
@@ -542,8 +543,17 @@ namespace BacLab.WorkSpace
             {
                 mutexObj.WaitOne();
                 hasHandle = true;
-                //зберігаємо бланк
-                CommonClass.SaveBlank(context, Analis, laboratoria, rezultTemplate, folderMain, staff);
+                if(Analis.p_Group_Material_Purpose.idGroup == 4)//профпункт
+                {
+                    Analis.isEnd = true;
+                    context.SaveChanges();
+                }
+                else
+                {
+                    //зберігаємо бланк
+                    CommonClass.SaveBlank(context, Analis, laboratoria, rezultTemplate, folderMain, staff);
+                }
+                    
 
                 this.Dispatcher.Invoke(() =>
                 {
@@ -563,7 +573,12 @@ namespace BacLab.WorkSpace
                         if (noPrintInst == null)
                             try
                             {
-                                CommonClass.PrintRezult(context, Analis, laboratoria, folderMain);
+                                var rez = CommonClass.PrintRezult(context, Analis, laboratoria, folderMain);
+                                if (rez)
+                                {
+                                    Analis.isPrint = true;
+                                    context.SaveChanges();
+                                }
                             }
                             catch (Exception ex)
                             {
@@ -575,9 +590,12 @@ namespace BacLab.WorkSpace
                     if (!NoSend)
                     {
                         string rez = CommonClass.SendEmail(context, Analis, laboratoria, folderMain);
-                        if (rez.Contains("не відправлен"))
-                            MessageBox.Show(rez);
-                        else Analis.isIssued = true;
+                        
+                        if (rez.Equals("Відправлено"))
+                        {
+                            Analis.isSend = true;
+                            context.SaveChanges();
+                        }
 
                     }
 
@@ -601,7 +619,10 @@ namespace BacLab.WorkSpace
         {
             try
             {
-                CommonClass.ShowRezult(Analis.rezult, folderMain);
+                if (Analis.isEnd == true && (Analis.rezultPath == null || Analis.rezultPath != ""))
+                    CommonClass.SaveBlank(context, Analis, Analis.d_Subdivisions.d_Laboratoria.FirstOrDefault(), rezultTemplate, folderMain, Analis.d_Staff);
+
+                CommonClass.ShowRezult(Analis, folderMain);
             }
             catch (Exception ex)
             {
@@ -613,20 +634,16 @@ namespace BacLab.WorkSpace
         {
             try
             {
+                if (Analis.isEnd == true && (Analis.rezultPath == null || Analis.rezultPath != ""))
+                    CommonClass.SaveBlank(context, Analis, Analis.d_Subdivisions.d_Laboratoria.FirstOrDefault(), rezultTemplate, folderMain, Analis.d_Staff);
+
+
                 var rez = CommonClass.PrintRezult(context, Analis, laboratoria, folderMain);
 
                 if (rez)
                 {
-                    context.l_log.Add(new l_log()
-                    {
-                        date = DateTime.Now,
-                        datetime = DateTime.Now,
-                        idStaff = staff.id,
-                        idAction = 12,
-                        labNum = Analis.labNum,
-                        namePacient = Analis.d_Patients.name,
-                        dateDelivery = Analis.dateDelivery
-                    });
+                    CommonClass.Log(context, Analis, staff, 12, false);
+                    Analis.isPrint = true;
                     context.SaveChanges();
                 }
             }
@@ -640,22 +657,16 @@ namespace BacLab.WorkSpace
         {
             try
             {
+                if (Analis.isEnd == true && (Analis.rezultPath == null || Analis.rezultPath != ""))
+                    CommonClass.SaveBlank(context, Analis, Analis.d_Subdivisions.d_Laboratoria.FirstOrDefault(), rezultTemplate, folderMain, Analis.d_Staff);
+
                 string rez = CommonClass.SendEmail(context, Analis, laboratoria, folderMain);
 
                 Message.Ok(rez, "MsgDialog");
                 if (rez.Equals("Відправлено"))
                 {
-                    //лог
-                    context.l_log.Add(new l_log()
-                    {
-                        date = DateTime.Now,
-                        datetime = DateTime.Now,
-                        idStaff = staff.id,
-                        idAction = 13,
-                        labNum = Analis.labNum,
-                        namePacient = Analis.d_Patients.name,
-                        dateDelivery = Analis.dateDelivery
-                    });
+                    CommonClass.Log(context, Analis, staff, 13, false);
+                    Analis.isSend = true;
                     context.SaveChanges();
                 }
             }
@@ -712,7 +723,7 @@ namespace BacLab.WorkSpace
             try
             {
                 oldAnalisRezult = Analis.rezult;
-                Analis.sendAnalis = false;
+                Analis.isEnd = false;
                 Analis.dateEnd = null;
                 Analis.timeEnd = null;
                 Analis.rezult = null;

@@ -7,11 +7,17 @@ using BacLab.WorkSpace;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
-using System.Data.Entity.Validation;
+using System.IO;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
+using System.Security.AccessControl;
+using System.Security.Cryptography;
+using System.Security.Principal;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -51,10 +57,14 @@ namespace BacLab.Administration
                 context = new BacLab_DBEntities();
                 
                 x_Subdivisions.ItemsSource = context.d_Subdivisions.Where(c => c.show == true).OrderBy(c => c.index).ToList();
-                Subdivisions = context.d_Subdivisions.Where(c => c.id == 13).FirstOrDefault();
-                x_Login.ItemsSource = context.d_Staff.Where(c => c.show == true && c.idSubdivisions == Subdivisions.id).OrderBy(c => c.index).ToList();
-                Staff = context.d_Staff.Where(c => c.id == 66).FirstOrDefault();
-                ApplyStyle();
+                //Subdivisions = context.d_Subdivisions.Where(c => c.id == 13).FirstOrDefault();
+                //x_Login.ItemsSource = context.d_Staff.Where(c => c.show == true && c.idSubdivisions == Subdivisions.id).OrderBy(c => c.index).ToList();
+                //Staff = context.d_Staff.Where(c => c.id == 66).FirstOrDefault();
+
+                //Subdivisions = context.d_Subdivisions.Where(c => c.id == 1).FirstOrDefault();
+                //x_Login.ItemsSource = context.d_Staff.Where(c => c.show == true && c.idSubdivisions == Subdivisions.id).OrderBy(c => c.index).ToList();
+                //Staff = context.d_Staff.Where(c => c.id == 4).FirstOrDefault();
+
                 this.PreviewKeyDown += MainWindow_PreviewKeyDown;
 
                 DataContext = this;
@@ -70,11 +80,11 @@ namespace BacLab.Administration
         private void x_Login_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            x_parol.Password = "123";
-            Parol = "123";
+            //x_parol.Password = "123";
+            //Parol = "123";
 
-            //Parol = parol;
-            //x_parol.Password = parol;
+            Parol = parol;
+            x_parol.Password = parol;
 
         }
 
@@ -93,7 +103,7 @@ namespace BacLab.Administration
                 x_parol.Password = parol;
                 if (isNewStyle)
                     ApplyStyle();
-                int count = context.d_Analyzes.Where(c => c.sendAnalis != true && c.p_Group_Material_Purpose.d_GroupResearch.id == 2).Count();
+                int count = context.d_Analyzes.Where(c => c.isEnd != true && c.p_Group_Material_Purpose.d_GroupResearch.id == 2).Count();
                 if (count > 0)
                     x_countKrapelna.Text = count.ToString();
                 DataContext = this;
@@ -365,7 +375,7 @@ namespace BacLab.Administration
                 if (!context.d_Staff.Where(c => c.id == Staff.id).FirstOrDefault().parol.Equals(Parol))
                 { Message.Ok("Невірний пароль!", "MsgDialog"); return; }
 
-                int rez = await Message.DialogDias("MsgDialog");
+                int rez = await Message.Dialog_Dias("MsgDialog");
 
                 // ЗАВАНТАЖЕНННЯ ДОСЛІДЖЕНЬ
                 if (rez == 1)
@@ -488,7 +498,7 @@ namespace BacLab.Administration
         {
             try
             {
-                int count = context.d_Analyzes.Where(c => c.idSubdivisions == Subdivisions.id && c.sendAnalis != true && c.p_Group_Material_Purpose.d_GroupResearch.id == 2).Count();
+                int count = context.d_Analyzes.Where(c => c.idSubdivisions == Subdivisions.id && c.isEnd != true && c.p_Group_Material_Purpose.d_GroupResearch.id == 2).Count();
                 if (count > 0)
                     x_countKrapelna.Text = count.ToString();
                 else
@@ -503,14 +513,12 @@ namespace BacLab.Administration
             }
         }
 
-
-
-
         private void x_CountReserchBTN_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 
+               
             }
             catch (Exception ex)
             {
@@ -520,26 +528,6 @@ namespace BacLab.Administration
 
         private void x_preparatorcyka_Click(object sender, RoutedEventArgs e)
         {
-            //var col = context.d_Diagnosis.Where(c => !c.d_Analyzes.Any()).ToList();
-            //MessageBox.Show("Є діагнози без аналізів" + col.Count().ToString());
-
-            //foreach (var item in col)
-            //{
-            //    //context.g_Institution_SentPerson.Where(c => c.idItem == item.id).ToList().ForEach(c => context.g_Institution_SentPerson.Remove(c));
-            //    context.d_Diagnosis.Remove(item);
-            //}
-
-            //var col2 = context.d_Department.Where(c => !c.d_Analyzes.Any()).ToList();
-            //MessageBox.Show("Є відділення без аналізів" + col2.Count().ToString());
-
-            //foreach (var item in col2)
-            //{
-            //    context.g_Institution_Department.Where(c => c.idItem == item.id).ToList().ForEach(c => context.g_Institution_Department.Remove(c));
-            //    context.d_Department.Remove(item);
-            //}
-
-            //context.SaveChanges();
-
 
             try
             {
@@ -884,7 +872,7 @@ namespace BacLab.Administration
                     return;
                 }
                 
-                bool? rez = await Message.DialogNew_MinusConsumes(context, consumableStock.id, staff, "MsgDialog");
+                bool? rez = await Message.Dialog_MinusConsumes(context, consumableStock.id, staff, "MsgDialog");
                 if (rez == true)
                 {
                      if (consumableStock.conclusion?.Equals("непридатно") == true)
@@ -929,7 +917,7 @@ namespace BacLab.Administration
                     if (quantityZagal<4)
                         MessageBox.Show("Увага!\n" +
                         consumableStock.d_Consumables.abbr + " залишилось "+ quantityZagal.ToString() + " фл.!!!");
-                   
+                  
                 }
 
             }

@@ -1,5 +1,6 @@
 ﻿using BacLab.Dialogs;
 using BacLab.Models;
+using Dragablz;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
@@ -23,21 +24,14 @@ namespace BacLab.Dictionary
     public partial class ABEnterControl : UserControl,INotifyPropertyChanged
     {
         BacLab_DBEntities context;
-        d_Subdivisions subdivisions;
+        d_Subdivisions subdivision;
         d_Staff staff;
-        bool isEnterControl;
-
-        ABSeries oldAbSeries = null;
-        
-        List<d_Consumables> listAntibiotics = new List<d_Consumables>();
-        List<d_Producer> listProducers = new List<d_Producer>();
-        List<string> listConclusion = new List<string>() { "придатно", "непридатно" };
-        List<int> listIdControlMO = new List<int>() ;
-        
+        string vybirka = "";
+        public List<string> ListConclusions { get; set; } = new List<string> { "придатно" , "непридатно"};
+        List<d_Microorganism> colControlMO = new List<d_Microorganism>();
         public HashSet<DateTime> ControlDates { get; set; } = new HashSet<DateTime>();
 
-
-        public ObservableCollection<ABSeries> ListItems { get; set; } = new ObservableCollection<ABSeries>();
+        public ObservableCollection<ConsumablesStock> ListItems { get; set; } = new ObservableCollection<ConsumablesStock>();
         
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string name)
@@ -45,61 +39,155 @@ namespace BacLab.Dictionary
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public ABEnterControl(BacLab_DBEntities context, d_Subdivisions subdivisions, d_Staff staff, bool isEnterControl)
+        public ABEnterControl(BacLab_DBEntities context, d_Subdivisions subdivisions, d_Staff staff)
         {
             try
             {
                 InitializeComponent();
                 this.context = context;
-                this.subdivisions = subdivisions;
+                this.subdivision = subdivisions;
                 this.staff = staff;
-                this.isEnterControl = isEnterControl;
 
-                listAntibiotics = context.d_Consumables.
+                x_cb_antibiotic.ItemsSource = context.d_Consumables.
                        Where(c => c.show == true && c.idConsumablesGroup==1).OrderBy(c => c.name).ToList();
-                listProducers = context.d_Producer.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();
-                x_cb_antibiotic.ItemsSource = listAntibiotics;
                 
+                // Додаємо конвертер для позначок у календарі
+                var converter = new ControlDateHighlightConverter { ControlDates = ControlDates };
+                Resources["ControlDateHighlightConverter"] = converter;
+                UpdateControlDates();
+
+                // Додаємо обробник для позначок у календарі
+                x_dateFrom.Loaded+= X_DateFrom_Loaded;
+                x_dateTo.Loaded += X_DateFrom_Loaded;
+
+                FillListItems();
+                DataContext = this;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + " " + ex.StackTrace);
+            }
+        }
+
+      
+        private void x_cb_antibiotic_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            FillListItems(x_cb_antibiotic.SelectedItem as d_Consumables, x_dateFrom.SelectedDate,x_dateTo.SelectedDate);
+        }
+
+        private async void FillListItems(d_Consumables selectedAB = null, DateTime? selectedDateFrom = null, DateTime? selectedDateTo = null)
+        {
+            var waitDialog = new MsgProgressDialog("Формування, будь ласка, зачекайте...");
+            try
+            {
+                waitDialog.Show();
                 
-                    var converter = new ControlDateHighlightConverter { ControlDates = ControlDates };
-                    Resources["ControlDateHighlightConverter"] = converter;
-                    UpdateControlDates();
+                ListItems.Clear();
 
-                    // Додаємо обробник для позначок у календарі
-                    x_dateFrom.Loaded+= X_DateFrom_Loaded;
-                    x_dateTo.Loaded += X_DateFrom_Loaded;
+                List<d_ConsumablesStock> listConsumableStocks = new List<d_ConsumablesStock>();
 
-                    var colControlMO = context.g_MicroorganismGroup_Microorganism
-                        .Where(c => c.idGroup == 45 && c.d_Microorganism.show == true)
-                        .Select(c => c.d_Microorganism)
-                        .OrderBy(c => c.index)
-                        .ToList();
+                if (selectedAB == null && selectedDateFrom == null)
+                {
+                    listConsumableStocks = context.d_ConsumablesStock.Where(c => c.idSubdivisions == subdivision.id
+                    && (c.conclusion == null || c.conclusion == "") && c.idConsumablesGroup == 1).
+                            OrderBy(c => c.dateDelivery).ThenBy(c => c.d_Consumables.abbr).ToList();
+                }
+                else
+                {
+                    IQueryable<d_ConsumablesControls> queryControls = context.d_ConsumablesControls.
+                        Where(c => c.d_ConsumablesStock.idSubdivisions == subdivision.id
+                        && c.idConsumableGroup == 1 && c.isEnterControl == true);
 
-                    string str = "";
+                    if (selectedAB != null)
+                        queryControls = queryControls.Where(c => c.d_ConsumablesStock.idConsumable == selectedAB.id);
 
-                    // Приклад створення DataGridTextColumn з динамічним стилем
-                    var baseStyle = (Style)FindResource("MaterialDesignFloatingHintTextBox");
-                    
-                    // Добавление колонок с названиями контрольных штаммов
-                    foreach (var ControlMO in colControlMO)
+                    if (selectedDateFrom != null && selectedDateTo == null)
+                        queryControls = queryControls.Where(c => c.date == selectedDateFrom);
+                    else if (selectedDateFrom != null && selectedDateTo != null)
+                        queryControls = queryControls.Where(c => c.date >= selectedDateFrom && c.date <= selectedDateTo);
+
+                    vybirka = "Вибірка: "+ (selectedAB!=null ? selectedAB.name : "")+ (selectedDateFrom!=null ? " з " + selectedDateFrom.Value.ToShortDateString() : "") + (selectedDateTo!=null ? " по " + selectedDateTo.Value.ToShortDateString() : "");
+
+                    var controlsByConsumableStock = queryControls.ToList().GroupBy(c => c.d_ConsumablesStock);
+
+                    foreach (var item in controlsByConsumableStock)
+                        listConsumableStocks.Add(item.Key);
+
+                    listConsumableStocks = listConsumableStocks.OrderBy(c => c.dateDelivery).ThenBy(c => c.d_Consumables.abbr).ToList();
+
+                }
+
+                foreach (var consumablesStock in listConsumableStocks)
+                {
+                    var colMO = consumablesStock.d_ConsumablesControls.Where(c => c.isEnterControl == true).Select(c => c.d_Microorganism).AsQueryable();
+                    foreach (var item in colMO)
+                        if (!colControlMO.Any(c => c.id == item.id))
+                            colControlMO.Add(item);
+
+                }
+                colControlMO = colControlMO.OrderBy(c => c.index).ToList();
+                CreateDataGridColumns(colControlMO);//робимо колонки з назвами контролів
+
+                int i = 1;
+                foreach (var consumableStock in listConsumableStocks)
+                {
+                    ConsumablesStock row = new ConsumablesStock(consumableStock); 
+                    row.Index = i++;
+                    foreach (var control in consumableStock.d_ConsumablesControls.Where(c => c.isEnterControl == true))
                     {
-                        listIdControlMO.Add(ControlMO.id);
-                        var nameParts = ControlMO.name.Split(' ');
-                        if (nameParts.Length > 2)
-                            str = nameParts[0]+" "+ nameParts[1]+ "\n"+string.Join(" ", nameParts.Skip(2));
-                        else
-                            str = ControlMO.name;
-
-                        var cellStyle = new Style(typeof(DataGridCell))
+                        if (row.ControlValues.ContainsKey(control.idCulture))
                         {
-                            Setters =
+                            System.Diagnostics.Debug.WriteLine($"Дублікат idCulture: {control.idCulture} для ConsumableStock: {consumableStock.id}");
+                        }
+
+                        row.ControlValues[control.idCulture] = control.valueCurrent?.ToString();
+                        row.PermissiblemMinValues.Add(control.idCulture, control.valuePermissiblemMin);
+                        row.PermissiblemMaxValues.Add(control.idCulture, control.valuePermissiblemMax);
+                        row.PermissiblemBoolValues.Add(control.idCulture, control.valuePermissiblemMin != null || control.valuePermissiblemMax != null);
+                        row.PermissiblemStringValues.Add(control.idCulture, control.valuePermissiblemMin + " - " + control.valuePermissiblemMax);
+                        row.CommentBoolValues.Add(control.idCulture, !string.IsNullOrEmpty(control.comment));
+                        row.CommentStringValues.Add(control.idCulture, control.comment);
+                        row.DateControl = control.date == null ? DateTime.Now.Date : control.date;
+                    }
+                    ListItems.Add(row);
+                }
+                await System.Threading.Tasks.Task.Delay(100); // Дати UI оновитись
+                waitDialog.Close();
+            }
+            catch (Exception ex)
+            {
+                Message.Ok(ex.Message + " " + ex.StackTrace, "MsgDialog");
+                waitDialog.Close();
+            }
+        }
+        
+        public void CreateDataGridColumns(List<d_Microorganism> colControlMO)
+        {
+            // Добавление колонок с названиями контрольных штаммов
+            string str = "";
+            var baseStyle = (Style)FindResource("MaterialDesignFloatingHintTextBox");
+
+            foreach (var ControlMO in colControlMO)
+            {
+                var nameParts = ControlMO.name.Split(' ');
+                if (nameParts.Length > 2)
+                    str = nameParts[0] + " " + nameParts[1] + "\n" + string.Join(" ", nameParts.Skip(2));
+                else
+                    str = ControlMO.name;
+                
+                if (x_MainGrid.Columns.Any(c => c.Header.ToString() == str))
+                    continue;
+
+                var cellStyle = new Style(typeof(DataGridCell))
+                {
+                    Setters =
                             {
                                 new Setter(DataGridCell.IsEnabledProperty, new System.Windows.Data.Binding($"PermissiblemBoolValues[{ControlMO.id}]")),
                                 new Setter(DataGridCell.HorizontalContentAlignmentProperty, HorizontalAlignment.Center),
                                 new Setter(DataGridCell.VerticalContentAlignmentProperty, VerticalAlignment.Center),
                                 new Setter(DataGridCell.TagProperty, ControlMO.id)
                             },
-                            Triggers =
+                    Triggers =
                             {
                                 new DataTrigger
                                 {
@@ -111,11 +199,11 @@ namespace BacLab.Dictionary
                                     }
                                 }
                             }
-                        };
+                };
 
-                        var elementStyle = new Style(typeof(TextBlock))
-                        {
-                            Setters =
+                var elementStyle = new Style(typeof(TextBlock))
+                {
+                    Setters =
                             {
                                 new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center),
                                 new Setter(TextBlock.VerticalAlignmentProperty, VerticalAlignment.Center),
@@ -123,7 +211,7 @@ namespace BacLab.Dictionary
                                 new Setter(TextBlock.TagProperty, ControlMO.id),
                                 new Setter(TextBlock.ToolTipProperty, new System.Windows.Data.Binding($"CommentStringValues[{ControlMO.id}]"))
                             },
-                            Triggers =
+                    Triggers =
                             {
                                 new DataTrigger
                                 {
@@ -144,12 +232,12 @@ namespace BacLab.Dictionary
                                     }
                                 }
                             }
-                        };
+                };
 
 
-                        var editingElementStyle = new Style(typeof(TextBox), baseStyle)
-                        {
-                            Setters =
+                var editingElementStyle = new Style(typeof(TextBox), baseStyle)
+                {
+                    Setters =
                                 {
                                     new Setter(TextBox.IsEnabledProperty, new System.Windows.Data.Binding($"PermissiblemBoolValues[{ControlMO.id}]")),
                                     new Setter(TextBox.TextAlignmentProperty, TextAlignment.Center),
@@ -162,7 +250,7 @@ namespace BacLab.Dictionary
                                     new Setter(HintAssist.ForegroundProperty, new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Black)),
                                     new EventSetter(TextBox.LostFocusEvent, new RoutedEventHandler(Tb_LostFocus))
                                 },
-                            Triggers =
+                    Triggers =
                                 {
                                     new DataTrigger
                                     {
@@ -183,68 +271,58 @@ namespace BacLab.Dictionary
                                         }
                                     }
                                 }
-                        };
+                };
 
-                        var column = new MaterialDesignThemes.Wpf.DataGridTextColumn
-                        {
-                            Header = str,
-                            Binding = new System.Windows.Data.Binding($"ControlValues[{ControlMO.id}]")
-                            {
-                                Mode = System.Windows.Data.BindingMode.TwoWay,
-                                UpdateSourceTrigger = System.Windows.Data.UpdateSourceTrigger.PropertyChanged
-                            },
-                            CellStyle = cellStyle,
-                            ElementStyle = elementStyle,
-                            EditingElementStyle = editingElementStyle
-                        };
+                var column = new MaterialDesignThemes.Wpf.DataGridTextColumn
+                {
+                    Header = str,
+                    Binding = new System.Windows.Data.Binding($"ControlValues[{ControlMO.id}]")
+                    {
+                        Mode = System.Windows.Data.BindingMode.TwoWay,
+                        UpdateSourceTrigger = System.Windows.Data.UpdateSourceTrigger.PropertyChanged
+                    },
+                    CellStyle = cellStyle,
+                    ElementStyle = elementStyle,
+                    EditingElementStyle = editingElementStyle
+                };
 
-                        x_MainGrid.Columns.Add(column);
-                        FillListItems();
-                    }
-                
-                DataContext = this;
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + " " + ex.StackTrace);
+                x_MainGrid.Columns.Add(column);
             }
         }
-
         private void Tb_LostFocus(object sender, RoutedEventArgs e)
         {
             TextBox textBox = sender as TextBox;
             if (textBox != null)
             {
-                ABSeries abSeries = textBox.DataContext as ABSeries;
-                if (abSeries != null)
+                ConsumablesStock consumableStock = textBox.DataContext as ConsumablesStock;
+                if (consumableStock != null)
                 {
                     int value;
                     if (int.TryParse(textBox.Text, out value))
                     {
                         var controlMOId = (int)textBox.Tag;
-                        
-                        if (abSeries.PermissiblemBoolValues.ContainsKey(controlMOId))
-                        {
-                            abSeries.ControlValues[controlMOId] = textBox.Text;
 
-                            if (abSeries.PermissiblemMinValues.ContainsKey(controlMOId) && value < abSeries.PermissiblemMinValues[controlMOId])
+                        if (consumableStock.PermissiblemBoolValues.ContainsKey(controlMOId))
+                        {
+                            consumableStock.ControlValues[controlMOId] = textBox.Text;
+
+                            if (consumableStock.PermissiblemMinValues.ContainsKey(controlMOId) && value < consumableStock.PermissiblemMinValues[controlMOId])
                             {
-                                abSeries.CommentStringValues[controlMOId] = $"Значення менше допустимого мінімуму ({abSeries.PermissiblemMinValues[controlMOId]})";
-                                abSeries.CommentBoolValues[controlMOId] = true;
+                                consumableStock.CommentStringValues[controlMOId] = $"Значення менше допустимого мінімуму ({consumableStock.PermissiblemMinValues[controlMOId]})";
+                                consumableStock.CommentBoolValues[controlMOId] = true;
                             }
-                            else if (abSeries.PermissiblemMaxValues.ContainsKey(controlMOId) && abSeries.PermissiblemMaxValues[controlMOId] != null && value > abSeries.PermissiblemMaxValues[controlMOId])
+                            else if (consumableStock.PermissiblemMaxValues.ContainsKey(controlMOId) && consumableStock.PermissiblemMaxValues[controlMOId] != null && value > consumableStock.PermissiblemMaxValues[controlMOId])
                             {
-                                abSeries.CommentStringValues[controlMOId] = $"Значення більше допустимого максимуму ({abSeries.PermissiblemMaxValues[controlMOId]})";
-                                abSeries.CommentBoolValues[controlMOId] = true;
+                                consumableStock.CommentStringValues[controlMOId] = $"Значення більше допустимого максимуму ({consumableStock.PermissiblemMaxValues[controlMOId]})";
+                                consumableStock.CommentBoolValues[controlMOId] = true;
                             }
                             else
                             {
-                                abSeries.CommentStringValues[controlMOId] = "";
-                                abSeries.CommentBoolValues[controlMOId] = false;
+                                consumableStock.CommentStringValues[controlMOId] = "";
+                                consumableStock.CommentBoolValues[controlMOId] = false;
                             }
                         }
-                        else 
+                        else
                         {
                             Message.Ok("Немає контрольних значень", "MsgDialog");
                         }
@@ -258,266 +336,26 @@ namespace BacLab.Dictionary
             }
         }
 
-        
-        private void x_cb_antibiotic_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            SaveListItems();
-            FillListItems(x_cb_antibiotic.SelectedItem as d_Consumables, x_dateFrom.SelectedDate,x_dateTo.SelectedDate);
-        }
-
-        private void FillListItems(d_Consumables selectedAB = null, DateTime? selectedDateFrom = null, DateTime? selectedDateTo = null)
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                ListItems.Clear();
-                List<d_ConsumablesStock> tab = new List<d_ConsumablesStock>();
-
-                if (selectedAB == null && selectedDateFrom == null)
+                d_ConsumablesStock d_consumableStock;
+                foreach (var consumableStock in ListItems)
                 {
-                    tab = context.d_ConsumablesStock.Where(c => c.idSubdivisions == subdivisions.id 
-                    && (c.conclusion == null || c.conclusion == "") ).
-                            OrderBy(c => c.dateDelivery).ThenBy(c => c.d_Consumables.abbr).ToList();
-                }
-                else
-                {
-
-                    IQueryable<a_AntibioticControl> query = context.a_AntibioticControl.Where(c =>  c.d_ConsumablesStock.idSubdivisions == subdivisions.id && c.d_ConsumablesStock.idConsumablesGroup == 1);
-
-                    if (selectedAB != null)
-                        query = query.Where(c => c.d_ConsumablesStock.idConsumable == selectedAB.id);
-
-                    if (selectedDateFrom != null && selectedDateTo == null)
-                        query = query.Where(c => c.date == selectedDateFrom);
-                    else if (selectedDateFrom != null && selectedDateTo != null)
-                        query = query.Where(c => c.date >= selectedDateFrom && c.date <= selectedDateTo);
-
-                    var col1 = query.ToList();
-                    var col = query.ToList().GroupBy(c => c.d_ConsumablesStock);
-
-                    foreach (var item in col)
-                        tab.Add(item.Key);
-
-                    tab = tab.OrderBy(c => c.dateDelivery).ThenBy(c => c.d_Consumables.abbr).ToList();
-
-                }
-                
-                string strPermissiblem = "";
-                string strTarget = "";
-                string str = "";
-                List<d_Producer> producers = context.d_Producer.Where(c => c.show == true).OrderBy(c => c.index).ToList();
-                List<a_AntibioticControl> controls;
-                int i = 1;
-                foreach (var item in tab)
-                {
-                    controls = item.a_AntibioticControl.Where(c => c.isEnterControl == true).ToList();
-                    ABSeries row = new ABSeries()
+                    d_consumableStock = context.d_ConsumablesStock.FirstOrDefault(c => c.id == consumableStock.Id);
+                    var d_controls = d_consumableStock.d_ConsumablesControls.Where(c => c.isEnterControl == true).ToList();
+                    d_consumableStock.conclusion = consumableStock.Conclusion;
+                    d_consumableStock.comment = consumableStock.Comment;
+                    foreach (var d_control in d_controls)
                     {
-                        Id = item.id,
-                        Subdivisions = item.d_Subdivisions,
-                        Index = i++,
-                        Show = item.show,
-                        AB = item.d_Consumables,
-                        Producer = item.d_Producer,
-                        Series = item.series,
-                        Termin = item.termin,
-                        Conclusion = item.conclusion,
-                        DateDelivery = item.dateDelivery,
-                        ListConclusion = listConclusion,
-                        ListProducers = producers,
-                        ListABControls = controls,
-                        DateControls= controls.Select(c => c.date).FirstOrDefault()
-                    };
-                    
-                    foreach (var abControl in row.ListABControls)
-                    {
-                        row.ControlValues[abControl.idCulture] = abControl.valueCurrent.ToString();
-                        row.PermissiblemMinValues[abControl.idCulture] = abControl.valuePermissiblemMin;
-                        row.PermissiblemMaxValues[abControl.idCulture] = abControl.valuePermissiblemMax;
-                        strPermissiblem =  abControl.valuePermissiblemMax != null ? $"{abControl.valuePermissiblemMin} - {abControl.valuePermissiblemMax}" : $"{abControl.valuePermissiblemMin}";
-                        strTarget = abControl.valueTargetMax != null ? $"{abControl.valueTargetMin} - {abControl.valueTargetMax}" : $"{abControl.valueTargetMin}";
-                        str = "   " + strTarget + "   (" + strPermissiblem + ")";
-                        row.PermissiblemStringValues[abControl.idCulture] = str;
-                        row.PermissiblemBoolValues[abControl.idCulture] = !String.IsNullOrEmpty(str);
-                        row.CommentBoolValues[abControl.idCulture] = !String.IsNullOrEmpty(abControl.comment);
-                        row.CommentStringValues[abControl.idCulture] = abControl.comment;
-                        
-                    }
-                    foreach (var idControlMO in listIdControlMO)
-                    {
-                        if(!row.PermissiblemBoolValues.ContainsKey(idControlMO))
-                            row.PermissiblemBoolValues[idControlMO] = false;
-                    }
-                    ListItems.Add(row);
-
-                }
-            }
-            catch (Exception ex)
-            {
-                Message.Ok(ex.Message + " " + ex.StackTrace, "MsgDialog");
-            }
-        }
-
-
-        private void SaveListItems()
-        {
-            try
-            {
-                string str = "Введіть ЧИСЛОВЕ значення для контрольного штаму:\n";
-                bool hasError = false;
-                foreach (var item in ListItems)
-                {
-                    foreach (var control in item.ListABControls)
-                    {
-                        foreach (var values in item.ControlValues.Values)
-                        {
-                            try
-                            {
-                                if (!string.IsNullOrEmpty(values))
-                                    Convert.ToInt32(values);
-                            }
-                        
-                        catch (Exception)
-                            {
-                                hasError = true;
-                                str += control.d_Microorganism.name + " для серії " + item.AB.name + " (" + item.Series + ")" + "\n";
-                            }
-                        }
+                        d_control.date = consumableStock.DateControl;
+                        d_control.valueCurrent = consumableStock.ControlValues.ContainsKey(d_control.idCulture) && !string.IsNullOrEmpty(consumableStock.ControlValues[d_control.idCulture]) 
+                            ? int.Parse(consumableStock.ControlValues[d_control.idCulture]) : (int?)null;
                     }
                 }
-                if (hasError)
-                {
-                    Message.Ok(str, "MsgDialog");
-                    return;
-                }
 
-                foreach (var Item in ListItems)
-                {
-                    bool isNew = false;
-                    d_ConsumablesStock d_Item = context.d_ConsumablesStock.Where(c => c.id == Item.Id).FirstOrDefault();
-                    if (d_Item == null)
-                    {
-                        d_Item = new d_ConsumablesStock();
-                        isNew = true;
-                    }
-
-                    d_Item.d_Subdivisions = Item.Subdivisions;
-                    d_Item.d_Consumables = Item.AB;
-                    d_Item.dateDelivery = Item.DateDelivery;
-                    d_Item.d_Producer = Item.Producer;
-                    d_Item.series = Item.Series;
-                    d_Item.termin = Item.Termin;
-                    d_Item.conclusion = Item.Conclusion;
-                    d_Item.show = Item.Show;
-                    if(isNew)
-                        d_Item.a_AntibioticControl = new List<a_AntibioticControl>();
-
-                    foreach (var control in Item.ListABControls)
-                    {
-                        a_AntibioticControl d_control = d_Item.a_AntibioticControl.Where(c => c.id == control.id).FirstOrDefault();
-                        bool isNewControl = false;
-                        if (isNew == true || d_control == null)
-                        {
-                            d_control = new a_AntibioticControl();
-                            isNewControl = true;
-                        }
-                        d_control.d_Subdivisions = control.d_Subdivisions;
-                        d_control.d_Microorganism = control.d_Microorganism;
-                        if(!String.IsNullOrEmpty(Item.ControlValues[d_control.d_Microorganism.id]))
-                            d_control.valueCurrent =Convert.ToInt32(Item.ControlValues[d_control.d_Microorganism.id]);
-                        d_control.valuePermissiblemMax = control.valuePermissiblemMax;
-                        d_control.valuePermissiblemMin = control.valuePermissiblemMin;
-                        d_control.valueTargetMax = control.valueTargetMax;
-                        d_control.valueTargetMin = control.valueTargetMin;
-                        d_control.comment = Item.CommentStringValues[d_control.d_Microorganism.id];
-                        d_control.date = (DateTime)Item.DateControls;
-                        d_control.d_Staff = control.d_Staff;
-                        d_control.isEnterControl = control.isEnterControl;
-                        
-                        if(isNewControl)
-                            d_Item.a_AntibioticControl.Add(d_control);
-                    }
-
-                    if (isNew)
-                        context.d_ConsumablesStock.Add(d_Item);
-
-                }
                 context.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                Message.Ok(ex.Message + " " + ex.StackTrace, "MsgDialog");
-            }
-        }
-
-        private void x_journalBTN_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                SaveListItems();
-                FillListItems(x_cb_antibiotic.SelectedItem as d_Consumables, x_dateFrom.SelectedDate, x_dateTo.SelectedDate);
-
-            }
-            catch (Exception ex)
-            {
-                Message.Ok(ex.Message + " " + ex.StackTrace, "MsgDialog");
-            }
-        }
-
-        //Удаление строк. Если есть связи не удаляются
-        private void CommandBinding_CanExecuteDelete(object sender, CanExecuteRoutedEventArgs e)
-        {
-            try
-            {
-                bool res = false;
-                ABSeries item = x_MainGrid.SelectedItem as ABSeries;
-                if (item.Id == 0)
-                    oldAbSeries = item;
-                else
-                {
-                    res = DeleteRow(item.Id);
-                    if (res == true)
-                        oldAbSeries = item;
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Message.Ok(ex.Message + " " + ex.StackTrace, "MsgDialog");
-            }
-        }
-
-        private bool DeleteRow(int id)
-        {
-            try
-            {
-              
-                BacLab_DBEntities context2 = new BacLab_DBEntities();
-                var delItem = context2.d_ConsumablesStock.Where(c => c.id == id).SingleOrDefault();
-                if (delItem != null)
-                {
-                    context2.a_AntibioticControl.RemoveRange(delItem.a_AntibioticControl);
-                    context2.d_ConsumablesStock.Remove(delItem);
-                    context2.SaveChanges();
-                }    
-                
-                return true;
-            }
-            catch (Exception)
-            {
-                Message.Ok("Видалити неможливо. Є зв'язки" + "\n" + CommonClass.PrintReferencingEntities(context, typeof(d_ConsumablesStock).Name, id), "MsgDialog");
-                return false;
-            }
-        }
-
-        private void CommandBinding_ExecutedDelete(object sender, ExecutedRoutedEventArgs e)
-        {
-            try
-            {
-                if (oldAbSeries != null)
-                {
-                    ListItems.Remove(oldAbSeries);
-                    oldAbSeries = null;
-                }
             }
             catch (Exception ex)
             {
@@ -527,7 +365,7 @@ namespace BacLab.Dictionary
 
         private void PrintButton_Click(object sender, RoutedEventArgs e)
         {
-            Excel.Application excel = new Excel.Application() { Visible = false };
+            Excel.Application excel = new Excel.Application() { Visible = true };
             Excel.Workbook newDoc = excel.Workbooks.Add();
             try
             {
@@ -535,35 +373,85 @@ namespace BacLab.Dictionary
                 Excel.Range xlRange = sheet.UsedRange;
 
                 int column = 1;
-                int row = 3;
+                int row = 4;
 
                 xlRange.Cells[row, column++] = "Номер";
-                xlRange.Cells[row, column++] = "Дата";
-                xlRange.Cells[row, column++] = "Диски з антибіотиками";
+                xlRange.Cells[row, column++] = "Дата\nнадходження";
+                xlRange.Cells[row, column++] = "Назва";
                 xlRange.Cells[row, column++] = "Виробник";
                 xlRange.Cells[row, column++] = "Серія";
                 xlRange.Cells[row, column++] = "Термін";
+                xlRange.Cells[row, column++] = "Дата\nконтролю";
                 xlRange.Cells[row, column++] = "Висновок";
 
-                foreach (var item in ListItems.Where(c => c.Show == true).OrderBy(c => c.AB.abbr))
+                string str = "";
+                foreach (var ControlMO in colControlMO)
+                {
+                    //var nameParts = ControlMO.name.Split(' ');
+                    //if (nameParts.Length > 2)
+                    //    str = nameParts[0] + " " + nameParts[1] + "\n" + string.Join(" ", nameParts.Skip(2));
+                    //else
+                    //    str = ControlMO.name;
+                    xlRange.Cells[row, column++] = ControlMO.name;
+                }
+                 
+                int maxControls = ListItems.Max(c => c.ListABControls.Count);
+                foreach (var AB in ListItems.OrderBy(c => c.Consumable.name))
                 {
                     row++;
                     column = 1;
-                    xlRange.Cells[row, column++] = item.Index;
-                    xlRange.Cells[row, column++] = item.DateDelivery;
-                    xlRange.Cells[row, column++] = item.AB.name;
-                    xlRange.Cells[row, column++] = item.Producer.name;
-                    xlRange.Cells[row, column++] = item.Series;
-                    xlRange.Cells[row, column++] = item.Termin;
-                    xlRange.Cells[row, column++] = item.Conclusion;
+                    xlRange.Cells[row, column++] = AB.Index;
+                    xlRange.Cells[row, column++] = AB.DateDelivery;
+                    xlRange.Cells[row, column++] = AB.Consumable.name;
+                    xlRange.Cells[row, column++] = AB.Producer.name;
+                    xlRange.Cells[row, column++] = AB.Series;
+                    xlRange.Cells[row, column++] = AB.Termin;
+                    xlRange.Cells[row, column++] = AB.DateControl;
+                    xlRange.Cells[row, column++] = AB.Conclusion;
+
+                    foreach (var control in colControlMO)
+                    {
+                        if (AB.ControlValues.ContainsKey(control.id))
+                            xlRange.Cells[row, column++] = AB.ControlValues[control.id];
+                        else
+                            xlRange.Cells[row, column++] = "";
+                    }
                 }
                 column--;
+                
                 Excel.Range y1 = sheet.Cells[1, 1];
                 Excel.Range y2 = sheet.Cells[row, column];
-                sheet.get_Range(y1, y2).Cells.Borders.Weight = Excel.XlBorderWeight.xlThin;
-                sheet.get_Range(y1, y2).VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
-                sheet.get_Range(y1, y2).HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-                sheet.get_Range(y1, y2).Columns.AutoFit();
+                Excel.Range range = sheet.get_Range(y1, y2);
+                range.Cells.Borders.Weight = Excel.XlBorderWeight.xlThin;
+                range.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                range.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+                range.Columns.AutoFit();
+
+
+                y1 = sheet.Cells[1, 1];
+                y2 = sheet.Cells[1, column];
+                range = sheet.get_Range(y1, y2);
+                range.Cells.Merge();
+                xlRange.Cells[1, 1] = subdivision.name;
+                range.Cells.Font.Bold = true;
+                range.Cells.Font.Size = 12;
+
+                y1 = sheet.Cells[2, 1];
+                y2 = sheet.Cells[2, column];
+                range = sheet.get_Range(y1, y2);
+                range.Cells.Merge();
+                xlRange.Cells[2, 1] = "Журнал вхідного контрою дисків з антибіотиками";
+                range.Cells.Font.Bold = true;
+                range.Cells.Font.Size = 14;
+
+                y1 = sheet.Cells[3, 1];
+                y2 = sheet.Cells[3, column];
+                range = sheet.get_Range(y1, y2);
+                range.Cells.Merge();
+                xlRange.Cells[3, 1] = vybirka;
+                range.Cells.Font.Bold = true;
+                range.Cells.Font.Size = 12;
+
                 excel.Visible = true;
                 excel.WindowState = Excel.XlWindowState.xlMinimized;
                 excel.WindowState = Excel.XlWindowState.xlMaximized;
@@ -575,20 +463,13 @@ namespace BacLab.Dictionary
                 excel?.Quit();
             }
         }
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
-        {
-            SaveListItems();
-            UpdateControlDates();
-            FillListItems(x_cb_antibiotic.SelectedItem as d_Consumables);
-
-        }
-
+       
         // 2. Додаємо метод для оновлення списку дат контролів
         private void UpdateControlDates()
         {
            ControlDates.Clear();
-            var dates = context.a_AntibioticControl
-                .Where(c => c.isEnterControl == true && c.d_ConsumablesStock.idSubdivisions == subdivisions.id)
+            var dates = context.d_ConsumablesControls
+                .Where(c => c.isEnterControl == true && c.idConsumableGroup == 1 && c.d_ConsumablesStock.idSubdivisions == subdivision.id)
                 .Select(c => c.date)
                 .Distinct()
                 .ToList();
@@ -633,7 +514,6 @@ namespace BacLab.Dictionary
             }
             return null;
         }
-
         private void Calendar_LoadedAttach(object sender, RoutedEventArgs e)
         {
             var calendar = sender as Calendar;
@@ -648,7 +528,6 @@ namespace BacLab.Dictionary
                 btn.Loaded += CalendarDayButton_Loaded;
             }
         }
-
         private void Calendar_DisplayDateChanged(object sender, CalendarDateChangedEventArgs e)
         {
             var calendar = sender as Calendar;
@@ -657,7 +536,6 @@ namespace BacLab.Dictionary
                 CalendarDayButton_Loaded(btn, null);
             }
         }
-
         private void CalendarDayButton_Loaded(object sender, RoutedEventArgs e)
         {
             var btn = sender as CalendarDayButton;
@@ -673,7 +551,6 @@ namespace BacLab.Dictionary
                 }
             }
         }
-
         private static T FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
         {
             if (parent == null) return null;
@@ -702,7 +579,6 @@ namespace BacLab.Dictionary
             }
         }
 
-
         private void x_cb_visibilityId_Click(object sender, RoutedEventArgs e)
         {
             if (x_cb_visibilityId.IsChecked == true)
@@ -716,7 +592,7 @@ namespace BacLab.Dictionary
                 (sender as ComboBox).SelectedItem = null;
         }
 
-       
+        
     }
 }
 

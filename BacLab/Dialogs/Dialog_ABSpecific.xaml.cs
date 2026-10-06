@@ -50,7 +50,7 @@ namespace BacLab.Dialogs
                         }
                     case "діагноз":
                         {
-                            x_listСriteria.ItemsSource = context.d_Diagnosis.Where(c => c.show == true).OrderBy(c => c.abbr).Select(c => c.abbr).ToList();
+                            x_listСriteria.ItemsSource = context.d_DiagnosisGroup.Where(c => c.show == true).OrderBy(c => c.abbr).Select(c => c.abbr).ToList();
                             break;
                         }
                     case "шлях введення":

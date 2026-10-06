@@ -36,13 +36,14 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock TextAlignment="Center" Text="Цільові і допустимі значення зон затримки росту контрольних штамів з дисками антибіотиків" Grid.ColumnSpan="2"  FontWeight="Bold" FontSize="20" />
-        <CheckBox x:Name="x_cb_visibilityId" Content="Id"  Visibility="Visible" Click="x_cb_visibilityId_Click" Margin="10 0 0 0" Grid.Column="1" Grid.Row="1"/>
-        <Button x:Name="x_AllAbBTN" Click="x_AllAbBTN_Click" Content="Всі" HorizontalAlignment="Left" Grid.Column="1" Margin="60 0 0 0" Grid.Row="1"/>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.ColumnSpan="2" Grid.Row="1">
+        <TextBlock TextAlignment="Center" Text="Цільові і допустимі значення зон затримки росту контрольних штамів з дисками антибіотиків" Grid.ColumnSpan="3"  FontWeight="Bold" FontSize="20" />
+        <CheckBox x:Name="x_cb_visibilityId" Content="Id"  Visibility="Visible" Click="x_cb_visibilityId_Click" Margin="10 0 0 0" Grid.Column="2" Grid.Row="1"/>
+        <Button x:Name="x_AllAbBTN" Click="x_AllAbBTN_Click" Content="Всі" HorizontalAlignment="Left" Grid.Column="2" Margin="60 0 0 0" Grid.Row="1"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.ColumnSpan="3" Grid.Row="1">
             <Button HorizontalAlignment="Right"  Margin="0,0,10,0" Click="SaveButton_Click" ToolTip ="Зберегти">
                 <materialDesign:PackIcon Kind="ContentSave" />
             </Button>
@@ -53,19 +54,15 @@
 
         <ComboBox x:Name="x_cb_culture" ItemTemplate="{StaticResource itemsComboBox}" VerticalAlignment="Center"
                   HorizontalAlignment="Left" materialDesign:HintAssist.Hint="Оберить контрольний штам"
-                  Margin="130 0 0 10" Grid.Column="1" SelectionChanged="x_CB_Culture_SelectionChanged" Grid.Row="1"/>
+                  Margin="130 0 0 10" Grid.Column="2" SelectionChanged="x_CB_Culture_SelectionChanged" Grid.Row="1"/>
+        <TextBox x:Name="x_SearchTextBlock" VerticalAlignment="Center" HorizontalAlignment="Stretch" 
+                   Margin="10 0 10 10" Grid.Column="0" Grid.Row="1" materialDesign:HintAssist.Hint="Пошук"
+                   TextChanged="x_SearchTextBlock_TextChanged"/>
 
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <materialDesign:Card >
-                <ListBox  x:Name="x_AllABList"  Margin="2"
-                          ItemTemplate="{StaticResource itemsListBox}" >
-                </ListBox>
-            </materialDesign:Card>
-            <StackPanel Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" >
+        <materialDesign:Card Grid.Column="0" Grid.Row="2">
+            <ListBox  x:Name="x_ConsumablesList"  Margin="2"/>
+        </materialDesign:Card>
+        <StackPanel Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" >
                 <Button x:Name="x_AddAB" Click="x_AddAB_Click" VerticalAlignment="Center" ToolTip="Додати">
                     <materialDesign:PackIcon Kind="ArrowRightBold" />
                 </Button>
@@ -73,53 +70,61 @@
                     <materialDesign:PackIcon Kind="ArrowLeftBold" />
                 </Button>
             </StackPanel>
-        </Grid>
-        <materialDesign:Card Grid.Row="2" Grid.Column="1">
+
+        <GridSplitter Height="Auto" Width="20" Margin="0 10 0 10"
+              HorizontalAlignment="Right" VerticalAlignment="Stretch" ResizeDirection="Columns"/>
+
+        <materialDesign:Card Grid.Row="2" Grid.Column="2">
             <DataGrid x:Name="x_MainGrid"
                   ItemsSource="{Binding ListItems}" 
                   CanUserAddRows="False">
+
 
                 <DataGrid.CommandBindings>
                     <CommandBinding Command="ApplicationCommands.Delete" PreviewCanExecute="CommandBinding_CanExecuteDelete" Executed="CommandBinding_ExecutedDelete"/>
                 </DataGrid.CommandBindings>
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn IsReadOnly="True" Visibility="Collapsed" Header="Id" Binding="{Binding Id}" />
-                    <DataGridTextColumn Header="№" Binding="{Binding Index, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-                    <DataGridTextColumn Header="Антибіотик" SortMemberPath="Антибіотик" CanUserSort="True" IsReadOnly="True"
-                                    Binding="{Binding AB.name}"/>
-                    <DataGridTextColumn Header="Мікроорганізм" SortMemberPath="Мікроорганізм" CanUserSort="True" IsReadOnly="True"
-                                        Binding="{Binding Microorganism.abbr}"/>
+                    <DataGridTextColumn IsReadOnly="True" Visibility="Collapsed" Header="Id" Binding="{Binding id}" />
+                    <DataGridTextColumn Header="№" Binding="{Binding index, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                    <DataGridTextColumn Header="Антибіотик" SortMemberPath="d_Consumables.name" CanUserSort="True" IsReadOnly="True"
+                                    Binding="{Binding d_Consumables.name}"/>
+                    <DataGridTextColumn Header="Мікроорганізм" SortMemberPath="d_Microorganism.abbr" CanUserSort="True" IsReadOnly="True"
+                                        Binding="{Binding d_Microorganism.abbr}"/>
 
 
-                    <DataGridTextColumn Header="Цільове&#x0a;min" Binding="{Binding ValueTargetMin, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" >
+                    <DataGridTextColumn Header="Цільове&#x0a;min" Binding="{Binding valueTargetMin, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" >
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center" />
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Цільове&#x0a;max" Binding="{Binding ValueTargetMax, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" >
+                    <DataGridTextColumn Header="Цільове&#x0a;max" Binding="{Binding valueTargetMax, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" >
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center" />
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Допустиме&#x0a;min" Binding="{Binding ValuePermissiblemMin, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" >
+                    <DataGridTextColumn Header="Допустиме&#x0a;min" Binding="{Binding valuePermissiblemMin, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" >
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center" />
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Допустиме&#x0a;max" Binding="{Binding ValuePermissiblemMax, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" >
+                    <DataGridTextColumn Header="Допустиме&#x0a;max" Binding="{Binding valuePermissiblemMax, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" >
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center" />
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
+                    <DataGridTextColumn Header="Тест-штами/cтупінь розведення/термін інкубації" 
+                                        Binding="{Binding descriptionControl}"/>
+                    <DataGridTextColumn Header="Очікуваний результат" 
+                                        Binding="{Binding rightControl}"/>
 
                 </DataGrid.Columns>
             </DataGrid>

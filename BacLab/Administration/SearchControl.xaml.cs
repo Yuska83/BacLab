@@ -23,7 +23,7 @@ namespace BacLab.Administration
         d_Subdivisions subdivisions;
         d_Staff staff;
         int idGroupreserch;
-        public List<Analysis> ListItems { get; set; } = new List<Analysis>();
+        IQueryable<d_Analyzes> query;
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string name)
@@ -40,14 +40,14 @@ namespace BacLab.Administration
                 this.subdivisions = subdivisions;
                 this.staff = staff;
                 this.idGroupreserch = idGroupreserch;
-                x_name.Text = "Пупкін";
+                
                 if (staff.id != 4) //якщо не я
                     x_Subdivisions.Visibility = Visibility.Hidden;
                 x_Subdivisions.ItemsSource = context.d_Subdivisions.Where(c => c.show == true).OrderBy(c => c.index).ToList();
                 x_institution.ItemsSource = context.d_Institution.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();
                 x_department.ItemsSource = context.d_Department.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();
                 x_patientStatus.ItemsSource = context.d_PatientStatus.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();
-                x_diagnosis.ItemsSource = context.d_Diagnosis.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();
+                x_diagnosis.ItemsSource = context.d_DiagnosisGroup.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();
                 x_sentPerson.ItemsSource = context.d_SentPerson.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();
                 x_material.ItemsSource = context.d_Material.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();
                 x_purpose.ItemsSource = context.d_Purpose.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();
@@ -64,7 +64,7 @@ namespace BacLab.Administration
             }
             catch (Exception ex)
             {
-                Message.Ok(ex.Message + " " + ex.StackTrace, "MsgDialog");
+                Message.Ok(ex.Message + " " + ex.StackTrace, "SearchDialog");
             }
         }
         public void x_searchBTN_Click(object sender, RoutedEventArgs e)
@@ -74,7 +74,7 @@ namespace BacLab.Administration
                 string x = "";
                 string str = "";
 
-                var query = context.d_Analyzes.Where(c => c.d_Patients.name.StartsWith(x_name.Text));
+                query = context.d_Analyzes.Where(c => c.d_Patients.name.StartsWith(x_name.Text));
                 if (!String.IsNullOrEmpty(x_name.Text))
                     str += "Паціент: " + x_name.Text + "; ";
 
@@ -180,9 +180,9 @@ namespace BacLab.Administration
                 }
                 if (x_diagnosis.SelectedItem != null)
                 {
-                    int id = (x_diagnosis.SelectedItem as d_Diagnosis).id;
-                    query = query.Where(c => c.idDiagnosis == id);
-                    str += "Діагноз: " + (x_diagnosis.SelectedItem as d_Diagnosis).name + "; ";
+                    int id = (x_diagnosis.SelectedItem as d_DiagnosisGroup).id;
+                    query = query.Where(c => c.idDiagnosisGroup == id);
+                    str += "Діагноз: " + (x_diagnosis.SelectedItem as d_DiagnosisGroup).name + "; ";
                 }
                 if (x_patientStatus.SelectedItem != null)
                 {
@@ -286,7 +286,7 @@ namespace BacLab.Administration
             }
             catch (Exception ex)
             {
-                Message.Ok(ex.Message + " " + ex.StackTrace, "MsgDialog");
+                Message.Ok(ex.Message + " " + ex.StackTrace, "SearchDialog");
             }
 
         }
@@ -303,7 +303,7 @@ namespace BacLab.Administration
             }
             catch (Exception ex)
             {
-                Message.Ok(ex.Message + " " + ex.StackTrace, "MsgDialog");
+                Message.Ok(ex.Message + " " + ex.StackTrace, "SearchDialog");
             }
         }
 
@@ -372,25 +372,25 @@ namespace BacLab.Administration
                     int num = 1;
                     int column = 1;
                     int row = 1;
-                    foreach (var item in ListItems)
+                    foreach (var item in query)
                     {
                         row++;
                         column = 1;
                         xlRange.Cells[row, column++] = num++;
-                        xlRange.Cells[row, column++] = item.LabNum;
-                        xlRange.Cells[row, column++] = item.DateSampling;
-                        xlRange.Cells[row, column++] = item.DateDelivery;
-                        xlRange.Cells[row, column++] = item.Institution?.name;
-                        xlRange.Cells[row, column++] = item.Department?.name;
-                        xlRange.Cells[row, column++] = item.d_Patient?.name;
-                        xlRange.Cells[row, column++] = item.d_Patient?.year;
-                        xlRange.Cells[row, column++] = item.AgePatient;
-                        xlRange.Cells[row, column++] = item.Diagnosis?.name;
-                        xlRange.Cells[row, column++] = item.NumMedCard;
-                        xlRange.Cells[row, column++] = item.PatientStatus.name;
-                        xlRange.Cells[row, column++] = item.GMP.d_Material?.name;
-                        xlRange.Cells[row, column++] = item.Comment;
-                        xlRange.Cells[row, column++] = item.GMP.d_Purpose?.name;
+                        xlRange.Cells[row, column++] = item.labNum;
+                        xlRange.Cells[row, column++] = item.dateSampling;
+                        xlRange.Cells[row, column++] = item.dateDelivery;
+                        xlRange.Cells[row, column++] = item.d_Institution?.name;
+                        xlRange.Cells[row, column++] = item.d_Department?.name;
+                        xlRange.Cells[row, column++] = item.d_Patients?.name;
+                        xlRange.Cells[row, column++] = item.d_Patients?.year;
+                        xlRange.Cells[row, column++] = item.agePatient;
+                        xlRange.Cells[row, column++] = item.diagnosis;
+                        xlRange.Cells[row, column++] = item.numMedCard;
+                        xlRange.Cells[row, column++] = item.d_PatientStatus.name;
+                        xlRange.Cells[row, column++] = item.p_Group_Material_Purpose.d_Material?.name;
+                        xlRange.Cells[row, column++] = item.comment;
+                        xlRange.Cells[row, column++] = item.p_Group_Material_Purpose.d_Purpose?.name;
                         //xlRange.Cells[row, column++] = item.isFirstGospitelisation == true ? "так" : "ні";
                         //xlRange.Cells[row, column++] = item.wasPreviousBac == true ? "так" : "ні";
                         //xlRange.Cells[row, column++] = item.do48 == true ? "так" : "ні";
@@ -399,11 +399,11 @@ namespace BacLab.Administration
                         //xlRange.Cells[row, column++] = item.a_Antibiotic1?.name;
                         //xlRange.Cells[row, column++] = item.a_Antibiotic2?.name;
                         //xlRange.Cells[row, column++] = item.a_Antibiotic3?.name;
-                        xlRange.Cells[row, column++] = item.SendAnalis == true ? "так" : "ні";
-                        xlRange.Cells[row, column++] = item.DateEnd;
-                        xlRange.Cells[row, column++] = item.ResTemplate?.name;
+                        xlRange.Cells[row, column++] = item.isEnd == true ? "так" : "ні";
+                        xlRange.Cells[row, column++] = item.dateEnd;
+                        xlRange.Cells[row, column++] = item.d_ResTemplate?.name;
 
-                        foreach (var itemMO in item.Cultures)
+                        foreach (var itemMO in item.p_Analises_Cultures)
                         {
                             int colMO = column;
                             xlRange.Cells[row, colMO] = itemMO.d_Microorganism.name;
@@ -439,30 +439,31 @@ namespace BacLab.Administration
                 }
                 catch (Exception ex)
                 {
-                    Message.Ok(ex.Message + "\n" + ex.StackTrace, "MsgDialog");
+                    Message.Ok(ex.Message + "\n" + ex.StackTrace, "SearchDialog");
                     newDoc?.Close(SaveChanges: false);
                     excel?.Quit();
                 }
             }
             catch (Exception ex)
             {
-                Message.Ok(ex.Message + " " + ex.StackTrace, "MsgDialog");
+                Message.Ok(ex.Message + " " + ex.StackTrace, "SearchDialog");
             }
         }
 
         private void x_UploadFileTerraBTN_Click(object sender, RoutedEventArgs e)
         {
             try
-            {
-                foreach (var item in ListItems)
-                    item.IsIssued = false;
+            { 
+
+                foreach (var item in query)
+                    item.isSendToTerra = false;
                 context.SaveChanges();
                 string str = CommonClass.UploadFileTerra(context);
-                Message.Ok(str, "MsgDialog");
+                Message.Ok(str, "SearchDialog");
             }
             catch (Exception ex)
             {
-                Message.Ok(ex.Message + " " + ex.StackTrace, "MsgDialog");
+                Message.Ok(ex.Message + " " + ex.StackTrace, "SearchDialog");
             }
         }
 
@@ -476,7 +477,7 @@ namespace BacLab.Administration
             }
             catch (Exception ex)
             {
-                Message.Ok(ex.Message + " " + ex.StackTrace, "MsgDialog");
+                Message.Ok(ex.Message + " " + ex.StackTrace, "SearchDialog");
             }
         }
     }

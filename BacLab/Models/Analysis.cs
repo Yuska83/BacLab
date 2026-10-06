@@ -25,13 +25,12 @@ namespace BacLab.Models
         d_PatientStatus patientStatus;
         d_Institution institution;
         d_Department department;
-        d_Diagnosis diagnosis;
+        string diagnosis;
+        d_DiagnosisGroup diagnosisGroup;
         d_SentPerson sentPerson;
         string numMedCard;
         int? idGMP;
         p_Group_Material_Purpose gmp;
-        //d_Material material;
-        //d_Purpose purpose;
         string comment;
         d_Institution institutionLab;
         d_Brakerage brakerage;
@@ -55,12 +54,16 @@ namespace BacLab.Models
         string vap;
         string bacteriemia;
 
-        d_JobPlace jobPlace;
-        d_Job job;
+        //d_JobPlace jobPlace;
+        //d_Job job;
+        d_District jobDistrict;
         d_JobStatus jobStatus;
         d_JobPlaceGroup jobPlaceGroup;
         d_WhoPay whoPay;
         bool isPay;
+        bool? isVydano;
+        DateTime? dateVydano;
+        d_Staff staffVydano;
 
         d_ResTemplate resTemplate;
         List<p_Analises_DB> db;
@@ -69,8 +72,11 @@ namespace BacLab.Models
         d_Staff doctor;
         DateTime? dateEnd;
         DateTime? timeEnd;
-        bool? sendAnalis;
-        bool? isIssued;
+        bool? isEnd;
+        bool? isSend;
+        bool? isPrint;
+        bool? isSendToTerra;
+        string resultText;
 
         public Analysis()
         {
@@ -87,8 +93,13 @@ namespace BacLab.Models
             TimeDelivery = DateTime.Now.ToLocalTime();
             PatientStatus = patientStatus;
             InRaxunok = true;
-            SendAnalis = false;
-            IsIssued = false;
+            IsEnd = false;
+            IsSend = false;
+            IsPrint = false;
+            IsPay = false;
+            IsVydano = false;
+            isSendToTerra = false;
+
             Cultures = new ObservableCollection<p_Analises_Cultures>();
             DB = new List<p_Analises_DB>();
         }
@@ -115,7 +126,8 @@ namespace BacLab.Models
                 PatientStatus = d_Analis.d_PatientStatus;
                 Institution = d_Analis.d_Institution;
                 Department = d_Analis.d_Department;
-                Diagnosis = d_Analis.d_Diagnosis;
+                Diagnosis = d_Analis.diagnosis;
+                DiagnosisGroup = d_Analis.d_DiagnosisGroup;
                 SentPerson = d_Analis.d_SentPerson;
                 NumMedCard = d_Analis.numMedCard;
                 IdGMP = d_Analis.idGMP;
@@ -143,32 +155,37 @@ namespace BacLab.Models
                 VAP = d_Analis.vap;
                 Bacteriemia = d_Analis.bacteriemia;
 
-                JobPlace = d_Analis.d_JobPlace;
-                Job = d_Analis.d_Job;
+                //JobPlace = d_Analis.d_JobPlace;
+                //Job = d_Analis.d_Job;
+                JobDistrict = d_Analis.d_JobPlace?.d_District;
                 JobStatus = d_Analis.d_JobStatus;
                 JobPlaceGroup = d_Analis.d_JobPlaceGroup;
                 WhoPay = d_Analis.d_WhoPay;
                 IsPay = d_Analis.isPay !=null ? (bool)d_Analis.isPay:false;
+                IsVydano = d_Analis.isVydano;
+                DateVydano = d_Analis.dateVydano;
+                StaffVydano = d_Analis.d_Staff2;
 
                 ResTemplate = d_Analis.d_ResTemplate;
                 Doctor = d_Analis.d_Staff;
                 DateEnd = d_Analis.dateEnd;
                 TimeEnd = d_Analis.timeEnd;
-                SendAnalis = d_Analis.sendAnalis;
-                IsIssued = d_Analis.isIssued;
+                IsEnd = d_Analis.isEnd;
+                IsSend = d_Analis.isSend;
+                IsPrint = d_Analis.isPrint;
+                IsSendToTerra = d_Analis.isSendToTerra;
                 DB = d_Analis.p_Analises_DB.ToList();
                 Cultures = new ObservableCollection<p_Analises_Cultures>();
                 foreach (var item in d_Analis.p_Analises_Cultures.ToList())
                     Cultures.Add(item);
                 
+                ResultText= d_Analis.rezultPath;
                 Rezult = d_Analis.rezult;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + " " + ex.StackTrace);
             }
-           
-
         }
 
         public d_Analyzes GetAnalyzes(d_Analyzes d_Analis)
@@ -188,7 +205,8 @@ namespace BacLab.Models
                 d_Analis.d_PatientStatus = PatientStatus;
                 d_Analis.d_Institution = Institution;
                 d_Analis.d_Department = Department;
-                d_Analis.d_Diagnosis = Diagnosis;
+                d_Analis.diagnosis = Diagnosis;
+                d_Analis.d_DiagnosisGroup = DiagnosisGroup;
                 d_Analis.d_SentPerson = SentPerson;
                 d_Analis.numMedCard = NumMedCard;
                 d_Analis.idGMP = IdGMP;
@@ -212,19 +230,24 @@ namespace BacLab.Models
                 d_Analis.uti = UTI;
                 d_Analis.vap = VAP;
                 d_Analis.bacteriemia = Bacteriemia;
-                d_Analis.idJobPlace = JobPlace?.id;
-                d_Analis.idJob = Job?.id;
+                //d_Analis.idJobPlace = JobPlace?.id;
+                //d_Analis.idJob = Job?.id;
                 d_Analis.idJobStatus = JobStatus?.id;
                 d_Analis.idJobPlaceGroup = JobPlaceGroup?.id;
                 d_Analis.idWhoPay = WhoPay?.id;
                 d_Analis.isPay = IsPay;
+                d_Analis.isVydano = IsVydano;
+                d_Analis.dateVydano = DateVydano;
+                d_Analis.idStaffVydano = StaffVydano?.id;
 
                 d_Analis.idResTemplate = ResTemplate?.id;
                 d_Analis.d_Staff = Doctor;
                 d_Analis.dateEnd = DateEnd;
                 d_Analis.timeEnd = TimeEnd;
-                d_Analis.sendAnalis = SendAnalis;
-                d_Analis.isIssued = IsIssued;
+                d_Analis.isEnd = IsEnd;
+                d_Analis.isSend = IsSend;
+                d_Analis.isPrint = IsPrint;
+                d_Analis.isSendToTerra = IsSendToTerra;
                 d_Analis.rezult = Rezult;
                 foreach (var culture in Cultures)
                     d_Analis.p_Analises_Cultures.Add(culture);
@@ -266,7 +289,8 @@ namespace BacLab.Models
                 PatientStatus = d_Analis.d_PatientStatus;
                 Institution = d_Analis.d_Institution;
                 Department = d_Analis.d_Department;
-                Diagnosis = d_Analis.d_Diagnosis;
+                Diagnosis = d_Analis.diagnosis;
+                DiagnosisGroup = d_Analis.d_DiagnosisGroup;
                 SentPerson = d_Analis.d_SentPerson;
                 NumMedCard = d_Analis.numMedCard;
                 IdGMP = d_Analis.idGMP;
@@ -294,19 +318,25 @@ namespace BacLab.Models
                 VAP = d_Analis.vap;
                 Bacteriemia = d_Analis.bacteriemia;
 
-                JobPlace = d_Analis.d_JobPlace;
-                Job = d_Analis.d_Job;
+                //JobPlace = d_Analis.d_JobPlace;
+                //Job = d_Analis.d_Job;
+                JobDistrict = d_Analis.d_JobPlace?.d_District;
                 JobStatus = d_Analis.d_JobStatus;
                 JobPlaceGroup = d_Analis.d_JobPlaceGroup;
                 WhoPay = d_Analis.d_WhoPay;
                 IsPay = d_Analis.isPay != null ? (bool)d_Analis.isPay : false;
+                IsVydano = d_Analis.isVydano;
+                DateVydano = d_Analis.dateVydano;
+                StaffVydano = d_Analis.d_Staff2;
 
                 ResTemplate = d_Analis.d_ResTemplate;
                 Doctor = d_Analis.d_Staff;
                 DateEnd = d_Analis.dateEnd;
                 TimeEnd = d_Analis.timeEnd;
-                SendAnalis = d_Analis.sendAnalis;
-                IsIssued = d_Analis.isIssued;
+                IsEnd = d_Analis.isEnd;
+                IsSend = d_Analis.isSend;
+                IsPrint = d_Analis.isPrint;
+                IsSendToTerra = d_Analis.isSendToTerra;
                 DB = d_Analis.p_Analises_DB.ToList();
                 Cultures = new ObservableCollection<p_Analises_Cultures>();
                 foreach (var item in d_Analis.p_Analises_Cultures.ToList())
@@ -337,7 +367,8 @@ namespace BacLab.Models
         public d_PatientStatus PatientStatus { get => patientStatus; set { patientStatus = value; OnPropertyChanged("PatientStatus"); } }
         public d_Institution Institution { get => institution; set { institution = value; OnPropertyChanged("Institution"); } }
         public d_Department Department { get => department; set { department = value; OnPropertyChanged("Department"); } }
-        public d_Diagnosis Diagnosis { get => diagnosis; set { diagnosis = value; OnPropertyChanged("Diagnosis"); } }
+        public string Diagnosis { get => diagnosis; set { diagnosis = value; OnPropertyChanged("Diagnosis"); } }
+        public d_DiagnosisGroup DiagnosisGroup { get => diagnosisGroup; set { diagnosisGroup = value; OnPropertyChanged("DiagnosisGroup"); } }
         public string Comment { get => comment; set { comment = value; OnPropertyChanged("Comment"); } }
         public d_SentPerson SentPerson { get => sentPerson; set { sentPerson = value; OnPropertyChanged("SentPerson"); } }
         public string NumMedCard { get => numMedCard; set { numMedCard = value; OnPropertyChanged("NumMedCard"); } }
@@ -366,12 +397,16 @@ namespace BacLab.Models
         public string VAP { get => vap; set { vap = value; OnPropertyChanged("VAP"); } }
         public string Bacteriemia { get => bacteriemia; set { bacteriemia = value; OnPropertyChanged("Bacteriemia"); } }
 
-        public d_JobPlace JobPlace { get => jobPlace; set { jobPlace = value; OnPropertyChanged("JobPlace"); } }
-        public d_Job Job { get => job; set { job = value; OnPropertyChanged("Job"); } }
+        //public d_JobPlace JobPlace { get => jobPlace; set { jobPlace = value; OnPropertyChanged("JobPlace"); } }
+        //public d_Job Job { get => job; set { job = value; OnPropertyChanged("Job"); } }
         public d_JobStatus JobStatus { get => jobStatus; set { jobStatus = value; OnPropertyChanged("JobStatus"); } }
+        public d_District JobDistrict { get => jobDistrict; set { jobDistrict = value; OnPropertyChanged("JobDistrict"); } } 
         public d_JobPlaceGroup JobPlaceGroup { get => jobPlaceGroup; set { jobPlaceGroup = value; OnPropertyChanged("JobPlaceGroup"); } }
         public d_WhoPay WhoPay { get => whoPay; set { whoPay = value; OnPropertyChanged("WhoPay"); } }
         public bool IsPay { get => isPay; set { isPay = value; OnPropertyChanged("IsPay"); } }
+        public bool? IsVydano { get => isVydano; set { isVydano = value; OnPropertyChanged("IsVydano"); } }
+        public DateTime? DateVydano { get => dateVydano; set { dateVydano = value; OnPropertyChanged("DateVydano"); } }
+        public d_Staff StaffVydano { get => staffVydano; set { staffVydano = value; OnPropertyChanged("StaffVydano"); } }
 
 
 
@@ -382,9 +417,12 @@ namespace BacLab.Models
         public d_Staff Doctor { get => doctor; set { doctor = value; OnPropertyChanged("Doctor"); } }
         public DateTime? DateEnd { get => dateEnd; set { dateEnd = value; OnPropertyChanged("DateEnd"); } }
         public DateTime? TimeEnd { get => timeEnd; set { timeEnd = value; OnPropertyChanged("TimeEnd"); } }
-        public bool? SendAnalis { get => sendAnalis; set { sendAnalis = value; OnPropertyChanged("sendAnalis"); } }
-        public bool? IsIssued { get => isIssued; set { isIssued = value; OnPropertyChanged("IsIssued"); } }
+        public bool? IsEnd { get => isEnd; set { isEnd = value; OnPropertyChanged("IsEnd"); } }
+        public bool? IsSend { get => isSend; set { isSend = value; OnPropertyChanged("IsSend"); } }
+        public bool? IsPrint { get => isPrint; set { isPrint = value; OnPropertyChanged("IsPrint"); } }
+        public bool? IsSendToTerra { get => isSendToTerra; set { isSendToTerra = value; OnPropertyChanged("IsSendToTerra"); } }
 
+        public string ResultText { get => resultText; set { resultText = value; OnPropertyChanged("ResultText"); } }
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string name)

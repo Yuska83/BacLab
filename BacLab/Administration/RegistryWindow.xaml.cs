@@ -8,6 +8,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using BacLab.Dictionary;
+using MaterialDesignThemes.Wpf;
 
 namespace BacLab.Administration
 {
@@ -21,8 +23,6 @@ namespace BacLab.Administration
         d_Laboratoria laboratoria;
         d_Staff staff;
         string parol;
-        //d_Analyzes d_Analis;
-        //d_Patients d_Patient;
         Analysis analis;
         List<int> listIdGMP = new List<int>();
         CheckBox checkBoxGMP;
@@ -31,8 +31,7 @@ namespace BacLab.Administration
         bool isDelete;
         public Analysis Analis { get { return analis; } set { analis = value; OnPropertyChanged("Analis"); } }
         public bool CheckFix { get { return checkFix; } set { checkFix = value; OnPropertyChanged("CheckFix"); } }
-        //public bool IsEdit { get { return isEdit; } set { isEdit = value; OnPropertyChanged("IsEdit"); } }
-        public bool IsDelete { get { return isDelete; } set { isDelete = value; OnPropertyChanged("IsDelete"); } }
+       public bool IsDelete { get { return isDelete; } set { isDelete = value; OnPropertyChanged("IsDelete"); } }
         public List<string> ListString { get; set; } = new List<string>() { "так", "ні", "ризик" };
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -53,6 +52,11 @@ namespace BacLab.Administration
                 this.parol = parol;
 
                 x_SearchGrid.DataContext = null;
+
+                if(subdivisions.id == 1 || subdivisions.id == 13 )
+                    x_subdivision.Visibility = Visibility.Visible;
+                else
+                    x_subdivision.Visibility = Visibility.Hidden;
 
                 if (oldAnalis==null) //новый анализ
                 {
@@ -80,8 +84,41 @@ namespace BacLab.Administration
                 FillList();
                 FillAnalysezTab();
 
-                context.l_log.Add(new l_log() { date = DateTime.Now, datetime = DateTime.Now, idStaff = staff.id, idAction = 1 });
+                DataContext = this;
+            }
+            catch (Exception ex)
+            {
+                Message.Ok(ex.Message + "\n" + ex.StackTrace, "MsgDialog");
+            }
+
+        }
+
+        public RegistryWindow()
+        {
+            try
+            {
+                InitializeComponent();
+                this.context = new BacLab_DBEntities();
+                this.subdivisions = context.d_Subdivisions.Where(c=>c.id == 1).FirstOrDefault();
+                laboratoria = context.d_Laboratoria.Where(c => c.idSubdivisions == subdivisions.id).FirstOrDefault();
+                this.staff = context.d_Staff.Where(c => c.id == 4).FirstOrDefault();
+                this.parol = "123";
+
+                x_SearchGrid.DataContext = null;
+
+                if (subdivisions.id == 1 || subdivisions.id == 13)
+                    x_subdivision.Visibility = Visibility.Visible;
+                else
+                    x_subdivision.Visibility = Visibility.Hidden;
+
+                isEdit = false;
+                Analis = new Analysis(subdivisions, staff, context.d_PatientStatus.Where(c => c.id == 1).SingleOrDefault());
+
+                x_financeS_RB.IsChecked = true;
                 
+                FillList();
+                FillAnalysezTab();
+
                 DataContext = this;
             }
             catch (Exception ex)
@@ -98,7 +135,7 @@ namespace BacLab.Administration
                 x_subdivision.ItemsSource = context.d_Subdivisions.Where(c => c.show == true).OrderBy(c => c.index).ToList();
                 x_institution.ItemsSource = context.d_Institution.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();
                 x_patientStatus.ItemsSource = context.d_PatientStatus.Where(c => c.show == true).OrderBy(c => c.index).ToList();
-                x_diagnosis.ItemsSource = context.d_Diagnosis.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();
+                x_giagnosisGroup.ItemsSource = context.d_DiagnosisGroup.Where(c => c.show == true).OrderBy(c => c.name).ToList();
                 x_institutionLab.ItemsSource = context.d_Institution.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();
                 //x_brakerage.ItemsSource = context.d_Brakerage.Where(c => c.show == true).OrderBy(c => c.index).ToList();
                 
@@ -292,18 +329,19 @@ namespace BacLab.Administration
                 else
                     d_Analis = context.d_Analyzes.Where(c => c.id == Analis.Id).SingleOrDefault();
 
+               
                 //якщо треба видалити результат
-                if (Analis.SendAnalis == false && d_Analis.sendAnalis == true)
+                if (Analis.IsEnd == false && d_Analis.isEnd == true)
                 {
                     
                     CommonClass.Log(context, d_Analis, staff, 18, true);//зберігаємо старий результат в історію
 
-                    Analis.SendAnalis = false;
                     Analis.DateEnd = null;
                     Analis.TimeEnd = null;
                     Analis.Doctor = null;
                     Analis.Rezult = null;
-                    Analis.IsIssued = false;
+                    Analis.IsSend = false;
+                    Analis.IsPrint = false;
                 }
 
                 if (!isEdit)
@@ -314,9 +352,9 @@ namespace BacLab.Administration
                 if (d_Analis.idGMP != Analis.IdGMP && isEdit == true)//якщо помінялось дослідження - середовища не змінюємо, додавати треба через робочий журнал
                     CommonClass.Log(context, d_Analis, staff, 19, false);
                 
-                if (!isEdit)
+               if (!isEdit)
                 {
-                    var colMediums = context.p_Group_Material_Purpose_Medium.Where(c => c.id_GMP == d_Analis.idGMP).OrderBy(c => c.index);
+                    var colMediums = context.p_Group_Material_Purpose_Medium.Where(c => c.id_GMP == Analis.IdGMP).OrderBy(c => c.index);
                     foreach (var medium in colMediums)
                     {
                         d_Analis.p_Analises_Mediums.Add(new p_Analises_Mediums()
@@ -459,7 +497,7 @@ namespace BacLab.Administration
                     case "x_addDepartment":
                         {
                             if (Analis.Institution == null) return;
-                            id = await Message.DialogNew_AddItem("x_addDepartment", Analis.Institution.id, "x_dlgHostResult");
+                            id = await Message.Dialog_AddItem("x_addDepartment", Analis.Institution.id, "x_dlgHostResult");
                             if (id != -1)
                             {
                                 var list = context.g_Institution_Department.Where(c => c.idGroup == Analis.Institution.id).Select(c => c.d_Department).ToList();
@@ -471,7 +509,7 @@ namespace BacLab.Administration
                     case "x_addSendPerson":
                         {
                             if (Analis.Institution == null) return;
-                            id = await Message.DialogNew_AddItem("x_addSendPerson", Analis.Institution.id, "x_dlgHostResult");
+                            id = await Message.Dialog_AddItem("x_addSendPerson", Analis.Institution.id, "x_dlgHostResult");
                             if (id != -1)
                             {
                                 var list = context.g_Institution_SentPerson.Where(c => c.idGroup == Analis.Institution.id).Select(c => c.d_SentPerson).ToList();
@@ -480,20 +518,9 @@ namespace BacLab.Administration
                             }
                             break;
                         }
-                    case "x_addDiagnosis":
-                        {
-                            id = await Message.DialogNew_AddItem("x_addDiagnosis", -1, "x_dlgHostResult");
-                            if (id != -1)
-                            {
-                                var list = context.d_Diagnosis.OrderBy(c => c.abbr).ToList();
-                                x_diagnosis.ItemsSource = list;
-                                Analis.Diagnosis = list.Where(c => c.id == id).FirstOrDefault();
-                            }
-                            break;
-                        }
                     case "x_addBrakerage":
                         {
-                            id = await Message.DialogNew_AddItem("x_addBrakerage", -1, "x_dlgHostResult");
+                            id = await Message.Dialog_AddItem("x_addBrakerage", -1, "x_dlgHostResult");
                             if (id != -1)
                             {
                                 var list = context.d_Brakerage.OrderBy(c => c.abbr).ToList();
@@ -522,20 +549,14 @@ namespace BacLab.Administration
                 {
                     case "x_editDepartment":
                         {
-                            if (Analis.Institution == null) return;
-                            id = await Message.DialogNew_AddItem("x_editDepartment", Analis.Institution.id, "x_dlgHostResult");
-                            if (id != -1)
-                            {
-                                var list = context.g_Institution_Department.Where(c => c.idGroup == Analis.Institution.id).Select(c => c.d_Department).ToList();
-                                x_department.ItemsSource = list.OrderBy(c => c.abbr);
-                                Analis.Department = list.Where(c => c.id == id).FirstOrDefault();
-                            }
+                            bool? value = await Message.Dialog_Megre(context,staff,MegreMode.Department, "MsgDialog");
+
                             break;
                         }
                     case "x_editSendPerson":
                         {
                             if (Analis.Institution == null) return;
-                            id = await Message.DialogNew_AddItem("x_editSendPerson", Analis.Institution.id, "x_dlgHostResult");
+                            id = await Message.Dialog_AddItem("x_editSendPerson", Analis.Institution.id, "x_dlgHostResult");
                             if (id != -1)
                             {
                                 var list = context.g_Institution_SentPerson.Where(c => c.idGroup == Analis.Institution.id).Select(c => c.d_SentPerson).ToList();
@@ -544,20 +565,10 @@ namespace BacLab.Administration
                             }
                             break;
                         }
-                    case "x_editDiagnosis":
-                        {
-                            id = await Message.DialogNew_AddItem("x_editDiagnosis", -1, "x_dlgHostResult");
-                            if (id != -1)
-                            {
-                                var list = context.d_Diagnosis.OrderBy(c => c.abbr).ToList();
-                                x_diagnosis.ItemsSource = list;
-                                Analis.Diagnosis = list.Where(c => c.id == id).FirstOrDefault();
-                            }
-                            break;
-                        }
+                   
                     case "x_editBrakerage":
                         {
-                            id = await Message.DialogNew_AddItem("x_editBrakerage", -1, "x_dlgHostResult");
+                            id = await Message.Dialog_AddItem("x_editBrakerage", -1, "x_dlgHostResult");
                             if (id != -1)
                             {
                                 var list = context.d_Brakerage.OrderBy(c => c.abbr).ToList();
@@ -583,6 +594,7 @@ namespace BacLab.Administration
             try
             {
                 d_Analyzes d_Analis = context.d_Analyzes.Where(c => c.id == Analis.Id).SingleOrDefault();
+                if(d_Analis == null) return;
                 CommonClass.Log(context, d_Analis, staff, 21, true);//зберігаємо старий результат в історію
                 foreach (var mediums in d_Analis.p_Analises_Mediums)
                     foreach (var date in mediums.p_Analises_Mediums_Date)
@@ -749,6 +761,8 @@ namespace BacLab.Administration
                 str += "Заповніть поле: Заклад";
             if (x_patientStatus.SelectedItem == null)
                 str += "Заповніть поле: Категорія пацієнта";
+            if (x_giagnosisGroup.SelectedItem == null)
+                str += "Заповніть поле: Категорія діагнозу";
             if (listIdGMP.Count != 1)
                 str += "Оберіть один вид дослідження";
             if (Analis?.PatientStatus?.id == 10 && (x_less48RB.IsChecked != true && x_more48RB.IsChecked != true))

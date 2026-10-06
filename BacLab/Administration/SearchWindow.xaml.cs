@@ -101,9 +101,9 @@ namespace BacLab.Administration
             {
                 if (SelectedAnalis == null) return;
                 d_Analyzes Analis = context.d_Analyzes.Where(c => c.id == SelectedAnalis.Id).FirstOrDefault();
-                if(Analis.rezult == null)
+                if (Analis.rezultPath == null || Analis.rezultPath == "")
                     FormResult(Analis);
-                CommonClass.ShowRezult(Analis.rezult, folderMain);
+                CommonClass.ShowRezult(Analis, folderMain);
             }
             catch (Exception ex)
             {
@@ -111,6 +111,8 @@ namespace BacLab.Administration
             }
 
         }
+      
+
         private void x_PrintRezult_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -118,7 +120,7 @@ namespace BacLab.Administration
                 if (SelectedAnalis == null) return;
                 d_Analyzes Analis = context.d_Analyzes.Where(c => c.id == SelectedAnalis.Id).FirstOrDefault();
                 
-                if (Analis.rezult == null)
+                if (Analis.rezultPath == null || Analis.rezultPath == "")
                     FormResult(Analis);
 
                 var rez = CommonClass.PrintRezult(context, Analis, laboratoria, folderMain);
@@ -126,6 +128,7 @@ namespace BacLab.Administration
                 if (rez)
                 {
                     CommonClass.Log(context, Analis, staff, 12, false);
+                    Analis.isPrint = true;
                     context.SaveChanges();
                 }
 
@@ -143,7 +146,7 @@ namespace BacLab.Administration
             {
                 if (SelectedAnalis == null) return;
                 d_Analyzes Analis = context.d_Analyzes.Where(c => c.id == SelectedAnalis.Id).FirstOrDefault();
-                if (Analis.rezult == null)
+                if (Analis.rezultPath == null || Analis.rezultPath == "")
                 { Message.Ok("Результат ще не готов", "SearchDialog"); return; }
 
                 string rez = CommonClass.SendEmail(context, Analis, laboratoria, folderMain);
@@ -151,7 +154,8 @@ namespace BacLab.Administration
                 Message.Ok(rez, "SearchDialog");
                 if (rez.Equals("Відправлено"))
                 {
-                    CommonClass.Log(context, Analis, staff, 14, false);
+                    CommonClass.Log(context, Analis, staff, 13, false);
+                    Analis.isSend = true;
                     context.SaveChanges();
                 }
             }
@@ -206,7 +210,7 @@ namespace BacLab.Administration
                 p_Analises_Cultures cultura = (sender as ListBox).SelectedItem as p_Analises_Cultures;
                 if (cultura != null)
                 {
-                    int index = await Message.DialogPassport("SearchDialog");
+                    int index = await Message.Dialog_Passport("SearchDialog");
                     if (index > 0)
                         SavePassport(cultura, index);
                 }
@@ -337,7 +341,7 @@ namespace BacLab.Administration
                 ReplaceWordStub(newDoc, "{job}", (Analis.d_JobPlace!=null?Analis.d_JobPlace.name:"") + " " + (Analis.d_Job!=null?Analis.d_Job.name:""));
                 ReplaceWordStub(newDoc, "{institution}", Analis.d_Institution!= null?( Analis.d_Institution.name != "" ? Analis.d_Institution.name : "дані відсутні"):"дані відсутні");
                 ReplaceWordStub(newDoc, "{department}", Analis.d_Department != null ? Analis.d_Department.name : "дані відсутні");
-                ReplaceWordStub(newDoc, "{diagnosis}", Analis.d_Diagnosis != null ? Analis.d_Diagnosis.name : "дані відсутні");
+                ReplaceWordStub(newDoc, "{diagnosis}", Analis.diagnosis != null ? Analis.diagnosis : "дані відсутні");
                 string str1 = Analis.comment?.Length > 0 ? " (" + Analis.comment + ")" : "";
                 ReplaceWordStub(newDoc, "{material}", Analis.p_Group_Material_Purpose.d_Material?.name + str1);
                 ReplaceWordStub(newDoc, "{purpose}", Analis.p_Group_Material_Purpose?.d_Purpose.name != "" ? Analis.p_Group_Material_Purpose.d_Purpose.name : "дані відсутні");

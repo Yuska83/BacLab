@@ -226,6 +226,10 @@
                 Click="x_settingsBTN_Click" ToolTip="Налаштування">
                 <materialDesign:PackIcon Kind="Settings" Width="Auto" Height="Auto" />
             </Button>
+            <TextBlock Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="8" 
+                       VerticalAlignment="Bottom" Margin="0 0 10 10"
+                       HorizontalAlignment="Right"
+                       Text="BacLab v.10.0 © 2026 Юлія Аліменко Усі права захищені. Будь-яке копіювання, модифікація розповсюдження програми без письмового дозволу автора забороняється."/>
         </Grid>
     </materialDesign:DialogHost>
 </controls:MetroWindow>

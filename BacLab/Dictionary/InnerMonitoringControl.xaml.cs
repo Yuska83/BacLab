@@ -275,7 +275,7 @@ namespace BacLab.Dictionary
                 }
                 if ((sender as TextBlock).Name == "x_CurrentModeTextBlock")
                 {
-                    string str = await Message.DialogDiapazon("Поточний режим", selectedItem.CurrentMode, "MsgDialog");
+                    string str = await Message.Dialog_Diapazon("Поточний режим", selectedItem.CurrentMode, "MsgDialog");
                     if (str != "False")
                     {
                         selectedItem.CurrentMode = str;

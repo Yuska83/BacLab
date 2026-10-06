@@ -17,7 +17,6 @@ namespace BacLab
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public d_Consumables()
         {
-            this.a_AntibioticNorms = new HashSet<a_AntibioticNorms>();
             this.d_TestAndAntibiotic1 = new HashSet<d_TestAndAntibiotic>();
             this.g_ABDisk_ABTest_Interpritation = new HashSet<g_ABDisk_ABTest_Interpritation>();
             this.p_Analises_Cultures_ABDisk = new HashSet<p_Analises_Cultures_ABDisk>();
@@ -25,6 +24,8 @@ namespace BacLab
             this.a_AntibioticMicroorganismGroup = new HashSet<a_AntibioticMicroorganismGroup>();
             this.d_ConsumablesStock = new HashSet<d_ConsumablesStock>();
             this.d_ConsumablesOrder = new HashSet<d_ConsumablesOrder>();
+            this.d_ConsumablesNorms = new HashSet<d_ConsumablesNorms>();
+            this.g_Medium_Consumables = new HashSet<g_Medium_Consumables>();
         }
     
         public int id { get; set; }
@@ -35,8 +36,6 @@ namespace BacLab
         public Nullable<int> idAB { get; set; }
         public Nullable<int> idConsumablesGroup { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<a_AntibioticNorms> a_AntibioticNorms { get; set; }
         public virtual d_ConsumablesGroup d_ConsumablesGroup { get; set; }
         public virtual d_TestAndAntibiotic d_TestAndAntibiotic { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -53,5 +52,9 @@ namespace BacLab
         public virtual ICollection<d_ConsumablesStock> d_ConsumablesStock { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<d_ConsumablesOrder> d_ConsumablesOrder { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<d_ConsumablesNorms> d_ConsumablesNorms { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<g_Medium_Consumables> g_Medium_Consumables { get; set; }
     }
 }

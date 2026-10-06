@@ -23,11 +23,13 @@ namespace BacLab.Administration
         d_Subdivisions subdivisions;
         d_Staff staff;
         string parol;
-        d_Analyzes oldAnalis;
+        d_Analyzes selectedAnalis;
         d_Analyzes editAnalis;
         d_Analyzes analis;
-        List<d_JobPlace> listJobPlace;
+        //List<d_JobPlace> listJobPlace;
         int labNum;
+        List<string> JobPlaceList;
+        List<string> JobList;
         bool isAnalisisReadyList = false;
         List<d_Analyzes> SearchAnalisisList;
         public d_Analyzes Analis { get { return analis; } set { analis = value; OnPropertyChanged("Analis"); } }
@@ -50,13 +52,14 @@ namespace BacLab.Administration
 
             x_PatientSearchGrid.DataContext = null;
             x_Dictrict.ItemsSource = context.d_District.Where(c => c.show == true).OrderBy(c => c.index).ToList();
-            x_JobPlace.ItemsSource = context.d_JobPlace.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();
-            x_Job.ItemsSource = context.d_Job.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();
             x_Finance.ItemsSource = context.d_Finance.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();
             x_JobStatus.ItemsSource = context.d_JobStatus.Where(c => c.show == true).OrderBy(c => c.index).ToList();
             x_JobPlaceGroup.ItemsSource = context.d_JobPlaceGroup.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();
             x_WhoPay.ItemsSource = context.d_WhoPay.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();
             
+            JobPlaceList = context.d_JobPlace.Where(c => c.show == true).Select(c => c.abbr).ToList();
+            JobList = context.d_Job.Where(c => c.show == true).Select(c => c.abbr).ToList();
+
             x_SeachExpander.IsExpanded = false;
             x_SeachExpander.Expanded += X_SeachExpander_Expanded;
             x_isIssued.IsEnabled = false;
@@ -64,7 +67,7 @@ namespace BacLab.Administration
             editAnalis = context.d_Analyzes.Where(c => c.id == idAnalis).FirstOrDefault();
             if (editAnalis != null)
             {
-                if (editAnalis.sendAnalis != true)
+                if (editAnalis.isEnd != true)
                 {
                     Analyzes.Add(editAnalis);
                     x_listAnalisesGrid.SelectedItem = editAnalis;
@@ -77,67 +80,119 @@ namespace BacLab.Administration
             }
             else
             {
-                
-                Dictionary<int, int> lastLabNumBySubdivision = new Dictionary<int, int>();
-                string labNumFilePath = "last_labnum_by_subdivision.txt";
-
-                // Читання з файлу, якщо існує
-                if (File.Exists(labNumFilePath))
-                {
-                    var lines = File.ReadAllLines(labNumFilePath);
-                    foreach (var line in lines)
-                    {
-                        var parts = line.Split(':');
-                        if (parts.Length == 2 && int.TryParse(parts[0], out int subId) && int.TryParse(parts[1], out int lastNum))
-                        {
-                            lastLabNumBySubdivision[subId] = lastNum;
-                        }
-                    }
-                }
-
-                if (lastLabNumBySubdivision.TryGetValue(subdivisions.id, out int lastLabNum) && lastLabNum > 0)
-                {
-                    labNum = lastLabNum;
-                }
-                else
-                {
-                    var lastItem = context.d_Analyzes
-                        .Where(c => c.p_Group_Material_Purpose.d_GroupResearch.id == 4 && c.idSubdivisions == subdivisions.id)
-                        .AsNoTracking().OrderBy(c=>c.dateDelivery)
-                        .OrderByDescending(c => c.labNum)
-                        .FirstOrDefault();
-                    labNum = lastItem != null ? lastItem.labNum + 1 : 1;
-                }
-
-                Analis = new d_Analyzes
-                {
-                    d_Patients = new d_Patients(),
-                    d_Subdivisions = subdivisions,
-                    d_Staff1 = staff,
-                    labNum = labNum,
-                    dateSampling = DateTime.Now.Date,
-                    timeSampling = DateTime.Now.ToLocalTime(),
-                    dateDelivery = DateTime.Now.Date,
-                    timeDelivery = DateTime.Now.ToLocalTime(),
-                    d_JobPlace = new d_JobPlace(),
-                    d_Institution = context.d_Institution.Where(c => c.id == 97).FirstOrDefault(),//проф
-                    d_PatientStatus = context.d_PatientStatus.Where(c => c.id == 4).FirstOrDefault(),//проф
-                    d_Finance = context.d_Finance.Where(c => c.id == 2).FirstOrDefault(),
-                    d_JobStatus = context.d_JobStatus.Where(c => c.id == 1).FirstOrDefault(),
-                    d_JobPlaceGroup = context.d_JobPlaceGroup.Where(c => c.id == 1).FirstOrDefault(),
-                    d_WhoPay = context.d_WhoPay.Where(c => c.id == 1).FirstOrDefault(),
-                    isPay = false,
-                    isIssued = false,
-                    sendAnalis = false,
-                    inRaxunok = true,
-                };
-                Analis.d_JobPlace.d_District = context.d_District.Where(c => c.id ==1).FirstOrDefault();
-
+                CreateNewAnalis(context, subdivisions, staff);
             }
 
             this.Loaded += ProfWindow_Loaded;
 
             DataContext = this;
+        }
+
+        public ProfWindow()
+        {
+            InitializeComponent();
+            this.context = new BacLab_DBEntities();
+            this.subdivisions = context.d_Subdivisions.Where(c => c.id == 1).FirstOrDefault();
+            this.staff = context.d_Staff.Where(c => c.id == 4).FirstOrDefault();
+            this.parol = "123";
+            int idAnalis = -1;
+
+            x_PatientSearchGrid.DataContext = null;
+            x_Dictrict.ItemsSource = context.d_District.Where(c => c.show == true).OrderBy(c => c.index).ToList();
+            x_Finance.ItemsSource = context.d_Finance.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();
+            x_JobStatus.ItemsSource = context.d_JobStatus.Where(c => c.show == true).OrderBy(c => c.index).ToList();
+            x_JobPlaceGroup.ItemsSource = context.d_JobPlaceGroup.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();
+            x_WhoPay.ItemsSource = context.d_WhoPay.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();
+
+            JobPlaceList = context.d_JobPlace.Where(c => c.show == true).Select(c => c.abbr).ToList();
+            JobList = context.d_Job.Where(c => c.show == true).Select(c => c.abbr).ToList();
+
+            x_SeachExpander.IsExpanded = false;
+            x_SeachExpander.Expanded += X_SeachExpander_Expanded;
+            x_isIssued.IsEnabled = false;
+
+            editAnalis = context.d_Analyzes.Where(c => c.id == idAnalis).FirstOrDefault();
+            if (editAnalis != null)
+            {
+                if (editAnalis.isEnd != true)
+                {
+                    Analyzes.Add(editAnalis);
+                    x_listAnalisesGrid.SelectedItem = editAnalis;
+                }
+                else
+                {
+                    AnalyzesReady.Add(editAnalis);
+                    x_listAnalisesReadyGrid.SelectedItem = editAnalis;
+                }
+            }
+            else
+            {
+                CreateNewAnalis(context, subdivisions, staff);
+            }
+
+            this.Loaded += ProfWindow_Loaded;
+
+            DataContext = this;
+        }
+
+
+        private void CreateNewAnalis(BacLab_DBEntities context, d_Subdivisions subdivisions, d_Staff staff)
+        {
+            Dictionary<int, int> lastLabNumBySubdivision = new Dictionary<int, int>();
+            string labNumFilePath = "last_labnum_by_subdivision.txt";
+
+            // Читання з файлу, якщо існує
+            if (File.Exists(labNumFilePath))
+            {
+                var lines = File.ReadAllLines(labNumFilePath);
+                foreach (var line in lines)
+                {
+                    var parts = line.Split(':');
+                    if (parts.Length == 2 && int.TryParse(parts[0], out int subId) && int.TryParse(parts[1], out int lastNum))
+                    {
+                        lastLabNumBySubdivision[subId] = lastNum;
+                    }
+                }
+            }
+
+            if (lastLabNumBySubdivision.TryGetValue(subdivisions.id, out int lastLabNum) && lastLabNum > 0)
+            {
+                labNum = lastLabNum;
+            }
+            else
+            {
+                var lastItem = context.d_Analyzes
+                    .Where(c => c.p_Group_Material_Purpose.d_GroupResearch.id == 4 && c.idSubdivisions == subdivisions.id)
+                    .AsNoTracking().OrderBy(c => c.dateDelivery)
+                    .OrderByDescending(c => c.labNum)
+                    .FirstOrDefault();
+                labNum = lastItem != null ? lastItem.labNum + 1 : 1;
+            }
+
+            Analis = new d_Analyzes
+            {
+                d_Patients = new d_Patients(),
+                d_Subdivisions = subdivisions,
+                d_Staff1 = staff,
+                labNum = labNum,
+                dateSampling = DateTime.Now.Date,
+                timeSampling = DateTime.Now.ToLocalTime(),
+                dateDelivery = DateTime.Now.Date,
+                timeDelivery = DateTime.Now.ToLocalTime(),
+                d_Institution = context.d_Institution.Where(c => c.id == 97).FirstOrDefault(),//проф
+                d_PatientStatus = context.d_PatientStatus.Where(c => c.id == 4).FirstOrDefault(),//проф
+                d_Finance = context.d_Finance.Where(c => c.id == 2).FirstOrDefault(),
+                d_JobStatus = context.d_JobStatus.Where(c => c.id == 1).FirstOrDefault(),
+                d_JobPlaceGroup = context.d_JobPlaceGroup.Where(c => c.id == 1).FirstOrDefault(),
+                d_WhoPay = context.d_WhoPay.Where(c => c.id == 1).FirstOrDefault(),
+                isPay = false,
+                isEnd = false,
+                isSend = false,
+                isPrint = false,
+                isVydano = false,
+                inRaxunok = true,
+                isSendToTerra = false
+            };
         }
 
         private async void ProfWindow_Loaded(object sender, RoutedEventArgs e)
@@ -153,7 +208,7 @@ namespace BacLab.Administration
             }
         }
 
-        private async void X_SeachExpander_Expanded(object sender, RoutedEventArgs e)
+        private void X_SeachExpander_Expanded(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -164,19 +219,19 @@ namespace BacLab.Administration
             }
             catch (Exception ex)
             {
-                Message.Ok(ex.Message + "\\n" + ex.StackTrace, "MsgDialog");
+                Message.Ok(ex.Message + "\n" + ex.StackTrace, "MsgDialog");
             }
         }
 
         private async Task FillAnalizesAsync()
         {
-            var list = await context.d_Analyzes.Where(c => c.sendAnalis != true &&
+            var list = await context.d_Analyzes.Where(c => c.isEnd != true &&
             c.p_Group_Material_Purpose.d_GroupResearch.id ==4 &&
             c.idSubdivisions == subdivisions.id).OrderBy(c => c.labNum).ToListAsync();
 
             Analyzes.Clear();
             foreach (var item in list)
-            Analyzes.Add(item);
+                Analyzes.Add(item);
         }
 
         public async Task FillAnalizesReadyAsync(List<d_Analyzes> colAnalyzesReady)
@@ -185,8 +240,8 @@ namespace BacLab.Administration
             {
                 SearchAnalisisList = colAnalyzesReady;
                 if (colAnalyzesReady == null)
-                    colAnalyzesReady = await context.d_Analyzes.Where(c => c.sendAnalis == true &&
-                    c.isIssued != true &&
+                    colAnalyzesReady = await context.d_Analyzes.Where(c => c.isEnd == true &&
+                    c.isVydano != true &&
                     c.p_Group_Material_Purpose.d_GroupResearch.id ==4 &&
                     c.idSubdivisions == subdivisions.id).OrderBy(c => c.labNum).ToListAsync();
 
@@ -200,8 +255,6 @@ namespace BacLab.Administration
             }
         }
 
-     
-
         public void FillAnalizesReady(List<d_Analyzes> colAnalyzesReady)
         {
             try
@@ -209,8 +262,8 @@ namespace BacLab.Administration
                 
                 SearchAnalisisList = colAnalyzesReady;
                 if (colAnalyzesReady == null)
-                    colAnalyzesReady = context.d_Analyzes.AsNoTracking().Where(c => c.sendAnalis == true &&
-                    c.isIssued != true &&
+                    colAnalyzesReady = context.d_Analyzes.AsNoTracking().Where(c => c.isEnd == true &&
+                    c.isVydano != true &&
                     c.p_Group_Material_Purpose.d_GroupResearch.id ==4 &&
                     c.p_Group_Material_Purpose.d_GroupResearch.id ==4 &&
                     c.idSubdivisions == subdivisions.id).OrderBy(c => c.labNum).ToList();
@@ -263,46 +316,36 @@ namespace BacLab.Administration
                 else
                     EditAnalis();
 
+
                 if ((sender as Button).Name == "x_saveBTN") labNum = Analis.labNum + 1;
 
-                context.SaveChanges();
+                
+
+                // Заміна збереження labNum для кожного підрозділу окремо
                 try
                 {
-                    // Заміна збереження labNum для кожного підрозділу окремо
-                    try
-                    {
-                        string labNumFilePath = "last_labnum_by_subdivision.txt";
-                        Dictionary<int, int> lastLabNumBySubdivision = new Dictionary<int, int>();
+                    string labNumFilePath = "last_labnum_by_subdivision.txt";
+                    Dictionary<int, int> lastLabNumBySubdivision = new Dictionary<int, int>();
 
-                        // Читання існуючих даних
-                        if (File.Exists(labNumFilePath))
+                    if (File.Exists(labNumFilePath))
+                    {
+                        var lines = File.ReadAllLines(labNumFilePath);
+                        foreach (var line in lines)
                         {
-                            var lines = File.ReadAllLines(labNumFilePath);
-                            foreach (var line in lines)
-                            {
-                                var parts = line.Split(':');
-                                if (parts.Length == 2 && int.TryParse(parts[0], out int subId) && int.TryParse(parts[1], out int lastNum))
-                                {
-                                    lastLabNumBySubdivision[subId] = lastNum;
-                                }
-                            }
+                            var parts = line.Split(':');
+                            if (parts.Length == 2 && int.TryParse(parts[0], out int subId) && int.TryParse(parts[1], out int lastNum))
+                                lastLabNumBySubdivision[subId] = lastNum;
+
                         }
-
-                        // Оновлення або додавання поточного labNum для підрозділу
-                        lastLabNumBySubdivision[subdivisions.id] = labNum;
-
-                        // Запис у файл
-                        var linesToWrite = lastLabNumBySubdivision.Select(kvp => $"{kvp.Key}:{kvp.Value}");
-                        File.WriteAllLines(labNumFilePath, linesToWrite);
                     }
-                    catch (Exception ex)
-                    {
-                        // Можна проігнорувати або показати повідомлення, якщо потрібно
-                    }
+
+                    lastLabNumBySubdivision[subdivisions.id] = labNum;
+                    var linesToWrite = lastLabNumBySubdivision.Select(kvp => $"{kvp.Key}:{kvp.Value}");
+                    File.WriteAllLines(labNumFilePath, linesToWrite);
                 }
                 catch (Exception ex)
                 {
-                    // Можна проігнорувати або показати повідомлення, якщо потрібно
+                    Message.Ok(ex.Message + " " + ex.StackTrace, "MsgDialog");
                 }
                 if (editAnalis != null)
                 {
@@ -311,6 +354,7 @@ namespace BacLab.Administration
                 }
                     
                 x_clearBTN_Click(this, null);
+                DataContext = this;
             }
             catch (Exception ex)
             {
@@ -332,9 +376,10 @@ namespace BacLab.Administration
                     lisIdGMP.Add(97);
                     lisIdGMP.Add(98);
                 }
+
                 foreach (var item in lisIdGMP)
                 {
-                    d_Analyzes newAnalis = new d_Analyzes();
+                    d_Analyzes newAnalis =new d_Analyzes() ;
                     newAnalis.d_Patients = Analis.d_Patients;
                     newAnalis.labNum = (int)Analis.labNum;
                     newAnalis.d_Finance = Analis.d_Finance;
@@ -344,16 +389,43 @@ namespace BacLab.Administration
                     newAnalis.dateSampling = Analis.dateSampling;
                     newAnalis.timeDelivery = DateTime.Now.ToLocalTime();
                     newAnalis.timeSampling = DateTime.Now.ToLocalTime();
-                    newAnalis.d_JobPlace = Analis.d_JobPlace;
-                    newAnalis.d_Job = Analis.d_Job;
+                    var jobPlace = context.d_JobPlace.Where(c => c.abbr == x_JobPlace.Text).FirstOrDefault();
+                    if (jobPlace == null)
+                    {
+                       jobPlace = new d_JobPlace()
+                        {
+                            abbr = x_JobPlace.Text,
+                            name = x_JobPlace.Text,
+                            index=1,
+                           show = true
+                        };
+                        context.d_JobPlace.Add(jobPlace);
+                        JobPlaceList.Add(x_JobPlace.Text);
+                    }
+                    jobPlace.d_District= x_Dictrict.SelectedItem as d_District;
+                    newAnalis.d_JobPlace = jobPlace;
+                    var job = context.d_Job.Where(c => c.abbr == x_Job.Text).FirstOrDefault();
+                    if (job == null)
+                    {
+                       job = new d_Job()
+                        {
+                            abbr = x_Job.Text,
+                            name = x_Job.Text,
+                            index=1,    
+                           show = true
+                        };
+                        context.d_Job.Add(job);
+                        JobList.Add(x_Job.Text);
+                    }
+                    newAnalis.d_Job = job;
                     newAnalis.d_Institution = Analis.d_Institution;//проф
                     newAnalis.d_PatientStatus = Analis.d_PatientStatus;//проф
                     newAnalis.d_JobPlaceGroup = Analis.d_JobPlaceGroup;
                     newAnalis.d_JobStatus = Analis.d_JobStatus;
                     newAnalis.d_WhoPay = Analis.d_WhoPay;
-                    newAnalis.sendAnalis = Analis.sendAnalis;
+                    newAnalis.isEnd = false;
                     newAnalis.isPay = Analis.isPay;
-                    newAnalis.isIssued = Analis.isIssued;
+                    newAnalis.isVydano = false;
                     newAnalis.agePatient = Analis.agePatient;
                     newAnalis.inRaxunok = true;
                     newAnalis.p_Group_Material_Purpose = context.p_Group_Material_Purpose.Where(c => c.id == item).FirstOrDefault();
@@ -372,6 +444,9 @@ namespace BacLab.Administration
                     }
                     Analyzes.Add(newAnalis);
                     context.d_Analyzes.Add(newAnalis);
+                    x_listAnalisesGrid.ScrollIntoView(newAnalis);
+                    
+                    context.SaveChanges();
                 }
 
             }
@@ -387,19 +462,45 @@ namespace BacLab.Administration
             try
             {
                 Analis.dateDelivery = Analis.dateSampling;
-
-                if (Analis.isIssued == true && Analis.dateIssued == null)
+                var jobPlace = context.d_JobPlace.Where(c => c.abbr == x_JobPlace.Text).FirstOrDefault();
+                if (jobPlace == null)
                 {
-                    Analis.dateIssued = DateTime.Now.Date;
-                    Analis.d_Staff2 = staff;
+                    jobPlace = new d_JobPlace()
+                    {
+                        abbr = x_JobPlace.Text,
+                        name = x_JobPlace.Text,
+                        index=1,
+                        show = true
+                    };
+                    //context.d_JobPlace.Add(jobPlace);
+                    JobPlaceList.Add(x_JobPlace.Text);
+                }
+                jobPlace.d_District = x_Dictrict.SelectedItem as d_District;
+                Analis.d_JobPlace = jobPlace;
+                var job = context.d_Job.Where(c => c.abbr == x_Job.Text).FirstOrDefault();
+                if (job == null)
+                {
+                    job = new d_Job()
+                    {
+                        abbr = x_Job.Text,
+                        name = x_Job.Text,
+                        index=1,
+                        show = true
+                    };
+                    //context.d_Job.Add(job);
+                    JobList.Add(x_Job.Text);
+                }
+                Analis.d_Job = job;
+
+                if (Analis.isVydano == true )
+                {
                     AnalyzesReady.Remove(Analis);
                 }
-                else if (Analis.isIssued == false && Analis.dateIssued != null)
+                else if (Analis.isVydano == false )
                 {
-                    Analis.dateIssued = null;
-                    Analis.d_Staff2 = null;
                     AnalyzesReady.Add(Analis);
                 }
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -414,10 +515,14 @@ namespace BacLab.Administration
             {
                 if ((sender as DataGrid).SelectedItem == null) return;
 
-                oldAnalis = (sender as DataGrid).SelectedItem as d_Analyzes;
+                selectedAnalis = (sender as DataGrid).SelectedItem as d_Analyzes;
 
                 Analis = (sender as DataGrid).SelectedItem as d_Analyzes;
-                
+
+                x_JobPlace.Text = Analis.d_JobPlace?.abbr;
+                x_Job.Text = Analis.d_Job?.abbr;
+                x_Dictrict.SelectedItem = Analis.d_JobPlace?.d_District;
+
                 x_maleRB.IsChecked = false;
                 x_fameRB.IsChecked = false;
 
@@ -436,7 +541,7 @@ namespace BacLab.Administration
                     case 98: x_st.IsChecked = true; break;
                 }
 
-                if (Analis.sendAnalis != true)
+                if (Analis.isEnd != true)
                     x_isIssued.IsEnabled = false;
                 else x_isIssued.IsEnabled = true;
 
@@ -476,15 +581,19 @@ namespace BacLab.Administration
                 Analis.d_JobStatus = old.d_JobStatus;
                 Analis.d_JobPlaceGroup = old.d_JobPlaceGroup;
                 Analis.d_WhoPay = old.d_WhoPay;
-                Analis.d_JobPlace = old.d_JobPlace;
-                Analis.d_Job = old.d_Job;
                 Analis.isPay = false;
-                Analis.sendAnalis = false;
-                Analis.isIssued = false;
+                Analis.isEnd = false;
+                Analis.isVydano = false;
+                Analis.isPrint = false;
+                Analis.isSend = false;
                 Analis.inRaxunok = true;
                 Analis = Analis;
 
-                oldAnalis = null;
+                x_JobPlace.Text = "";
+                x_Job.Text = "";
+                x_Dictrict.SelectedItem = null;
+
+                selectedAnalis = null;
                 x_isIssued.IsEnabled = false;
                 x_maleRB.IsChecked = false;
                 x_fameRB.IsChecked = false;
@@ -510,20 +619,19 @@ namespace BacLab.Administration
         {
             try
             {
-                TextBox tb = sender as TextBox;
-                if (tb.Text.Length ==1)
+                if (x_name.Text.Length ==1)
                 {
-                    tb.Text = tb.Text.ToUpper();
-                    tb.Select(tb.Text.Length,0);
+                    x_name.Text = x_name.Text.ToUpper();
+                    x_name.Select(x_name.Text.Length,0);
                 }
-                if (oldAnalis == null && editAnalis == null)
+                if (selectedAnalis == null && editAnalis == null)
                 {
-                    if (tb.Text.Length >3)
+                    if (x_name.Text.Length >3)
                         x_PatientSearchGrid.DataContext = context.d_Patients.Where(c => c.name.StartsWith(x_name.Text)).ToList();
-                    if (tb.Text.Length <1)
+                    if (x_name.Text.Length <1)
                     {
                         Analis.d_Patients = new d_Patients();
-                        Analis.agePatient =0;
+                        Analis.agePatient = 0;
                         x_PatientSearchGrid.DataContext = null;
                         Analis = Analis;
                     }
@@ -538,7 +646,7 @@ namespace BacLab.Administration
         private void x_PatientSearch_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {
             if (x_PatientSearchGrid.SelectedItem == null) return;
-            if (oldAnalis != null) return;
+            if (selectedAnalis != null) return;
             try
             {
                 Analis.d_Patients = x_PatientSearchGrid.SelectedItem as d_Patients;
@@ -555,69 +663,76 @@ namespace BacLab.Administration
 
         }
 
-        private void x_District_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void x_JobPlace_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
-                if (x_Dictrict.SelectedItem == null) return;
-                int idDistrict = (x_Dictrict.SelectedItem as d_District).id;
-                x_JobPlace.ItemsSource = context.d_JobPlace.Where(c => c.idDistrict == idDistrict && c.show == true).OrderBy(c => c.abbr).ToList();
+                if (x_JobPlace.Text.Length > 2)
+                    x_JobPlaceList.ItemsSource = JobPlaceList.Where(c => c.Contains(x_JobPlace.Text, StringComparison.OrdinalIgnoreCase)).ToList();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + " " + ex.StackTrace);
             }
-
         }
 
-        private async void X_addItem_Click(object sender, RoutedEventArgs e)
+        private void x_JobPlaceList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
-                int id;
-                string nameButton = (sender as Button).Name;
-                switch (nameButton)
-                {
-                    case "x_addJobPlace":
-                        {
-                            if (Analis.d_JobPlace.d_District == null) return;
-                            id = await Message.DialogNew_AddItem("x_addJobPlace", Analis.d_JobPlace.d_District.id, "x_dlgHostResult");
-                            if (id != -1)
-                            {
-                                int idDistrict = (x_Dictrict.SelectedItem as d_District).id;
-                                var list = context.d_JobPlace.Where(c => c.idDistrict == idDistrict && c.show == true).OrderBy(c => c.abbr).ToList();
-                                x_JobPlace.ItemsSource = list;
-                                Analis.d_JobPlace = list.Where(c => c.id == id).FirstOrDefault();
-                                Analis = Analis;
-                            }
-                            break;
-                        }
-                    case "x_addJob":
-                        {
-                            id = await Message.DialogNew_AddItem("x_addJob", -1, "x_dlgHostResult");
-                            if (id != -1)
-                            {
-                                var list = context.d_Job.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();
-                                x_Job.ItemsSource = list;
-                                Analis.d_Job = list.Where(c => c.id == id).FirstOrDefault();
-                                Analis = Analis;
-                            }
-                            break;
-                        }
-                }
+                if (x_JobPlaceList.SelectedItem == null) return;
+                x_JobPlace.Text = x_JobPlaceList.SelectedItem.ToString();
+                var jobPlace = context.d_JobPlace.Where(c => c.abbr == x_JobPlace.Text).FirstOrDefault();
+               
+                x_Dictrict.SelectedItem = jobPlace.d_District;
 
+                x_JobPlaceList.SelectedItem = null;
+                Analis.d_JobPlace = jobPlace;
+                Analis = Analis;
             }
             catch (Exception ex)
             {
-                Message.Ok(ex.Message + "\n" + ex.StackTrace, "MsgDialog");
+                MessageBox.Show(ex.Message + " " + ex.StackTrace);
             }
         }
+        private void x_Job_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                if (x_Job.Text.Length > 2)
+                    x_JobList.ItemsSource = JobList.Where(c => c.Contains(x_Job.Text, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + " " + ex.StackTrace);
+            }
+        }
+
+        private void x_JobList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (x_JobList.SelectedItem == null) return;
+                x_Job.Text = x_JobList.SelectedItem.ToString();
+                d_Job job= context.d_Job.Where(c => c.abbr == x_Job.Text).FirstOrDefault();
+               
+                x_JobList.SelectedItem = null;
+                analis.d_Job = job;
+                Analis = Analis;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + " " + ex.StackTrace);
+            }
+        }
+
 
         private void X_deleteBTN_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 d_Patients patient = Analis.d_Patients;
+                CommonClass.Log(context, Analis, staff, 21, true);
                 //каскадом удаляются культури, аб, дб
                 context.d_Analyzes.Remove(Analis);
                 Analyzes.Remove(Analis);
@@ -632,21 +747,12 @@ namespace BacLab.Administration
 
                 }
 
-                context.l_log.Add(new l_log()
-                {
-                    date = DateTime.Now,
-                    datetime = DateTime.Now,
-                    idStaff = staff.id,
-                    idAction =21,
-                    labNum = Analis.labNum,
-                    rezultOld = Analis.rezult,
-                    namePacient = Analis.d_Patients?.name
-                });
-
                 context.SaveChanges();
                 if (editAnalis != null)
                 { this.Close(); return; }
                 x_clearBTN_Click(this, null);
+                CreateNewAnalis(context, subdivisions, staff);
+                DataContext = this;
             }
             catch (Exception ex)
             {
@@ -739,7 +845,7 @@ namespace BacLab.Administration
                         xlRange.Cells[row, column++] = item.p_Group_Material_Purpose.d_Material?.name;
                         xlRange.Cells[row, column++] = item.p_Group_Material_Purpose.d_Purpose?.name;
 
-                        xlRange.Cells[row, column++] = item.sendAnalis == true ? "так" : "ні";
+                        xlRange.Cells[row, column++] = item.isEnd == true ? "так" : "ні";
                         xlRange.Cells[row, column++] = item.dateEnd;
                         xlRange.Cells[row, column++] = item.d_Staff?.abbr;
                         xlRange.Cells[row, column++] = item.d_ResTemplate?.name;
@@ -748,8 +854,8 @@ namespace BacLab.Administration
                             xlRange.Cells[row, column] = itemMO.d_Microorganism.name;
                         column++;
 
-                        xlRange.Cells[row, column++] = item.isIssued == true ? "так" : "ні";
-                        xlRange.Cells[row, column++] = item.dateIssued;
+                        xlRange.Cells[row, column++] = item.isVydano == true ? "так" : "ні";
+                        xlRange.Cells[row, column++] = item.dateVydano;
                         xlRange.Cells[row, column++] = item.d_Staff2?.abbr;
                         xlRange.Cells[row, column++] = item.d_Staff1?.abbr;
                     }
@@ -809,14 +915,17 @@ namespace BacLab.Administration
             }
         }
 
-        private void x_isIssued_Checked(object sender, RoutedEventArgs e)
+        private void x_isVydano_Checked(object sender, RoutedEventArgs e)
         {
             Analis.d_Staff2 = staff;
+            Analis.dateVydano = DateTime.Now.Date;
+            EditAnalis();
         }
 
-        private void x_isIssued_Unchecked(object sender, RoutedEventArgs e)
+        private void x_isVydano_Unchecked(object sender, RoutedEventArgs e)
         {
             Analis.d_Staff2 = null;
+            Analis.dateVydano = null;
         }
     }
 }

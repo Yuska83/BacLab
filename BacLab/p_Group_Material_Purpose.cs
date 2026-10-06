@@ -17,8 +17,9 @@ namespace BacLab
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public p_Group_Material_Purpose()
         {
-            this.d_Analyzes = new HashSet<d_Analyzes>();
             this.p_Group_Material_Purpose_Medium = new HashSet<p_Group_Material_Purpose_Medium>();
+            this.g_GroupMaterialPurpose_Accreditation = new HashSet<g_GroupMaterialPurpose_Accreditation>();
+            this.d_Analyzes = new HashSet<d_Analyzes>();
         }
     
         public int id { get; set; }
@@ -33,8 +34,6 @@ namespace BacLab
         public Nullable<int> idTerraGMP { get; set; }
         public Nullable<bool> unit { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<d_Analyzes> d_Analyzes { get; set; }
         public virtual d_GroupResearch d_GroupResearch { get; set; }
         public virtual d_Material d_Material { get; set; }
         public virtual d_PriceList d_PriceList { get; set; }
@@ -42,5 +41,9 @@ namespace BacLab
         public virtual d_ReferenceInterval d_ReferenceInterval { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<p_Group_Material_Purpose_Medium> p_Group_Material_Purpose_Medium { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<g_GroupMaterialPurpose_Accreditation> g_GroupMaterialPurpose_Accreditation { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<d_Analyzes> d_Analyzes { get; set; }
     }
 }

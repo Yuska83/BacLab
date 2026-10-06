@@ -526,8 +526,8 @@ namespace BacLab.Antibiotics
                         if (arrOnlyMicroorganism.Where(c => c == (x_culture.SelectedItem as d_Microorganism).id).Count() == 0)
                         { item.Show = false; item.Comments += "тільки:"; foreach (var it in arrOnlyMicroorganism) item.Comments += context.d_Microorganism.Where(c => c.id == it).FirstOrDefault().abbr + ","; item.Comments = item.Comments.TrimEnd(); }
                     if (arrOnlyDiagnosis.Count() > 0)
-                        if (arrOnlyDiagnosis.Where(c => c == Analis.Diagnosis?.id).Count() == 0)
-                        { item.Show = false; item.Comments += "тільки:"; foreach (var it in arrOnlyDiagnosis) item.Comments += context.d_Diagnosis.Where(c => c.id == it).FirstOrDefault().abbr + ","; item.Comments = item.Comments.TrimEnd(); }
+                        if (arrOnlyDiagnosis.Where(c => c == Analis.DiagnosisGroup?.id).Count() == 0)
+                        { item.Show = false; item.Comments += "тільки:"; foreach (var it in arrOnlyDiagnosis) item.Comments += context.d_DiagnosisGroup.Where(c => c.id == it).FirstOrDefault().abbr + ","; item.Comments = item.Comments.TrimEnd(); }
 
                     if (arrUnlessMaterial.Count() > 0)
                         if (arrUnlessMaterial.Where(c => c == Analis.GMP.d_Material.id).Count() > 0)
@@ -536,8 +536,8 @@ namespace BacLab.Antibiotics
                         if (arrUnlessMicroorganism.Where(c => c == (x_culture.SelectedItem as d_Microorganism).id).Count() > 0)
                         { item.Show = false; item.Comments += "окрім:"; foreach (var it in arrUnlessMicroorganism) item.Comments += context.d_Microorganism.Where(c => c.id == it).FirstOrDefault().abbr + ","; item.Comments = item.Comments.TrimEnd(); }
                     if (arrUnlessDiagnosis.Count() > 0)
-                        if (arrUnlessDiagnosis.Where(c => c == Analis.Diagnosis?.id).Count() > 0)
-                        { item.Show = false; item.Comments += "окрім:"; foreach (var it in arrUnlessDiagnosis) item.Comments += context.d_Diagnosis.Where(c => c.id == it).FirstOrDefault().abbr + ","; item.Comments = item.Comments.TrimEnd(); }
+                        if (arrUnlessDiagnosis.Where(c => c == Analis.DiagnosisGroup?.id).Count() > 0)
+                        { item.Show = false; item.Comments += "окрім:"; foreach (var it in arrUnlessDiagnosis) item.Comments += context.d_DiagnosisGroup.Where(c => c.id == it).FirstOrDefault().abbr + ","; item.Comments = item.Comments.TrimEnd(); }
 
                 }
 
@@ -556,7 +556,7 @@ namespace BacLab.Antibiotics
                 if (abSeries != null)
                 {
                     DateTime date = Analis.DateEnd.Value.Date;
-                    var col = abSeries.a_AntibioticControl.Where(c => c.date == date).ToList();
+                    var col = abSeries.d_ConsumablesControls.Where(c => c.date == date).ToList();
                     if (col.Count() < 1)
                     { item.ShowABControl = true; item.CommentABControl += "контроль не проведено"; }
                     else

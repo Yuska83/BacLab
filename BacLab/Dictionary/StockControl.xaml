@@ -40,7 +40,7 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-
+        
         <TextBlock TextAlignment="Center" Text="Облік розхідних матеріалів"   FontWeight="Bold" FontSize="20" Grid.ColumnSpan="3" />
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Row="1">
             <CheckBox x:Name="x_cb_visibilityId" Content="Id"  Click="x_cb_visibilityId_Click" Margin="10 0 10 0" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
@@ -74,7 +74,7 @@
                 <Button HorizontalAlignment="Right"  Margin="0,0,10,0" Click="AddButton_Click"  ToolTip="Додати">
                     <materialDesign:PackIcon Kind="PlusBold"/>
                 </Button>
-                <Button HorizontalAlignment="Right"  Margin="0,0,10,0" Click="PrintButton_Click" ToolTip="Надрукувати">
+                <Button HorizontalAlignment="Right"  Margin="0,0,10,0" Click="ReportButton_Click" ToolTip="Надрукувати">
                     <materialDesign:PackIcon Kind="Printer"/>
                 </Button>
             </StackPanel>
@@ -88,6 +88,7 @@
                       CanUserAddRows="False"
                       CanUserDeleteRows="True"
                       IsReadOnly="True"
+                      FrozenColumnCount="4"
                       SelectionChanged="x_listConsumablesStockGrid_SelectionChanged"
                       MouseRightButtonUp="x_listConsumablesStockGrid_MouseRightButtonUp">
                 <DataGrid.RowStyle>
@@ -113,6 +114,7 @@
                         Binding="{Binding Show, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"
                         ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
                         EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}" />
+                    <DataGridTextColumn Header="фін." Binding="{Binding Finance.abbr}" IsReadOnly="True"/>
                     <DataGridTextColumn Header="дата" Binding="{Binding DateDelivery, Converter={StaticResource DateTimeToDateConverter}}" />
                     <DataGridTextColumn Header="назва" Binding="{Binding Consumable.name}"  FontWeight="Bold"/>
                     <DataGridTextColumn Header="виробник" Binding="{Binding Producer.abbr}" />
@@ -137,16 +139,16 @@
                     <DataGridTextColumn Header="залишок" Binding="{Binding QuantityBecame,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  FontWeight="Bold"/>
                     <DataGridTextColumn Header="од.вим." Binding="{Binding Units.abbr}"/>
                     <DataGridTextColumn Header="дата списання" Binding="{Binding DateEnd, Converter={StaticResource DateTimeToDateConverter}}" />
-                    <DataGridTextColumn Header="фінансування" Binding="{Binding Finance.abbr}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="примітка" Binding="{Binding Comment2}" />
                 </DataGrid.Columns>
             </DataGrid>
         </materialDesign:Card>
 
         <StackPanel Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button x:Name="x_addBTN" Click="x_minusConsumableBTN_Click"  ToolTip="Додати">
+            <Button x:Name="x_addBTN" Click="x_minusConsumableBTN_Click"  ToolTip="Списати">
                 <materialDesign:PackIcon Kind="ArrowRightBold" />
             </Button>
-            <Button x:Name="x_delBTN" Click="x_plusConsumablesBTN_Click"  ToolTip="Видалити">
+            <Button x:Name="x_delBTN" Click="x_plusConsumablesBTN_Click"  ToolTip="Відновити">
                 <materialDesign:PackIcon Kind="ArrowLeftBold" />
             </Button>
         </StackPanel>
@@ -175,8 +177,16 @@
                       SelectedItem="{Binding SelectedFinanceReport, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       materialDesign:HintAssist.Hint="фінансування"
                       KeyUp="x_ComboBox_KeyUp"/>
-            <Button HorizontalAlignment="Right"  Margin="0,0,10,0" Click="PrintButton_Click" ToolTip="Надрукувати">
+            <ComboBox x:Name="x_cb_categoryReport" VerticalAlignment="Center"
+                      ItemTemplate="{StaticResource itemsComboBoxAbbr}" 
+                      SelectedItem="{Binding SelectedConsumableGroupReport, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      materialDesign:HintAssist.Hint="категорія"
+                      KeyUp="x_ComboBox_KeyUp"/>
+            <Button HorizontalAlignment="Right"  Margin="0,0,10,0" Click="ReportButton_Click" ToolTip="Звіт">
                 <materialDesign:PackIcon Kind="Printer"/>
+            </Button>
+            <Button HorizontalAlignment="Right"  Margin="0,0,10,0" Click="NeedButton_Click"  ToolTip="Потреба">
+                <materialDesign:PackIcon Kind="DocumentSign"/>
             </Button>
         </StackPanel>
 
@@ -186,7 +196,9 @@
                       SelectedItem="{Binding SelectedConsumableWritingOff}"
                       SelectionMode="Single"
                       CanUserAddRows="False"
-                      CanUserDeleteRows="False">
+                      CanUserDeleteRows="False"
+                      FrozenColumnCount="3"
+                      MouseRightButtonUp="x_listConsumableWritingOffGrid_MouseRightButtonUp">
                 <DataGrid.RowStyle>
                     <Style TargetType="{x:Type DataGridRow}">
                         <Style.Triggers>
@@ -202,6 +214,7 @@
 
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding isPlus, Converter={StaticResource BoolToPlusMinusConverter}}"  FontWeight="Bold" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="фін." Binding="{Binding d_ConsumablesStock.d_Finance.abbr}" IsReadOnly="True"/>
                     <DataGridTextColumn Header="дата" Binding="{Binding date, Converter={StaticResource DateTimeToDateConverter}}" IsReadOnly="True"/>
                     <DataGridTextColumn Header="назва" Binding="{Binding d_ConsumablesStock.d_Consumables.name}"  FontWeight="Bold" IsReadOnly="True"/>
                     <DataGridTextColumn Header="виробник" Binding="{Binding d_ConsumablesStock.d_Producer.abbr}" IsReadOnly="True"/>
@@ -211,7 +224,7 @@
                     <DataGridTextColumn Header="од.вим." Binding="{Binding d_Units.abbr}" IsReadOnly="True"/>
                     <DataGridTextColumn Header="було" Binding="{Binding quantityWas,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold" IsReadOnly="True"/>
                     <DataGridTextColumn Header="стало" Binding="{Binding quantityBecame,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="фін." Binding="{Binding d_ConsumablesStock.d_Finance.abbr}" IsReadOnly="True"/>
+                
                     <DataGridTextColumn Header="ким списано" Binding="{Binding d_Staff.abbr}" IsReadOnly="True"/>
                 </DataGrid.Columns>
             </DataGrid>

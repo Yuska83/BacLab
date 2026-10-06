@@ -27,7 +27,7 @@ namespace BacLab.Dictionary
         int countGridChild = 0;
         int row = 2;
         d_Microorganism microorganism;
-        public List<ABControls> ListItems { get; set; } = new List<ABControls>();
+        public List<ConsumableControls> ListItems { get; set; } = new List<ConsumableControls>();
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string name)
@@ -72,7 +72,7 @@ namespace BacLab.Dictionary
 
                 if (x_date.SelectedDate == null) return;
 
-                var colABControl = context.a_AntibioticControl.
+                var colABControl = context.d_ConsumablesControls.
                     Where(c => c.idSubdivisions == subdivisions.id && c.date == x_date.SelectedDate 
                     && c.d_Microorganism.id == microorganism.id).OrderBy(c => c.d_ConsumablesStock.d_Consumables.index).ToList();
                 int i = 1;
@@ -87,7 +87,7 @@ namespace BacLab.Dictionary
 
                         foreach (var item in col2)
                         {
-                            ABControls aBControls = AddItem(AddAntibioticControlItem(item, microorganism), i++);
+                            ConsumableControls aBControls = AddItem(AddAntibioticControlItem(item, microorganism), i++);
                             if (aBControls != null)
                                 ListItems.Add(aBControls);
                         }
@@ -128,12 +128,12 @@ namespace BacLab.Dictionary
             }
         }
 
-        public a_AntibioticControl AddAntibioticControlItem(IGrouping<int?, a_AntibioticPanel> item, d_Microorganism microorganism)
+        public d_ConsumablesControls AddAntibioticControlItem(IGrouping<int?, a_AntibioticPanel> item, d_Microorganism microorganism)
         {
             try
             {
                 d_ConsumablesStock abSeries = context.d_ConsumablesStock.Where(c => c.idSubdivisions == subdivisions.id && c.idConsumable == item.Key && c.show == true).FirstOrDefault();
-                var normsCulture = context.a_AntibioticNorms.Where(c => c.idConsumable == item.Key && c.idCulture == microorganism.id).FirstOrDefault();
+                var normsCulture = context.d_ConsumablesNorms.Where(c => c.idConsumable == item.Key && c.idMicroorganism == microorganism.id).FirstOrDefault();
                 if (abSeries == null)
                     return null;
                 if (normsCulture == null)
@@ -145,9 +145,10 @@ namespace BacLab.Dictionary
 
                 if (abSeries != null && normsCulture != null)
                 {
-                    return new a_AntibioticControl()
+                    return new d_ConsumablesControls()
                     {
                         id = 0,
+                        idConsumableGroup = 1,
                         d_Subdivisions = subdivisions,
                         date = (DateTime)x_date.SelectedDate,
                         d_ConsumablesStock = abSeries,
@@ -170,28 +171,14 @@ namespace BacLab.Dictionary
         }
 
 
-        public ABControls AddItem(a_AntibioticControl item, int index)
+        public ConsumableControls AddItem(d_ConsumablesControls item, int index)
         {
             try
             {
                 if (item != null)
                 {
-                    return new ABControls
-                    {
-                        Id = item.id,
-                        Subdivisions = item.d_Subdivisions,
-                        Index = index,
-                        Date = item.date,
-                        ABSeries = item.d_ConsumablesStock,
-                        Microorganism = item.d_Microorganism,
-                        ValueCurrent = item.valueCurrent,
-                        ValuePermissiblemMax = item.valuePermissiblemMax,
-                        ValuePermissiblemMin = item.valuePermissiblemMin,
-                        ValueTargetMax = item.valueTargetMax,
-                        ValueTargetMin = item.valueTargetMin,
-                        Comment = item.comment,
-                        Staff = item.d_Staff
-                    };
+                    return new ConsumableControls(item);
+                    
                 }
                 else return null;
 
@@ -203,7 +190,7 @@ namespace BacLab.Dictionary
             }
         }
 
-        public void FillGrid(ABControls item)
+        public void FillGrid(ConsumableControls item)
         {
             if (item == null) return;
 
@@ -216,10 +203,10 @@ namespace BacLab.Dictionary
                 };
                 TextBlock textBlock = new TextBlock()
                 {
-                    Text = item.ABSeries.d_Consumables.name,
+                    Text = item.ConsumableStock.d_Consumables.name,
                     FontWeight = FontWeights.Bold,
                     HorizontalAlignment = HorizontalAlignment.Left,
-                    Tag = item.ABSeries,
+                    Tag = item.ConsumableStock,
                     Name = "gridChild_" + countGridChild++
                 };
                 stackPanel.Children.Add(textBlock);
@@ -329,20 +316,20 @@ namespace BacLab.Dictionary
                 TextBlock textBlock = sender as TextBlock;
                 BindingExpression bindingExpression = textBlock.GetBindingExpression(TextBlock.TextProperty);
                 Binding binding = bindingExpression.ParentBinding;
-                ABControls selectedItem = binding.Source as ABControls;
-                int oldId = selectedItem.ABSeries.id;
+                ConsumableControls selectedItem = binding.Source as ConsumableControls;
+                int oldId = selectedItem.ConsumableStock.id;
 
-                int id = await Message.DialogStackCheckBox(context, subdivisions.id, selectedItem.ABSeries.d_Consumables.id, selectedItem.ABSeries.d_Consumables.abbr, "ABStosk", "MsgDialog");
+                int id = await Message.DialogStackCheckBox(context, subdivisions.id, selectedItem.ConsumableStock.d_Consumables.id, selectedItem.ConsumableStock.d_Consumables.abbr, "ABStosk", "MsgDialog");
                 if (id > 0 && id != oldId)
                 {
                     DateTime? date = x_date.SelectedDate;
-                    var col = selectedItem.ABSeries.a_AntibioticControl.Where(c => c.date == date && c.d_Microorganism.id == microorganism.id).ToList();
+                    var col = selectedItem.ConsumableStock.d_ConsumablesControls.Where(c => c.date == date && c.d_Microorganism.id == microorganism.id).ToList();
                     foreach (var item in col)
-                        context.a_AntibioticControl.Remove(item);
+                        context.d_ConsumablesControls.Remove(item);
                     context.SaveChanges();
 
                     d_ConsumablesStock abSeries = context.d_ConsumablesStock.Where(c => c.id == id).FirstOrDefault();
-                    selectedItem.ABSeries = abSeries;
+                    selectedItem.ConsumableStock = abSeries;
                     bindingExpression.UpdateTarget();
                 }
 
@@ -358,11 +345,11 @@ namespace BacLab.Dictionary
         {
             try
             {
-                ABControls item = (sender as Expander).Tag as ABControls;
+                ConsumableControls item = (sender as Expander).Tag as ConsumableControls;
                 if (item.ValueCurrent != null)
                 {
                     item.Comment = null;
-                    List<a_AntibioticControl> col = null;
+                    List<d_ConsumablesControls> col = null;
                     int? PermissiblemMin = item.ValuePermissiblemMin != null ? item.ValuePermissiblemMin : item.ValuePermissiblemMax;
                     int? PermissiblemMax = item.ValuePermissiblemMax != null ? item.ValuePermissiblemMax : item.ValuePermissiblemMin;
                     int? targetMin = item.ValueTargetMin != null ? item.ValueTargetMin : item.ValueTargetMax;
@@ -370,7 +357,7 @@ namespace BacLab.Dictionary
                     if (PermissiblemMin != null)
                         if (item.ValueCurrent < PermissiblemMin)
                         {
-                            col = context.a_AntibioticControl.Where(c => c.d_ConsumablesStock.id == item.ABSeries.id
+                            col = context.d_ConsumablesControls.Where(c => c.d_ConsumablesStock.id == item.ConsumableStock.id
                             && c.idCulture == item.Microorganism.id && c.date < item.Date).OrderBy(c => c.date).ToList();
                             col = col.Skip(col.Count() - 1).ToList();
                             if (col.Count > 0)
@@ -380,30 +367,35 @@ namespace BacLab.Dictionary
                     if (PermissiblemMax != null)
                         if (item.ValueCurrent > PermissiblemMax)
                         {
-                            col = context.a_AntibioticControl.Where(c => c.d_ConsumablesStock.id == item.ABSeries.id
+                            col = context.d_ConsumablesControls.Where(c => c.d_ConsumablesStock.id == item.ConsumableStock.id
                             && c.idCulture == item.Microorganism.id && c.date < item.Date).OrderBy(c => c.date).ToList();
                             col = col.Skip(col.Count() - 1).ToList();
                             if (col.Count > 0)
                                 if (col[0].valueCurrent > PermissiblemMax)
                                     item.Comment += "\nДва значення підряд\nза межею допустимого діапазону";
                         }
-                    if (targetMin != null)
-                        if (item.ValueCurrent < targetMin)
-                        {
+                    if (targetMin != null && item.ValueCurrent < targetMin)
+                    {
+                        col = context.d_ConsumablesControls
+                            .Where(c => c.d_ConsumablesStock.id == item.ConsumableStock.id
+                                     && c.idCulture == item.Microorganism.id
+                                     && c.date < item.Date)
+                            .OrderBy(c => c.date)
+                            .ToList();
 
-                            col = context.a_AntibioticControl.Where(c => c.d_ConsumablesStock.id == item.ABSeries.id
-                            && c.idCulture == item.Microorganism.id && c.date == item.Date).OrderBy(c => c.date).ToList();
-                            col = col.Skip(col.Count() - 9).ToList();
-                            int sum = 0;
-                            foreach (var it in col)
-                                if (it.valueCurrent < targetMin) sum++;
-                            if (sum == 9)
-                                item.Comment += "\nСтійке зниження значень";
+                        col = col.Skip(Math.Max(0, col.Count - 9)).ToList();
+
+                        int countBelowTarget = col.Count(с => с.valueCurrent < targetMin);
+
+                        if (countBelowTarget == 9)
+                        {
+                            item.Comment += "\nСтійке зниження значень";
                         }
+                    }
                     if (targetMax != null)
                         if (item.ValueCurrent > targetMax)
                         {
-                            col = context.a_AntibioticControl.Where(c => c.d_ConsumablesStock.id == item.ABSeries.id
+                            col = context.d_ConsumablesControls.Where(c => c.d_ConsumablesStock.id == item.ConsumableStock.id
                             && c.idCulture == item.Microorganism.id && c.date < item.Date).OrderBy(c => c.date).ToList();
                             col = col.Skip(col.Count() - 9).ToList();
                             int sum = 0;
@@ -417,18 +409,19 @@ namespace BacLab.Dictionary
                 }
 
 
-                List<a_AntibioticControl> tab = context.a_AntibioticControl.Where(c => c.d_ConsumablesStock.id == item.ABSeries.id
+                List<d_ConsumablesControls> tab = context.d_ConsumablesControls.Where(c => c.d_ConsumablesStock.id == item.ConsumableStock.id
                 && c.idCulture == item.Microorganism.id).OrderBy(c => c.date).ToList();
                 tab = tab.Skip(tab.Count() - 20).ToList();
                 if (tab.Where(c => c.id == item.Id).FirstOrDefault() != null)
                     tab.Where(c => c.id == item.Id).FirstOrDefault().valueCurrent = item.ValueCurrent;
                 else if (item.ValueCurrent != null)
                 {
-                    a_AntibioticControl d_Item = new a_AntibioticControl();
+                    d_ConsumablesControls d_Item = new d_ConsumablesControls();
                     d_Item.d_Subdivisions = subdivisions;
+                    d_Item.idConsumableGroup = 1;
                     d_Item.date = item.Date;
                     d_Item.d_Microorganism = item.Microorganism;
-                    d_Item.d_ConsumablesStock = item.ABSeries;
+                    d_Item.d_ConsumablesStock = item.ConsumableStock;
                     d_Item.valueCurrent = item.ValueCurrent;
                     d_Item.valueTargetMin = item.ValueTargetMin;
                     d_Item.valueTargetMax = item.ValueTargetMax;
@@ -456,12 +449,12 @@ namespace BacLab.Dictionary
             }
         }
 
-        private void FillCartesianChart(Grid gridChart, List<a_AntibioticControl> col)
+        private void FillCartesianChart(Grid gridChart, List<d_ConsumablesControls> col)
         {
             SeriesCollection Series = new SeriesCollection();
 
             ChartValues<int> values = new ChartValues<int>();
-            foreach (var item in col.Select(c => c.valueCurrent))
+            foreach (var item in col.Where(c=>c.valueControl!=null).Select(c => c.valueCurrent))
                 values.Add((int)item);
 
             Series.Add(new LineSeries
@@ -564,23 +557,24 @@ namespace BacLab.Dictionary
                 {
                     if (Item == null) continue;
                     bool isNew = false;
-                    a_AntibioticControl d_Item = context.a_AntibioticControl.Where(c => c.id == Item.Id).FirstOrDefault();
+                    d_ConsumablesControls d_Item = context.d_ConsumablesControls.Where(c => c.id == Item.Id).FirstOrDefault();
                     if (d_Item == null && Item.ValueCurrent == null) continue;
                     if (d_Item != null && Item.ValueCurrent == null)
                     {
-                        context.a_AntibioticControl.Remove(d_Item);
+                        context.d_ConsumablesControls.Remove(d_Item);
                         continue;
                     }
                     if (d_Item == null)
                     {
-                        d_Item = new a_AntibioticControl();
+                        d_Item = new d_ConsumablesControls();
                         isNew = true;
                     }
 
                     d_Item.date = Item.Date;
+                    d_Item.idConsumableGroup = 1;
                     d_Item.d_Subdivisions = Item.Subdivisions;
                     d_Item.d_Microorganism = Item.Microorganism;
-                    d_Item.d_ConsumablesStock = Item.ABSeries;
+                    d_Item.d_ConsumablesStock = Item.ConsumableStock;
                     d_Item.valueCurrent = Item.ValueCurrent;
                     d_Item.valueTargetMin = Item.ValueTargetMin;
                     d_Item.valueTargetMax = Item.ValueTargetMax;
@@ -590,7 +584,7 @@ namespace BacLab.Dictionary
                     d_Item.d_Staff = Item.Staff;
 
                     if (isNew)
-                        context.a_AntibioticControl.Add(d_Item);
+                        context.d_ConsumablesControls.Add(d_Item);
 
                 }
                 context.SaveChanges();
@@ -706,7 +700,7 @@ namespace BacLab.Dictionary
                         row++;
                         column = 1;
                         xlRange.Cells[row, column++] = item.Date;
-                        xlRange.Cells[row, column++] = item.ABSeries.d_Consumables.name;
+                        xlRange.Cells[row, column++] = item.ConsumableStock.d_Consumables.name;
                         xlRange.Cells[row, column++] = item.ValueCurrent.ToString();
                         string str = item.ValueTargetMax != null ? "-" + item.ValueTargetMax.ToString() : "";
                         xlRange.Cells[row, column++] = "" + item.ValueTargetMin + str;

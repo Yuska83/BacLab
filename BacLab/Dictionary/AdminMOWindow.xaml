@@ -20,6 +20,7 @@
                 <Button x:Name="g_MicroorganismGroup_Microorganism" Click="Button_Click">Група-Мікроорганізми</Button>
                 <Button x:Name="d_Serovar" Click="Button_Click">Серовари</Button>
                 <Button x:Name="d_Biovar" Click="Button_Click">Біовари</Button>
+                <Button x:Name="d_AccreditationMO" Click="Button_Click">Акредитовані мікроорганізми</Button>
             </StackPanel>
         </materialDesign:Card >
         <materialDesign:Card x:Name="x_MainCard"  Grid.Column="1" Margin="5 10 10 10"/>

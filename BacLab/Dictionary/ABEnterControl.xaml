@@ -26,30 +26,29 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <TextBlock TextAlignment="Center" Text="Облік дисків з антибіотиками"   FontWeight="Bold" FontSize="20" />
+        <TextBlock TextAlignment="Center" Text="Вхідний контроль дисків з антибіотиками"   FontWeight="Bold" FontSize="20" />
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Row="1">
             <CheckBox x:Name="x_cb_visibilityId" Content="Id"  Click="x_cb_visibilityId_Click" Margin="20 0 0 0" Grid.Column="1" Grid.Row="1"/>
             <ComboBox x:Name="x_cb_antibiotic" VerticalAlignment="Center"
                       ItemTemplate="{StaticResource itemsComboBox}"
-                      materialDesign:HintAssist.Hint="Оберити антибіотик" 
+                      materialDesign:HintAssist.Hint="Оберіть антибіотик" 
                       SelectionChanged="x_cb_antibiotic_SelectionChanged"
                       KeyUp="x_ComboBox_KeyUp"/>
             <DatePicker x:Name="x_dateFrom"  Width="100" 
-                materialDesign:HintAssist.Hint="з"  
-                HorizontalAlignment="left" Margin="10">
+                        materialDesign:HintAssist.Hint="з"
+                        HorizontalAlignment="left" Margin="10"
+                        SelectedDateChanged="x_cb_antibiotic_SelectionChanged">
                 
             </DatePicker>
             <DatePicker x:Name="x_dateTo"  Width="100" 
                         materialDesign:HintAssist.Hint="по" 
-                        HorizontalAlignment="left" Margin="10"/>
-            <Button x:Name="x_dateBTN" Click="x_journalBTN_Click"  ToolTip ="Обрати" Margin="20 0 0 0">
-                <materialDesign:PackIcon Kind="Check" />
-            </Button>
+                        HorizontalAlignment="left" Margin="10"
+                        SelectedDateChanged="x_cb_antibiotic_SelectionChanged"/>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1">
-            <Button HorizontalAlignment="Right"  Margin="0,0,10,0" Click="SaveButton_Click" ToolTip ="Зберегти">
-                <materialDesign:PackIcon Kind="ContentSave" />
+            <Button HorizontalAlignment="Right"  Margin="0,0,10,0" Click="SaveButton_Click"  ToolTip="Зберегти">
+                <materialDesign:PackIcon Kind="Check"/>
             </Button>
             <Button HorizontalAlignment="Right"  Margin="0,0,10,0" Click="PrintButton_Click" ToolTip="Надрукувати">
                 <materialDesign:PackIcon Kind="Printer"/>
@@ -59,7 +58,10 @@
         <materialDesign:Card Grid.Row="2">
             <DataGrid x:Name="x_MainGrid" 
                       ItemsSource="{Binding ListItems}" 
-                      CanUserAddRows="False">
+                      SelectedItem="{Binding SelectedConsumableStock, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      >
                 <DataGrid.RowStyle>
                     <Style TargetType="{x:Type DataGridRow}">
                         <Style.Triggers>
@@ -76,74 +78,37 @@
                     </Style>
                 </DataGrid.RowStyle>
 
-                <DataGrid.CommandBindings>
-                    <CommandBinding Command="ApplicationCommands.Delete" PreviewCanExecute="CommandBinding_CanExecuteDelete" Executed="CommandBinding_ExecutedDelete"/>
-                </DataGrid.CommandBindings>
-
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Id" IsReadOnly="True" Visibility="Collapsed" Binding="{Binding Id}"/>
-                    <DataGridTextColumn Header="№" Binding="{Binding Index, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="№" Binding="{Binding Index}"/>
                     <DataGridCheckBoxColumn Header="В роботі" IsReadOnly="True"
                                             Binding="{Binding Show}"
                                             ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
                                             EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"
                                             >
-                        <DataGridCheckBoxColumn.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Setter Property="IsEnabled" Value="True"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Conclusion}" Value="непридатно">
-                                        <Setter Property="IsEnabled" Value="False"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Conclusion}" Value="придатно">
-                                        <Setter Property="IsEnabled" Value="True"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Conclusion}" Value="">
-                                        <Setter Property="IsEnabled" Value="True"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGridCheckBoxColumn.CellStyle>
                     </DataGridCheckBoxColumn>
-                    <DataGridTextColumn Header="Дата" SortMemberPath="DateDelivery" CanUserSort="True"
-                                        Binding="{Binding DateDelivery, Converter={StaticResource myDateConverter}, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                        />
-                    <DataGridTextColumn Header="Антибіотик" SortMemberPath="AB.name" CanUserSort="True" IsReadOnly="True"
-                                        Binding="{Binding AB.name}"/>
-                    <DataGridTemplateColumn Header="Виробник">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Producer.abbr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTextColumn Header="Фін" Binding="{Binding Finance.abbr}" SortMemberPath="Finance.abbr" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Дата" Binding="{Binding DateDelivery, Converter={StaticResource myDateConverter}}" SortMemberPath="DateDelivery" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Назва" Binding="{Binding Consumable.name}" SortMemberPath="Consumable.name" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Виробник" Binding="{Binding Producer.abbr}" SortMemberPath="Producer.abbr" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Серія" Binding="{Binding Series}" SortMemberPath="Series" IsReadOnly="True" />
+                    <DataGridTextColumn Header="Гідно до" Binding="{Binding Termin,Converter={StaticResource myDateConverter}}" SortMemberPath="Termin"  IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Дата контролю" Binding="{Binding DateControl, Converter={StaticResource myDateConverter}}" SortMemberPath="DateControls" />
+                    <DataGridTemplateColumn Header="Висновок"  SortMemberPath="Conclusion" CanUserSort="True" >
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
-                                <ComboBox ItemsSource="{Binding ListProducers}" IsDropDownOpen="True"
-                                          ItemTemplate="{StaticResource itemsComboBox}"
-                                          SelectedItem="{Binding Producer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          FontWeight="Normal" FontSize="12"/>
+                                <ComboBox ItemsSource="{Binding DataContext.ListConclusions, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                          SelectedItem="{Binding Conclusion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          IsDropDownOpen="True" Background="White"
+                                          FontSize="12"  FontWeight="Normal"
+                                          KeyUp="x_ComboBox_KeyUp"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellEditingTemplate>
-                    </DataGridTemplateColumn>
-
-                    <DataGridTextColumn Header="Серія" Binding="{Binding Series, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <DataGridTextColumn Header="Гідно до" Binding="{Binding Termin,Converter={StaticResource myDateConverter}, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-                    <DataGridTextColumn Header="Дата контролю" SortMemberPath="DateControls" CanUserSort="True"
-                                        Binding="{Binding DateControls, Converter={StaticResource myDateConverter}, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                        />
-                    <DataGridTemplateColumn Header="Висновок">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Conclusion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
-                        <DataGridTemplateColumn.CellEditingTemplate>
-                            <DataTemplate>
-                                <ComboBox ItemsSource="{Binding ListConclusion}" IsDropDownOpen="True"
-                                          SelectedItem="{Binding Conclusion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          FontWeight="Normal" FontSize="12"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellEditingTemplate>
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>

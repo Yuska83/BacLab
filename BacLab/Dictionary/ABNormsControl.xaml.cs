@@ -15,18 +15,37 @@ namespace BacLab.Dictionary
     {
         BacLab_DBEntities context;
         d_Subdivisions subdivisions;
-        public ObservableCollection<ABNorms> ListItems { get; set; } = new ObservableCollection<ABNorms>();
-        ABNorms oldItem = null;
-        public ABNormsControl(BacLab_DBEntities context, d_Subdivisions subdivisions)
+        int idConsumablesGroup;
+        List<string> consumablesList = new List<string>();
+        public ObservableCollection<d_ConsumablesNorms> ListItems { get; set; } = new ObservableCollection<d_ConsumablesNorms>();
+        d_ConsumablesNorms oldItem = null;
+        public ABNormsControl(BacLab_DBEntities context, d_Subdivisions subdivisions, int idConsumablesGroup)
         {
             try
             {
                 InitializeComponent();
                 this.context = context;
                 this.subdivisions = subdivisions;
-                x_cb_culture.ItemsSource = context.g_MicroorganismGroup_Microorganism.Where(c => c.idGroup == 45).
+                this.idConsumablesGroup = idConsumablesGroup;
+                if(idConsumablesGroup == 1)//Антибіотики
+                {
+                    x_cb_culture.ItemsSource = context.g_MicroorganismGroup_Microorganism.Where(c => c.idGroup == 45).
                         Select(c => c.d_Microorganism).Where(c => c.show == true).OrderBy(c => c.index).ToList();
-                x_AllABList.ItemsSource = context.d_Consumables.Where(c => c.show == true && c.idConsumablesGroup == 1).OrderBy(c => c.name).ToList();
+                    x_MainGrid.Columns[8].Visibility = Visibility.Collapsed;
+                    x_MainGrid.Columns[9].Visibility = Visibility.Collapsed;
+                }
+                else if(idConsumablesGroup == 2)//середовища
+                {
+                    x_cb_culture.Visibility = Visibility.Collapsed;
+                    x_MainGrid.Columns[2].Header = "Середовище";
+                    x_MainGrid.Columns[3].Visibility = Visibility.Collapsed;
+                    x_MainGrid.Columns[4].Visibility = Visibility.Collapsed;
+                    x_MainGrid.Columns[5].Visibility = Visibility.Collapsed;
+                    x_MainGrid.Columns[6].Visibility = Visibility.Collapsed;
+                    x_MainGrid.Columns[7].Visibility = Visibility.Collapsed;
+                }
+                consumablesList = context.d_Consumables.Where(c => c.show == true && c.idConsumablesGroup == idConsumablesGroup).Select(c => c.name).ToList();
+                x_ConsumablesList.ItemsSource = consumablesList.OrderBy(c => c).ToList();
                 FillListItems(-1);
                 DataContext = this;
 
@@ -49,28 +68,29 @@ namespace BacLab.Dictionary
             try
             {
                 ListItems.Clear();
-                List<a_AntibioticNorms> tab;
+                List<d_ConsumablesNorms> tab;
                 if (idCulture < 0 && idCulture < 0)
-                    tab = context.a_AntibioticNorms.OrderBy(c => c.d_Consumables.name).ThenBy(c => c.d_Microorganism.index).ToList();
+                    tab = context.d_ConsumablesNorms.Where(c => c.idConsumableGroup == idConsumablesGroup).OrderBy(c => c.d_Consumables.name).ThenBy(c => c.d_Microorganism.index).ToList();
                 else
-                    tab = context.a_AntibioticNorms.Where(c => c.d_Microorganism.id == idCulture).OrderBy(c => c.d_Consumables.name).ToList();
+                    tab = context.d_ConsumablesNorms.Where(c => c.d_Microorganism.id == idCulture && c.idConsumableGroup == idConsumablesGroup).OrderBy(c => c.d_Consumables.name).ToList();
 
 
                 int i = 1;
                 foreach (var item in tab)
                 {
-                    ABNorms row = new ABNorms
-                    {
-                        Id = item.id,
-                        Index = i++,
-                        AB = item.d_Consumables,
-                        Microorganism = item.d_Microorganism,
-                        ValuePermissiblemMax = item.valuePermissiblemMax,
-                        ValuePermissiblemMin = item.valuePermissiblemMin,
-                        ValueTargetMax = item.valueTargetMax,
-                        ValueTargetMin = item.valueTargetMin
-                    };
-                    ListItems.Add(row);
+                    item.index = i++;
+                    //ABNorms row = new ABNorms
+                    //{
+                    //    Id = item.id,
+                    //    Index = i++,
+                    //    AB = item.d_Consumables,
+                    //    Microorganism = item.d_Microorganism,
+                    //    ValuePermissiblemMax = item.valuePermissiblemMax,
+                    //    ValuePermissiblemMin = item.valuePermissiblemMin,
+                    //    ValueTargetMax = item.valueTargetMax,
+                    //    ValueTargetMin = item.valueTargetMin
+                    //};
+                    ListItems.Add(item);
                 }
             }
             catch (Exception ex)
@@ -82,28 +102,28 @@ namespace BacLab.Dictionary
         {
             try
             {
-                foreach (var Item in ListItems)
-                {
-                    bool isNew = false;
-                    a_AntibioticNorms d_Item = context.a_AntibioticNorms.Where(c => c.id == Item.Id).FirstOrDefault();
-                    if (d_Item == null)
-                    {
-                        d_Item = new a_AntibioticNorms();
-                        isNew = true;
-                    }
+                //foreach (var Item in ListItems)
+                //{
+                //    bool isNew = false;
+                //    d_ConsumablesNorms d_Item = context.d_ConsumablesNorms.Where(c => c.id == Item.Id).FirstOrDefault();
+                //    if (d_Item == null)
+                //    {
+                //        d_Item = new d_ConsumablesNorms();
+                //        isNew = true;
+                //    }
+                //    d_Item.idConsumableGroup = 1;
+                //    d_Item.index = Item.Index;
+                //    d_Item.d_Consumables = Item.AB;
+                //    d_Item.d_Microorganism = Item.Microorganism;
+                //    d_Item.valuePermissiblemMax = Item.ValuePermissiblemMax;
+                //    d_Item.valuePermissiblemMin = Item.ValuePermissiblemMin;
+                //    d_Item.valueTargetMax = Item.ValueTargetMax;
+                //    d_Item.valueTargetMin = Item.ValueTargetMin;
 
-                    d_Item.index = Item.Index;
-                    d_Item.d_Consumables = Item.AB;
-                    d_Item.d_Microorganism = Item.Microorganism;
-                    d_Item.valuePermissiblemMax = Item.ValuePermissiblemMax;
-                    d_Item.valuePermissiblemMin = Item.ValuePermissiblemMin;
-                    d_Item.valueTargetMax = Item.ValueTargetMax;
-                    d_Item.valueTargetMin = Item.ValueTargetMin;
+                //    if (isNew)
+                //        context.d_ConsumablesNorms.Add(d_Item);
 
-                    if (isNew)
-                        context.a_AntibioticNorms.Add(d_Item);
-
-                }
+                //}
                 context.SaveChanges();
             }
             catch (Exception ex)
@@ -114,23 +134,28 @@ namespace BacLab.Dictionary
 
         private void x_AddAB_Click(object sender, RoutedEventArgs e)
         {
-            if (x_AllABList.SelectedItem == null) return;
-            if (x_cb_culture.SelectedItem == null) return;
+            if (x_ConsumablesList.SelectedItem == null) return;
 
-            ABNorms ab = ListItems.Where(c => c.AB.id == (x_AllABList.SelectedItem as d_Consumables).id).FirstOrDefault();
-            if (ab != null) { Message.Ok("Вже додано: № " + ab.Index, "MsgDialog"); return; }
+            d_Consumables consumable = context.d_Consumables.Where(c => c.abbr == x_ConsumablesList.SelectedItem.ToString()).FirstOrDefault();
+            if (idConsumablesGroup == 1)
+            {
+                if (x_cb_culture.SelectedItem == null) return;
+
+                d_ConsumablesNorms ab = ListItems.Where(c => c.d_Consumables.id == consumable.id).FirstOrDefault();
+                if (ab != null) { Message.Ok("Вже додано: № " + ab.index, "MsgDialog"); return; }
+            }
+            
 
             try
             {
-                ABNorms newItem = new ABNorms()
+                d_ConsumablesNorms newItem = new d_ConsumablesNorms()
                 {
-                    AB = x_AllABList.SelectedItem as d_Consumables,
-                    Id = 0,
-                    Index = ListItems.Count() + 1,
-                    Show = true,
-                    Microorganism = x_cb_culture.SelectedItem as d_Microorganism
-
+                    index = ListItems.Count() + 1,
+                    idConsumableGroup = idConsumablesGroup,
+                    d_Consumables = consumable,
+                    d_Microorganism = x_cb_culture.SelectedItem as d_Microorganism
                 };
+                context.d_ConsumablesNorms.Add(newItem);
                 ListItems.Add(newItem);
                 x_MainGrid.SelectedItem = newItem;
                 x_MainGrid.ScrollIntoView(x_MainGrid.SelectedItem);
@@ -145,12 +170,12 @@ namespace BacLab.Dictionary
             if (x_MainGrid.SelectedItem == null) return;
             try
             {
-                ABNorms selectedItem = x_MainGrid.SelectedItem as ABNorms;
-                if (selectedItem.Id == 0)
+                d_ConsumablesNorms selectedItem = x_MainGrid.SelectedItem as d_ConsumablesNorms;
+                if (selectedItem.id <1)
                     ListItems.Remove(selectedItem);
                 else
                 {
-                    bool res = DeleteRow(selectedItem.Id);
+                    bool res = DeleteRow(selectedItem.id);
                     if (res == true)
                         ListItems.Remove(selectedItem);
                 }
@@ -168,12 +193,12 @@ namespace BacLab.Dictionary
             try
             {
                 bool res = false;
-                ABNorms item = x_MainGrid.SelectedItem as ABNorms;
-                if (item.Id == 0)
+                d_ConsumablesNorms item = x_MainGrid.SelectedItem as d_ConsumablesNorms;
+                if (item.id < 1)
                     oldItem = item;
                 else
                 {
-                    res = DeleteRow(item.Id);
+                    res = DeleteRow(item.id);
                     if (res == true)
                         oldItem = item;
                 }
@@ -189,14 +214,14 @@ namespace BacLab.Dictionary
             try
             {
                 BacLab_DBEntities context2 = new BacLab_DBEntities();
-                var delItem = context2.a_AntibioticNorms.Where(c => c.id == id).SingleOrDefault();
-                context2.a_AntibioticNorms.Remove(delItem);
+                var delItem = context2.d_ConsumablesNorms.Where(c => c.id == id).SingleOrDefault();
+                context2.d_ConsumablesNorms.Remove(delItem);
                 context2.SaveChanges();
                 return true;
             }
             catch (Exception)
             {
-                Message.Ok("Видалити неможливо. Є зв'язки" + "\n" + CommonClass.PrintReferencingEntities(context, typeof(a_AntibioticNorms).Name, id), "MsgDialog");
+                Message.Ok("Видалити неможливо. Є зв'язки" + "\n" + CommonClass.PrintReferencingEntities(context, typeof(d_ConsumablesNorms).Name, id), "MsgDialog");
                 return false;
             }
         }
@@ -232,29 +257,29 @@ namespace BacLab.Dictionary
                 xlRange.Cells[row, column++] = "P.aeruginosa ATCC 27853";
                 xlRange.Cells[row, column++] = "E.faecalis ATCC 29213";
 
-                var col = ListItems.OrderBy(c => c.AB.name).GroupBy(c => c.AB);
+                var col = ListItems.OrderBy(c => c.d_Consumables.name).GroupBy(c => c.d_Consumables);
 
                 foreach (var item in col)
                 {
                     row++;
                     column = 1;
                     xlRange.Cells[row, column++] = item.Key.name;
-                    var col1 = item.Key.a_AntibioticNorms.Where(c => c.d_Microorganism.id == 133).FirstOrDefault();
+                    var col1 = item.Key.d_ConsumablesNorms.Where(c => c.d_Microorganism.id == 133).FirstOrDefault();
                     if (col1 != null)
                         xlRange.Cells[row, column++] = " " + col1.valuePermissiblemMin + " - " + col1.valuePermissiblemMax;
                     else
                         column++;
-                    var col2 = item.Key.a_AntibioticNorms.Where(c => c.d_Microorganism.id == 134).FirstOrDefault();
+                    var col2 = item.Key.d_ConsumablesNorms.Where(c => c.d_Microorganism.id == 134).FirstOrDefault();
                     if (col2 != null)
                         xlRange.Cells[row, column++] = " " + col2.valuePermissiblemMin + " - " + col2.valuePermissiblemMax;
                     else
                         column++;
-                    var col3 = item.Key.a_AntibioticNorms.Where(c => c.d_Microorganism.id == 135).FirstOrDefault();
+                    var col3 = item.Key.d_ConsumablesNorms.Where(c => c.d_Microorganism.id == 135).FirstOrDefault();
                     if (col3 != null)
                         xlRange.Cells[row, column++] = " " + col3.valuePermissiblemMin + " - " + col3.valuePermissiblemMax;
                     else
                         column++;
-                    var col4 = item.Key.a_AntibioticNorms.Where(c => c.d_Microorganism.id == 136).FirstOrDefault();
+                    var col4 = item.Key.d_ConsumablesNorms.Where(c => c.d_Microorganism.id == 136).FirstOrDefault();
                     if (col4 != null)
                         xlRange.Cells[row, column++] = " " + col4.valuePermissiblemMin + " - " + col4.valuePermissiblemMax;
                     else
@@ -285,8 +310,6 @@ namespace BacLab.Dictionary
                 range.Cells.Borders.Weight = Excel.XlBorderWeight.xlThin;
                 range.Columns.AutoFit();
 
-
-
                 excel.Visible = true;
                 excel.WindowState = Excel.XlWindowState.xlMinimized;
                 excel.WindowState = Excel.XlWindowState.xlMaximized;
@@ -316,11 +339,22 @@ namespace BacLab.Dictionary
         private void x_AllAbBTN_Click(object sender, RoutedEventArgs e)
         {
             x_cb_culture.SelectedItem = null;
-            x_AllABList.SelectedItem = null;
+            x_ConsumablesList.SelectedItem = null;
             FillListItems(-1);
         }
 
-
+        private void x_SearchTextBlock_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                if (x_SearchTextBlock.Text.Length > 2)
+                    x_ConsumablesList.ItemsSource = consumablesList.Where(c => c.Contains(x_SearchTextBlock.Text, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + " " + ex.StackTrace);
+            }
+        }
     }
 }
 

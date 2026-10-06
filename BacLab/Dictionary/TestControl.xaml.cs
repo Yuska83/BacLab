@@ -38,7 +38,7 @@ namespace BacLab.Dictionary
             {
                 InitializeComponent();
                 this.context = context;
-                x_Card.Content = new DictionariControl(context, "d_Tests");
+                x_Card.Content = new DictionaryControl(context, "d_Tests");
                 ListTestsPanelName = context.d_TestsPanelName.OrderBy(c => c.index).ToList();
                 ListMicroorganism = context.d_Microorganism.OrderBy(c => c.index).ToList();
                 ListMorphology = context.d_Morphology.OrderBy(c => c.index).Select(c => c.abbr).ToList();
@@ -123,7 +123,7 @@ namespace BacLab.Dictionary
             try
             {
                 x_cb_testPanelName.SelectedItem = null;
-                bool res = await Message.DialogNew_TestPanel(context, "MsgDialog");
+                bool res = await Message.Dialog_TestPanel(context, "MsgDialog");
                 x_cb_testPanelName.ItemsSource = context.d_TestsPanelName.Where(c => c.show == true).OrderBy(c => c.index).ToList();
 
             }
@@ -137,8 +137,8 @@ namespace BacLab.Dictionary
         {
             try
             {
-                if ((x_Card.Content as DictionariControl).SelectedItem == null || x_cb_testPanelName.SelectedItem == null) return;
-                DictionaryModel Test = (x_Card.Content as DictionariControl).SelectedItem;
+                if ((x_Card.Content as DictionaryControl).SelectedItem == null || x_cb_testPanelName.SelectedItem == null) return;
+                DictionaryModel Test = (x_Card.Content as DictionaryControl).SelectedItem;
                 if (Test.Id == 0)
                 {
                     Message.Ok("Збережіть зміни в довіднику", "MsgDialog"); return;
@@ -281,8 +281,8 @@ namespace BacLab.Dictionary
         {
             try
             {
-                if ((x_Card.Content as DictionariControl).SelectedItem == null || SelectedMicroorganism == null) return;
-                DictionaryModel Test = (x_Card.Content as DictionariControl).SelectedItem;
+                if ((x_Card.Content as DictionaryControl).SelectedItem == null || SelectedMicroorganism == null) return;
+                DictionaryModel Test = (x_Card.Content as DictionaryControl).SelectedItem;
                 if (Test.Id == 0)
                 {
                     Message.Ok("Збережіть зміни в довіднику", "MsgDialog"); return;

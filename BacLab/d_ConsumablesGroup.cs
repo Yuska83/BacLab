@@ -19,6 +19,8 @@ namespace BacLab
         {
             this.d_Consumables = new HashSet<d_Consumables>();
             this.d_ConsumablesStock = new HashSet<d_ConsumablesStock>();
+            this.d_ConsumablesControls = new HashSet<d_ConsumablesControls>();
+            this.d_ConsumablesNorms = new HashSet<d_ConsumablesNorms>();
         }
     
         public int id { get; set; }
@@ -31,5 +33,9 @@ namespace BacLab
         public virtual ICollection<d_Consumables> d_Consumables { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<d_ConsumablesStock> d_ConsumablesStock { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<d_ConsumablesControls> d_ConsumablesControls { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<d_ConsumablesNorms> d_ConsumablesNorms { get; set; }
     }
 }

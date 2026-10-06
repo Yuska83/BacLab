@@ -35,11 +35,11 @@ namespace BacLab.Dictionary
             {
                 switch ((sender as Button).Name.ToString())
                 {
-                    case "d_PatientStatus": x_MainCard.Content = new DictionariControl(context, "d_PatientStatus", false); break;
-                    case "d_District": x_MainCard.Content = new DictionariControl(context, "d_District", false); break;
-                    case "d_JobPlace": x_MainCard.Content = new DictionariControl(context, "d_JobPlace"); break;
-                    case "d_Job": x_MainCard.Content = new DictionariControl(context, "d_Job", false); break;
-                    case "d_JobPlace_Job": x_MainCard.Content = new DictionariControl(context, "d_JobPlace_Job", false); break;
+                    case "d_PatientStatus": x_MainCard.Content = new DictionaryControl(context, "d_PatientStatus", false); break;
+                    case "d_District": x_MainCard.Content = new DictionaryControl(context, "d_District"); break;
+                    case "d_JobPlace": x_MainCard.Content = new DictionaryControl(context, "d_JobPlace"); break;
+                    case "d_Job": x_MainCard.Content = new DictionaryControl(context, "d_Job"); break;
+                    case "d_JobPlace_Job": x_MainCard.Content = new DictionaryControl(context, "d_JobPlace_Job", false); break;
                     case "d_DublicatesPatients":
                         {
                             if (staff.id != 4)

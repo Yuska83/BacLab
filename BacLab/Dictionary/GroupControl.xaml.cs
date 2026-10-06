@@ -189,7 +189,7 @@ namespace BacLab.Dictionary
 
                 switch (groupName)
                 {
-                    case ("x_Institution_Department"):
+                    case ("g_Institution_Department"):
                         {
                             bool isNew;
                             foreach (var Item in ListItems)
@@ -211,7 +211,7 @@ namespace BacLab.Dictionary
                             }
                             break;
                         }
-                    case ("x_Institution_Person"):
+                    case ("g_Institution_SentPerson"):
                         {
                             bool isNew;
                             foreach (var Item in ListItems)
@@ -273,7 +273,7 @@ namespace BacLab.Dictionary
                 List<DictionaryModel> list2 = new List<DictionaryModel>();
                 switch (groupName)
                 {
-                    case ("x_Institution_Department"):
+                    case ("g_Institution_Department"):
                         {
                             var col = context.d_Institution.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();
                             foreach (var item in col)
@@ -288,7 +288,7 @@ namespace BacLab.Dictionary
                             }
                             break;
                         }
-                    case ("x_Institution_Person"):
+                    case ("g_Institution_SentPerson"):
                         {
 
                             var col = context.d_Institution.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();
@@ -366,13 +366,13 @@ namespace BacLab.Dictionary
                 BacLab_DBEntities context2 = new BacLab_DBEntities();
                 switch (groupName)
                 {
-                    case ("x_Institution_Department"):
+                    case ("g_Institution_Department"):
                         {
                             var delItem = context2.g_Institution_Department.Where(c => c.id == id).SingleOrDefault();
                             context2.g_Institution_Department.Remove(delItem); break;
 
                         }
-                    case ("x_Institution_Person"):
+                    case ("g_Institution_SentPerson"):
                         {
                             var delItem = context2.g_Institution_SentPerson.Where(c => c.id == id).SingleOrDefault();
                             context2.g_Institution_SentPerson.Remove(delItem); break;
@@ -420,13 +420,13 @@ namespace BacLab.Dictionary
                 xlRange.Cells[1, 1] = "Номер";
                 switch (groupName)
                 {
-                    case ("x_Institution_Department"):
+                    case ("g_Institution_Department"):
                         {
                             xlRange.Cells[1, 2] = "Лікарня";
                             xlRange.Cells[1, 3] = "Відділення";
                             break;
                         }
-                    case ("x_Institution_Person"):
+                    case ("g_Institution_SentPerson"):
                         {
                             xlRange.Cells[1, 2] = "Лікарня";
                             xlRange.Cells[1, 3] = "Лікарі";

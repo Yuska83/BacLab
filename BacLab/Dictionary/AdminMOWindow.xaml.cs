@@ -30,12 +30,13 @@ namespace BacLab.Dictionary
             {
                 switch ((sender as Button).Name.ToString())
                 {
-                    case "d_MicroorganismGroup": x_MainCard.Content = new DictionariControl(context, "d_MicroorganismGroup", false); break;
-                    case "d_Microorganism": x_MainCard.Content = new DictionariControl(context, "d_Microorganism"); break;
+                    case "d_MicroorganismGroup": x_MainCard.Content = new DictionaryControl(context, "d_MicroorganismGroup", false); break;
+                    case "d_Microorganism": x_MainCard.Content = new DictionaryControl(context, "d_Microorganism"); break;
                     case "g_MicroorganismGroup_Microorganism": x_MainCard.Content = new GroupControl(context, "g_MicroorganismGroup_Microorganism"); break;
                     case "d_Serovar": x_MainCard.Content = new SerovariantControl(context); break;
                     case "d_Biovar": x_MainCard.Content = new BiovariantControl(context); break;
-                    case "d_Quantity": x_MainCard.Content = new DictionariControl(context, "d_Quantity"); break;
+                    case "d_Quantity": x_MainCard.Content = new DictionaryControl(context, "d_Quantity"); break;
+                    case "d_AccreditationMO": x_MainCard.Content = new DictionaryControl(context, "d_Quantity"); break;
                 }
             }
             catch (Exception ex)

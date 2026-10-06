@@ -17,12 +17,12 @@ namespace BacLab
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public d_Institution()
         {
-            this.d_Analyzes = new HashSet<d_Analyzes>();
-            this.d_Analyzes1 = new HashSet<d_Analyzes>();
             this.g_Institution_SentPerson = new HashSet<g_Institution_SentPerson>();
             this.g_Institution_Department = new HashSet<g_Institution_Department>();
             this.g_Institution_Email_Print = new HashSet<g_Institution_Email_Print>();
             this.s_Orders = new HashSet<s_Orders>();
+            this.d_Analyzes = new HashSet<d_Analyzes>();
+            this.d_Analyzes1 = new HashSet<d_Analyzes>();
         }
     
         public int id { get; set; }
@@ -32,10 +32,6 @@ namespace BacLab
         public Nullable<bool> show { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<d_Analyzes> d_Analyzes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<d_Analyzes> d_Analyzes1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<g_Institution_SentPerson> g_Institution_SentPerson { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<g_Institution_Department> g_Institution_Department { get; set; }
@@ -43,5 +39,9 @@ namespace BacLab
         public virtual ICollection<g_Institution_Email_Print> g_Institution_Email_Print { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<s_Orders> s_Orders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<d_Analyzes> d_Analyzes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<d_Analyzes> d_Analyzes1 { get; set; }
     }
 }

@@ -14,13 +14,19 @@
                       HorizontalAlignment="Right" VerticalAlignment="Stretch" ResizeDirection="Columns"/>
         <materialDesign:Card Grid.Column="0" Margin="10 10 5 10" >
             <StackPanel Orientation="Vertical">
-                <Button x:Name="d_ABDisk" Click="Button_Click">Диски АБ</Button>
-                <Button x:Name="d_Consumables" Click="Button_Click">Розхідники</Button>
+                <Button x:Name="d_ABDisk" Click="Button_Click">Антибіотики</Button>
+                <Button x:Name="d_Consumables" Click="Button_Click">Середовища</Button>
+                <Button x:Name="d_Materials" Click="Button_Click">Матеріали</Button>
+                <Button x:Name="d_Etanol" Click="Button_Click">Спирт</Button>
                 <Button x:Name="d_ConsumablesGroup" Click="Button_Click">Групи розхідників</Button>
                 <Button x:Name="d_Producer" Click="Button_Click">Виробники</Button>
                 <Button x:Name="d_ABDiskAVE" Click="Button_Click">Серед.розхід дисків АБ</Button>
                 <Button x:Name="d_ConsumablesAVE" Click="Button_Click">Серед.розхід пож.сер.</Button>
                 <Button x:Name="d_Units" Click="Button_Click">Одиниці виміру</Button>
+                <Button x:Name="d_Sterilization" Click="Button_Click">Методи стерилізації</Button>
+                <Button x:Name="d_Storage" Click="Button_Click">Способи зберігання</Button>
+                <Button x:Name="d_Termin" Click="Button_Click">Терміни зберігання</Button>
+                <Button x:Name="d_Coefficient" Click="Button_Click">Коефіцієнти</Button>
             </StackPanel>
         </materialDesign:Card >
         <materialDesign:Card x:Name="x_MainCard"  Grid.Column="1" Margin="5 10 10 10"/>

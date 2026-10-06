@@ -37,7 +37,7 @@ namespace BacLab.Dialogs
                     }
                 case "x_addDiagnosis":
                     {
-                        listItems = context.d_Diagnosis.Select(c => c.abbr).ToList();
+                        listItems = context.d_DiagnosisGroup.Select(c => c.abbr).ToList();
                         break;
                     }
                 case "x_addBrakerage":
@@ -53,11 +53,6 @@ namespace BacLab.Dialogs
                 case "x_addJob":
                     {
                         listItems = context.d_Job.Select(c => c.abbr).ToList();
-                        break;
-                    }
-                case "x_addConsumable":
-                    {
-                        listItems = context.d_Consumables.Select(c => c.abbr).ToList();
                         break;
                     }
                 case "x_addProducer":
@@ -155,20 +150,6 @@ namespace BacLab.Dialogs
                             idItem = d_Item.id;
                             break;
                         }
-                    case "x_addDiagnosis":
-                        {
-                            d_Diagnosis d_Item = context.d_Diagnosis.Where(c => c.abbr == x_abbr.Text).FirstOrDefault() ??
-                                context.d_Diagnosis.Add(new d_Diagnosis()
-                                {
-                                    abbr = x_abbr.Text,
-                                    name = x_abbr.Text,
-                                    index = context.d_Diagnosis.Count() + 1,
-                                    show = true
-                                });
-                            context.SaveChanges();
-                            idItem = d_Item.id;
-                            break;
-                        }
                     case "x_addBrakerage":
                         {
                             d_Brakerage d_Item = context.d_Brakerage.Where(c => c.abbr == x_abbr.Text).FirstOrDefault() ??
@@ -206,23 +187,6 @@ namespace BacLab.Dialogs
                                     abbr = x_abbr.Text,
                                     name = x_abbr.Text,
                                     index = context.d_Job.Count() + 1,
-                                    show = true
-                                });
-                            context.SaveChanges();
-                            idItem = d_Item.id;
-                            break;
-                        }
-                    case "x_addConsumable":
-                        {
-                            d_ConsumablesGroup d_Group = context.d_ConsumablesGroup.Where(c => c.id == idGroup).FirstOrDefault();
-                            d_Consumables d_Item = context.d_Consumables.Where(c => c.abbr == x_abbr.Text && c.idConsumablesGroup == idGroup).FirstOrDefault() ??
-                                context.d_Consumables.Add(new d_Consumables()
-                                {
-                                    abbr = x_abbr.Text,
-                                    name = x_abbr.Text,
-                                    index = context.d_Consumables.Count() + 1,
-                                    idConsumablesGroup = idGroup,
-                                    d_ConsumablesGroup = d_Group,
                                     show = true
                                 });
                             context.SaveChanges();

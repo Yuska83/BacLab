@@ -89,7 +89,7 @@ namespace BacLab.Dictionary
                 if(data == null) return;
                 string folderMain = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
 
-                CommonClass.ShowRezult(data, folderMain);
+                //CommonClass.ShowRezult(data, folderMain);
             }
             catch (Exception ex)
             {

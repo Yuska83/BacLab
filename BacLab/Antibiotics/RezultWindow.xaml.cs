@@ -1,6 +1,7 @@
 ﻿using BacLab.Administration;
 using BacLab.Dialogs;
 using BacLab.Models;
+using Org.BouncyCastle.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -135,7 +136,7 @@ namespace BacLab.Antibiotics
         {
             try
             {
-                return context.d_Analyzes.Where(c => c.sendAnalis != true &&
+                return context.d_Analyzes.Where(c => c.isEnd != true &&
                 c.p_Group_Material_Purpose.d_GroupResearch.id == idGroupResearch &&
                 c.d_Brakerage == null && c.idSubdivisions == subdivisions.id).OrderBy(c => c.labNum).ToList();
             }
@@ -449,7 +450,7 @@ namespace BacLab.Antibiotics
                     }
                 }
 
-                Analis.SendAnalis = true;
+                Analis.IsEnd = true;
                 Analis.GetAnalyzes(Selected_d_Analis);
                 context.SaveChanges();
 
@@ -512,17 +513,17 @@ namespace BacLab.Antibiotics
                 //записуємо контролі для обл
                 if (Analis.Subdivisions.id == 9)
                 {
-                    var listAntibioticControl = context.a_AntibioticControl.Where(c => c.idSubdivisions == Analis.Subdivisions.id).ToList();
+                    var listAntibioticControl = context.d_ConsumablesControls.Where(c => c.idSubdivisions == Analis.Subdivisions.id).ToList();
                     //шукаємо флакон
                     d_ConsumablesStock abStoct = context.d_ConsumablesStock.Where(c => c.idConsumable == abDisk.ABMOGroupItem.idConsumable && c.idSubdivisions == Analis.Subdivisions.id && c.show == true).FirstOrDefault();
                     if (abStoct != null)
                         if (listAntibioticControl.Where(c => c.date == (DateTime)Analis.DateEnd && c.idConsumableStock == abStoct.id).FirstOrDefault() == null)
                         {
                             Random rnd = new Random();
-                            var colNormsCulture = context.a_AntibioticNorms.Where(c => c.idConsumable == abDisk.ABMOGroupItem.idConsumable);
+                            var colNormsCulture = context.d_ConsumablesNorms.Where(c => c.idConsumable == abDisk.ABMOGroupItem.idConsumable);
                             foreach (var itemNorms in colNormsCulture)
                             {
-                                context.a_AntibioticControl.Add(new a_AntibioticControl()
+                                context.d_ConsumablesControls.Add(new d_ConsumablesControls()
                                 {
                                     date = (DateTime)Analis.DateEnd,
                                     idConsumableStock = abStoct.id,
@@ -675,7 +676,13 @@ namespace BacLab.Antibiotics
                         if (noPrintInst == null)
                             try
                             {
-                                CommonClass.PrintRezult(context, Analis, laboratoria, folderMain);
+                                var rez = CommonClass.PrintRezult(context, Analis, laboratoria, folderMain);
+                                if (rez)
+                                {
+                                    CommonClass.Log(context, Analis, staff, 12, false);
+                                    Analis.isPrint = true;
+                                    context.SaveChanges();
+                                }
                             }
                             catch (Exception ex)
                             {
@@ -687,7 +694,14 @@ namespace BacLab.Antibiotics
                         //на пошту
                         try
                         {
-                            CommonClass.SendEmail(context, Analis, laboratoria, folderMain);
+                            var rez = CommonClass.SendEmail(context, Analis, laboratoria, folderMain);
+                            if (rez.Equals("Відправлено"))
+                            {
+                                CommonClass.Log(context, Analis, staff, 13, false);
+                                Analis.isSend = true;
+                                context.SaveChanges();
+                            }
+
                         }
                         catch (Exception ex)
                         {
@@ -748,7 +762,7 @@ namespace BacLab.Antibiotics
             try
             {
                 if (Selected_d_Analis.rezult == null) return;
-                CommonClass.ShowRezult(Selected_d_Analis.rezult, folderMain);
+                CommonClass.ShowRezult(Selected_d_Analis, folderMain);
             }
             catch (Exception ex)
             {

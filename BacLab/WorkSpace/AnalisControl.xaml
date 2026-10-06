@@ -86,28 +86,28 @@
         </Button>
         <Button x:Name="x_emailBTN"  Grid.Column="6"
                 ToolTip="Відправити на пошту" Visibility="Hidden"
-                Click="x_SentEmail_Click"  IsEnabled="{Binding Analis.sendAnalis}">
+                Click="x_SentEmail_Click"  IsEnabled="{Binding Analis.isEnd}">
             <materialDesign:PackIcon Kind="Email" />
         </Button>
         <Button x:Name="x_printBTN"  Grid.Column="7"
                 ToolTip="Надрукувати" Visibility="Hidden"
-                Click="x_PrintRezult_Click"  IsEnabled="{Binding Analis.sendAnalis,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                Click="x_PrintRezult_Click"  IsEnabled="{Binding Analis.isEnd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <materialDesign:PackIcon Kind="Printer" />
         </Button>
         <Button  x:Name="x_blankBTN"  Grid.Column="8" Visibility="Hidden"
-                 Click="x_ShowRezult_Click"  IsEnabled="{Binding Analis.sendAnalis,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                 Click="x_ShowRezult_Click"  IsEnabled="{Binding Analis.isEnd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <materialDesign:PackIcon Kind="FileDocument" />
         </Button>
 
         <DatePicker Grid.Column="9" x:Name="x_dateEnd" VerticalAlignment="Center"
-                    Visibility="{Binding Analis.sendAnalis, Converter={StaticResource BooleanToVisibilityConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                    Visibility="{Binding Analis.isEnd, Converter={StaticResource BooleanToVisibilityConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                     materialDesign:HintAssist.Hint="Дата виписки"
                     SelectedDate="{Binding Analis.dateEnd, Converter={StaticResource DateTimeToDateConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged }">
         </DatePicker>
 
         <TextBox Grid.Column="10" x:Name="x_doctorSend" VerticalAlignment="Bottom" Margin="10 0 10 0" 
                  Text="{Binding Analis.d_Staff.abbr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                 Visibility="{Binding Analis.sendAnalis, Converter={StaticResource BooleanToVisibilityConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                 Visibility="{Binding Analis.isEnd, Converter={StaticResource BooleanToVisibilityConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                  materialDesign:HintAssist.Hint="Лікар"
                  IsEnabled="False"/>
     </Grid>

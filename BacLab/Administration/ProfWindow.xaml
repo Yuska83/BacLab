@@ -61,177 +61,167 @@
                           HorizontalAlignment="Right" VerticalAlignment="Stretch" ResizeDirection="Columns"/>
 
             <materialDesign:Card >
-                <materialDesign:DialogHost Identifier="x_dlgHostResult" Margin="10" >
-                    <Grid >
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
 
-                        <TextBox Grid.Column="0" Grid.Row="0" x:Name="x_labNum" 
+                    <materialDesign:DialogHost Identifier="x_dlgHostResult" Margin="10" >
+                        <Grid ScrollViewer.CanContentScroll="True">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox Grid.Column="0" Grid.Row="0" x:Name="x_labNum" 
                          Text="{Binding Analis.labNum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource StringToIntConverter} }"
                          materialDesign:HintAssist.Hint="Номер"/>
 
-                        <DatePicker Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
+                            <DatePicker Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
                                     materialDesign:HintAssist.Hint="Дата забору" 
                                     SelectedDate="{Binding Analis.dateSampling, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                        </DatePicker>
+                            </DatePicker>
 
-                        <TextBox Grid.Row="1" Grid.Column="0" x:Name="x_name"
+                            <TextBox Grid.Row="1" Grid.Column="0" x:Name="x_name"
                          materialDesign:HintAssist.Hint="ПІБ"
                          Text="{Binding Analis.d_Patients.name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          TextChanged="x_tbName_TextChanged"/>
 
-                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="x_yearOfBirth" 
+                            <TextBox Grid.Row="1" Grid.Column="1" x:Name="x_yearOfBirth" 
                          Text="{Binding Analis.d_Patients.year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToIntConverter}}"
                          materialDesign:HintAssist.Hint="Рік народження"/>
 
-                        <StackPanel VerticalAlignment="Bottom" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left">
-                            <RadioButton x:Name="x_maleRB" GroupName="sexGroup" Content="ч" Checked="x_male_Checked"/>
-                            <RadioButton x:Name="x_fameRB" GroupName="sexGroup" Content="ж" Checked="x_male_Checked"/>
-                        </StackPanel>
+                            <StackPanel VerticalAlignment="Bottom" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left">
+                                <RadioButton x:Name="x_maleRB" GroupName="sexGroup" Content="ч" Checked="x_male_Checked"/>
+                                <RadioButton x:Name="x_fameRB" GroupName="sexGroup" Content="ж" Checked="x_male_Checked"/>
+                            </StackPanel>
 
-                        <TextBox Grid.Row="2" Grid.Column="0" x:Name="x_adress" Grid.ColumnSpan="3"
+                            <TextBox Grid.Row="2" Grid.Column="0" x:Name="x_adress" Grid.ColumnSpan="3"
                          Text="{Binding Analis.d_Patients.adress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          materialDesign:HintAssist.Hint="Адреса"/>
 
-                        <TextBox Grid.Row="3" Grid.Column="0" x:Name="x_phone" 
+                            <TextBox Grid.Row="3" Grid.Column="0" x:Name="x_phone" 
                          Text="{Binding Analis.d_Patients.phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          materialDesign:HintAssist.Hint="Телефон"/>
 
-                        <TextBox Grid.Row="3" Grid.Column="1" x:Name="x_email"  Grid.ColumnSpan="2"
+                            <TextBox Grid.Row="3" Grid.Column="1" x:Name="x_email"  Grid.ColumnSpan="2"
                          Text="{Binding Analis.d_Patients.email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          materialDesign:HintAssist.Hint="e-mail"/>
 
-                        <materialDesign:Card x:Name="SearchCard" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" >
-                            <DataGrid x:Name="x_PatientSearchGrid" 
+                            <materialDesign:Card x:Name="SearchCard" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" MaxHeight="200" >
+                                <DataGrid x:Name="x_PatientSearchGrid" 
                                       CanUserAddRows="False"
                                       materialDesign:DataGridAssist.CellPadding="2"
                                       materialDesign:DataGridAssist.ColumnHeaderPadding="2"
                                       SelectedCellsChanged="x_PatientSearch_SelectedCellsChanged" >
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Паціент" IsReadOnly="True" Binding="{Binding name}" />
-                                    <DataGridTextColumn Header="Рік" IsReadOnly="True" Binding="{Binding year}"/>
-                                    <DataGridTextColumn Header="Адреса" IsReadOnly="True" Binding="{Binding adress}"/>
-                                    <DataGridTextColumn Header="Телефон" IsReadOnly="True" Binding="{Binding phone}"/>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </materialDesign:Card>
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Паціент" IsReadOnly="True" Binding="{Binding name}" />
+                                        <DataGridTextColumn Header="Рік" IsReadOnly="True" Binding="{Binding year}"/>
+                                        <DataGridTextColumn Header="Адреса" IsReadOnly="True" Binding="{Binding adress}"/>
+                                        <DataGridTextColumn Header="Телефон" IsReadOnly="True" Binding="{Binding phone}"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </materialDesign:Card>
 
 
-                        <ComboBox Grid.Row="5" Grid.Column="0" x:Name="x_Finance"
+                            <ComboBox Grid.Row="5" Grid.Column="0" x:Name="x_Finance"
                                   materialDesign:HintAssist.Hint="Фінансування:" 
                                   TextSearch.TextPath="abbr"
                                   ItemTemplate="{StaticResource itemsComboBox}"
                                   SelectedItem="{Binding Analis.d_Finance}"/>
-                        <ComboBox Grid.Row="6" Grid.Column="0" x:Name="x_WhoPay"
+                            <ComboBox Grid.Row="6" Grid.Column="0" x:Name="x_WhoPay"
                                   materialDesign:HintAssist.Hint="Сплачує:" 
                                   TextSearch.TextPath="abbr"
                                   ItemTemplate="{StaticResource itemsComboBox}"
                                   SelectedItem="{Binding Analis.d_WhoPay}"/>
-                        <ComboBox Grid.Row="7" Grid.Column="0" x:Name="x_JobStatus"
+                            <ComboBox Grid.Row="7" Grid.Column="0" x:Name="x_JobStatus"
                                   materialDesign:HintAssist.Hint="Статус:" 
                                   TextSearch.TextPath="abbr"
                                   ItemTemplate="{StaticResource itemsComboBox}"
                                   SelectedItem="{Binding Analis.d_JobStatus}"/>
-                        <ComboBox Grid.Row="8" Grid.Column="0" x:Name="x_JobPlaceGroup"
+                            <ComboBox Grid.Row="8" Grid.Column="0" x:Name="x_JobPlaceGroup"
                                   materialDesign:HintAssist.Hint="Категорія:" 
                                   TextSearch.TextPath="abbr"
                                   ItemTemplate="{StaticResource itemsComboBox}"
                                   SelectedItem="{Binding Analis.d_JobPlaceGroup}"/>
 
-                        <materialDesign:Card Grid.Row="9" Grid.Column="0" >
-                            <StackPanel>
-                                <CheckBox  Content="Сплачено" 
+                            <materialDesign:Card Grid.Row="10" Grid.Column="0" >
+                                <StackPanel>
+                                    <CheckBox  Content="Сплачено" 
                                   IsChecked="{Binding Analis.isPay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                <CheckBox Content="Видано"  x:Name="x_isIssued"
-                                  IsChecked="{Binding Analis.isIssued, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          Checked="x_isIssued_Checked" Unchecked="x_isIssued_Unchecked"/>
-                            </StackPanel>
-                        </materialDesign:Card>
+                                    <CheckBox Content="Видано"  x:Name="x_isIssued"
+                                  IsChecked="{Binding Analis.isVydano, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          Checked="x_isVydano_Checked" Unchecked="x_isVydano_Unchecked"/>
+                                </StackPanel>
+                            </materialDesign:Card>
 
+                            <TextBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2"
+                                 x:Name="x_JobPlace" Margin="5"
+                                 TextChanged="x_JobPlace_TextChanged" 
+                                 materialDesign:HintAssist.Hint="Місце роботи"  />
 
-                        <ComboBox Grid.Row="5" Grid.Column="1" x:Name="x_Dictrict" Grid.ColumnSpan="2"
+                            <ListBox Grid.Row="6" Grid.Column="1" Margin="5" Grid.ColumnSpan="2"
+                                 x:Name="x_JobPlaceList" 
+                                 SelectionChanged="x_JobPlaceList_SelectionChanged" 
+                                 MaxHeight="600"/>
+
+                            <ComboBox Grid.Row="7" Grid.Column="1" x:Name="x_Dictrict" Grid.ColumnSpan="2"
                                   materialDesign:HintAssist.Hint="Район" 
                                   TextSearch.TextPath="abbr" 
                                   ItemTemplate="{StaticResource itemsComboBox}"
-                                  SelectedItem="{Binding Analis.d_JobPlace.d_District, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  SelectionChanged="x_District_SelectionChanged"/>
-                        <ComboBox Grid.Row="6" Grid.Column="1" x:Name="x_JobPlace"
-                                  materialDesign:HintAssist.Hint="Місце роботи" 
-                                  TextSearch.TextPath="abbr" 
-                                  ItemTemplate="{StaticResource itemsComboBox}"
-                                  SelectedItem="{Binding Analis.d_JobPlace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <ComboBox Grid.Row="7" Grid.Column="1" x:Name="x_Job"
-                                  materialDesign:HintAssist.Hint="Посада" 
-                                  TextSearch.TextPath="abbr"
-                                  ItemTemplate="{StaticResource itemsComboBox}"
-                                  SelectedItem="{Binding Analis.d_Job, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                  />
 
-                        <Button Grid.Column="2" Grid.Row="6" x:Name="x_addJobPlace"  Margin="5 0 0 0"
-                                Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                                HorizontalAlignment="Left" VerticalAlignment="Bottom" 
-                                ToolTip="Додати" Width="Auto" Height="Auto" 
-                                materialDesign:ShadowAssist.ShadowDepth="Depth2"
-                                Click="X_addItem_Click">
-                            <materialDesign:PackIcon Kind="PlusCircleOutline" />
-                        </Button>
+                            <TextBox Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2"
+                                 x:Name="x_Job" Margin="5"
+                                 
+                                 TextChanged="x_Job_TextChanged" 
+                                 materialDesign:HintAssist.Hint="Місце роботи"  />
+                            <ListBox Grid.Row="9" Grid.Column="1" Margin="5" Grid.ColumnSpan="2"
+                                 x:Name="x_JobList" 
+                                 SelectionChanged="x_JobList_SelectionChanged" 
+                                 MaxHeight="600"/>
 
-                        <Button Grid.Column="2" Grid.Row="7" x:Name="x_addJob"  Margin="5 0 0 0"
-                                Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                                HorizontalAlignment="Left" VerticalAlignment="Bottom" 
-                                ToolTip="Додати" Width="Auto" Height="Auto" 
-                                materialDesign:ShadowAssist.ShadowDepth="Depth2"
-                                Click="X_addItem_Click">
-                            <materialDesign:PackIcon Kind="PlusCircleOutline" />
-                        </Button>
+                            <materialDesign:Card Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="2">
+                                <StackPanel>
+                                    <CheckBox  x:Name="x_pat" Content="Кишкова" IsChecked="True"/>
+                                    <CheckBox  x:Name="x_st"  Content="Стафілокок" />
+                                </StackPanel>
+                            </materialDesign:Card>
 
-                        <TextBlock Text="Дослідження:" Grid.Row="8" Grid.Column="1" 
-                                   Margin="10 0 0 10" Grid.ColumnSpan="2"
-                                   FontSize="16" FontWeight="Bold" VerticalAlignment="Bottom"/>
-
-                        <materialDesign:Card Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2">
-                            <StackPanel>
-                                <CheckBox Grid.Row="8" Grid.Column="0" x:Name="x_pat" Content="Кишкова" IsChecked="True"/>
-                                <CheckBox Grid.Row="9" Grid.Column="0" x:Name="x_st"  Content="Стафілокок" />
-                            </StackPanel>
-                        </materialDesign:Card>
-
-                        <Button Grid.Row="14" Grid.Column="1" x:Name="x_saveBTN"  Grid.ColumnSpan="2"
+                            <Button Grid.Row="11" Grid.Column="1" x:Name="x_saveBTN"  Grid.ColumnSpan="2"
                                 Click="x_saveBTN_Click">Зберегти</Button>
 
-                        <Button Grid.Row="14" Grid.Column="0" x:Name="x_editBTN" Visibility="Collapsed"
-                                Click="x_saveBTN_Click">Змінити</Button>
-                        <Button Grid.Row="14" Grid.Column="1" x:Name="x_addBTN" Visibility="Collapsed" Grid.ColumnSpan="2"
+                            <Button Grid.Row="11" Grid.Column="0" x:Name="x_editBTN" Visibility="Collapsed"
+                                Click="x_saveBTN_Click">Зберегти</Button>
+                            <Button Grid.Row="11" Grid.Column="1" x:Name="x_addBTN" Visibility="Collapsed" Grid.ColumnSpan="2"
                                 Click="x_saveBTN_Click">Додати</Button>
-                        <Button Grid.Row="15" Grid.Column="0" x:Name="x_clearBTN" Visibility="Collapsed"
+                            <Button Grid.Row="12" Grid.Column="0" x:Name="x_clearBTN" Visibility="Collapsed"
                                 Click="x_clearBTN_Click">Очистити</Button>
-                        <Button Grid.Row="15" Grid.Column="1" x:Name="x_deleteBTN" Visibility="Collapsed" Grid.ColumnSpan="2"
+                            <Button Grid.Row="12" Grid.Column="1" x:Name="x_deleteBTN" Visibility="Collapsed" Grid.ColumnSpan="2"
                                 Click="X_deleteBTN_Click">Видалити</Button>
 
-                    </Grid>
-                </materialDesign:DialogHost>
+                        </Grid>
+                    </materialDesign:DialogHost>
+                </ScrollViewer>
             </materialDesign:Card>
+               
 
             <materialDesign:Card Grid.Row="0" Grid.Column="1" Margin="5 10 10 10 ">
                 <Grid>
@@ -251,8 +241,11 @@
                           SelectionChanged="x_listAnalisesGrid_SelectionChanged">
 
                             <DataGrid.Columns>
-                                <DataGridCheckBoxColumn Header="Сплачено" Binding="{Binding isPay}" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
-                                        EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"/>
+                                <!--<DataGridCheckBoxColumn Header="Видано" Binding="{Binding isVydano, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False"
+                        ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
+                        EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"/>-->
+
+                                
                                 <DataGridTextColumn Header="Лаб№" Binding="{Binding labNum}" FontWeight="Bold"/>
                                 <DataGridTextColumn Header="Дата" Binding="{Binding dateSampling,Converter={StaticResource DateTimeToDateConverter}}" />
                                 <DataGridTextColumn Header="Матеріал" Binding="{Binding p_Group_Material_Purpose.d_Material.abbr}" />
@@ -319,14 +312,13 @@
                             </DataGrid.RowStyle>
 
                             <DataGrid.Columns>
-                                
-                                <DataGridCheckBoxColumn Header="Завершено" Binding="{Binding sendAnalis}" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
+                                <DataGridCheckBoxColumn Header="Завершено" Binding="{Binding isEnd}" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
                                         EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"/>
                                 <DataGridCheckBoxColumn Header="Сплачено" Binding="{Binding isPay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False"
                                                         ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
                                                         EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"/>
 
-                                <DataGridCheckBoxColumn Header="Видано" Binding="{Binding isIssued, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False"
+                                <DataGridCheckBoxColumn Header="Видано" Binding="{Binding isVydano, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False"
                                                         ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
                                                         EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"/>
                                 
@@ -345,9 +337,10 @@
                                 <DataGridTextColumn Header="Категорія" Binding="{Binding d_JobPlaceGroup.abbr}"/>
                                 <DataGridTextColumn Header="Фінансування" Binding="{Binding d_Finance.abbr}"/>
                                 <DataGridTextColumn Header="Сплачує" Binding="{Binding d_WhoPay.abbr}"/>
+                                <DataGridTextColumn Header="Ким зареєстровано" Binding="{Binding d_Staff1.abbr}"/>
                                 <DataGridTextColumn Header="Ким завершено" Binding="{Binding d_Staff.abbr}"/>
                                 <DataGridTextColumn Header="Ким видано" Binding="{Binding d_Staff2.abbr}"/>
-                                <DataGridTextColumn Header="Ким зареєстровано" Binding="{Binding d_Staff1.abbr}"/>
+                                <DataGridTextColumn Header="Дата видачі" Binding="{Binding dateVydano,Converter={StaticResource DateTimeToDateConverter}}"/>
 
                             </DataGrid.Columns>
                         </DataGrid>

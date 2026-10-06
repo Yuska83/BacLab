@@ -6,7 +6,7 @@ using static Microsoft.WindowsAPICodePack.Shell.PropertySystem.SystemProperties.
 
 namespace BacLab.Models
 {
-    public class ABSeries : INotifyPropertyChanged
+    public class ABSeries2 : INotifyPropertyChanged
     {
         int id;
         d_Subdivisions subdivisions;
@@ -17,9 +17,7 @@ namespace BacLab.Models
         string conclusion;
         DateTime? dateDelivery;
         DateTime? dateControls;
-        int? index;
-        bool? show;
-        public ABSeries() { }
+        public ABSeries2() { }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -32,8 +30,7 @@ namespace BacLab.Models
         public string Conclusion { get { return conclusion; } set { conclusion = value; OnPropertyChanged("Conclusion"); } }
         public DateTime? DateDelivery { get { return dateDelivery; } set { dateDelivery = value; OnPropertyChanged("DateDelivery"); } }
         public DateTime? DateControls { get { return dateControls; } set { dateControls = value; OnPropertyChanged("DateControls"); } }
-        public int? Index { get { return index; } set { index = value; OnPropertyChanged("Index"); } }
-        public bool? Show { get { return show; } set { show = value; OnPropertyChanged("Show"); } }
+        
        
         public List<string> ListConclusion { get; set; } = new List<string>() { "придатно", "не придатно" };
         public List<d_Producer> ListProducers { get; set; }
@@ -47,7 +44,7 @@ namespace BacLab.Models
         public Dictionary<int, string> CommentStringValues { get; set; } = new Dictionary<int, string>();
         
 
-        public List<a_AntibioticControl> ListABControls { get; set; }
+        public List<d_ConsumablesControls> ListABControls { get; set; }
 
         protected void OnPropertyChanged(string name)
         {

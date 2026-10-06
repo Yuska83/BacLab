@@ -15,7 +15,7 @@ namespace BacLab.Dialogs
             try
             {
                 InitializeComponent();
-                x_MainCard.Content = new DictionariControl(context, "x_TestsPanelName", false);
+                x_MainCard.Content = new DictionaryControl(context, "x_TestsPanelName", false);
             }
             catch (Exception ex)
             {

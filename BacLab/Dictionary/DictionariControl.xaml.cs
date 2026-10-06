@@ -18,7 +18,7 @@ namespace BacLab.Dictionary
     /// <summary>
     /// Логіка взаємодії для DictionariControl.xaml
     /// </summary>
-    public partial class DictionariControl : UserControl
+    public partial class DictionaryControl : UserControl
     {
         BacLab_DBEntities context;
         string dictionaryName = null;
@@ -27,7 +27,7 @@ namespace BacLab.Dictionary
         public DictionaryModel SelectedItem { get; set; }
         public ObservableCollection<DictionaryModel> ListItems { get; set; } = new ObservableCollection<DictionaryModel>();
 
-        public DictionariControl(BacLab_DBEntities context, string dictionaryName, bool isVisibilityAbbr = true)
+        public DictionaryControl(BacLab_DBEntities context, string dictionaryName, bool isVisibilityAbbr = true)
         {
             try
             {
@@ -95,8 +95,8 @@ namespace BacLab.Dictionary
                         }
                     case ("d_Diagnosis"):
                         {
-                            x_nameDictionary.Text = "Діагнози";
-                            var tab = context.d_Diagnosis.OrderBy(c => c.abbr);
+                            x_nameDictionary.Text = "Категорії діагнозів";
+                            var tab = context.d_DiagnosisGroup.OrderBy(c => c.abbr);
                             foreach (var item in tab)
                             {
                                 DictionaryModel row = new DictionaryModel
@@ -721,25 +721,6 @@ namespace BacLab.Dictionary
                             }
                             break;
                         }
-                    case ("d_Consumables"):
-                        {
-                            x_nameDictionary.Text = "Розхідники";
-                            var tab = context.d_Consumables.Where(c=>c.idConsumablesGroup == 2).OrderBy(c => c.abbr);
-                            foreach (var item in tab)
-                            {
-                                DictionaryModel row = new DictionaryModel
-                                {
-                                    Id = item.id,
-                                    Index = i++,
-                                    IsShow = (bool)item.show,
-                                    Name = item.name,
-                                    Abbr = item.abbr
-                                };
-                                ListItems.Add(row);
-                            }
-                            break;
-                        }
-
                     case ("d_ABDisk"):
                         {
                             x_nameDictionary.Text = "Диски з антибіотиками";
@@ -755,7 +736,144 @@ namespace BacLab.Dictionary
                                     IsShow = (bool)item.show,
                                     Name = item.name,
                                     Abbr = item.abbr,
-                                    TestAndAntibiotic = item.d_TestAndAntibiotic
+                                    TestAndAntibiotic = item.d_TestAndAntibiotic,
+                                    ConsumablesGroup = item.d_ConsumablesGroup
+                                };
+                                ListItems.Add(row);
+                            }
+                            break;
+
+                        }
+                    case ("d_Consumables"):
+                        {
+                            x_nameDictionary.Text = "Розхідники";
+                            x_MainGrid.Columns[13].Visibility = Visibility.Visible;
+                            var tab = context.d_Consumables.Where(c=>c.idConsumablesGroup == 2).OrderBy(c => c.abbr);
+                            foreach (var item in tab)
+                            {
+                                DictionaryModel row = new DictionaryModel
+                                {
+                                    Id = item.id,
+                                    Index = i++,
+                                    IsShow = (bool)item.show,
+                                    Name = item.name,
+                                    Abbr = item.abbr,
+                                    ConsumablesGroup = item.d_ConsumablesGroup
+                                };
+                                ListItems.Add(row);
+                            }
+                            break;
+                        }
+                    case ("d_Materials"):
+                        {
+                            x_nameDictionary.Text = "Матеріали";
+                            x_MainGrid.Columns[13].Visibility = Visibility.Visible;
+                            var tab = context.d_Consumables.Where(c => c.idConsumablesGroup == 4).OrderBy(c => c.abbr);
+                            foreach (var item in tab)
+                            {
+                                DictionaryModel row = new DictionaryModel
+                                {
+                                    Id = item.id,
+                                    Index = i++,
+                                    IsShow = (bool)item.show,
+                                    Name = item.name,
+                                    Abbr = item.abbr,
+                                   ConsumablesGroup = item.d_ConsumablesGroup
+                                };
+                                ListItems.Add(row);
+                            }
+                            break;
+                        }
+                    case ("d_Etanol"):
+                        {
+                            x_nameDictionary.Text = "Спирт";
+                            x_MainGrid.Columns[13].Visibility = Visibility.Visible;
+                            var tab = context.d_Consumables.Where(c => c.idConsumablesGroup == 3).OrderBy(c => c.abbr);
+                            foreach (var item in tab)
+                            {
+                                DictionaryModel row = new DictionaryModel
+                                {
+                                    Id = item.id,
+                                    Index = i++,
+                                    IsShow = (bool)item.show,
+                                    Name = item.name,
+                                    Abbr = item.abbr,
+                                    ConsumablesGroup = item.d_ConsumablesGroup
+                                };
+                                ListItems.Add(row);
+                            }
+                            break;
+                        }
+                    case ("d_Sterilization"):
+                        {
+                            x_nameDictionary.Text = "Методи стерилізації";
+                            var tab = context.d_Sterilization.OrderBy(c => c.name);
+                            foreach (var item in tab)
+                            {
+                                DictionaryModel row = new DictionaryModel
+                                {
+                                    Id = item.id,
+                                    Index = i++,
+                                    IsShow = (bool)item.show,
+                                    Name = item.name,
+                                    Abbr = item.abbr
+                                };
+                                ListItems.Add(row);
+                            }
+                            break;
+
+                        }
+                    case ("s_Storage"):
+                        {
+                            x_nameDictionary.Text = "Способи зберігання";
+                            var tab = context.s_Storage.OrderBy(c => c.name);
+                            foreach (var item in tab)
+                            {
+                                DictionaryModel row = new DictionaryModel
+                                {
+                                    Id = item.id,
+                                    Index = i++,
+                                    IsShow = (bool)item.show,
+                                    Name = item.name,
+                                    Abbr = item.abbr
+                                };
+                                ListItems.Add(row);
+                            }
+                            break;
+
+                        }
+                    case ("s_Documents"):
+                        {
+                            x_nameDictionary.Text = "Диски з антибіотиками";
+                            var tab = context.s_Document.OrderBy(c => c.name);
+                            foreach (var item in tab)
+                            {
+                                DictionaryModel row = new DictionaryModel
+                                {
+                                    Id = item.id,
+                                    Index = i++,
+                                    IsShow = (bool)item.show,
+                                    Name = item.name,
+                                    Abbr = item.abbr
+                                };
+                                ListItems.Add(row);
+                            }
+                            break;
+
+                        }
+                    case ("d_Coefficient"):
+                        {
+                            x_nameDictionary.Text = "Коефіцієнти";
+                            x_MainGrid.Columns[14].Visibility = Visibility.Visible;
+                            var tab = context.d_Coefficient.OrderBy(c => c.name);
+                            foreach (var item in tab)
+                            {
+                                DictionaryModel row = new DictionaryModel
+                                {
+                                    Id = item.id,
+                                    Index = i++,
+                                    Name = item.name,
+                                    Koef = item.koef
                                 };
                                 ListItems.Add(row);
                             }
@@ -898,10 +1016,10 @@ namespace BacLab.Dictionary
                             foreach (var Item in ListItems)
                             {
                                 isNew = false;
-                                d_Diagnosis d_Item = context.d_Diagnosis.Where(c => c.id == Item.Id).FirstOrDefault();
+                                d_DiagnosisGroup d_Item = context.d_DiagnosisGroup.Where(c => c.id == Item.Id).FirstOrDefault();
                                 if (d_Item == null)
                                 {
-                                    d_Item = new d_Diagnosis();
+                                    d_Item = new d_DiagnosisGroup();
                                     isNew = true;
                                 }
                                 d_Item.index = Item.Index;
@@ -910,7 +1028,7 @@ namespace BacLab.Dictionary
                                 d_Item.abbr = Item.Abbr;
 
                                 if (isNew)
-                                    context.d_Diagnosis.Add(d_Item);
+                                    context.d_DiagnosisGroup.Add(d_Item);
                             }
                             break;
                         }
@@ -1661,7 +1779,53 @@ namespace BacLab.Dictionary
                                 d_Item.show = Item.IsShow;
                                 d_Item.name = Item.Name;
                                 d_Item.abbr = Item.Abbr;
-                                d_Item.idConsumablesGroup = 2;
+                                d_Item.idConsumablesGroup = Item.ConsumablesGroup.id;
+
+                                if (isNew)
+                                    context.d_Consumables.Add(d_Item);
+                            }
+                            break;
+                        }
+                    case ("d_Materials"):
+                        {
+                            bool isNew;
+                            foreach (var Item in ListItems)
+                            {
+                                isNew = false;
+                                d_Consumables d_Item = context.d_Consumables.Where(c => c.id == Item.Id).FirstOrDefault();
+                                if (d_Item == null)
+                                {
+                                    d_Item = new d_Consumables();
+                                    isNew = true;
+                                }
+                                d_Item.index = Item.Index;
+                                d_Item.show = Item.IsShow;
+                                d_Item.name = Item.Name;
+                                d_Item.abbr = Item.Abbr;
+                                d_Item.idConsumablesGroup = Item.ConsumablesGroup.id;
+
+                                if (isNew)
+                                    context.d_Consumables.Add(d_Item);
+                            }
+                            break;
+                        }
+                    case ("d_Etanol"):
+                        {
+                            bool isNew;
+                            foreach (var Item in ListItems)
+                            {
+                                isNew = false;
+                                d_Consumables d_Item = context.d_Consumables.Where(c => c.id == Item.Id).FirstOrDefault();
+                                if (d_Item == null)
+                                {
+                                    d_Item = new d_Consumables();
+                                    isNew = true;
+                                }
+                                d_Item.index = Item.Index;
+                                d_Item.show = Item.IsShow;
+                                d_Item.name = Item.Name;
+                                d_Item.abbr = Item.Abbr;
+                                d_Item.idConsumablesGroup = Item.ConsumablesGroup.id;
 
                                 if (isNew)
                                     context.d_Consumables.Add(d_Item);
@@ -1684,7 +1848,7 @@ namespace BacLab.Dictionary
                                 d_Item.show = Item.IsShow;
                                 d_Item.name = Item.Name;
                                 d_Item.abbr = Item.Abbr;
-                                d_Item.idConsumablesGroup = 1;
+                                d_Item.idConsumablesGroup = Item.ConsumablesGroup.id;
                                 d_Item.idAB = Item.TestAndAntibiotic.id;
                                 d_Item.d_TestAndAntibiotic = Item.TestAndAntibiotic;
 
@@ -1693,6 +1857,90 @@ namespace BacLab.Dictionary
                             }
                             break;
                         }
+                        
+                        case ("d_Sterilization"):
+                        {
+                            bool isNew;
+                            foreach (var Item in ListItems)
+                            {
+                                isNew = false;
+                                d_Sterilization d_Item = context.d_Sterilization.Where(c => c.id == Item.Id).FirstOrDefault();
+                                if (d_Item == null)
+                                {
+                                    d_Item = new d_Sterilization();
+                                    isNew = true;
+                                }
+                                d_Item.index = Item.Index;
+                                d_Item.show = Item.IsShow;
+                                d_Item.name = Item.Name;
+                                d_Item.abbr = Item.Abbr;
+                                if (isNew)
+                                    context.d_Sterilization.Add(d_Item);
+                            }
+                            break;
+                        }
+                        case ("s_Storage"):
+                        {
+                            bool isNew;
+                            foreach (var Item in ListItems)
+                            {
+                                isNew = false;
+                                s_Storage d_Item = context.s_Storage.Where(c => c.id == Item.Id).FirstOrDefault();
+                                if (d_Item == null)
+                                {
+                                    d_Item = new s_Storage();
+                                    isNew = true;
+                                }
+                                d_Item.index = Item.Index;
+                                d_Item.show = Item.IsShow;
+                                d_Item.name = Item.Name;
+                                d_Item.abbr = Item.Abbr;
+                                if (isNew)
+                                    context.s_Storage.Add(d_Item);
+                            }
+                            break;
+                        }
+                        case ("s_Documents"):
+                        {
+                            bool isNew;
+                            foreach (var Item in ListItems)
+                            {
+                                isNew = false;
+                                s_Document d_Item = context.s_Document.Where(c => c.id == Item.Id).FirstOrDefault();
+                                if (d_Item == null)
+                                {
+                                    d_Item = new s_Document();
+                                    isNew = true;
+                                }
+                                d_Item.index = Item.Index;
+                                d_Item.show = Item.IsShow;
+                                d_Item.name = Item.Name;
+                                d_Item.abbr = Item.Abbr;
+                                if (isNew)
+                                    context.s_Document.Add(d_Item);
+                            }
+                            break;
+                        }
+                    case ("d_Coefficient"):
+                        {
+                            bool isNew;
+                            foreach (var Item in ListItems)
+                            {
+                                isNew = false;
+                                d_Coefficient d_Item = context.d_Coefficient.Where(c => c.id == Item.Id).FirstOrDefault();
+                                if (d_Item == null)
+                                {
+                                    d_Item = new d_Coefficient();
+                                    isNew = true;
+                                }
+                                d_Item.name = Item.Name;
+                                d_Item.koef = Item.Koef;
+                                if (isNew)
+                                    context.d_Coefficient.Add(d_Item);
+                            }
+                            break;
+                        }
+
 
                 }
                 context.SaveChanges();
@@ -1766,8 +2014,8 @@ namespace BacLab.Dictionary
                         }
                     case ("d_Diagnosis"):
                         {
-                            var delItem = context2.d_Diagnosis.Where(c => c.id == id).SingleOrDefault();
-                            context2.d_Diagnosis.Remove(delItem); break;
+                            var delItem = context2.d_DiagnosisGroup.Where(c => c.id == id).SingleOrDefault();
+                            context2.d_DiagnosisGroup.Remove(delItem); break;
                         }
                     case ("d_PatientStatus"):
                         {
@@ -1834,12 +2082,12 @@ namespace BacLab.Dictionary
                             var delItem = context2.d_MicroorganismGroup.Where(c => c.id == id).SingleOrDefault();
                             context2.d_MicroorganismGroup.Remove(delItem); break;
                         }
-                        case ("a_AntibioticGroup"):
+                    case ("a_AntibioticGroup"):
                         {
                             var delItem = context2.a_AntibioticGroup.Where(c => c.id == id).SingleOrDefault();
                             context2.a_AntibioticGroup.Remove(delItem); break;
                         }
-                        case ("d_PathUseAB"):
+                    case ("d_PathUseAB"):
                         {
                             var delItem = context2.d_PathUseAB.Where(c => c.id == id).SingleOrDefault();
                             context2.d_PathUseAB.Remove(delItem); break;
@@ -1934,7 +2182,7 @@ namespace BacLab.Dictionary
                             var delItem = context2.d_ConsumablesGroup.Where(c => c.id == id).SingleOrDefault();
                             context2.d_ConsumablesGroup.Remove(delItem); break;
                         }
-                        case ("d_Consumables"):
+                    case ("d_Consumables"):
                         {
                             var delItem = context2.d_Consumables.Where(c => c.id == id).SingleOrDefault();
                             context2.d_Consumables.Remove(delItem); break;
@@ -1944,7 +2192,36 @@ namespace BacLab.Dictionary
                             var delItem = context2.d_Consumables.Where(c => c.id == id).SingleOrDefault();
                             context2.d_Consumables.Remove(delItem); break;
                         }
-
+                    case ("d_ConsumablesAVE"):
+                        {
+                            var delItem = context2.d_Consumables.Where(c => c.id == id).SingleOrDefault();
+                            context2.d_Consumables.Remove(delItem); break;
+                        }
+                    case ("d_ABDiskAVE"):
+                        {
+                            var delItem = context2.d_Consumables.Where(c => c.id == id).SingleOrDefault();
+                            context2.d_Consumables.Remove(delItem); break;
+                        }
+                    case ("d_Sterilization"):
+                        {
+                            var delItem = context2.d_Sterilization.Where(c => c.id == id).SingleOrDefault();
+                            context2.d_Sterilization.Remove(delItem); break;
+                        }
+                    case ("s_Storage"):
+                        {
+                            var delItem = context2.s_Storage.Where(c => c.id == id).SingleOrDefault();
+                            context2.s_Storage.Remove(delItem); break;
+                        }
+                    case ("s_Documents"):
+                        {
+                            var delItem = context2.s_Document.Where(c => c.id == id).SingleOrDefault();
+                            context2.s_Document.Remove(delItem); break;
+                        }
+                    case ("d_Coefficient"):
+                        {
+                            var delItem = context2.d_Coefficient.Where(c => c.id == id).SingleOrDefault();
+                            context2.d_Coefficient.Remove(delItem); break;
+                        }
                 }
                 context2.SaveChanges();
                 return true;
@@ -1986,42 +2263,48 @@ namespace BacLab.Dictionary
             {
                 Excel.Worksheet sheet = (Excel.Worksheet)excel.Worksheets.get_Item(1);
                 Excel.Range xlRange = sheet.UsedRange;
-
-                xlRange.Cells[1, 1] = "Номер";
-                xlRange.Cells[1, 2] = "Абревіатура";
-                xlRange.Cells[1, 3] = "Назва";
-                if (dictionaryName == "x_JobPlace")
-                    xlRange.Cells[1, 4] = "Район";
-                if (dictionaryName == "x_Material")
-                    xlRange.Cells[1, 4] = "Для звіту";
-                if (dictionaryName == "x_PriceList")
-                    xlRange.Cells[1, 4] = "Пункт";
-                if (dictionaryName == "x_Microorganism")
-                    xlRange.Cells[1, 4] = "Пункт прейскуранту";
-
+                int columns = 1 ;
+                for (int i = 0; i < x_MainGrid.Columns.Count; i++)
+                {
+                    xlRange.Cells[1, columns++] = x_MainGrid.Columns[i].Header;
+                }
+                
                 int row = 1;
                 int column = 1;
                 foreach (var item in ListItems)
                 {
                     row++;
                     column = 1;
+                    xlRange.Cells[row, column++] = item.Id;
                     xlRange.Cells[row, column++] = item.Index;
+                    xlRange.Cells[row, column++] = item.IsShow == true ? "Так" : "Ні";
                     xlRange.Cells[row, column++] = item.Abbr;
                     xlRange.Cells[row, column++] = item.Name;
-                    if (dictionaryName == "x_JobPlace")
-                        xlRange.Cells[row, column++] = item.District?.abbr;
-                    if (dictionaryName == "x_Material")
-                        xlRange.Cells[row, column++] = item.MaterialGroup?.abbr;
-                    if (dictionaryName == "x_PriceList")
-                        xlRange.Cells[row, column++] = item.Point;
-                    if (dictionaryName == "x_Microorganism")
-                        xlRange.Cells[row, column++] = item.PriceList?.abbr;
+                    xlRange.Cells[row, column++] = item.MaterialGroup?.name;
+                    xlRange.Cells[row, column++] = item.District?.name;
+                    xlRange.Cells[row, column++] = item.Point;
+                    xlRange.Cells[row, column++] = item.PriceList?.abbr;
+                    xlRange.Cells[row, column++] = item.WithoutPDV;
+                    xlRange.Cells[row, column++] = item.WithPDV;
+                    xlRange.Cells[row, column++] = item.NotCountPos == true ? "Так" : "Ні";
+                    xlRange.Cells[row, column++] = item.TestAndAntibiotic?.name;
+                    xlRange.Cells[row, column++] = item.ConsumablesGroup?.name;
+                    xlRange.Cells[row, column++] = item.Koef;
+                   
                 }
                 column--;
                 Excel.Range y1 = sheet.Cells[1, 1];
                 Excel.Range y2 = sheet.Cells[row, column];
+                
                 sheet.get_Range(y1, y2).Cells.Borders.Weight = Excel.XlBorderWeight.xlThin;
                 sheet.get_Range(y1, y2).Columns.AutoFit();
+                for (int i = 0; i < x_MainGrid.Columns.Count; i++)
+                {
+                    if (x_MainGrid.Columns[i].Visibility == Visibility.Collapsed)
+                        sheet.Columns[i + 1].ColumnWidth = 0;
+                }
+                sheet.Columns[3].ColumnWidth = 0;
+                
                 excel.Visible = true;
                 excel.WindowState = Excel.XlWindowState.xlMinimized;
                 excel.WindowState = Excel.XlWindowState.xlMaximized;
@@ -2065,7 +2348,22 @@ namespace BacLab.Dictionary
                     else if (id == -1)
                         selectedItem.PriceList = null;
                 }
-
+                if ((sender as TextBlock).Name == "x_TestAndAntibioticTextBlock")
+                {
+                    id = await Message.DialogStackCheckBox(context, 1, selectedItem.TestAndAntibiotic?.id, selectedItem.Name, "TestAndAntibioticGroup", "MsgDialog");
+                    if (id > 0)
+                        selectedItem.TestAndAntibiotic = context.d_TestAndAntibiotic.Where(c => c.id == id).FirstOrDefault();
+                    else if (id == -1)
+                        selectedItem.TestAndAntibiotic = null;
+                }
+                if ((sender as TextBlock).Name == "x_ConsumablesGroupTextBlock")
+                {
+                    id = await Message.DialogStackCheckBox(context, 1, selectedItem.ConsumablesGroup?.id, selectedItem.Name, "ConsumablesGroup", "MsgDialog");
+                    if (id > 0)
+                        selectedItem.ConsumablesGroup = context.d_ConsumablesGroup.Where(c => c.id == id).FirstOrDefault();
+                    else if (id == -1)
+                        selectedItem.ConsumablesGroup = null;
+                }
 
             }
             catch (Exception ex)

@@ -544,7 +544,7 @@ namespace BacLab.Reports
                 foreach (var col in colAnalisDay)
                     col.inRaxunok = false;
 
-                var colUrina = colAnalisDay.Where(c => c.idGMP == 35 && c.p_Analises_Cultures.Count < 1 && c.sendAnalis == true);
+                var colUrina = colAnalisDay.Where(c => c.idGMP == 35 && c.p_Analises_Cultures.Count < 1 && c.isEnd == true);
                 int countUrina = rnd.Next(urinaMin, urinaMax);
                 for (int j = 0; j < countUrina; j++)
                 {
@@ -558,7 +558,7 @@ namespace BacLab.Reports
 
                 }
 
-                var colOther = colAnalisDay.Where(c => c.inRaxunok != true && c.sendAnalis == true);
+                var colOther = colAnalisDay.Where(c => c.inRaxunok != true && c.isEnd == true);
                 int countOther = rnd.Next(otherMin, otherMax);
                 for (int j = 0; j < countOther; j++)
                 {

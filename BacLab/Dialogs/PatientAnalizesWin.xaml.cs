@@ -1,5 +1,6 @@
 ﻿using BacLab.Models;
 using MahApps.Metro.Controls;
+using Org.BouncyCastle.Ocsp;
 using System;
 using System.Linq;
 using System.Windows;
@@ -47,7 +48,7 @@ namespace BacLab.Dialogs
             {
                 if ((x_searchGrid.SelectedItem as d_Analyzes).rezult == null) return;
                 var Analis = (x_searchGrid.SelectedItem as d_Analyzes);
-                CommonClass.ShowRezult(Analis.rezult, folderMain);
+                CommonClass.ShowRezult(Analis, folderMain);
 
             }
             catch (Exception ex)
@@ -63,8 +64,13 @@ namespace BacLab.Dialogs
             {
                 if ((x_searchGrid.SelectedItem as d_Analyzes).rezult == null) return;
                 var Analis = (x_searchGrid.SelectedItem as d_Analyzes);
-                CommonClass.PrintRezult(context, Analis, laboratoria, folderMain);
-
+                var rez = CommonClass.PrintRezult(context, Analis, laboratoria, folderMain);
+                if (rez)
+                {
+                    CommonClass.Log(context, Analis, staff, 12, false);
+                    Analis.isPrint = true;
+                    context.SaveChanges();
+                }
             }
             catch (Exception ex)
             {

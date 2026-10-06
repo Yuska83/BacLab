@@ -17,12 +17,13 @@
             <StackPanel Orientation="Vertical">
                 <Button x:Name="d_Institution" Click="Button_Click">Лікарні</Button>
                 <Button x:Name="d_Department" Click="Button_Click">Відділення</Button>
-                <Button x:Name="d_Diagnosis" Click="Button_Click">Діагнози</Button>
+                <Button x:Name="d_Diagnosis" Click="Button_Click">Категорії діагнозів</Button>
                 <Button x:Name="d_SentPerson" Click="Button_Click">Лікарі</Button>
                 <Button x:Name="g_Institution_Department" Click="Button_Click">Лікарні-Відділення</Button>
                 <Button x:Name="g_Institution_Person" Click="Button_Click">Лікарні-Лікарі</Button>
                 <Button x:Name="g_Institution_Email" Click="Button_Click">Лікарні-Email</Button>
-                <Button x:Name="d_Dublicates" Click="Button_Click">Видалення дублікатів</Button>
+                <Button x:Name="d_MegreDepartment" Click="Button_Click">Редагування відділень</Button>
+                <Button x:Name="d_MegreDoctors" Click="Button_Click">Редагування лікарів</Button>
             </StackPanel>
         </materialDesign:Card >
         <materialDesign:Card x:Name="x_MainCard"  Grid.Column="1" Margin="5 10 10 10"/>

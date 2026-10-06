@@ -16,7 +16,10 @@
             <DockPanel >
                 <dragablz:TabablzControl BorderThickness="2" >
                     <TabItem Header="Склад" x:Name="x_StockLabTabItem"/>
+                    <TabItem Header="Картотека" x:Name="x_CartotekaTabItem"/>
                     <TabItem Header="Адміністрування" x:Name="x_AdminTabItem"/>
+                    <!--<TabItem Header="Картотека" x:Name="x_CartotekaTabItem"/>-->
+                    <TabItem Header="Нормативні документи" x:Name="x_DocumentTabItem"/>
                 </dragablz:TabablzControl>
             </DockPanel>
         </dockablz:Layout>

@@ -33,14 +33,15 @@ namespace BacLab.Dictionary
             {
                 switch ((sender as Button).Name.ToString())
                 {
-                    case "d_Institution": x_MainCard.Content = new DictionariControl(context, "d_Institution"); break;
-                    case "d_Department": x_MainCard.Content = new DictionariControl(context, "d_Department"); break;
-                    case "d_Diagnosis": x_MainCard.Content = new DictionariControl(context, "d_Diagnosis", false); break;
-                    case "d_SentPerson": x_MainCard.Content = new DictionariControl(context, "d_SentPerson", false); break;
+                    case "d_Institution": x_MainCard.Content = new DictionaryControl(context, "d_Institution"); break;
+                    case "d_Department": x_MainCard.Content = new DictionaryControl(context, "d_Department"); break;
+                    case "d_Diagnosis": x_MainCard.Content = new DictionaryControl(context, "d_Diagnosis"); break;
+                    case "d_SentPerson": x_MainCard.Content = new DictionaryControl(context, "d_SentPerson", false); break;
                     case "g_Institution_Department": x_MainCard.Content = new GroupControl(context, "g_Institution_Department"); break;
-                    case "g_Institution_Person": x_MainCard.Content = new GroupControl(context, "g_Institution_Person"); break;
+                    case "g_Institution_SentPerson": x_MainCard.Content = new GroupControl(context, "g_Institution_SentPerson"); break;
                     case "g_Institution_Email": x_MainCard.Content = new EmailControl(context); break;
-                    case "d_Dublicates": x_MainCard.Content = new DublicatesControl(context,staff); break;
+                    case "d_MegreDepartment": x_MainCard.Content = new MegreControl(context,staff,Models.MegreMode.Department); break;
+                    case "d_MegreDoctors": x_MainCard.Content = new MegreControl(context, staff, Models.MegreMode.Doctor); break;
                 }
             }
             catch (Exception ex)

@@ -30,12 +30,10 @@ namespace BacLab
         public string numMedCard { get; set; }
         public Nullable<int> idGMP { get; set; }
         public Nullable<System.DateTime> dateEnd { get; set; }
-        public Nullable<bool> sendAnalis { get; set; }
         public byte[] rezult { get; set; }
         public Nullable<int> idFinance { get; set; }
         public Nullable<int> idInstitution { get; set; }
         public Nullable<int> idDepartment { get; set; }
-        public Nullable<int> idDiagnosis { get; set; }
         public Nullable<int> idPatientStatus { get; set; }
         public Nullable<int> idSentPerson { get; set; }
         public Nullable<int> idResTemplate { get; set; }
@@ -70,16 +68,22 @@ namespace BacLab
         public Nullable<bool> isPay { get; set; }
         public Nullable<int> idJobPlaceGroup { get; set; }
         public Nullable<int> idJobStatus { get; set; }
-        public Nullable<bool> isIssued { get; set; }
-        public Nullable<int> idStaffIssued { get; set; }
-        public Nullable<System.DateTime> dateIssued { get; set; }
+        public Nullable<int> idStaffVydano { get; set; }
         public Nullable<int> idTerra { get; set; }
         public Nullable<int> idTerraGMP { get; set; }
         public Nullable<bool> inRaxunok { get; set; }
+        public Nullable<bool> isEnd { get; set; }
+        public Nullable<bool> isSend { get; set; }
+        public Nullable<bool> isPrint { get; set; }
+        public Nullable<bool> isVydano { get; set; }
+        public Nullable<System.DateTime> dateVydano { get; set; }
+        public Nullable<bool> isSendToTerra { get; set; }
+        public string rezultPath { get; set; }
+        public string diagnosis { get; set; }
+        public Nullable<int> idDiagnosisGroup { get; set; }
     
         public virtual d_Staff d_Staff { get; set; }
         public virtual d_Department d_Department { get; set; }
-        public virtual d_Diagnosis d_Diagnosis { get; set; }
         public virtual d_Finance d_Finance { get; set; }
         public virtual p_Group_Material_Purpose p_Group_Material_Purpose { get; set; }
         public virtual d_Institution d_Institution { get; set; }
@@ -94,6 +98,7 @@ namespace BacLab
         public virtual d_TestAndAntibiotic d_TestAndAntibiotic2 { get; set; }
         public virtual d_TestAndAntibiotic d_TestAndAntibiotic3 { get; set; }
         public virtual d_Brakerage d_Brakerage { get; set; }
+        public virtual d_DiagnosisGroup d_DiagnosisGroup { get; set; }
         public virtual d_Institution d_Institution1 { get; set; }
         public virtual d_Job d_Job { get; set; }
         public virtual d_JobPlace d_JobPlace { get; set; }

@@ -131,7 +131,7 @@ namespace BacLab.Models
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null) return "ні";
+            if (value == null) return null;
             return (bool)value == true ? "так" : "ні";
         }
 
@@ -144,7 +144,7 @@ namespace BacLab.Models
                 else if (@string.Equals("ні", StringComparison.OrdinalIgnoreCase))
                     return false;
             }
-            return false;
+            return null;
         }
     }
 
@@ -273,7 +273,6 @@ namespace BacLab.Models
             }
         }
 
-
     }
     public class DiapazonConverter : IMultiValueConverter
     {
@@ -304,9 +303,9 @@ namespace BacLab.Models
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            ABControls abControls = value as ABControls;
+            ConsumableControls abControls = value as ConsumableControls;
             if (abControls == null) return null;
-            return abControls.ABSeries.d_Producer.abbr + " c." + abControls.ABSeries.series + " до " + abControls.ABSeries.termin.Value.ToShortDateString();
+            return abControls.ConsumableStock.d_Producer.abbr + " c." + abControls.ConsumableStock.series + " до " + abControls.ConsumableStock.termin.Value.ToShortDateString();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -373,7 +372,7 @@ namespace BacLab.Models
             string sex = analis.d_Patients?.sex == "ч" ? "чоловік" : analis.d_Patients?.sex == "ж" ? "жінка" : " ";
             str += "\nпаціент: " + analis.d_Patients?.name + "  " + analis.d_Patients?.year + " р.н.  " + analis.agePatient + "р.  " + sex + " " + analis.d_JobPlace?.abbr + "  " + analis.d_Job?.abbr;
             if (analis.p_Group_Material_Purpose.d_GroupResearch.id != 4)
-                str += "\nмедзаклад: " + analis.d_Institution?.abbr + "   відділення: " + analis.d_Department?.abbr + "   діагноз: " + analis.d_Diagnosis?.abbr + "   статус: " + analis.d_PatientStatus?.abbr + "   направив: " + analis.d_SentPerson?.abbr;
+                str += "\nмедзаклад: " + analis.d_Institution?.abbr + "   відділення: " + analis.d_Department?.abbr + "   діагноз: " + analis.diagnosis + "   статус: " + analis.d_PatientStatus?.abbr + "   направив: " + analis.d_SentPerson?.abbr;
             str += "\nреєстратор: " + analis.d_Staff1?.abbr;
             if (analis.d_Staff != null)
                 str += "   видан: " + analis.d_Staff?.abbr;
@@ -417,7 +416,7 @@ namespace BacLab.Models
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            a_AntibioticControl abControls = value as a_AntibioticControl;
+            d_ConsumablesControls abControls = value as d_ConsumablesControls;
             if (abControls == null) return null;
             string str = abControls.valueTargetMax != null ? "-" + abControls.valueTargetMax.ToString() : "";
             return abControls.valueTargetMin + str;
@@ -433,7 +432,7 @@ namespace BacLab.Models
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            a_AntibioticControl abControls = value as a_AntibioticControl;
+            d_ConsumablesControls abControls = value as d_ConsumablesControls;
             if (abControls == null) return null;
             string str = abControls.valuePermissiblemMax != null ? "-" + abControls.valuePermissiblemMax.ToString() : "";
             return abControls.valuePermissiblemMin + str;

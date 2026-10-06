@@ -37,7 +37,7 @@ namespace BacLab.Dialogs
                     }
                 case "x_addDiagnosis":
                     {
-                        listItems = context.d_Diagnosis.Select(c => c.abbr).ToList();
+                        listItems = context.d_DiagnosisGroup.Select(c => c.abbr).ToList();
                         break;
                     }
                 case "x_addBrakerage":
@@ -111,20 +111,6 @@ namespace BacLab.Dialogs
                                     idGroup = idGroup,
                                     show = true,
                                     index = context.d_Department.Count() + 1
-                                });
-                            context.SaveChanges();
-                            idItem = d_Item.id;
-                            break;
-                        }
-                    case "x_addDiagnosis":
-                        {
-                            d_Diagnosis d_Item = context.d_Diagnosis.Where(c => c.abbr == x_abbr.Text).FirstOrDefault() ??
-                                context.d_Diagnosis.Add(new d_Diagnosis()
-                                {
-                                    abbr = x_abbr.Text,
-                                    name = x_abbr.Text,
-                                    index = context.d_Diagnosis.Count() + 1,
-                                    show = true
                                 });
                             context.SaveChanges();
                             idItem = d_Item.id;

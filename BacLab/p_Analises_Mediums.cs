@@ -29,10 +29,10 @@ namespace BacLab
         public string timeIncubation { get; set; }
         public string timeObservation { get; set; }
     
-        public virtual d_Analyzes d_Analyzes { get; set; }
-        public virtual d_Medium d_Medium { get; set; }
         public virtual d_MethodsInoculation d_MethodsInoculation { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<p_Analises_Mediums_Date> p_Analises_Mediums_Date { get; set; }
+        public virtual d_Medium d_Medium { get; set; }
+        public virtual d_Analyzes d_Analyzes { get; set; }
     }
 }

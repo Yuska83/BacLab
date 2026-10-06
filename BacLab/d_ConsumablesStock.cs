@@ -17,9 +17,9 @@ namespace BacLab
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public d_ConsumablesStock()
         {
-            this.a_AntibioticControl = new HashSet<a_AntibioticControl>();
             this.d_ConsumableWritingOff = new HashSet<d_ConsumableWritingOff>();
             this.p_Analises_Mediums_Date_Colonies_AB = new HashSet<p_Analises_Mediums_Date_Colonies_AB>();
+            this.d_ConsumablesControls = new HashSet<d_ConsumablesControls>();
         }
     
         public int id { get; set; }
@@ -41,8 +41,6 @@ namespace BacLab
         public Nullable<int> idConsumable { get; set; }
         public Nullable<bool> isTerminEnd { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<a_AntibioticControl> a_AntibioticControl { get; set; }
         public virtual d_Consumables d_Consumables { get; set; }
         public virtual d_ConsumablesGroup d_ConsumablesGroup { get; set; }
         public virtual d_Finance d_Finance { get; set; }
@@ -53,5 +51,7 @@ namespace BacLab
         public virtual ICollection<d_ConsumableWritingOff> d_ConsumableWritingOff { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<p_Analises_Mediums_Date_Colonies_AB> p_Analises_Mediums_Date_Colonies_AB { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<d_ConsumablesControls> d_ConsumablesControls { get; set; }
     }
 }

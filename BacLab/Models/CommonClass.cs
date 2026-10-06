@@ -15,6 +15,9 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Security.AccessControl;
+using System.Security.Cryptography;
+using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Windows;
@@ -127,8 +130,9 @@ namespace BacLab.Models
                                 agePatient = Convert.ToInt32(fields[6]),
                                 d_PatientStatus = status,
                                 d_Finance = finance,
-                                sendAnalis = false,
-                                isIssued = false,
+                                isEnd = false,
+                                isPrint = false,
+                                isSend= false,
                                 inRaxunok = false
                             };
                             dateDelivery = Convert.ToDateTime(fields[11]);
@@ -272,6 +276,12 @@ namespace BacLab.Models
                         var colAnalisDay = context.d_Analyzes.Where(c => c.idInstitution == 26 && c.dateDelivery == dateDelivery).ToList();
                         foreach (var col in colAnalisDay)
                             col.inRaxunok = false;
+
+                        var colDisbcterios = colAnalisDay.Where(c => c.idGMP == 13).ToList();
+                        foreach (var item in colDisbcterios)
+                        {
+                            item.inRaxunok = true;
+                        }
 
                         var colUrina = colAnalisDay.Where(c => c.idGMP == 35).ToList();
                         int countUrina = rnd.Next(4, 9);
@@ -438,7 +448,7 @@ namespace BacLab.Models
 
                 listRecords.Add(headers);
 
-                var colAnalis = context.d_Analyzes.Where(c => c.idInstitution == 26 && c.sendAnalis == true && c.isIssued != true).ToList();
+                var colAnalis = context.d_Analyzes.Where(c => c.idInstitution == 26 && c.isEnd == true && c.isSendToTerra != true).ToList();
                 foreach (var analis in colAnalis)
                 {
                     try
@@ -758,7 +768,7 @@ namespace BacLab.Models
 
                         }
                         listRecords.AddRange(listAnalisRecords);
-                        analis.isIssued = true;
+                        analis.isSendToTerra = true;
                     }
                     catch (Exception)
                     {
@@ -828,6 +838,17 @@ namespace BacLab.Models
                 string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
                 string fileNameTemplate = Path.Combine(folderMain, $"Шаблон{timestamp}.docx");
 
+                if (rezultTemplate == null)
+                {
+                    //скачиваем шаблон результат
+                    byte[] data = context.d_Template.Where(c => c.id == 1).FirstOrDefault().temp;
+                    rezultTemplate = Path.Combine(folderMain, "Шаблон.docx");
+                    using (FileStream fs = new FileStream(rezultTemplate, FileMode.Create, FileAccess.Write))
+                    {
+                        fs.Write(data, 0, data.Length);
+                    }
+                }
+
                 if (IsFileAvailable(rezultTemplate))
                     CopyWordDocument(rezultTemplate, fileNameTemplate);
 
@@ -872,7 +893,7 @@ namespace BacLab.Models
                 ReplaceWordStub(newDoc, "{department}", Analis.d_Department?.name);
                 ReplaceWordStub(newDoc, "{medCard}", Analis.numMedCard);
                 ReplaceWordStub(newDoc, "{sentPerson}", Analis.d_SentPerson?.name);
-                ReplaceWordStub(newDoc, "{diagnos}", Analis.d_Diagnosis?.name);
+                ReplaceWordStub(newDoc, "{diagnos}", Analis.diagnosis);
                 string str1 = Analis.comment?.Length > 0 ? " (" + Analis.comment + ")" : "";
                 ReplaceWordStub(newDoc, "{material}", Analis.p_Group_Material_Purpose.d_Material.name + str1);
                 ReplaceWordStub(newDoc, "{purpose}", Analis.p_Group_Material_Purpose.d_Purpose.name);
@@ -1199,27 +1220,53 @@ namespace BacLab.Models
 
                 var docRange = newDoc.Range();
                 docRange.Font.Size = 12;
-                string fileName = folderMain + "\\" + Analis.labNum.ToString() + " " + Analis.dateDelivery.Value.ToShortDateString() + " " + Analis.d_Patients.name + ".pdf";
+             
+                // === НОВА ЛОГІКА: Безпечне збереження у файлову систему ===
+                string archiveRootPath = ConfigurationManager.AppSettings["ArchiveRootPath"]
+                    ?? Path.Combine(folderMain, "Archive");
 
-                newDoc.SaveAs2(fileName, WdSaveFormat.wdFormatPDF);
+                string yearFolder = Analis.dateDelivery.Value.Year.ToString();
+                string monthFolder = Analis.dateDelivery.Value.Month.ToString("00");
+                string archivePath = Path.Combine(archiveRootPath, yearFolder, monthFolder);
+
+                if (!Directory.Exists(archivePath))
+                {
+                    DirectoryInfo di = Directory.CreateDirectory(archivePath);
+                    //SetSecureDirectoryPermissions(di);
+                }
+
+                // БЕЗПЕЧНЕ ІМ'Я БЕЗ персональних даних
+                string extension = ".pdf";
+                string secureFileName = GenerateSecureFileName(Analis, extension);
+                string permanentFilePath = Path.Combine(archivePath, secureFileName);
+
+                // Обробка колізій імен
+                int counter = 1;
+                while (File.Exists(permanentFilePath))
+                {
+                    string hash = HashPatientName(Analis.d_Patients.name, Analis.labNum, Analis.dateDelivery.Value);
+                    secureFileName = $"{Analis.labNum}_{Analis.dateDelivery.Value:yyyyMMdd}_{hash}_{counter}{extension}";
+                    permanentFilePath = Path.Combine(archivePath, secureFileName);
+                    counter++;
+                }
+
+                newDoc.SaveAs2(permanentFilePath, WdSaveFormat.wdFormatPDF);
+                
+                //SetSecureFilePermissions(new FileInfo(permanentFilePath));
 
                 templateDoc?.Close();
                 newDoc?.Close(WdSaveOptions.wdDoNotSaveChanges);
                 wordApp?.Quit();
 
-                //сохраняем файл в базе
-                byte[] data;
-                using (FileStream fs = new FileStream(fileName, FileMode.Open))
-                {
-                    data = new byte[fs.Length];
-                    fs.Read(data, 0, data.Length);
-                }
-                Analis.rezult = data;
-                Analis.sendAnalis = true;
+                Analis.rezultPath = Path.Combine(yearFolder, monthFolder, secureFileName);
+               
+                Analis.isEnd = true;
 
                 context.SaveChanges();
+
+                // Видалити тимчасові файли
                 File.Delete(fileNameTemplate);
-                File.Delete(fileName);
+                
             }
             catch (Exception ex)
             {
@@ -1229,121 +1276,230 @@ namespace BacLab.Models
                 wordApp?.Quit();
             }
         }
-
-        public static void ShowRezult(byte[] data, string folderMain)
+        public static void ShowRezult(d_Analyzes analis, string folderMain)
         {
             try
             {
-                bool isPdf = FileFormatHelper.IsPdf(data);
-                bool isDocx = FileFormatHelper.IsDocx(data);
-                string fileName = folderMain + "\\" + "Результат";
-                if (isPdf)
+                
+                if (!string.IsNullOrEmpty(analis.rezultPath))
                 {
-                    fileName += ".pdf";
-                    using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
-                    {
-                        fs.Write(data, 0, data.Length);
-                    }
-                    try
-                    {
-                        Process acrobat = new Process();
-                        acrobat.StartInfo.FileName = fileName;
-                        acrobat.StartInfo.UseShellExecute = true; // Открыть через ассоциацию по умолчанию (обычно Acrobat)
-                        acrobat.Start();
-                    }
-                    catch (Exception ex)
-                    {
-                        Message.Ok("Не вдалося відкрити PDF. Acrobat Reader не встановлено або виникла інша помилка.\n" + ex.Message, "MsgDialog");
-                    }
-                }
-                else if (isDocx)
-                {
-                    fileName += ".docx";
-                    using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
-                    {
-                        fs.Write(data, 0, data.Length);
-                    }
+                    string archiveRootPath = ConfigurationManager.AppSettings["ArchiveRootPath"]
+                    ?? Path.Combine(folderMain, "Archive");
+                    string fullPath = Path.Combine(archiveRootPath, analis.rezultPath);
 
-                    var wordApp = new Word.Application();
-                    var tempDoc = wordApp.Documents.Open(fileName, ReadOnly: true);
-                    wordApp.Visible = true;
-                    wordApp.Activate();
-                    wordApp.WindowState = Word.WdWindowState.wdWindowStateMinimize;
-                    wordApp.WindowState = Word.WdWindowState.wdWindowStateMaximize;
+                   
+                    if (File.Exists(fullPath))
+                    {
+                        bool isPdf = fullPath.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase);
+                        bool isDocx = fullPath.EndsWith(".docx", StringComparison.OrdinalIgnoreCase);
+                      
+
+                        if (isPdf)
+                        {
+                            try
+                            {
+                                Process acrobat = new Process();
+                                acrobat.StartInfo.FileName = fullPath;
+                                acrobat.StartInfo.UseShellExecute = true;
+                                acrobat.Start();
+                            }
+                            catch (Exception ex)
+                            {
+                                Message.Ok("Не вдалося відкрити PDF. Acrobat Reader не встановлено або виникла інша помилка.\n" + ex.Message, "MsgDialog");
+                            }
+                        }
+                        else if (isDocx)
+                        {
+                            var wordApp = new Word.Application();
+                            var tempDoc = wordApp.Documents.Open(fullPath, ReadOnly: true);
+                            wordApp.Visible = true;
+                            wordApp.Activate();
+                            wordApp.WindowState = WdWindowState.wdWindowStateMinimize;
+                            wordApp.WindowState = WdWindowState.wdWindowStateMaximize;
+                        }
+                        else
+                        {
+                            Message.Ok("Невідомий формат файлу результату", "MsgDialog");
+                        }
+                    }
                 }
                 else
                 {
-                    Message.Ok("Невідомий формат файлу результату", "MsgDialog");
+                    MessageBox.Show("Результат не знайдено", "Помилка");
                     return;
                 }
+
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                MessageBox.Show($"Помилка відкриття файлу: {ex.Message}", "Помилка");
             }
+        }
 
+        /// <summary>
+        /// Безпечна перевірка існування файлу з обробкою винятків
+        /// </summary>
+        private static bool FileExistsSafe(string filePath)
+        {
+            try
+            {
+                return File.Exists(filePath);
+            }
+            catch (ArgumentException)
+            {
+                // Невалідний шлях
+                return false;
+            }
+            catch (PathTooLongException)
+            {
+                // Шлях занадто довгий
+                return false;
+            }
+            catch (NotSupportedException)
+            {
+                // Недопустимий формат шляху
+                return false;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                // Немає прав доступу
+                return false;
+            }
+            catch (IOException)
+            {
+                // Помилка вводу-виводу
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Перевірка валідності шляху до файлу
+        /// </summary>
+        private static bool IsValidPath(string path)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(path))
+                    return false;
+
+                // Перевірка на недопустимі символи
+                char[] invalidChars = Path.GetInvalidPathChars();
+                if (path.IndexOfAny(invalidChars) >= 0)
+                    return false;
+
+                // Спроба отримати повний шлях
+                string fullPath = Path.GetFullPath(path);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public static string SendEmail(BacLab_DBEntities context, d_Analyzes Analis, d_Laboratoria laboratoria, string folderMain)
         {
             try
             {
-                var colEmails = context.g_Institution_Email_Print.
-                    Where(c => c.idInstitution == Analis.d_Institution.id && c.name != "" && c.name != null && c.isSend == true);
-                if (colEmails.Count() > 0)
+                var colEmails = context.g_Institution_Email_Print
+                    .Where(c => c.idInstitution == Analis.d_Institution.id && c.name != "" && c.name != null && c.isSend == true);
+
+                if (colEmails.Count() == 0)
+                    return "Одержувача не знайдено";
+
+                List<string> listMailTo = new List<string>();
+                foreach (var item in colEmails)
                 {
-                    List<string> listMailTo = new List<string>();
-                    foreach (var item in colEmails)
-                        if (item.idDepartment == null || item.idDepartment == Analis.d_Department?.id)
-                            listMailTo.Add(item.name);
+                    if (item.idDepartment == null || item.idDepartment == Analis.d_Department?.id)
+                        listMailTo.Add(item.name);
+                }
 
-                    if (listMailTo.Count() > 0)
+                if (listMailTo.Count == 0)
+                    return "Одержувача не знайдено";
+
+                byte[] data = null;
+
+                if (!string.IsNullOrEmpty(Analis.rezultPath))
+                {
+                    string archiveRootPath = ConfigurationManager.AppSettings["ArchiveRootPath"]
+                        ?? Path.Combine(folderMain, "Archive");
+
+                    string fullPath = Path.Combine(archiveRootPath, Analis.rezultPath);
+
+                    if (File.Exists(fullPath))
                     {
-                        byte[] data = Analis.rezult;
-                        bool isPdf = FileFormatHelper.IsPdf(data);
-                        bool isDocx = FileFormatHelper.IsDocx(data);
-                        string fileName = folderMain + "\\" + Analis.labNum.ToString() + " " + Analis.dateDelivery.Value.ToShortDateString() + " " + Analis.d_Patients.name;
-                        if (!isPdf)
-                            fileName += ".docx";
-                        else
-                            fileName += ".pdf";
-
-                        using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
-                        {
-                            fs.Write(data, 0, data.Length);
-                        }
-
-                        bool rez = SendMail("smtp.gmail.com", laboratoria.email, laboratoria.parol, listMailTo, Analis.dateDelivery.Value.ToShortDateString() + " " + Analis.d_Patients.name, fileName);
-
-                        File.Delete(fileName);
-                        if (rez) { Analis.isIssued = true; return "Відправлено"; }
-                        else
-                            return "Аналіз № " + Analis.labNum + " не відправлен на пошту\nПеревірте наявність інтернету, доступ до електроної скриньки лабораторії";
-
+                        data = File.ReadAllBytes(fullPath);
                     }
-                    else
-                    {
-                        return "Одержувача не знайдено";
-                    }
+                }
+              
+                if (data == null)
+                {
+                    return "Результат не знайдено для відправки";
+                }
+
+                bool isPdf = FileFormatHelper.IsPdf(data);
+                string extension = isPdf ? ".pdf" : ".docx";
+
+                // Тимчасовий файл для відправки (з ім'ям пацієнта для email)
+                string tempFileName = Path.Combine(folderMain,
+                    $"{Analis.labNum}_{Analis.dateDelivery.Value:yyyyMMdd}_{Analis.d_Patients.name}{extension}");
+
+                File.WriteAllBytes(tempFileName, data);
+
+                bool rez = SendMail("smtp.gmail.com", laboratoria.email, laboratoria.parol,
+                    listMailTo, $"{Analis.dateDelivery.Value.ToShortDateString()} {Analis.d_Patients.name}", tempFileName);
+
+                File.Delete(tempFileName);
+
+                if (rez)
+                {
+                    Analis.isSend = true;
+                    context.SaveChanges();
+                    return "Відправлено";
                 }
                 else
                 {
-                    return "Одержувача не знайдено";
+                    return "Аналіз № " + Analis.labNum + " не відправлено на пошту\nПеревірте наявність інтернету, доступ до електроної скриньки лабораторії";
                 }
-
             }
             catch (Exception ex)
             {
-                return "Аналіз № " + Analis.labNum + " не відправлен на пошту" + "\n" + ex.Message + " " + ex.StackTrace;
+                return "Аналіз № " + Analis.labNum + " не відправлено на пошту" + "\n" + ex.Message + " " + ex.StackTrace;
             }
         }
 
+     
         public static bool PrintRezult(BacLab_DBEntities context, d_Analyzes Analis, d_Laboratoria laboratoria, string folderMain)
         {
             try
             {
-                byte[] data = Analis.rezult;
+                byte[] data = null;
+
+                // Формуємо повний шлях
+                if (!string.IsNullOrEmpty(Analis.rezultPath))
+                {
+                    string archiveRootPath = ConfigurationManager.AppSettings["ArchiveRootPath"]
+                        ?? Path.Combine(folderMain, "Archive");
+
+                    string fullPath = Path.Combine(archiveRootPath, Analis.rezultPath);
+
+                    if (File.Exists(fullPath))
+                    {
+                        data = File.ReadAllBytes(fullPath);
+                    }
+                }
+               
+                if (data == null)
+                {
+                    MessageBox.Show("Результат не знайдено для друку", "Помилка");
+                    return false;
+                }
+
                 bool isPdf = FileFormatHelper.IsPdf(data);
                 bool isDocx = FileFormatHelper.IsDocx(data);
                 bool isA5 = (bool)laboratoria.A5;
@@ -1351,19 +1507,14 @@ namespace BacLab.Models
                 string pdfFileName = Path.Combine(folderMain, $"Результат{timestamp}.pdf");
                 string docxfileName = Path.Combine(folderMain, $"Результат{timestamp}.docx");
 
-
                 if (isA5)
                 {
                     if (isPdf)
                     {
-                        using (FileStream fs = new FileStream(pdfFileName, FileMode.Create, FileAccess.Write))
-                        {
-                            fs.Write(data, 0, data.Length);
-                        }
+                        File.WriteAllBytes(pdfFileName, data);
 
                         try
                         {
-                            // Використання Spire.PDF для конвертації PDF у Word
                             Spire.Pdf.PdfDocument pdf = new Spire.Pdf.PdfDocument();
                             pdf.LoadFromFile(pdfFileName);
                             pdf.SaveToFile(docxfileName, Spire.Pdf.FileFormat.DOCX);
@@ -1371,21 +1522,16 @@ namespace BacLab.Models
                             File.Delete(pdfFileName);
 
                             RemoveRedTextFromWord(docxfileName);
-
                         }
                         catch (Exception ex)
                         {
                             MessageBox.Show("Не вдалося конвертувати PDF у Word для друку.\n" + ex.Message, "MsgDialog");
                             return false;
                         }
-
                     }
                     else if (isDocx)
                     {
-                        using (FileStream fs = new FileStream(docxfileName, FileMode.Create, FileAccess.Write))
-                        {
-                            fs.Write(data, 0, data.Length);
-                        }
+                        File.WriteAllBytes(docxfileName, data);
                     }
                     else
                     {
@@ -1393,13 +1539,14 @@ namespace BacLab.Models
                         return false;
                     }
 
-                    var wordApp = new Word.Application() { };
+                    var wordApp = new Word.Application();
                     var tempDoc = wordApp.Documents.Open(docxfileName, ReadOnly: false);
 
                     tempDoc.PrintOut(true, false, WdPrintOutRange.wdPrintAllDocument,
                                 Item: WdPrintOutItem.wdPrintDocumentContent, Copies: "1", Pages: "",
                                 PageType: WdPrintOutPages.wdPrintAllPages, PrintToFile: false, Collate: true,
                                 ManualDuplexPrint: false, PrintZoomPaperWidth: 8395.2, PrintZoomPaperHeight: 12556.8);
+
                     Thread.Sleep(5000);
                     tempDoc.Close();
                     wordApp.Quit();
@@ -1409,10 +1556,8 @@ namespace BacLab.Models
                 {
                     if (isPdf)
                     {
-                        using (FileStream fs = new FileStream(pdfFileName, FileMode.Create, FileAccess.Write))
-                        {
-                            fs.Write(data, 0, data.Length);
-                        }
+                        File.WriteAllBytes(pdfFileName, data);
+
                         try
                         {
                             Process printProcess = new Process();
@@ -1420,7 +1565,7 @@ namespace BacLab.Models
                             printProcess.StartInfo.UseShellExecute = true;
                             printProcess.StartInfo.Verb = "Print";
                             printProcess.Start();
-                            printProcess.WaitForExit(10000); // Очікуємо до 10 секунд
+                            printProcess.WaitForExit(10000);
                             printProcess.Close();
                         }
                         catch (Exception ex)
@@ -1428,19 +1573,22 @@ namespace BacLab.Models
                             MessageBox.Show("Не вдалося надрукувати PDF. Acrobat Reader не встановлено або виникла інша помилка.\n" + ex.Message, "MsgDialog");
                             return false;
                         }
+                        finally
+                        {
+                            if (File.Exists(pdfFileName))
+                                File.Delete(pdfFileName);
+                        }
                     }
                     else if (isDocx)
                     {
-                        using (FileStream fs = new FileStream(docxfileName, FileMode.Create, FileAccess.Write))
-                        {
-                            fs.Write(data, 0, data.Length);
-                        }
+                        File.WriteAllBytes(docxfileName, data);
+
                         var wordApp = new Word.Application() { Visible = false };
                         var tempDoc = wordApp.Documents.Open(docxfileName, ReadOnly: true);
                         tempDoc.PrintOut(true, false, WdPrintOutRange.wdPrintAllDocument,
-                                Item: WdPrintOutItem.wdPrintDocumentContent, Copies: "1", Pages: "",
-                                PageType: WdPrintOutPages.wdPrintAllPages, PrintToFile: false, Collate: true,
-                                ManualDuplexPrint: false);
+                                    Item: WdPrintOutItem.wdPrintDocumentContent, Copies: "1", Pages: "",
+                                    PageType: WdPrintOutPages.wdPrintAllPages, PrintToFile: false, Collate: true,
+                                    ManualDuplexPrint: false);
                         Thread.Sleep(5000);
                         tempDoc.Close();
                         wordApp.Quit();
@@ -1451,9 +1599,8 @@ namespace BacLab.Models
                         MessageBox.Show("Невідомий формат файлу результату", "MsgDialog");
                         return false;
                     }
-
                 }
-                //Analis.isPrint = true;
+
                 return true;
             }
             catch (Exception ex)
@@ -1463,6 +1610,7 @@ namespace BacLab.Models
             }
         }
 
+      
         public static bool SendMail(string smtpServer, string mailfrom, string password, List<string> mailto, string caption, string attachFile = null)
         {
             System.Net.Mail.MailMessage mail = new System.Net.Mail.MailMessage();
@@ -1844,5 +1992,130 @@ namespace BacLab.Models
                 MessageBox.Show("Помилка при записі в лог: " + ex.Message, "Помилка");
             }
         }
+
+     
+
+    /// <summary>
+    /// Генерує хеш імені пацієнта для анонімізації
+    /// </summary>
+    private static string HashPatientName(string patientName, int labNum, DateTime dateDelivery)
+    {
+        // Комбінуємо дані для унікальності
+        string combined = $"{patientName}_{labNum}_{dateDelivery:yyyyMMdd}";
+
+        using (SHA256 sha256 = SHA256.Create())
+        {
+            byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(combined));
+            // Беремо перші 16 символів хешу
+            return BitConverter.ToString(bytes).Replace("-", "").Substring(0, 16);
+        }
     }
+
+    /// <summary>
+    /// Безпечне ім'я файлу БЕЗ персональних даних
+    /// </summary>
+    private static string GenerateSecureFileName(d_Analyzes analis, string extension)
+    {
+        // Формат: LabNum_YYYYMMDD_Hash.pdf
+        string hash = HashPatientName(analis.d_Patients.name, analis.labNum, analis.dateDelivery.Value);
+        return $"{analis.labNum}_{analis.dateDelivery.Value:yyyyMMdd}_{hash}{extension}";
+    }
+    /// <summary>
+    /// Встановлює безпечні права доступу до папки
+    /// </summary>
+    private static void SetSecureDirectoryPermissions(DirectoryInfo directory)
+    {
+        try
+        {
+            DirectorySecurity security = directory.GetAccessControl();
+
+            // Видаляємо успадковані права
+            security.SetAccessRuleProtection(true, false);
+
+            // Очищуємо всі існуючі правила
+            AuthorizationRuleCollection rules = security.GetAccessRules(true, true, typeof(NTAccount));
+            foreach (FileSystemAccessRule rule in rules)
+            {
+                security.RemoveAccessRule(rule);
+            }
+
+            // Додаємо доступ тільки для:
+            // 1. SYSTEM (повний доступ)
+            security.AddAccessRule(new FileSystemAccessRule(
+                new SecurityIdentifier(WellKnownSidType.LocalSystemSid, null),
+                FileSystemRights.FullControl,
+                InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
+                PropagationFlags.None,
+                AccessControlType.Allow));
+
+            // 2. Адміністратори (повний доступ)
+            security.AddAccessRule(new FileSystemAccessRule(
+                new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null),
+                FileSystemRights.FullControl,
+                InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
+                PropagationFlags.None,
+                AccessControlType.Allow));
+
+            // 3. Поточний користувач (читання + запис)
+            security.AddAccessRule(new FileSystemAccessRule(
+                WindowsIdentity.GetCurrent().User,
+                FileSystemRights.Read | FileSystemRights.Write | FileSystemRights.Delete,
+                InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
+                PropagationFlags.None,
+                AccessControlType.Allow));
+
+            directory.SetAccessControl(security);
+        }
+        catch (Exception ex)
+        {
+            // Логування помилки
+            System.Diagnostics.Debug.WriteLine($"Не вдалося встановити права доступу: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Встановлює безпечні права доступу до файлу
+    /// </summary>
+    private static void SetSecureFilePermissions(FileInfo file)
+    {
+        try
+        {
+            FileSecurity security = file.GetAccessControl();
+
+            // Видаляємо успадковані права
+            security.SetAccessRuleProtection(true, false);
+
+            // Очищуємо існуючі правила
+            AuthorizationRuleCollection rules = security.GetAccessRules(true, true, typeof(NTAccount));
+            foreach (FileSystemAccessRule rule in rules)
+            {
+                security.RemoveAccessRule(rule);
+            }
+
+            // SYSTEM - повний доступ
+            security.AddAccessRule(new FileSystemAccessRule(
+                new SecurityIdentifier(WellKnownSidType.LocalSystemSid, null),
+                FileSystemRights.FullControl,
+                AccessControlType.Allow));
+
+            // Адміністратори - повний доступ
+            security.AddAccessRule(new FileSystemAccessRule(
+                new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null),
+                FileSystemRights.FullControl,
+                AccessControlType.Allow));
+
+            // Поточний користувач - читання
+            security.AddAccessRule(new FileSystemAccessRule(
+                WindowsIdentity.GetCurrent().User,
+                FileSystemRights.Read,
+                AccessControlType.Allow));
+
+            file.SetAccessControl(security);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Не вдалося встановити права доступу до файлу: {ex.Message}");
+        }
+    }
+}
 }

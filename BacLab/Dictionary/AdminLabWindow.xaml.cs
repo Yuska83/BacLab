@@ -32,13 +32,13 @@ namespace BacLab.Dictionary
                 switch ((sender as Button).Name.ToString())
                 {
 
-                    case "d_StaffGroup": x_MainCard.Content = new DictionariControl(context, "d_StaffGroup"); break;
+                    case "d_StaffGroup": x_MainCard.Content = new DictionaryControl(context, "d_StaffGroup"); break;
                     case "d_Staff": x_MainCard.Content = new StaffControl(context, subdivisions, staff); break;
                     case "d_Room": x_MainCard.Content = new RoomControl(context, subdivisions, staff); break;
-                    case "d_EquipmentGroup": x_MainCard.Content = new DictionariControl(context, "d_EquipmentGroup"); break;
-                    case "d_DragMetal": x_MainCard.Content = new DictionariControl(context, "d_DragMetal", false); break;
-                    case "d_Disinfectants": x_MainCard.Content = new DictionariControl(context, "d_Disinfectants", false); break;
-                    case "d_EquipmentState": x_MainCard.Content = new DictionariControl(context, "d_EquipmentState", false); break;
+                    case "d_EquipmentGroup": x_MainCard.Content = new DictionaryControl(context, "d_EquipmentGroup"); break;
+                    case "d_DragMetal": x_MainCard.Content = new DictionaryControl(context, "d_DragMetal", false); break;
+                    case "d_Disinfectants": x_MainCard.Content = new DictionaryControl(context, "d_Disinfectants", false); break;
+                    case "d_EquipmentState": x_MainCard.Content = new DictionaryControl(context, "d_EquipmentState", false); break;
                     case "d_EquipmentMain": x_MainCard.Content = new EquipmentControl(context, subdivisions, staff, 1); break;
                     case "d_EquipmentNotMain": x_MainCard.Content = new EquipmentControl(context, subdivisions, staff, 2); break;
                     case "d_EquipmentNotShow": x_MainCard.Content = new EquipmentControl(context, subdivisions, staff, 3); break;

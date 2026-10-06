@@ -1,0 +1,563 @@
+﻿<UserControl x:Class="BacLab.Dialogs.Dialog_MinusSpirt"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             mc:Ignorable="d" Height="Auto" Width="Auto"
+             xmlns:Models="clr-namespace:BacLab.Models"
+             xmlns:Dialogs="clr-namespace:BacLab.Dialogs"
+             d:DataContext="{d:DesignInstance Dialogs:Dialog_MinusSpirt,IsDesignTimeCreatable=False}">
+    <UserControl.Resources>
+        <Models:BoolToVisibilityBackConvector x:Key="BoolToVisibilityBackConvector"/>
+        <Style TargetType="TextBox" BasedOn="{StaticResource MahApps.MaterialDesignTextBox}">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Width" Value="100"/>
+        </Style>
+        <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignDataGridTextColumnStyle}">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+    </UserControl.Resources>
+    <materialDesign:DialogHost Identifier="MsgDialogSpirt" >
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <!--<Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>-->
+            <TextBlock Text="Списання спирту" FontWeight="Bold" FontSize="20" Grid.Row="0"
+                   TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+
+            <TextBlock x:Name="x_name" FontWeight="Bold" FontSize="20" Grid.Row="1"
+                   TextAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+            <DatePicker x:Name="x_date" Grid.Row="1" Margin="40 0 0 0" Width="120" 
+                    SelectedDate="{Binding SelectedDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    VerticalAlignment="Center" HorizontalAlignment="Left" 
+                    SelectedDateChanged="x_date_SelectedDateChanged"/>
+
+            <materialDesign:Card Grid.Row="2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <materialDesign:Card Grid.Column="0">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+                            <Grid Margin="5" DataContext="{Binding SelectedSpirt}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Text="Клінічний матеріал" Grid.Row="1" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="2" Grid.Column="0" Margin="5"  IsReadOnly="True"
+                                     Text="{Binding Klin_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                     Text="{Binding Klin_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     materialDesign:HintAssist.Hint="дослідження"/>
+
+                                <TextBlock Text="Кишкова група" Grid.Row="3" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="4" Grid.Column="0" Margin="5"  IsReadOnly="True"
+                                     Text="{Binding Kysh_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="4" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                     Text="{Binding Kysh_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     materialDesign:HintAssist.Hint="дослідження"/>
+
+                                <TextBlock Text="Профілактичні дослідження" Grid.Row="5" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="6" Grid.Column="0" Margin="5"  IsReadOnly="True"
+                                     Text="{Binding Prof_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="6" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                     Text="{Binding Prof_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     materialDesign:HintAssist.Hint="дослідження"/>
+                                <TextBlock Text="Крапельна група" Grid.Row="7" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="8" Grid.Column="0" Margin="5"   IsReadOnly="True"
+                                     Text="{Binding Kap_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="8" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                     Text="{Binding Kap_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     materialDesign:HintAssist.Hint="дослідження"/>
+                                <TextBlock Text="ВСЬОГО" Grid.Row="9" Grid.Column="0" Margin="5" Grid.ColumnSpan="2" FontWeight="Bold"/>
+                                <TextBox Grid.Row="10" Grid.Column="0" Margin="5"  IsReadOnly="True" FontWeight="Bold"
+                                 Text="{Binding VsyogoSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="досліджень"/>
+                                <TextBox Grid.Row="10" Grid.Column="1" Margin="5"  IsReadOnly="True" FontWeight="Bold"
+                                 Text="{Binding SpirtSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.000}}"
+                                 materialDesign:HintAssist.Hint="л"/>
+                            </Grid>
+                        </ScrollViewer>
+                    </materialDesign:Card>
+
+
+                    <materialDesign:Card Grid.Column="1">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <Grid Margin="5" DataContext="{Binding SelectedSpirt}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Змиви на БГКП" Grid.Row="0" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="1" Grid.Column="0" Margin="5" 
+                                 Text="{Binding Zmyvy_BGKP_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                 Text="{Binding Zmyvy_BGKP_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="дослідження"/>
+
+                                <TextBlock Text="Змиви на стафілокок" Grid.Row="2" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="3" Grid.Column="0" Margin="5" 
+                                 Text="{Binding Zmyvy_St_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                 Text="{Binding Zmyvy_St_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="дослідження"/>
+
+                                <TextBlock Text="Змиви на пат.флору" Grid.Row="4" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="5" Grid.Column="0" Margin="5" 
+                                 Text="{Binding Zmyvy_Pat_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="5" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                 Text="{Binding Zmyvy_Pat_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="дослідження"/>
+
+                                <TextBlock Text="Стерильність" Grid.Row="6" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="7" Grid.Column="0" Margin="5" 
+                                 Text="{Binding Sterylnist_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="7" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                 Text="{Binding Sterylnist_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="дослідження"/>
+
+                                <TextBlock Text="Повітря" Grid.Row="8" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="9" Grid.Column="0" Margin="5" 
+                                 Text="{Binding Air_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="9" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                 Text="{Binding Air_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="дослідження"/>
+
+                                <TextBlock Text="Вода питна" Grid.Row="10" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="11" Grid.Column="0" Margin="5" 
+                                 Text="{Binding Water_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="11" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                 Text="{Binding Water_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="дослідження"/>
+
+                                <TextBlock Text="Вода на колі-фаги" Grid.Row="12" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="13" Grid.Column="0" Margin="5" 
+                                         Text="{Binding Water_fagy_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="13" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                         Text="{Binding Water_fagy_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         materialDesign:HintAssist.Hint="дослідження"/>
+
+                                <TextBlock Text="Вода пов.водоймищ" Grid.Row="14" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="15" Grid.Column="0" Margin="5" 
+                                 Text="{Binding WaterRiver_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="15" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                 Text="{Binding WaterRiver_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="дослідження"/>
+                                
+                                <TextBlock Text="Вода пляжів" Grid.Row="16" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="17" Grid.Column="0" Margin="5" 
+                                         Text="{Binding WaterBeach_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="17" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                         Text="{Binding WaterBeach_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         materialDesign:HintAssist.Hint="дослідження"/>
+
+                                <TextBlock Text="Вода басейнів" Grid.Row="18" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="19" Grid.Column="0" Margin="5" 
+                                         Text="{Binding WaterPool_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="19" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                         Text="{Binding WaterPool_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         materialDesign:HintAssist.Hint="дослідження"/>
+
+
+
+                                <TextBlock Text="Вода стічна" Grid.Row="20" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="21" Grid.Column="0" Margin="5" 
+                                 Text="{Binding Water_stichna_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="21" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                 Text="{Binding Water_stichna_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="дослідження"/>
+
+                                <TextBlock Text="Вода на холеру" Grid.Row="22" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="23" Grid.Column="0" Margin="5" 
+                                     Text="{Binding Water_xol_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="23" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                     Text="{Binding Water_xol_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     materialDesign:HintAssist.Hint="дослідження"/>
+
+                                <TextBlock Text="Грунт" Grid.Row="24" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="25" Grid.Column="0" Margin="5" 
+                                 Text="{Binding Grunt_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="25" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                 Text="{Binding Grunt_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="дослідження"/>
+
+                                <TextBlock Text="Дез.засоби (контамінація)" Grid.Row="26" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="27" Grid.Column="0" Margin="5" 
+                                 Text="{Binding Des_contam_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="27" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                 Text="{Binding Des_contam_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="дослідження"/>
+
+                                <TextBlock Text="Дез.засоби (чутливість)" Grid.Row="28" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="29" Grid.Column="0" Margin="5" 
+                                         Text="{Binding Des_chutlyvist_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="29" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                         Text="{Binding Des_chutlyvist_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         materialDesign:HintAssist.Hint="дослідження"/>
+
+                                <TextBlock Text="Контроль автоклавів" Grid.Row="30" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="31" Grid.Column="0" Margin="5" 
+                                         Text="{Binding ControlyAvtoclavov_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="31" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                         Text="{Binding ControlyAvtoclavov_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         materialDesign:HintAssist.Hint="дослідження"/>
+
+                                <TextBlock Text="Лікарські форми" Grid.Row="32" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="33" Grid.Column="0" Margin="5" 
+                                 Text="{Binding Liki_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="33" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                 Text="{Binding Liki_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="дослідження"/>
+
+                                <TextBlock Text="Харчові продукти" Grid.Row="34" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="35" Grid.Column="0" Margin="5" 
+                                 Text="{Binding Food_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="35" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                 Text="{Binding Food_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="дослідження"/>
+
+                                <TextBlock Text="Ботулізм" Grid.Row="36" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="37" Grid.Column="0" Margin="5" 
+                                 Text="{Binding Botulism_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="37" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                 Text="{Binding Botulism_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="дослідження"/>
+
+                                <TextBlock Text="Паразитологія Вода питна" Grid.Row="38" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="39" Grid.Column="0" Margin="5" 
+                                 Text="{Binding Water_paraz_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="39" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                 Text="{Binding Water_paraz_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="дослідження"/>
+
+                                <TextBlock Text="Паразитологія Вода пов.водоймищ" Grid.Row="40" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="41" Grid.Column="0" Margin="5"
+                                         Text="{Binding WaterRiver_paraz_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="41" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                         Text="{Binding WaterRiver_paraz_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         materialDesign:HintAssist.Hint="дослідження"/>
+
+                                <TextBlock Text="Паразитологія Грунт" Grid.Row="42" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="43" Grid.Column="0" Margin="5" 
+                                         Text="{Binding Grunt_paraz_analis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         materialDesign:HintAssist.Hint="аналізи"/>
+                                <TextBox Grid.Row="43" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                         Text="{Binding Grunt_paraz_search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         materialDesign:HintAssist.Hint="дослідження"/>
+
+                                <TextBlock Text="ВСЬОГО" Grid.Row="44" Grid.Column="0" Margin="5" Grid.ColumnSpan="2" FontWeight="Bold"/>
+                                <TextBox Grid.Row="45" Grid.Column="0" Margin="5"  IsReadOnly="True" FontWeight="Bold" 
+                                 Text="{Binding VsyogoSBD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="дослідження"/>
+                                <TextBox Grid.Row="45" Grid.Column="1" Margin="5"  IsReadOnly="True" FontWeight="Bold"
+                                 Text="{Binding SpirtSBD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="л"/>
+
+                            </Grid>
+                        </ScrollViewer>
+                    </materialDesign:Card>
+
+                    <materialDesign:Card Grid.Column="2">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <Grid Margin="5" DataContext="{Binding SelectedSpirt}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Text="Контроль поживних середовищ" Grid.Row="0" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="1" Grid.Column="0" Margin="5" 
+                                 Text="{Binding Controly, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="дослідження" />
+                                <TextBox Grid.Row="1" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                 Text="{Binding SpirtControly, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,StringFormat={}{0:0.000}}"
+                                 materialDesign:HintAssist.Hint="л"/>
+
+
+                                <TextBlock Text="Мазки" Grid.Row="2" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="3" Grid.Column="0" Margin="5" 
+                                 Text="{Binding Mazky, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="кіл-ть" />
+                                <TextBox Grid.Row="3" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                 Text="{Binding SpirtMazky, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,StringFormat={}{0:0.000}}"
+                                 materialDesign:HintAssist.Hint="л"/>
+
+                                <TextBlock Text="Обробка кранів перед забором води" Grid.Row="4" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="5" Grid.Column="0" Margin="5" 
+                                 Text="{Binding Krany, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="кіл-ть"/>
+                                <TextBox Grid.Row="5" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                 Text="{Binding SpirtKrany, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,StringFormat={}{0:0.000}}"
+                                 materialDesign:HintAssist.Hint="л"/>
+
+                                <TextBlock Text="Обробка фільтрувально апарату" Grid.Row="6" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="7" Grid.Column="0" Margin="5" 
+                                 Text="{Binding FiltrApparat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="кіл-ть проб води"/>
+                                <TextBox Grid.Row="7" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                 Text="{Binding SpirtFiltrApparat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,StringFormat={}{0:0.000}}"
+                                 materialDesign:HintAssist.Hint="л"/>
+
+
+                                <TextBlock Text="Задачі" Grid.Row="8" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="9" Grid.Column="0" Margin="5" 
+                                 Text="{Binding Zadachi, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 materialDesign:HintAssist.Hint="кіл-ть"/>
+                                <TextBox Grid.Row="9" Grid.Column="1" Margin="5"  IsReadOnly="True"
+                                 Text="{Binding SpirtZadachi, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,StringFormat={}{0:0.000}}"
+                                 materialDesign:HintAssist.Hint="л"/>
+
+                                <TextBlock Text="Обробка рук, столів" Grid.Row="10" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="11" Grid.Column="0" Margin="5" 
+                                 x:Name="x_SpirtObrobkaHandTable"
+                                 materialDesign:HintAssist.Hint="л"
+                                 PreviewTextInput ="TextBox_PreviewTextInput" 
+                                 TextChanged="Spirt_TextChanged"/>
+
+
+                                <TextBlock Text="Обробка термостатів, холодильників, ШББ" Grid.Row="12" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="13" Grid.Column="0" Margin="5" 
+                                 x:Name="x_SpirtObrobkaTermostat"
+                                 PreviewTextInput ="TextBox_PreviewTextInput" 
+                                 TextChanged="Spirt_TextChanged"
+                                 materialDesign:HintAssist.Hint="л"/>
+
+                                <TextBlock Text="Приготування реактивів" Grid.Row="14" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="15" Grid.Column="0" Margin="5" 
+                                     x:Name="x_SpirtPrygotuvannyReactyviv"
+                                     PreviewTextInput ="TextBox_PreviewTextInput" 
+                                     TextChanged="Spirt_TextChanged"
+                                     materialDesign:HintAssist.Hint="л"/>
+
+                                <TextBlock Text="Розхід ентомолога" Grid.Row="16" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="17" Grid.Column="0" Margin="5" 
+                                     x:Name="x_SpirtEntomolog"
+                                     PreviewTextInput ="TextBox_PreviewTextInput" 
+                                     TextChanged="Spirt_TextChanged" 
+                                     materialDesign:HintAssist.Hint="л"/>
+                                <TextBlock Text="Внутришнє переміщення" Grid.Row="18" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="19" Grid.Column="0" Margin="5" 
+                                     x:Name="x_SpirtVnutryshnePeremishenya"
+                                     PreviewTextInput ="TextBox_PreviewTextInput" 
+                                     TextChanged="Spirt_TextChanged" 
+                                     materialDesign:HintAssist.Hint="л"/>
+
+                                <TextBlock Text="Інші витрати" Grid.Row="20" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                                <TextBox Grid.Row="21" Grid.Column="0" Margin="5" 
+                                     x:Name="x_SpirtOther"
+                                     PreviewTextInput ="TextBox_PreviewTextInput" 
+                                     TextChanged="Spirt_TextChanged" 
+                                     materialDesign:HintAssist.Hint="л"/>
+                                <TextBox Grid.Row="22" Grid.Column="0" Margin="10 5 5 5"  Grid.ColumnSpan="2" 
+                                     x:Name="x_SpirtOtherComment" HorizontalAlignment="Left"
+                                     TextChanged="Spirt_TextChanged" Width="200"
+                                     materialDesign:HintAssist.Hint="пояснення"/>
+
+
+                                <TextBlock Text="ВСЬОГО" Grid.Row="23" Grid.Column="0" Margin="5" Grid.ColumnSpan="2" FontWeight="Bold"/>
+                                <TextBox Grid.Row="24" Grid.Column="0" Margin="5"  IsReadOnly="True" FontWeight="Bold"
+                                 Text="{Binding SpirtSumOther, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.000}}"
+                                 materialDesign:HintAssist.Hint="л"/>
+
+                                <TextBlock Text="СПИРТ ВСЬОГО" Grid.Row="23" Grid.Column="1" Margin="5" Grid.ColumnSpan="2" FontWeight="Bold"/>
+                                <TextBox Grid.Row="24" Grid.Column="1" Margin="5"  IsReadOnly="True"  FontWeight="Bold"  FontSize="16"  
+                                     Text="{Binding SpirtVsyogo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.000}}"
+                                     materialDesign:HintAssist.Hint="л">
+                                    <TextBox.Style>
+                                        <Style TargetType="TextBox">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsEnabled,Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  Value="True">
+                                                    <Setter Property="Foreground" Value="Black"/>
+                                                    <Setter Property="ToolTip" Value=""/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsEnabled,Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  Value="False">
+                                                    <Setter Property="Foreground" Value="Red" />
+                                                    <Setter Property="ToolTip" Value="Перевищує залишок"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                                <TextBlock Text="{Binding ZalyshokStr}" Grid.Row="25" Grid.Column="1" Margin="5" 
+                                           Grid.ColumnSpan="2" FontWeight="Bold"
+                                           Foreground="Red"
+                                           Visibility="{Binding IsEnabled, Converter={StaticResource BoolToVisibilityBackConvector}}"/>
+                            </Grid>
+                        </ScrollViewer>
+                    </materialDesign:Card>
+                </Grid>
+            </materialDesign:Card>
+
+            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" DataContext="{Binding SelectedSpirt}">
+                <Button x:Name="saveBTN" Click="saveBTN_Click" IsDefault="True" IsEnabled="{Binding IsEnabled}"
+                    >Зберегти
+                </Button>
+                <Button x:Name="cancelBTN" Click="cancelBTN_Click"  Margin="8 0 0 0" 
+                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}">
+                    Відмінити
+                </Button>
+            </StackPanel>
+        </Grid>
+    </materialDesign:DialogHost>
+</UserControl>

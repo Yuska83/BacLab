@@ -27,20 +27,16 @@ namespace BacLab
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<a_AntibioticControl> a_AntibioticControl { get; set; }
         public virtual DbSet<a_AntibioticGroup> a_AntibioticGroup { get; set; }
-        public virtual DbSet<a_AntibioticNorms> a_AntibioticNorms { get; set; }
         public virtual DbSet<a_AntibioticPanel> a_AntibioticPanel { get; set; }
         public virtual DbSet<a_AntibioticPanelName> a_AntibioticPanelName { get; set; }
         public virtual DbSet<d_Action> d_Action { get; set; }
-        public virtual DbSet<d_Analyzes> d_Analyzes { get; set; }
         public virtual DbSet<d_Biovariant> d_Biovariant { get; set; }
         public virtual DbSet<d_Brakerage> d_Brakerage { get; set; }
         public virtual DbSet<d_Consumables> d_Consumables { get; set; }
         public virtual DbSet<d_ConsumablesGroup> d_ConsumablesGroup { get; set; }
         public virtual DbSet<d_ConsumableWritingOff> d_ConsumableWritingOff { get; set; }
         public virtual DbSet<d_Department> d_Department { get; set; }
-        public virtual DbSet<d_Diagnosis> d_Diagnosis { get; set; }
         public virtual DbSet<d_Disinfectants> d_Disinfectants { get; set; }
         public virtual DbSet<d_District> d_District { get; set; }
         public virtual DbSet<d_DragMetal> d_DragMetal { get; set; }
@@ -58,7 +54,6 @@ namespace BacLab
         public virtual DbSet<d_Laboratoria> d_Laboratoria { get; set; }
         public virtual DbSet<d_Material> d_Material { get; set; }
         public virtual DbSet<d_MaterialGroup> d_MaterialGroup { get; set; }
-        public virtual DbSet<d_Medium> d_Medium { get; set; }
         public virtual DbSet<d_MethodsInoculation> d_MethodsInoculation { get; set; }
         public virtual DbSet<d_Microorganism> d_Microorganism { get; set; }
         public virtual DbSet<d_MicroorganismGroup> d_MicroorganismGroup { get; set; }
@@ -132,6 +127,22 @@ namespace BacLab
         public virtual DbSet<a_AntibioticMicroorganismGroup> a_AntibioticMicroorganismGroup { get; set; }
         public virtual DbSet<d_ConsumablesStock> d_ConsumablesStock { get; set; }
         public virtual DbSet<d_ConsumablesOrder> d_ConsumablesOrder { get; set; }
+        public virtual DbSet<d_ConsumablesControls> d_ConsumablesControls { get; set; }
+        public virtual DbSet<d_ConsumablesNorms> d_ConsumablesNorms { get; set; }
+        public virtual DbSet<d_Sterilization> d_Sterilization { get; set; }
+        public virtual DbSet<g_Medium_Consumables> g_Medium_Consumables { get; set; }
+        public virtual DbSet<LabPreparationComponents> LabPreparationComponents { get; set; }
+        public virtual DbSet<LabPreparations> LabPreparations { get; set; }
+        public virtual DbSet<LabSources> LabSources { get; set; }
+        public virtual DbSet<d_MediumGroup> d_MediumGroup { get; set; }
+        public virtual DbSet<d_Medium> d_Medium { get; set; }
+        public virtual DbSet<d_Termin> d_Termin { get; set; }
+        public virtual DbSet<d_Spirt> d_Spirt { get; set; }
+        public virtual DbSet<d_Coefficient> d_Coefficient { get; set; }
+        public virtual DbSet<g_GroupMaterialPurpose_Accreditation> g_GroupMaterialPurpose_Accreditation { get; set; }
+        public virtual DbSet<g_Microorganism_Accreditation> g_Microorganism_Accreditation { get; set; }
+        public virtual DbSet<d_DiagnosisGroup> d_DiagnosisGroup { get; set; }
+        public virtual DbSet<d_Analyzes> d_Analyzes { get; set; }
     
         public virtual int PR_Analyzes(Nullable<int> idfinance, Nullable<System.DateTime> dateDelivery, Nullable<System.DateTime> dateDelivery2, Nullable<int> year, Nullable<int> year2, string idDistrictList, string jobDistrictList, string jobPlaceList, string jobList, string idInstitutionList, string idDepartmentList, string idDiagnosisList, string idPatientStatusList, string idSentPersonList, string idGroupList, string idMaterialList, string idPurposeList, string idResTemplateList)
         {

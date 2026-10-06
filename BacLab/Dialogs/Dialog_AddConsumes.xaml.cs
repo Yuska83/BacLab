@@ -1,6 +1,7 @@
 ﻿using BacLab.Dictionary;
 using BacLab.Models;
 using MaterialDesignThemes.Wpf;
+using Org.BouncyCastle.Asn1.X9;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,6 +21,7 @@ namespace BacLab.Dialogs
         ConsumablesStock newConsumablesStock;
         StockControl parentWindow;
         bool isEdit;
+        List<string> listItems;
         public ConsumablesStock NewConsumablesStock { get { return newConsumablesStock; } set { newConsumablesStock = value; OnPropertyChanged("NewConsumablesStock"); } }
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string name)
@@ -39,17 +41,24 @@ namespace BacLab.Dialogs
             
             this.parentWindow = parentWindow;
             NewConsumablesStock = consumablesStock;
+            x_quantity.Text = NewConsumablesStock.QuantityWas.ToString();
             DataContext = NewConsumablesStock;
         }
 
         private void x_cb_category_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (NewConsumablesStock.ConsumablesGroup == null)
+            {
+                listItems = new List<string>();
+                return;
+            }
+               
+            listItems = context.d_Consumables.Where(c => c.show == true  
+                      && c.d_ConsumablesGroup.id == NewConsumablesStock.ConsumablesGroup.id)
+                .OrderBy(c => c.name).Select(c=>c.name).ToList();
 
-            d_ConsumablesGroup SelectedGroup = x_cb_category.SelectedItem as d_ConsumablesGroup;
-            if (SelectedGroup == null) return;
-            x_cb_consumable.ItemsSource = context.d_Consumables.Where(c => c.show == true  
-                      && c.d_ConsumablesGroup.id == SelectedGroup.id).OrderBy(c => c.name).ToList();
-           
+            if (isEdit)
+                x_abbr.Text = NewConsumablesStock.Consumable?.name;
         }
 
         private void x_ComboBox_KeyUp(object sender, KeyEventArgs e)
@@ -63,19 +72,19 @@ namespace BacLab.Dialogs
             string error = "";
             if (NewConsumablesStock.DateDelivery == null)
                 error += "Оберіть дату поставки!\n";
-            if (x_cb_finance.SelectedItem == null)
+            if (newConsumablesStock.Finance == null)
                 error += "Оберіть джерело фінансування!\n";
-            if (x_cb_category.SelectedItem == null)
+            if (newConsumablesStock.ConsumablesGroup == null)
                 error += "Оберіть категорію!\n";
-            if (x_cb_consumable.SelectedItem == null)
+            if (x_abbr.Text == null || x_abbr.Text == "")
                 error += "Оберіть розхідник!\n";
             if (NewConsumablesStock.Series == null || NewConsumablesStock.Series.Trim() == "")
                 error += "Вкажіть серію!\n";
             if (NewConsumablesStock.Termin == null)
                 error += "Оберіть термін придатності!\n";
-            if (x_cb_producer.SelectedItem == null)
+            if (NewConsumablesStock.Producer == null)
                 error += "Оберіть виробника!\n";
-            if (x_cb_unit.SelectedItem == null)
+            if (newConsumablesStock.Units == null)
                 error += "Оберіть одиниці виміру!\n";
             try
             {
@@ -99,8 +108,30 @@ namespace BacLab.Dialogs
                 int index = x_cb_category.SelectedIndex;
                 NewConsumablesStock.QuantityWas = Convert.ToDouble(x_quantity.Text);
                 NewConsumablesStock.QuantityBecame = NewConsumablesStock.QuantityWas;
-                
-                if(isEdit)
+
+
+                NewConsumablesStock.Consumable = context.d_Consumables.Where(c => c.name == x_abbr.Text && c.idConsumablesGroup == newConsumablesStock.ConsumablesGroup.id).FirstOrDefault();
+                if(NewConsumablesStock.Consumable == null)
+                    if(newConsumablesStock.ConsumablesGroup.id == 1)
+                    {
+                        Message.Ok("Нові диски з антибіотиками додає адміністратор!", "x_dlgHostResult");
+                        return;
+                    }
+                    else
+                    {
+                        NewConsumablesStock.Consumable = context.d_Consumables.Add(new d_Consumables()
+                        {
+                            abbr = x_abbr.Text,
+                            name = x_abbr.Text,
+                            index = context.d_Consumables.Count() + 1,
+                            idConsumablesGroup = newConsumablesStock.ConsumablesGroup.id,
+                            d_ConsumablesGroup = newConsumablesStock.ConsumablesGroup,
+                            show = true
+                        });
+                        context.SaveChanges();
+                    }
+
+                if (isEdit)
                 {
                     parentWindow.AddEditConsumablesStock(NewConsumablesStock, true);
                     
@@ -109,7 +140,7 @@ namespace BacLab.Dialogs
                 else
                 {
                     int id = parentWindow.AddEditConsumablesStock(NewConsumablesStock, false);
-                    if (id > 0)
+                    if (String.IsNullOrEmpty(x_quantityStikers.Text) == false && Convert.ToInt32(x_quantityStikers.Text) > 0)
                         parentWindow.PrintBarcodeToZebra(parentWindow.generationCodes(id), Convert.ToInt32(x_quantityStikers.Text));
 
                     var newStock = new ConsumablesStock
@@ -118,14 +149,19 @@ namespace BacLab.Dialogs
                         DateDelivery = NewConsumablesStock.DateDelivery,
                         Finance = NewConsumablesStock.Finance,
                         Producer = NewConsumablesStock.Producer,
+                        ConsumablesGroup = NewConsumablesStock.ConsumablesGroup,
+                        Consumable = new d_Consumables(),
+                        Termin = NewConsumablesStock.Termin,
+                        Series = NewConsumablesStock.Series,
+                        Units = NewConsumablesStock.Units,
                         IsEnd = false,
-                        Consumable = new d_Consumables()
+                        Show = false
                     };
 
                     NewConsumablesStock = newStock;
                     DataContext = NewConsumablesStock;
-                    x_cb_consumable.SelectedItem = null;
-                    x_cb_category.SelectedIndex = index;
+                    x_abbr.Text = null;
+                    //x_cb_category.SelectedIndex = index;
                 }
                     
             }
@@ -142,14 +178,46 @@ namespace BacLab.Dialogs
 
         private void x_quantity_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            char inputChar = e.Text[0];
-            if (!char.IsDigit(inputChar) && inputChar != ',' )
+            var decimalSeparator = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+
+            // Дозволяємо цифри та десятковий роздільник
+            e.Handled = !IsTextAllowed(e.Text, decimalSeparator);
+        }
+
+        private bool IsTextAllowed(string text, string decimalSeparator)
+        {
+            return System.Text.RegularExpressions.Regex.IsMatch(text,
+                $@"^[\d{decimalSeparator}]+$");
+        }
+
+        private void X_abbr_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
             {
-                e.Handled = true;
+                if(x_abbr.Text == null || x_abbr.Text == "")
+                {
+                    x_abbrList.ItemsSource = null;
+                    return;
+                }
+                if (x_abbr.Text.Length > 2)
+                   x_abbrList.ItemsSource = listItems.Where(c => c.Contains(x_abbr.Text, StringComparison.OrdinalIgnoreCase)).ToList();
             }
-            else
+            catch (Exception ex)
             {
-                e.Handled = false;
+                MessageBox.Show(ex.Message + " " + ex.StackTrace);
+            }
+        }
+
+        private void x_abbrList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (x_abbrList.SelectedItem == null) return;
+                x_abbr.Text = x_abbrList.SelectedItem.ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + " " + ex.StackTrace);
             }
         }
 
@@ -161,35 +229,10 @@ namespace BacLab.Dialogs
                 string nameButton = (sender as Button).Name;
                 switch (nameButton)
                 {
-                    case "x_addConsumable":
-                        {
-                            if(x_cb_category.SelectedItem == null)
-                            {
-                                Message.Ok("Оберіть категорію!", "x_dlgHostResult");
-                                return;
-                            }
-                            if ((x_cb_category.SelectedItem as d_ConsumablesGroup).id == 1)
-                            {
-                                Message.Ok("Диски з антибіотиками додає адміністратор!", "x_dlgHostResult");
-                                return;
-                            }
-
-                            d_ConsumablesGroup SelectedGroup = x_cb_category.SelectedItem as d_ConsumablesGroup;
-
-                            id = await Message.DialogNew_AddItem("x_addConsumable", SelectedGroup.id, "x_dlgHostResult");
-                            if (id != -1)
-                            {
-                                var list = context.d_Consumables.
-                                          Where(c => c.show == true && c.d_ConsumablesGroup.id == SelectedGroup.id).OrderBy(c => c.name).ToList();
-                                x_cb_consumable.ItemsSource = list;
-
-                                newConsumablesStock.Consumable = (x_cb_consumable.ItemsSource as List<d_Consumables>).Where(c => c.id == id).FirstOrDefault();
-                            }
-                            break;
-                        }
+                    
                     case "x_addProducer":
                         {
-                            id = await Message.DialogNew_AddItem("x_addProducer", -1, "x_dlgHostResult");
+                            id = await Message.Dialog_AddItem("x_addProducer", -1, "x_dlgHostResult");
                             if (id != -1)
                             {
                                 x_cb_producer.ItemsSource = context.d_Producer.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();
@@ -200,7 +243,7 @@ namespace BacLab.Dialogs
                         }
                     case "x_addUnit":
                         {
-                            id = await Message.DialogNew_AddItem("x_addUnit", -1, "x_dlgHostResult");
+                            id = await Message.Dialog_AddItem("x_addUnit", -1, "x_dlgHostResult");
                             if (id != -1)
                             {
                                 x_cb_unit.ItemsSource = context.d_Units.Where(c => c.show == true).OrderBy(c => c.abbr).ToList();

@@ -5,20 +5,16 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="26879bf752f1479ea0393be100b57438" Name="Diagram1">
-        <EntityTypeShape EntityType="BacLab_DBModel.a_AntibioticControl" Width="1.5" PointX="3" PointY="48.25" IsExpanded="true" />
         <EntityTypeShape EntityType="BacLab_DBModel.a_AntibioticGroup" Width="1.5" PointX="1.5" PointY="22.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="BacLab_DBModel.a_AntibioticNorms" Width="1.5" PointX="9" PointY="59.5" IsExpanded="true" />
         <EntityTypeShape EntityType="BacLab_DBModel.a_AntibioticPanel" Width="1.5" PointX="14.25" PointY="53.125" IsExpanded="true" />
         <EntityTypeShape EntityType="BacLab_DBModel.a_AntibioticPanelName" Width="1.5" PointX="6" PointY="48.875" IsExpanded="true" />
         <EntityTypeShape EntityType="BacLab_DBModel.d_Action" Width="1.5" PointX="18" PointY="65.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="BacLab_DBModel.d_Analyzes" Width="1.5" PointX="9" PointY="42.125" IsExpanded="true" />
         <EntityTypeShape EntityType="BacLab_DBModel.d_Biovariant" Width="1.5" PointX="25.5" PointY="37.625" IsExpanded="true" />
         <EntityTypeShape EntityType="BacLab_DBModel.d_Brakerage" Width="1.5" PointX="6.75" PointY="24.375" IsExpanded="true" />
         <EntityTypeShape EntityType="BacLab_DBModel.d_Consumables" Width="1.5" PointX="0.75" PointY="37.5" IsExpanded="true" />
         <EntityTypeShape EntityType="BacLab_DBModel.d_ConsumablesGroup" Width="1.5" PointX="1.5" PointY="33.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BacLab_DBModel.d_ConsumableWritingOff" Width="1.5" PointX="17.25" PointY="46.125" IsExpanded="true" />
         <EntityTypeShape EntityType="BacLab_DBModel.d_Department" Width="1.5" PointX="6.75" PointY="27.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="BacLab_DBModel.d_Diagnosis" Width="1.5" PointX="6.75" PointY="30.625" IsExpanded="true" />
         <EntityTypeShape EntityType="BacLab_DBModel.d_Disinfectants" Width="1.5" PointX="3.75" PointY="37.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BacLab_DBModel.d_District" Width="1.5" PointX="4.5" PointY="68.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BacLab_DBModel.d_DragMetal" Width="1.5" PointX="9" PointY="35.25" IsExpanded="true" />
@@ -36,7 +32,6 @@
         <EntityTypeShape EntityType="BacLab_DBModel.d_Laboratoria" Width="1.5" PointX="3" PointY="91.375" IsExpanded="true" />
         <EntityTypeShape EntityType="BacLab_DBModel.d_Material" Width="1.5" PointX="4.5" PointY="100" IsExpanded="true" />
         <EntityTypeShape EntityType="BacLab_DBModel.d_MaterialGroup" Width="1.5" PointX="2.25" PointY="100.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="BacLab_DBModel.d_Medium" Width="1.5" PointX="15" PointY="38.625" IsExpanded="true" />
         <EntityTypeShape EntityType="BacLab_DBModel.d_MethodsInoculation" Width="1.5" PointX="15" PointY="34.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BacLab_DBModel.d_Microorganism" Width="1.5" PointX="0.75" PointY="60.375" IsExpanded="true" />
         <EntityTypeShape EntityType="BacLab_DBModel.d_MicroorganismGroup" Width="1.5" PointX="3.75" PointY="57.875" IsExpanded="true" />
@@ -107,43 +102,11 @@
         <EntityTypeShape EntityType="BacLab_DBModel.s_Tara" Width="1.5" PointX="20.25" PointY="58.625" IsExpanded="true" />
         <EntityTypeShape EntityType="BacLab_DBModel.s_Transport" Width="1.5" PointX="18" PointY="61.875" IsExpanded="true" />
         <EntityTypeShape EntityType="BacLab_DBModel.sysdiagrams" Width="1.5" PointX="6.75" PointY="6.75" IsExpanded="true" />
-        <AssociationConnector Association="BacLab_DBModel.FK_a_AntibioticControl_d_Microorganism" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK_a_AntibioticControl_d_Staff" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK_a_AntibioticControl_d_Subdivisions" ManuallyRouted="false" />
         <AssociationConnector Association="BacLab_DBModel.FK__a_Antibio__id_An__302F0D3D" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK_a_AntibioticNorms_d_Consumables" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK_a_AntibioticNorms_d_Microorganism" ManuallyRouted="false" />
         <AssociationConnector Association="BacLab_DBModel.FK__a_Antibio__idAnt__5B196B42" ManuallyRouted="false" />
         <AssociationConnector Association="BacLab_DBModel.FK__a_Antibio__idGro__583CFE97" ManuallyRouted="false" />
         <AssociationConnector Association="BacLab_DBModel.FK_a_AntibioticPanelName_d_Subdivisions" ManuallyRouted="false" />
         <AssociationConnector Association="BacLab_DBModel.FK_l_log_d_Action" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK__d_Analyze__id_Do__35B2DC69" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK__d_Analyze__idDep__11DF9047" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK__d_Analyze__idDia__12D3B480" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK__d_Analyze__idFin__0FF747D5" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK__d_Analyze__idGMP__6C5905DD" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK__d_Analyze__idIns__10EB6C0E" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK__d_Analyze__idPat__13C7D8B9" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK__d_Analyze__idPat__66A02C87" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK__d_Analyze__idRes__15B0212B" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK__d_Analyze__idSen__14BBFCF2" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK__p_Analise__idAnalis" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_a_Antibiotic" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_a_Antibiotic1" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_a_Antibiotic2" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_a_Antibiotic3" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_d_Brakerage" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_d_Institution" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_d_Job" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_d_JobPlace" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_d_JobPlaceGroup" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_d_jobStatus" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_d_Staff" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_d_Staff1" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_d_Subdivisions" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_d_WhoPay" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK_p_Analis_Mediums_d_Analyzes" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK_p_Analises_Cultures_d_Analyzes" ManuallyRouted="false" />
         <AssociationConnector Association="BacLab_DBModel.FK__d_Biovari__idMic__03E676AB" ManuallyRouted="false" />
         <AssociationConnector Association="BacLab_DBModel.FK__d_Biovari__idSer__04DA9AE4" ManuallyRouted="false" />
         <AssociationConnector Association="BacLab_DBModel.FK_d_Biovariant_d_MicroorganismGroup" ManuallyRouted="false" />
@@ -181,8 +144,6 @@
         <AssociationConnector Association="BacLab_DBModel.FK_d_Laboratoria_d_Subdivisions" ManuallyRouted="false" />
         <AssociationConnector Association="BacLab_DBModel.FK__p_Group_M__idMat__46535886" ManuallyRouted="false" />
         <AssociationConnector Association="BacLab_DBModel.FK_d_Material_d_MaterialGroup" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK__p_Group_M__idMed__483BA0F8" ManuallyRouted="false" />
-        <AssociationConnector Association="BacLab_DBModel.FK_p_Analis_Mediums_d_Medium" ManuallyRouted="false" />
         <AssociationConnector Association="BacLab_DBModel.FK_p_Analis_Mediums_d_MethodsInoculation" ManuallyRouted="false" />
         <AssociationConnector Association="BacLab_DBModel.FK_p_Group_Material_Purpose_Medium_d_MethodsInoculation" ManuallyRouted="false" />
         <AssociationConnector Association="BacLab_DBModel.FK__d_Serotyp__idMic__19169DBB" ManuallyRouted="false" />
@@ -257,7 +218,6 @@
         <AssociationConnector Association="BacLab_DBModel.FK_a_AntibioticMicroorganismGroup_d_Consumables" />
         <AssociationConnector Association="BacLab_DBModel.FK_g_ABDisk_ABTest_Interpritation_a_AntibioticMicroorganismGroup" />
         <EntityTypeShape EntityType="BacLab_DBModel.d_ConsumablesStock" Width="1.5" PointX="3.75" PointY="41.25" />
-        <AssociationConnector Association="BacLab_DBModel.FK_a_AntibioticControl_d_ConsumablesStock" />
         <AssociationConnector Association="BacLab_DBModel.FK_d_ConsumablesStock_d_Consumables" />
         <AssociationConnector Association="BacLab_DBModel.FK_d_ConsumablesStock_d_ConsumablesGroup" />
         <AssociationConnector Association="BacLab_DBModel.FK_d_ConsumablesStock_d_Finance" />
@@ -266,11 +226,78 @@
         <AssociationConnector Association="BacLab_DBModel.FK_d_ConsumablesStock_d_Units" />
         <AssociationConnector Association="BacLab_DBModel.FK_d_ConsumableWritingOff_d_ConsumablesStock" />
         <AssociationConnector Association="BacLab_DBModel.FK_p_Analises_Mediums_Date_Colonies_AB_d_ConsumablesStock" />
-        <EntityTypeShape EntityType="BacLab_DBModel.d_ConsumablesOrder" Width="1.5" PointX="14" PointY="26.375" />
+        <EntityTypeShape EntityType="BacLab_DBModel.d_ConsumablesOrder" Width="1.5" PointX="9" PointY="41.375" />
         <AssociationConnector Association="BacLab_DBModel.FK_d_ConsumablesOrder_d_Consumables" />
         <AssociationConnector Association="BacLab_DBModel.FK_d_ConsumablesOrder_d_Period" />
         <AssociationConnector Association="BacLab_DBModel.FK_d_ConsumablesOrder_d_Subdivisions" />
         <AssociationConnector Association="BacLab_DBModel.FK_d_ConsumablesOrder_d_Units" />
+        <EntityTypeShape EntityType="BacLab_DBModel.d_ConsumablesControls" Width="1.5" PointX="25.25" PointY="50.5" />
+        <AssociationConnector Association="BacLab_DBModel.FK_a_AntibioticControl_d_ConsumablesGroup" />
+        <AssociationConnector Association="BacLab_DBModel.FK_a_AntibioticControl_d_ConsumablesStock" />
+        <AssociationConnector Association="BacLab_DBModel.FK_a_AntibioticControl_d_Microorganism" />
+        <AssociationConnector Association="BacLab_DBModel.FK_a_AntibioticControl_d_Staff" />
+        <AssociationConnector Association="BacLab_DBModel.FK_a_AntibioticControl_d_Subdivisions" />
+        <EntityTypeShape EntityType="BacLab_DBModel.d_ConsumablesNorms" Width="1.5" PointX="3.75" PointY="48.25" />
+        <AssociationConnector Association="BacLab_DBModel.FK_a_AntibioticNorms_d_Consumables" />
+        <AssociationConnector Association="BacLab_DBModel.FK_a_AntibioticNorms_d_ConsumablesGroup" />
+        <AssociationConnector Association="BacLab_DBModel.FK_d_ConsumablesNorms_d_Microorganism" />
+        <EntityTypeShape EntityType="BacLab_DBModel.d_Sterilization" Width="1.5" PointX="18" PointY="73" />
+        <EntityTypeShape EntityType="BacLab_DBModel.g_Medium_Consumables" Width="1.5" PointX="25.5" PointY="42.25" />
+        <EntityTypeShape EntityType="BacLab_DBModel.LabPreparationComponents" Width="1.5" PointX="11.625" PointY="3.375" />
+        <EntityTypeShape EntityType="BacLab_DBModel.LabPreparations" Width="1.5" PointX="9.375" PointY="1.625" />
+        <EntityTypeShape EntityType="BacLab_DBModel.LabSources" Width="1.5" PointX="11.625" PointY="1.125" />
+        <AssociationConnector Association="BacLab_DBModel.FK_g_Medium_Consumables_d_Consumables" />
+        <AssociationConnector Association="BacLab_DBModel.FK_LabPreparationComponents_Item" />
+        <AssociationConnector Association="BacLab_DBModel.LabPreparationSources" />
+        <EntityTypeShape EntityType="BacLab_DBModel.d_MediumGroup" Width="1.5" PointX="23" PointY="61.875" />
+        <EntityTypeShape EntityType="BacLab_DBModel.d_Medium" Width="1.5" PointX="25.25" PointY="57.375" />
+        <EntityTypeShape EntityType="BacLab_DBModel.d_Termin" Width="1.5" PointX="23" PointY="64.875" />
+        <AssociationConnector Association="BacLab_DBModel.FK__p_Group_M__idMed__483BA0F8" />
+        <AssociationConnector Association="BacLab_DBModel.FK_d_Medium_d_MediumGroup" />
+        <AssociationConnector Association="BacLab_DBModel.FK_d_Medium_d_Sterilization" />
+        <AssociationConnector Association="BacLab_DBModel.FK_d_Medium_d_Termin" />
+        <AssociationConnector Association="BacLab_DBModel.FK_d_Medium_s_Document" />
+        <AssociationConnector Association="BacLab_DBModel.FK_d_Medium_s_Storage" />
+        <AssociationConnector Association="BacLab_DBModel.FK_g_Medium_Consumables_d_Medium" />
+        <AssociationConnector Association="BacLab_DBModel.FK_p_Analis_Mediums_d_Medium" />
+        <EntityTypeShape EntityType="BacLab_DBModel.d_Spirt" Width="1.5" PointX="19.5" PointY="14.5" />
+        <AssociationConnector Association="BacLab_DBModel.FK_d_Spirt_d_ConsumableWritingOff" />
+        <EntityTypeShape EntityType="BacLab_DBModel.d_Coefficient" Width="1.5" PointX="0.75" PointY="9.75" />
+        <EntityTypeShape EntityType="BacLab_DBModel.g_GroupMaterialPurpose_Accreditation" Width="1.5" PointX="9.375" PointY="75.625" />
+        <EntityTypeShape EntityType="BacLab_DBModel.g_Microorganism_Accreditation" Width="1.5" PointX="9.375" PointY="55.375" />
+        <AssociationConnector Association="BacLab_DBModel.FK_g_Microorganism_Accreditation_d_Microorganism" />
+        <AssociationConnector Association="BacLab_DBModel.FK_g_GroupMaterialPurpose_Accreditation_d_Subdivisions" />
+        <AssociationConnector Association="BacLab_DBModel.FK_g_Microorganism_Accreditation_d_Subdivisions" />
+        <AssociationConnector Association="BacLab_DBModel.FK_g_GroupMaterialPurpose_Accreditation_p_Group_Material_Purpose" />
+        <EntityTypeShape EntityType="BacLab_DBModel.d_DiagnosisGroup" Width="1.5" PointX="3.375" PointY="9.875" />
+        <EntityTypeShape EntityType="BacLab_DBModel.d_Analyzes" Width="1.5" PointX="14.25" PointY="60.75" />
+        <AssociationConnector Association="BacLab_DBModel.FK__d_Analyze__id_Do__35B2DC69" />
+        <AssociationConnector Association="BacLab_DBModel.FK__d_Analyze__idDep__11DF9047" />
+        <AssociationConnector Association="BacLab_DBModel.FK__d_Analyze__idFin__0FF747D5" />
+        <AssociationConnector Association="BacLab_DBModel.FK__d_Analyze__idGMP__6C5905DD" />
+        <AssociationConnector Association="BacLab_DBModel.FK__d_Analyze__idIns__10EB6C0E" />
+        <AssociationConnector Association="BacLab_DBModel.FK__d_Analyze__idPat__13C7D8B9" />
+        <AssociationConnector Association="BacLab_DBModel.FK__d_Analyze__idPat__66A02C87" />
+        <AssociationConnector Association="BacLab_DBModel.FK__d_Analyze__idRes__15B0212B" />
+        <AssociationConnector Association="BacLab_DBModel.FK__d_Analyze__idSen__14BBFCF2" />
+        <AssociationConnector Association="BacLab_DBModel.FK__p_Analise__idAnalis" />
+        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_a_Antibiotic" />
+        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_a_Antibiotic1" />
+        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_a_Antibiotic2" />
+        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_a_Antibiotic3" />
+        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_d_Brakerage" />
+        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_d_DiagnosisGroup" />
+        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_d_Institution" />
+        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_d_Job" />
+        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_d_JobPlace" />
+        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_d_JobPlaceGroup" />
+        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_d_jobStatus" />
+        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_d_Staff" />
+        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_d_Staff1" />
+        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_d_Subdivisions" />
+        <AssociationConnector Association="BacLab_DBModel.FK_d_Analyzes_d_WhoPay" />
+        <AssociationConnector Association="BacLab_DBModel.FK_p_Analis_Mediums_d_Analyzes" />
+        <AssociationConnector Association="BacLab_DBModel.FK_p_Analises_Cultures_d_Analyzes" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -84,12 +84,12 @@ namespace BacLab.Dictionary
             {
                 ClearGrid();
                 ListCartesianChart = new List<CartesianChart>();
-                List<a_AntibioticControl> tab = context.a_AntibioticControl.Where(c => c.idSubdivisions == subdivisions.id).ToList();
+                List<d_ConsumablesControls> tab = context.d_ConsumablesControls.Where(c => c.idSubdivisions == subdivisions.id).ToList();
                 if (datewFrom == null && dateTo == null)
                     tab = tab.Where(c => c.d_ConsumablesStock.id == idABSeries)
                     .OrderBy(c => c.date).ThenBy(c => c.d_Microorganism.index).ToList();
                 else
-                    tab = context.a_AntibioticControl.Where(c => c.d_ConsumablesStock.id == idABSeries
+                    tab = context.d_ConsumablesControls .Where(c => c.d_ConsumablesStock.id == idABSeries
                     && (c.date == datewFrom || c.date > datewFrom) && (c.date == dateTo || c.date < dateTo))
                     .OrderBy(c => c.date).ThenBy(c => c.d_Microorganism.index).ToList();
 
@@ -105,10 +105,10 @@ namespace BacLab.Dictionary
             }
         }
 
-        private void FillCartesianChart(IEnumerable<a_AntibioticControl> tab, string nameMO, DateTime? dateFrom)
+        private void FillCartesianChart(IEnumerable<d_ConsumablesControls> tab, string nameMO, DateTime? dateFrom)
         {
             SeriesCollection seriesViews = new SeriesCollection();
-            List<a_AntibioticControl> col;
+            List<d_ConsumablesControls> col;
             if (dateFrom == null)
                 col = tab.OrderBy(c => c.date).Skip(Math.Max(0, tab.Count() - 10)).ToList();
             else
@@ -242,7 +242,7 @@ namespace BacLab.Dictionary
 
                 foreach (var item2 in x_MainGrid.ItemsSource)
                 {
-                    a_AntibioticControl item = item2 as a_AntibioticControl;
+                    d_ConsumablesControls item = item2 as d_ConsumablesControls;
                     row++;
                     column = 1;
                     xlRange.Cells[row, column++] = item.date;

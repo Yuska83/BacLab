@@ -268,13 +268,13 @@ namespace BacLab.Dictionary
                 }
                 if ((sender as TextBlock).Name == "x_TemperatureTextBlock")
                 {
-                    string str = await Message.DialogDiapazon("Температурний режим", selectedItem.Temperature, "MsgDialog");
+                    string str = await Message.Dialog_Diapazon("Температурний режим", selectedItem.Temperature, "MsgDialog");
                     if (str != "False")
                         selectedItem.Temperature = str;
                 }
                 if ((sender as TextBlock).Name == "x_HumidityTextBlock")
                 {
-                    string str = await Message.DialogDiapazon("Вологість", selectedItem.Humidity, "MsgDialog");
+                    string str = await Message.Dialog_Diapazon("Вологість", selectedItem.Humidity, "MsgDialog");
                     if (str != "False")
                         selectedItem.Humidity = str;
                 }

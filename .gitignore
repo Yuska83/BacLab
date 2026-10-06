@@ -1,0 +1,16 @@
+.vs/
+**/.vs/
+**/bin/
+**/obj/
+
+*.user
+*.suo
+*.pdb
+*.cache
+
+Thumbs.db
+Desktop.ini
+
+packages/
+
+BacLab/App.config

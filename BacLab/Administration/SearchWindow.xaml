@@ -68,7 +68,7 @@
                         <DataGridTextColumn Header="Підрозділ" Binding="{Binding Subdivisions.abbr}" Visibility="Visible"/>
                         <DataGridTextColumn Header="Паціент" Binding="{Binding Patient.Name}" />
                         <DataGridTextColumn Header="Рік" Binding="{Binding Patient.Year}"/>
-                        <DataGridTextColumn Header="Діагноз"  Binding="{Binding Diagnosis.abbr}"/>
+                        <DataGridTextColumn Header="Діагноз"  Binding="{Binding Diagnosis}"/>
                         <DataGridTextColumn Header="№ медкарти" Binding="{Binding NumMedCard}"/>
                         <DataGridTextColumn Header="Статус" Binding="{Binding PatientStatus.abbr}"/>
                         <DataGridTextColumn Header="Матеріал" Binding="{Binding GMP.d_Material.abbr}"/>
@@ -84,7 +84,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridCheckBoxColumn Header="Видан" Binding="{Binding SendAnalis, Mode=TwoWay, NotifyOnTargetUpdated=True}" />
+                        <DataGridCheckBoxColumn Header="Видан"  Binding="{Binding IsEnd, UpdateSourceTrigger=PropertyChanged}" />
                         <DataGridTextColumn Header="Дата завершення" Binding="{Binding TimeEnd, Converter={StaticResource DateTimeToDateTimeConverter}}"/>
                         <DataGridTemplateColumn >
                             <DataGridTemplateColumn.CellTemplate>
@@ -110,7 +110,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button x:Name="x_printBTN" ToolTip="Надрукувати"
-                                            Click="x_PrintRezult_Click"  IsEnabled="{Binding SendAnalis}">
+                                            Click="x_PrintRezult_Click"  IsEnabled="{Binding IsEnd}">
                                         <materialDesign:PackIcon Kind="Printer" />
                                     </Button>
                                 </DataTemplate>
@@ -120,7 +120,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button  x:Name="x_blankBTN" ToolTip="Показати"
-                                Click="x_ShowRezult_Click"  IsEnabled="{Binding SendAnalis}">
+                                             Click="x_ShowRezult_Click"  IsEnabled="{Binding IsEnd}">
                                         <materialDesign:PackIcon Kind="FileDocument" />
                                     </Button>
                                 </DataTemplate>
@@ -136,6 +136,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
+                        <!--<DataGridTextColumn Header="шлях" Binding="{Binding ResultText}"/>-->
                         <DataGridTextColumn Header="Лабораторія" Binding="{Binding InstitutionLab.abbr}"/>
                         <DataGridTextColumn Header="Реєстратор" Binding="{Binding StaffRegistration.abbr}"/>
                         <DataGridTextColumn Header="Ким видано" Binding="{Binding Doctor.abbr}"/>
@@ -144,7 +145,9 @@
                         <DataGridTextColumn Header="До 48" Binding="{Binding Do48, Converter={StaticResource BoolToYesNoConverter}}"/>
                         <DataGridTextColumn Header="До 72" Binding="{Binding Do72, Converter={StaticResource BoolToYesNoConverter}}"/>
                         <!--<DataGridCheckBoxColumn Header="рахунок" Binding="{Binding InRaxunok, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />-->
-                        <DataGridCheckBoxColumn Header="Відправлен" Binding="{Binding IsIssued, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridCheckBoxColumn Header="Надруковано" Binding="{Binding IsPrint,  UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridCheckBoxColumn Header="Відправлен" Binding="{Binding IsSend, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridCheckBoxColumn Header="Terra" Binding="{Binding IsSendToTerra, UpdateSourceTrigger=PropertyChanged}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </materialDesign:Card>

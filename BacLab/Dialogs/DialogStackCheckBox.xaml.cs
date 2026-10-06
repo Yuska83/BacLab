@@ -409,8 +409,48 @@ namespace BacLab.Dialogs
                         }
                         break;
                     }
-
-
+                case "TestAndAntibioticGroup":
+                    {
+                        x_tabNameTB.Text = "Оберіть відповідне";
+                        var col = context.d_TestAndAntibiotic.Where(c => c.idTestGroup == 1 && c.show == true).OrderBy(c => c.index).ToList();
+                        foreach (var item in col)
+                        {
+                            CheckBox cb = new CheckBox
+                            {
+                                Content = item.abbr,
+                                Tag = item.id,
+                                Margin = new Thickness(10, 0, 0, 0)
+                            };
+                            x_stackPanel.Children.Add(cb);
+                            cb.Checked += Cb_Checked;
+                            cb.Unchecked += Cb_Unchecked;
+                            if (id != null)
+                                if ((int)cb.Tag == id)
+                                    cb.IsChecked = true;
+                        }
+                        break;
+                    }
+                case "ConsumablesGroup":
+                    {
+                        x_tabNameTB.Text = "Оберіть відповідне";
+                        var col = context.d_ConsumablesGroup.Where(c => c.show == true).OrderBy(c => c.index).ToList();
+                        foreach (var item in col)
+                        {
+                            CheckBox cb = new CheckBox
+                            {
+                                Content = item.abbr,
+                                Tag = item.id,
+                                Margin = new Thickness(10, 0, 0, 0)
+                            };
+                            x_stackPanel.Children.Add(cb);
+                            cb.Checked += Cb_Checked;
+                            cb.Unchecked += Cb_Unchecked;
+                            if (id != null)
+                                if ((int)cb.Tag == id)
+                                    cb.IsChecked = true;
+                        }
+                        break;
+                    }
             }
 
         }

@@ -1,10 +1,12 @@
 ﻿using BacLab.Dialogs;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Drawing;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using ZXing;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -205,7 +207,78 @@ namespace BacLab.Models
             //}
         }
 
+        private void TxtToPdf() 
+        {
+            try
+            {
+                string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                string bacLabFolder = System.IO.Path.Combine(desktopPath, "BacLab");
 
+                if (!System.IO.Directory.Exists(bacLabFolder))
+                {
+                    Message.Ok("Папка BacLab не знайдена на робочому столі", "MsgDialog");
+                    return;
+                }
+
+                var txtFiles = System.IO.Directory.GetFiles(bacLabFolder, "*.txt", System.IO.SearchOption.AllDirectories);
+
+                if (txtFiles.Length == 0)
+                {
+                    Message.Ok("Файли .txt не знайдено в папці BacLab", "MsgDialog");
+                    return;
+                }
+
+                Microsoft.Office.Interop.Word.Application wordApp = null;
+                try
+                {
+                    wordApp = new Microsoft.Office.Interop.Word.Application();
+                    wordApp.Visible = true;
+
+                    foreach (string txtFile in txtFiles)
+                    {
+                        Microsoft.Office.Interop.Word.Document doc = null;
+                        try
+                        {
+                            doc = wordApp.Documents.Open(txtFile);
+                            string pdfPath = System.IO.Path.ChangeExtension(txtFile, ".pdf");
+
+                            doc.SaveAs2(pdfPath, Microsoft.Office.Interop.Word.WdSaveFormat.wdFormatPDF);
+
+                            Console.WriteLine($"Збережено: {System.IO.Path.GetFileName(pdfPath)}");
+
+                            doc.Close(false);
+                            doc = null;
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Помилка при обробці {txtFile}: {ex.Message}");
+                        }
+                        finally
+                        {
+                            if (doc != null)
+                            {
+                                doc.Close(false);
+                                //System.Runtime.InteropServices.Marshal.ReleaseComObject(doc);
+                            }
+                        }
+                    }
+
+                    Message.Ok($"Оброблено {txtFiles.Length} файлів. Перевірте консоль для деталей.", "MsgDialog");
+                }
+                finally
+                {
+                    if (wordApp != null)
+                    {
+                        wordApp.Quit(false);
+                        System.Runtime.InteropServices.Marshal.ReleaseComObject(wordApp);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + " " + ex.StackTrace);
+            }
+        }
         public void NewABControls()
         {
             Random rnd = new Random();
@@ -220,8 +293,8 @@ namespace BacLab.Models
             {
 
                 Console.WriteLine("Антибіотик: " + ab1.Key.name);
-                List<a_AntibioticControl> col = context.a_AntibioticControl.Where(c => c.idSubdivisions == 1 && c.d_ConsumablesStock.idConsumable == ab1.Key.id).ToList();
-                context.a_AntibioticControl.RemoveRange(col);
+                List<d_ConsumablesControls> col = context.d_ConsumablesControls.Where(c => c.idSubdivisions == 1 && c.d_ConsumablesStock.idConsumable == ab1.Key.id).ToList();
+                context.d_ConsumablesControls.RemoveRange(col);
                 context.SaveChanges();
                 Console.WriteLine("видалення завершено");
 
@@ -234,7 +307,7 @@ namespace BacLab.Models
                         Console.WriteLine("Антибіотик: " + ab.Key.name + ab1.Key.id
                                 + " Кількість серій: " + ab.Count().ToString());
                         var colSeries = ab.OrderBy(c => c.dateDelivery).ToList();
-                        var colNormsCulture = context.a_AntibioticNorms.Where(c => c.idConsumable == ab1.Key.id).ToList();
+                        var colNormsCulture = context.d_ConsumablesNorms.Where(c => c.idConsumable == ab1.Key.id).ToList();
 
                         for (int i = 0; i < colSeries.Count; i++)
                         {
@@ -269,7 +342,7 @@ namespace BacLab.Models
                                     foreach (var itemNorms in colNormsCulture)
                                     {
                                         int value = rnd.Next((int)itemNorms.valueTargetMin - 1, (itemNorms.valueTargetMax == null ? (int)itemNorms.valueTargetMin + 1 : (int)itemNorms.valueTargetMax + 1));
-                                        a_AntibioticControl a_AntibioticControl = context.a_AntibioticControl.Add(new a_AntibioticControl()
+                                        d_ConsumablesControls a_AntibioticControl = context.d_ConsumablesControls.Add(new d_ConsumablesControls()
                                         {
                                             date = dateStart,
                                             d_ConsumablesStock = colSeries[i],
@@ -1445,7 +1518,6 @@ namespace BacLab.Models
             //context.SaveChanges();
 
         }
-
         public void FileToPDF()
         {
             //Сохранение в PDF
@@ -1454,5 +1526,184 @@ namespace BacLab.Models
             //tempDoc.Close();
             //wordApp.Quit();
         }
+
+        public void CreateDataGridColumns()
+
+        {
+
+        //    string str = "";
+        //    // Приклад створення DataGridTextColumn з динамічним стилем
+        //    var baseStyle = (Style)FindResource("MaterialDesignFloatingHintTextBox");
+
+        //    // Добавление колонок с названиями контрольных штаммов
+        //    foreach (var ControlMO in colControlMO)
+        //    {
+        //        listIdControlMO.Add(ControlMO.id);
+        //        var nameParts = ControlMO.name.Split(' ');
+        //        if (nameParts.Length > 2)
+        //            str = nameParts[0] + " " + nameParts[1] + "\n" + string.Join(" ", nameParts.Skip(2));
+        //        else
+        //            str = ControlMO.name;
+
+        //        var cellStyle = new Style(typeof(DataGridCell))
+        //        {
+        //            Setters =
+        //                    {
+        //                        new Setter(DataGridCell.IsEnabledProperty, new System.Windows.Data.Binding($"PermissiblemBoolValues[{ControlMO.id}]")),
+        //                        new Setter(DataGridCell.HorizontalContentAlignmentProperty, HorizontalAlignment.Center),
+        //                        new Setter(DataGridCell.VerticalContentAlignmentProperty, VerticalAlignment.Center),
+        //                        new Setter(DataGridCell.TagProperty, ControlMO.id)
+        //                    },
+        //            Triggers =
+        //                    {
+        //                        new DataTrigger
+        //                        {
+        //                            Binding = new System.Windows.Data.Binding($"PermissiblemBoolValues[{ControlMO.id}]"),
+        //                            Value = "True",
+        //                            Setters =
+        //                            {
+        //                                new Setter(DataGridCell.BackgroundProperty, System.Windows.Media.Brushes.LightCyan)
+        //                            }
+        //                        }
+        //                    }
+        //        };
+
+        //        var elementStyle = new Style(typeof(TextBlock))
+        //        {
+        //            Setters =
+        //                    {
+        //                        new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center),
+        //                        new Setter(TextBlock.VerticalAlignmentProperty, VerticalAlignment.Center),
+        //                        new Setter(TextBlock.HorizontalAlignmentProperty, HorizontalAlignment.Center),
+        //                        new Setter(TextBlock.TagProperty, ControlMO.id),
+        //                        new Setter(TextBlock.ToolTipProperty, new System.Windows.Data.Binding($"CommentStringValues[{ControlMO.id}]"))
+        //                    },
+        //            Triggers =
+        //                    {
+        //                        new DataTrigger
+        //                        {
+        //                            Binding = new System.Windows.Data.Binding($"CommentBoolValues[{ControlMO.id}]"),
+        //                            Value = "True",
+        //                            Setters =
+        //                            {
+        //                                new Setter(TextBlock.ForegroundProperty, System.Windows.Media.Brushes.Red)
+        //                            }
+        //                        },
+        //                        new DataTrigger
+        //                        {
+        //                            Binding = new System.Windows.Data.Binding($"CommentBoolValues[{ControlMO.id}]"),
+        //                            Value = "False",
+        //                            Setters =
+        //                            {
+        //                                new Setter(TextBlock.ForegroundProperty, System.Windows.Media.Brushes.Black)
+        //                            }
+        //                        }
+        //                    }
+        //        };
+
+
+        //        var editingElementStyle = new Style(typeof(TextBox), baseStyle)
+        //        {
+        //            Setters =
+        //                        {
+        //                            new Setter(TextBox.IsEnabledProperty, new System.Windows.Data.Binding($"PermissiblemBoolValues[{ControlMO.id}]")),
+        //                            new Setter(TextBox.TextAlignmentProperty, TextAlignment.Center),
+        //                            new Setter(TextBox.VerticalAlignmentProperty, VerticalAlignment.Center),
+        //                            new Setter(TextBox.HorizontalAlignmentProperty, HorizontalAlignment.Center),
+        //                            new Setter(TextBox.TagProperty, ControlMO.id),
+        //                            new Setter(HintAssist.HintProperty, new System.Windows.Data.Binding($"PermissiblemStringValues[{ControlMO.id}]")),
+        //                            new Setter(HintAssist.HelperTextFontSizeProperty, 24.0),
+        //                            new Setter(HintAssist.FontFamilyProperty, new System.Windows.Media.FontFamily("Segoe UI")),
+        //                            new Setter(HintAssist.ForegroundProperty, new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Black)),
+        //                            new EventSetter(TextBox.LostFocusEvent, new RoutedEventHandler(Tb_LostFocus))
+        //                        },
+        //            Triggers =
+        //                        {
+        //                            new DataTrigger
+        //                            {
+        //                                Binding = new System.Windows.Data.Binding($"CommentBoolValues[{ControlMO.id}]"),
+        //                                Value = "True",
+        //                                Setters =
+        //                                {
+        //                                    new Setter(TextBox.ForegroundProperty, System.Windows.Media.Brushes.Red)
+        //                                }
+        //                            },
+        //                            new DataTrigger
+        //                            {
+        //                                Binding = new System.Windows.Data.Binding($"CommentBoolValues[{ControlMO.id}]"),
+        //                                Value = "False",
+        //                                Setters =
+        //                                {
+        //                                    new Setter(TextBox.ForegroundProperty, System.Windows.Media.Brushes.Black)
+        //                                }
+        //                            }
+        //                        }
+        //        };
+
+        //        var column = new MaterialDesignThemes.Wpf.DataGridTextColumn
+        //        {
+        //            Header = str,
+        //            Binding = new System.Windows.Data.Binding($"ControlValues[{ControlMO.id}]")
+        //            {
+        //                Mode = System.Windows.Data.BindingMode.TwoWay,
+        //                UpdateSourceTrigger = System.Windows.Data.UpdateSourceTrigger.PropertyChanged
+        //            },
+        //            CellStyle = cellStyle,
+        //            ElementStyle = elementStyle,
+        //            EditingElementStyle = editingElementStyle
+        //        };
+
+        //        x_MainGrid.Columns.Add(column);
+        //    }
+        }
+        private void Tb_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+            if (textBox != null)
+            {
+                ConsumableControls abSeries = textBox.DataContext as ConsumableControls;
+                if (abSeries != null)
+                {
+                    int value;
+                    if (int.TryParse(textBox.Text, out value))
+                    {
+                        var controlMOId = (int)textBox.Tag;
+
+                        //if (abSeries.PermissiblemBoolValues.ContainsKey(controlMOId))
+                        //{
+                        //    abSeries.ControlValues[controlMOId] = textBox.Text;
+
+                        //    if (abSeries.PermissiblemMinValues.ContainsKey(controlMOId) && value < abSeries.PermissiblemMinValues[controlMOId])
+                        //    {
+                        //        abSeries.CommentStringValues[controlMOId] = $"Значення менше допустимого мінімуму ({abSeries.PermissiblemMinValues[controlMOId]})";
+                        //        abSeries.CommentBoolValues[controlMOId] = true;
+                        //    }
+                        //    else if (abSeries.PermissiblemMaxValues.ContainsKey(controlMOId) && abSeries.PermissiblemMaxValues[controlMOId] != null && value > abSeries.PermissiblemMaxValues[controlMOId])
+                        //    {
+                        //        abSeries.CommentStringValues[controlMOId] = $"Значення більше допустимого максимуму ({abSeries.PermissiblemMaxValues[controlMOId]})";
+                        //        abSeries.CommentBoolValues[controlMOId] = true;
+                        //    }
+                        //    else
+                        //    {
+                        //        abSeries.CommentStringValues[controlMOId] = "";
+                        //        abSeries.CommentBoolValues[controlMOId] = false;
+                        //    }
+                        //}
+                        //else 
+                        //{
+                        //    Message.Ok("Немає контрольних значень", "MsgDialog");
+                        //}
+                    }
+                    else
+                    {
+                        Message.Ok("Введіть числове значення", "MsgDialog");
+                        textBox.Text = "";
+                    }
+                }
+            }
+        }
+
+
+
     }
 }

@@ -26,9 +26,9 @@ namespace BacLab.Administration
 
                 x_StockLabTabItem.Content = new StockControl(context, subdivision, staff);
                 x_AdminTabItem.Content = new AdminPreparatorcykaWindow(context, subdivision, staff);
-
-                context.l_log.Add(new l_log() { date = DateTime.Now, datetime = DateTime.Now, idStaff = staff.id, idAction = 20 });
-
+                x_CartotekaTabItem.Content = new CartotekaControl(context, subdivision, staff); 
+                x_DocumentTabItem.Content = new DictionaryControl(context, "s_Documents");
+                
             }
             catch (Exception ex)
             {
@@ -49,8 +49,9 @@ namespace BacLab.Administration
 
                 x_StockLabTabItem.Content = new StockControl(context, subdivision, staff);
                 x_AdminTabItem.Content = new AdminPreparatorcykaWindow(context, subdivision, staff);
-
-                context.l_log.Add(new l_log() { date = DateTime.Now, datetime = DateTime.Now, idStaff = staff.id, idAction = 20 });
+                x_CartotekaTabItem.Content = new CartotekaControl(context, subdivision, staff);
+                x_DocumentTabItem.Content = new DictionaryControl(context, "s_Documents");
+               
             }
             catch (Exception ex)
             {

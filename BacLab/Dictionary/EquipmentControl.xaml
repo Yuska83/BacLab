@@ -93,7 +93,7 @@
                       ItemsSource="{Binding ListItems}" 
                       FrozenColumnCount="3"
                       AddingNewItem="x_MainGrid_AddingNewItem"
-                      MouseLeftButtonUp="x_MainGrid_MouseLeftButtonUp"
+                     
                       EnableRowVirtualization="True">
 
                 <DataGrid.RowStyle>

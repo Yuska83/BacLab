@@ -158,48 +158,36 @@
                             </Button>
                         </StackPanel>
 
-                        <ComboBox Grid.Column="0" Grid.Row="5" x:Name="x_diagnosis" Grid.ColumnSpan="2"
-                          SelectedItem="{Binding Analis.Diagnosis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True}" 
-                          materialDesign:HintAssist.Hint="Діагноз" 
-                          KeyUp="TextBox_KeyUp" TextSearch.TextPath="abbr"
-                          ItemTemplate="{StaticResource itemsComboBoxAbbr}"  />
+                        <TextBox Grid.Column="0" Grid.Row="5" x:Name="x_diagnosis" Grid.ColumnSpan="2"
+                          Text="{Binding Analis.Diagnosis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True}" 
+                          materialDesign:HintAssist.Hint="Діагноз" />
 
-                        <StackPanel Grid.Column="3" Grid.Row="5" Margin="5 0 20 0" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-                            <Button x:Name="x_editDiagnosis" Margin="0 0 0 5"
-                              Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                              ToolTip="Редагувати" Width="Auto" Height="Auto" 
-                              materialDesign:ShadowAssist.ShadowDepth="Depth2"
-                              Click="X_editItem_Click">
-                              <materialDesign:PackIcon Kind="PencilCircleOutline" />
-                            </Button>
-                            <Button x:Name="x_addDiagnosis"  
-                             Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                             ToolTip="Додати" Width="Auto" Height="Auto" 
-                             materialDesign:ShadowAssist.ShadowDepth="Depth2"
-                             Click="X_addItem_Click">   
-                             <materialDesign:PackIcon Kind="PlusCircleOutline" />
-                            </Button>
-                        </StackPanel>
+                        <ComboBox Grid.Column="0" Grid.Row="6" x:Name="x_giagnosisGroup" Grid.ColumnSpan="2"
+                                  SelectedItem="{Binding Analis.DiagnosisGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  materialDesign:HintAssist.Hint="Категорія діагнозу" 
+                                  KeyUp="TextBox_KeyUp" TextSearch.TextPath="abbr"
+                                  ItemTemplate="{StaticResource itemsComboBoxName}"
+                                  />
 
-                        <ComboBox Grid.Column="0" Grid.Row="6" x:Name="x_patientStatus" Grid.ColumnSpan="2"
+                        <ComboBox Grid.Column="0" Grid.Row="7" x:Name="x_patientStatus" Grid.ColumnSpan="2"
                           SelectedItem="{Binding Analis.PatientStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           materialDesign:HintAssist.Hint="Категорія пацієнта" 
                           KeyUp="TextBox_KeyUp" TextSearch.TextPath="abbr"
                           ItemTemplate="{StaticResource itemsComboBoxAbbr}"
                           SelectionChanged="x_patientStatus_SelectionChanged"/>
 
-                        <TextBox Grid.Column="0" Grid.Row="7" x:Name="x_numMedCards" Grid.ColumnSpan="2"
+                        <TextBox Grid.Column="0" Grid.Row="8" x:Name="x_numMedCards" Grid.ColumnSpan="2"
                          Text="{Binding Analis.NumMedCard, Mode=TwoWay}"
                          materialDesign:HintAssist.Hint="Номер мед.карти" 
                          KeyUp="TextBox_KeyUp" />
 
-                        <ComboBox Grid.Column="0" Grid.Row="8" x:Name="x_sentPerson" Grid.ColumnSpan="2"
+                        <ComboBox Grid.Column="0" Grid.Row="9" x:Name="x_sentPerson" Grid.ColumnSpan="2"
                           SelectedItem="{Binding Analis.SentPerson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           materialDesign:HintAssist.Hint="Направив" 
                           KeyUp="TextBox_KeyUp" TextSearch.TextPath="abbr"
                                   ItemTemplate="{StaticResource itemsComboBoxAbbr}"/>
 
-                        <StackPanel Grid.Column="3" Grid.Row="8" Margin="5 0 20 0" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                        <StackPanel Grid.Column="3" Grid.Row="9" Margin="5 0 20 0" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                             <Button x:Name="x_editSendPerson" Margin="0 0 0 5"
                             Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
                             ToolTip="Редагувати" Width="Auto" Height="Auto" 
@@ -216,8 +204,7 @@
                             </Button>
                         </StackPanel>
 
-
-                        <ComboBox Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="2"
+                        <!--<ComboBox Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="2"
                                   materialDesign:HintAssist.Hint="Фактори ризику">
                             <ComboBoxItem>
                                 <ComboBox Grid.Column="0" Grid.Row="0" x:Name="x_cvc" 
@@ -261,9 +248,7 @@
                                           materialDesign:HintAssist.Hint="Бактеріємія"
                                           ItemsSource="{Binding ListString}" KeyUp="x_ComboBox_KeyUp"/>
                             </ComboBoxItem>
-                        </ComboBox>
-
-                        
+                        </ComboBox>-->
 
                         <TextBox Grid.Column="4" Grid.Row="0" x:Name="x_name"  Grid.ColumnSpan="2"
                          materialDesign:HintAssist.Hint="ПІБ"
@@ -382,7 +367,7 @@
                         
                         <CheckBox Grid.Column="4" Grid.Row="9" x:Name="x_sendCheckBox"  Visibility="Hidden"
                                   FontSize="16" FontWeight="Bold" VerticalAlignment="Center"
-                                  IsChecked="{Binding Analis.SendAnalis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                  IsChecked="{Binding Analis.IsEnd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             Видан</CheckBox>
 
                         <Button Grid.Column="4" Grid.Row="10" x:Name="x_saveBTN" Grid.ColumnSpan="2"

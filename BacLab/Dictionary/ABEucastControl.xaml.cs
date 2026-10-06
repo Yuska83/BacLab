@@ -32,6 +32,8 @@ namespace BacLab.Dictionary
         a_AntibioticPanel selectedABPanel;
         a_AntibioticPanelName selectedABPanelName;
 
+        Dictionary<int, int> diagnosisGroups;
+
         ABMOGroup oldItem = null;
 
         public List<ABDisk> ListAllAB { get { return listAllAB; } set { listAllAB = value; OnPropertyChanged("ListAllAB"); } }
@@ -65,7 +67,7 @@ namespace BacLab.Dictionary
                 List2ndAB = new ObservableCollection<a_AntibioticPanel>();
                 x_GroupMO.ItemsSource = context.d_MicroorganismGroup.OrderBy(c => c.index).Where(c => c.show == true).ToList();
 
-                var colABDisk = context.d_Consumables.Where(c => c.show == true && c.idConsumablesGroup == 1).OrderBy(c => c.index).ToList();
+                var colABDisk = context.d_Consumables.Where(c => c.show == true && c.idConsumablesGroup == 1).OrderBy(c => c.d_TestAndAntibiotic.index).ToList();
                 
                 for (int i = 0; i < colABDisk.Count; i++)
                 {
@@ -149,7 +151,7 @@ namespace BacLab.Dictionary
                                         }
                                     case "діагноз":
                                         {
-                                            nameCriteria = context.d_Diagnosis.Where(c => c.id == idCriteria).FirstOrDefault()?.abbr;
+                                            nameCriteria = context.d_DiagnosisGroup.Where(c => c.id == idCriteria).FirstOrDefault()?.abbr;
                                             break;
                                         }
                                     case "мікроорганізм":
@@ -241,80 +243,82 @@ namespace BacLab.Dictionary
 
         private a_AntibioticMicroorganismGroup SaveABMOItem(ABMOGroup Item)
         {
-            string specificity = "";
-            if (Item.Specificity != "" && Item.Specificity != null)
+            try
             {
-                string[] subStrings = Item.Specificity.Split('\n');
-
-                foreach (string str in subStrings)
+                string specificity = "";
+                if (Item.Specificity != "" && Item.Specificity != null)
                 {
-                    string rule = str.Substring(0, str.IndexOf(' ') + 1);
-                    int length = str.IndexOf(':') - str.IndexOf(' ') - 1;
-                    string nameCriteriaGroup = str.Substring(str.IndexOf(' ') + 1, length);
-                    string nameCriteria = str.Substring(str.IndexOf(':') + 2).TrimEnd();
-                    string idCriteria = "";
+                    string[] subStrings = Item.Specificity.Split('\n');
 
-                    switch (nameCriteriaGroup)
+                    foreach (string str in subStrings)
                     {
-                        case "матеріал":
-                            {
-                                idCriteria = context.d_Material.Where(c => c.abbr.Equals(nameCriteria)).FirstOrDefault()?.id.ToString();
-                                break;
-                            }
-                        case "діагноз":
-                            {
-                                idCriteria = context.d_Diagnosis.Where(c => c.abbr.Equals(nameCriteria)).FirstOrDefault()?.id.ToString();
-                                break;
-                            }
-                        case "мікроорганізм":
-                            {
-                                idCriteria = context.d_Microorganism.Where(c => c.abbr.Equals(nameCriteria)).FirstOrDefault()?.id.ToString();
-                                break;
-                            }
-                        case "шлях введення":
-                            {
-                                idCriteria = context.d_PathUseAB.Where(c => c.abbr.Equals(nameCriteria)).FirstOrDefault()?.id.ToString();
-                                break;
-                            }
-                        case "скринінг":
-                            {
-                                Item.ForScrining = true;
-                                idCriteria = "1";
-                                break;
-                            }
+                        string rule = str.Substring(0, str.IndexOf(' ') + 1);
+                        int length = str.IndexOf(':') - str.IndexOf(' ') - 1;
+                        string nameCriteriaGroup = str.Substring(str.IndexOf(' ') + 1, length);
+                        string nameCriteria = str.Substring(str.IndexOf(':') + 2).TrimEnd();
+                        string idCriteria = "";
+
+                        switch (nameCriteriaGroup)
+                        {
+                            case "матеріал":
+                                {
+                                    idCriteria = context.d_Material.Where(c => c.abbr.Equals(nameCriteria)).FirstOrDefault()?.id.ToString();
+                                    break;
+                                }
+                            case "діагноз":
+                                {
+                                    idCriteria = context.d_DiagnosisGroup.Where(c => c.abbr.Equals(nameCriteria)).FirstOrDefault()?.id.ToString();
+                                    break;
+                                }
+                            case "мікроорганізм":
+                                {
+                                    idCriteria = context.d_Microorganism.Where(c => c.abbr.Equals(nameCriteria)).FirstOrDefault()?.id.ToString();
+                                    break;
+                                }
+                            case "шлях введення":
+                                {
+                                    idCriteria = context.d_PathUseAB.Where(c => c.abbr.Equals(nameCriteria)).FirstOrDefault()?.id.ToString();
+                                    break;
+                                }
+                            case "скринінг":
+                                {
+                                    Item.ForScrining = true;
+                                    idCriteria = "1";
+                                    break;
+                                }
+                        }
+
+                        if (idCriteria != null)
+                            specificity += rule + nameCriteriaGroup + ": " + idCriteria + "\n";
+
                     }
-
-                    if (idCriteria != null)
-                        specificity += rule + nameCriteriaGroup + ": " + idCriteria + "\n";
-
                 }
-            }
-            specificity = specificity.TrimEnd();
+                specificity = specificity.TrimEnd();
 
 
-            bool newItem = false;
-            a_AntibioticMicroorganismGroup d_Item = context.a_AntibioticMicroorganismGroup.Where(c => c.id == Item.Id).FirstOrDefault();
-            if (d_Item == null)
-            {
-                newItem = true;
-                d_Item = new a_AntibioticMicroorganismGroup();
-            }
-
-            d_Item.d_MicroorganismGroup = Item.GroupMO;
-            d_Item.d_Consumables = Item.ABDisk;
-            d_Item.res = Item.Res;
-            d_Item.sen = Item.Sen;
-            d_Item.specificity = specificity;
-            d_Item.comments = Item.Comments;
-            d_Item.show = Item.Show;
-            d_Item.index = Item.Index;
-            d_Item.forScrining = Item.ForScrining;
-
-            if (newItem)
-            {
-                if (d_Item.forScrining != true && d_Item.d_Consumables.d_TestAndAntibiotic != null)
+                bool newItem = false;
+                a_AntibioticMicroorganismGroup d_Item = context.a_AntibioticMicroorganismGroup.Where(c => c.id == Item.Id).FirstOrDefault();
+                if (d_Item == null)
                 {
-                    d_Item.g_ABDisk_ABTest_Interpritation = new List<g_ABDisk_ABTest_Interpritation>
+                    newItem = true;
+                    d_Item = new a_AntibioticMicroorganismGroup();
+                }
+
+                d_Item.d_MicroorganismGroup = Item.GroupMO;
+                d_Item.d_Consumables = Item.ABDisk;
+                d_Item.res = Item.Res;
+                d_Item.sen = Item.Sen;
+                d_Item.specificity = specificity;
+                d_Item.comments = Item.Comments;
+                d_Item.show = Item.Show;
+                d_Item.index = Item.Index;
+                d_Item.forScrining = Item.ForScrining;
+
+                if (newItem)
+                {
+                    if (d_Item.forScrining != true && d_Item.d_Consumables.d_TestAndAntibiotic != null)
+                    {
+                        d_Item.g_ABDisk_ABTest_Interpritation = new List<g_ABDisk_ABTest_Interpritation>
                     {
                         new g_ABDisk_ABTest_Interpritation()
                         {
@@ -324,16 +328,23 @@ namespace BacLab.Dictionary
                         }
                     };
 
-                    Item.Interpretation = "=" + d_Item.d_Consumables.d_TestAndAntibiotic.name;
-                }
-            
+                        Item.Interpretation = "=" + d_Item.d_Consumables.d_TestAndAntibiotic.name;
+                    }
 
-                context.a_AntibioticMicroorganismGroup.Add(d_Item);
+
+                    context.a_AntibioticMicroorganismGroup.Add(d_Item);
+                }
+
+                context.SaveChanges();
+                Item.Id = d_Item.id;
+                return d_Item;
+
             }
-              
-            context.SaveChanges();
-            Item.Id = d_Item.id;
-            return d_Item;
+            catch (Exception ex)
+            {
+                Message.Ok(ex.Message + " " + ex.StackTrace, "MsgDialog");
+                return null;
+            }
         }
 
         private void FillABPanel()
@@ -382,6 +393,7 @@ namespace BacLab.Dictionary
         {
             try
             {
+                if (SelectedABPanelName == null) return;
                 context.a_AntibioticPanel.RemoveRange(context.a_AntibioticPanel.Where(c => c.idAntibioticPanelName == selectedABPanelName.id));
                 foreach(var item in List1thAB)
                     context.a_AntibioticPanel.Add(item);
@@ -452,7 +464,7 @@ namespace BacLab.Dictionary
 
                 if ((sender as TextBlock).Name == "x_SpecificTextblock")
                 {
-                    string res = await Message.DialogNew_ABSpecific(context, d_Item, SelectedABMOItem.Specificity,  "MsgDialog");
+                    string res = await Message.Dialog_ABSpecific(context, d_Item, SelectedABMOItem.Specificity,  "MsgDialog");
                     if (!res.Equals("False"))
                     {
                         SelectedABMOItem.Specificity = res;
@@ -498,7 +510,7 @@ namespace BacLab.Dictionary
                 }
                 if ((sender as TextBlock).Name == "x_InterpretationTextblock")
                 {
-                    string res = await Message.DialogNew_ABInterpritation(context, d_Item, "MsgDialog");
+                    string res = await Message.Dialog_ABInterpritation(context, d_Item, "MsgDialog");
                     if (!res.Equals("False"))
                         SelectedABMOItem.Interpretation = res;
                 }
@@ -521,7 +533,7 @@ namespace BacLab.Dictionary
                 selectedABPanelName = null;
                 x_namePanelAB.ItemsSource = null;
 
-                bool res = await Message.DialogNew_ABPanel(context, SelectedGroupMO.id, subdivisions, "MsgDialog");
+                bool res = await Message.Dialog_ABPanel(context, SelectedGroupMO.id, subdivisions, "MsgDialog");
 
                 x_namePanelAB.ItemsSource = context.a_AntibioticPanelName.
                     Where(c => c.d_MicroorganismGroup.id == SelectedGroupMO.id 
@@ -619,8 +631,6 @@ namespace BacLab.Dictionary
                 Message.Ok(ex.Message + " " + ex.StackTrace, "MsgDialog");
             }
         }
-
-       
 
         void x_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -885,19 +895,30 @@ namespace BacLab.Dictionary
                     row++;
                     column = 1;
                     xlRange.Cells[row, column++] = item.Index;
-                    xlRange.Cells[row, column++] = item.ABDisk?.abbr;
+                    xlRange.Cells[row, column++] = item.ABDisk?.name;
                     xlRange.Cells[row, column++] = item.Sen;
                     xlRange.Cells[row, column++] = item.Res;
-                    xlRange.Cells[row, column++] = item.Specificity.Trim();
-                    xlRange.Cells[row, column++] = " " + item.Interpretation;
-                    xlRange.Cells[row, column++] = item.Comments;
+                    xlRange.Cells[row, column++] = item.Specificity?.Trim();
+                    xlRange.Cells[row, column++] = " " + item.Interpretation?.Trim();
+                    xlRange.Cells[row, column++] = item.Comments?.Trim();
                     xlRange.Cells[row, column++] = item.Id;
                 }
                 column--;
-                Excel.Range y1 = sheet.Cells[2, 1];
-                Excel.Range y2 = sheet.Cells[row, column];
-                sheet.get_Range(y1, y2).Cells.Borders.Weight = Excel.XlBorderWeight.xlThin;
+                Excel.Range y1 = sheet.Cells[1, 1];
+                Excel.Range y2 = sheet.Cells[1, column];
+                Excel.Range range = sheet.get_Range(y1, y2);
+                range.Cells.Merge();
+                range.Cells.Font.Bold = true;
+                
+                y1 = sheet.Cells[2, 1];
+                y2 = sheet.Cells[row, column];
+                range = sheet.get_Range(y1, y2);
+                range.Cells.Borders.Weight = Excel.XlBorderWeight.xlThin;
+                range.HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
+                range.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
                 sheet.get_Range(y1, y2).Columns.AutoFit();
+                sheet.get_Range(y1, y2).Rows.AutoFit();
+
             }
             catch (Exception ex)
             {

@@ -40,10 +40,6 @@ namespace BacLab.Reports
         static string group3;
         static string choise;
 
-        static Excel.Application excel;
-        static Excel.Workbook newDoc;
-        static int numSheet = 1;
-        static string nameSheet = "звіт";
 
         private DispatcherTimer _timer = new DispatcherTimer();
 
@@ -283,7 +279,7 @@ namespace BacLab.Reports
                                 colAnalises = colAnalises.Where(c => !hidden.Contains((int)c.idDepartment) && c.idDepartment != null);
                                 break;
                             case "Діагнози: ":
-                                colAnalises = colAnalises.Where(c => !hidden.Contains((int)c.idDiagnosis) && c.idDiagnosis != null);
+                                colAnalises = colAnalises.Where(c => !hidden.Contains((int)c.idDiagnosisGroup) && c.idDiagnosisGroup != null);
                                 break;
                             case "Статус: ":
                                 colAnalises = colAnalises.Where(c => !hidden.Contains((int)c.idPatientStatus) && c.idPatientStatus != null);
@@ -326,7 +322,7 @@ namespace BacLab.Reports
                 FilterByList<d_Finance>(x_listFinance, a => a.idFinance, i => i.id, i => (bool)i.show, "Фінансування: ", i => i.abbr);
                 FilterByList<d_Institution>(x_listInstitution, a => a.idInstitution, i => i.id, i => (bool)i.show, "Мед.заклади: ", i => i.abbr);
                 FilterByList<d_Department>(x_listDepartment, a => a.idDepartment, i => i.id, i => (bool)i.show, "Відділення: ", i => i.abbr);
-                FilterByList<d_Diagnosis>(x_listDiagnosis, a => a.idDiagnosis, i => i.id, i => (bool)i.show, "Діагнози: ", i => i.abbr);
+                FilterByList<d_DiagnosisGroup>(x_listDiagnosis, a => a.idDiagnosisGroup, i => i.id, i => (bool)i.show, "Діагнози: ", i => i.abbr);
                 FilterByList<d_PatientStatus>(x_listPatientStatus, a => a.idPatientStatus, i => i.id, i => (bool)i.show, "Статус: ", i => i.abbr);
                 FilterByList<d_SentPerson>(x_listSentPerson, a => a.idSentPerson, i => i.id, i => (bool)i.show, "Направляюча особа: ", i => i.abbr);
                 FilterByList<d_GroupResearch>(x_listGroupResearch, a => a.p_Group_Material_Purpose.d_GroupResearch.id, i => i.id, i => (bool)i.show, "Група досліджень: ", i => i.abbr);
@@ -754,14 +750,14 @@ namespace BacLab.Reports
                         );
                         break;
                     case "diagnosisCheskBoxGroup1":
-                        GroupingAnalisesUniversal<d_Diagnosis>(
-                            x_listDiagnosis.Items.Cast<d_Diagnosis>(),
+                        GroupingAnalisesUniversal<d_DiagnosisGroup>(
+                            x_listDiagnosis.Items.Cast<d_DiagnosisGroup>(),
                             s => s.name,
                             s => (bool)s.show,
-                            (a, s) => a.idDiagnosis == s.id,
-                            (c, s) => c.d_Analyzes.idDiagnosis == s.id,
-                            (ab, s) => ab.p_Analises_Cultures.d_Analyzes.idDiagnosis == s.id,
-                            (abDisk, s) => abDisk.p_Analises_Cultures.d_Analyzes.idDiagnosis == s.id,
+                            (a, s) => a.idDiagnosisGroup == s.id,
+                            (c, s) => c.d_Analyzes.idDiagnosisGroup == s.id,
+                            (ab, s) => ab.p_Analises_Cultures.d_Analyzes.idDiagnosisGroup == s.id,
+                            (abDisk, s) => abDisk.p_Analises_Cultures.d_Analyzes.idDiagnosisGroup == s.id,
                             CountedAnalisesMain,
                             groupList
                         );
@@ -1125,14 +1121,14 @@ namespace BacLab.Reports
 
                     case "diagnosisCheskBoxGroup2":
                         foreach (var item2 in groupList)
-                            GroupingAnalisesUniversal<d_Diagnosis>(
-                                x_listDiagnosis.Items.Cast<d_Diagnosis>(),
+                            GroupingAnalisesUniversal<d_DiagnosisGroup>(
+                                x_listDiagnosis.Items.Cast<d_DiagnosisGroup>(),
                                 s => s.name,
                                 s => (bool)s.show,
-                                (a, s) => a.idDiagnosis == s.id,
-                                (c, s) => c.d_Analyzes.idDiagnosis == s.id,
-                                (ab, s) => ab.p_Analises_Cultures.d_Analyzes.idDiagnosis == s.id,
-                                (abDisk, s) => abDisk.p_Analises_Cultures.d_Analyzes.idDiagnosis == s.id,
+                                (a, s) => a.idDiagnosisGroup == s.id,
+                                (c, s) => c.d_Analyzes.idDiagnosisGroup == s.id,
+                                (ab, s) => ab.p_Analises_Cultures.d_Analyzes.idDiagnosisGroup == s.id,
+                                (abDisk, s) => abDisk.p_Analises_Cultures.d_Analyzes.idDiagnosisGroup == s.id,
                                 item2,
                                 item2.ListGroup);
                         break;
@@ -1524,14 +1520,14 @@ namespace BacLab.Reports
                     case "diagnosisCheskBoxGroup3":
                         foreach (var item2 in groupList)
                             foreach (var item3 in item2.ListGroup)
-                                GroupingAnalisesUniversal<d_Diagnosis>(
-                                    x_listDiagnosis.Items.Cast<d_Diagnosis>().Where(c => c.show == true),
+                                GroupingAnalisesUniversal<d_DiagnosisGroup>(
+                                    x_listDiagnosis.Items.Cast<d_DiagnosisGroup>().Where(c => c.show == true),
                                     s => s.name,
                                     s => (bool)s.show,
-                                    (a, s) => a.idDiagnosis == s.id,
-                                    (c, s) => c.d_Analyzes.idDiagnosis == s.id,
-                                    (ab, s) => ab.p_Analises_Cultures.d_Analyzes.idDiagnosis == s.id,
-                                    (abDisk, s) => abDisk.p_Analises_Cultures.d_Analyzes.idDiagnosis == s.id,
+                                    (a, s) => a.idDiagnosisGroup == s.id,
+                                    (c, s) => c.d_Analyzes.idDiagnosisGroup == s.id,
+                                    (ab, s) => ab.p_Analises_Cultures.d_Analyzes.idDiagnosisGroup == s.id,
+                                    (abDisk, s) => abDisk.p_Analises_Cultures.d_Analyzes.idDiagnosisGroup == s.id,
                                     item3,
                                     item3.ListGroup
                                 );
@@ -1990,7 +1986,7 @@ namespace BacLab.Reports
                     departmentCheskBoxGroup3.IsEnabled = true;
                     break;
                 case "diagnosis":
-                    var diagnosis = context.d_Diagnosis.OrderBy(c => c.abbr).ToList();
+                    var diagnosis = context.d_DiagnosisGroup.OrderBy(c => c.abbr).ToList();
                     if (isCheck != null)
                         foreach (var item in diagnosis)
                             item.show = isCheck;
@@ -2194,32 +2190,24 @@ namespace BacLab.Reports
 
         private static void SaveExcel(object obj)
         {
-            //if (countedAnalisesMain == null)
-            //    return;
+            Excel.Application excel = null;
+            Excel.Workbook newDoc = null;
+            Excel.Worksheet sheet = null;
+            Excel.Range xlRange = null;
 
-            List<CountedCollection> groupList = obj as List<CountedCollection>;
-            if(excel == null)
-                excel = new Excel.Application() { Visible = true };
-            if(newDoc == null)
-                newDoc = excel.Workbooks.Add();
             try
             {
-                // Проверяем, существует ли лист с нужным номером, если нет — добавляем
-                Excel.Worksheet sheet;
-                if (excel.Worksheets.Count < numSheet)
-                {
-                    // Добавляем листі до нужного кількості
-                    while (excel.Worksheets.Count < numSheet)
-                    {
-                        excel.Worksheets.Add(After: excel.Worksheets[excel.Worksheets.Count]);
-                    }
-                }
-                sheet = (Excel.Worksheet)excel.Worksheets.get_Item(numSheet);
-                sheet.Name = nameSheet;
+                List<CountedCollection> groupList = obj as List<CountedCollection>;
 
-                Excel.Range xlRange = sheet.UsedRange;
+                excel = new Excel.Application() { Visible = true };
+                newDoc = excel.Workbooks.Add();
+                sheet = (Excel.Worksheet)excel.Worksheets.get_Item(1);
+                sheet.Name = "звіт";
+
+                xlRange = sheet.UsedRange;
                 xlRange.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
                 xlRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+
 
                 int row = 5;
                 int column = 1;
@@ -2378,13 +2366,59 @@ namespace BacLab.Reports
                 excel.Visible = true;
                 excel.WindowState = Excel.XlWindowState.xlMinimized;
                 excel.WindowState = Excel.XlWindowState.xlMaximized;
+
+
             }
             catch (Exception ex)
             {
                 Message.Ok(ex.Message + " " + ex.StackTrace, "MsgDialog");
-                newDoc?.Close(SaveChanges: false);
-                excel?.Quit();
+
+                // Закриваємо документ без збереження у разі помилки
+                if (newDoc != null)
+                {
+                    newDoc.Close(SaveChanges: false);
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(newDoc);
+                }
+
+                if (excel != null)
+                {
+                    excel.Quit();
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
+                }
             }
+            finally
+            {
+                // КРИТИЧНО: Звільнення COM-об'єктів у зворотному порядку створення
+                if (xlRange != null)
+                {
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(xlRange);
+                    xlRange = null;
+                }
+
+                if (sheet != null)
+                {
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet);
+                    sheet = null;
+                }
+
+                if (newDoc != null)
+                {
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(newDoc);
+                    newDoc = null;
+                }
+
+                if (excel != null)
+                {
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
+                    excel = null;
+                }
+
+                // Примусове збирання сміття
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                GC.Collect();
+            }
+
 
         }
 
@@ -2763,152 +2797,213 @@ namespace BacLab.Reports
                         institutionName = institutionName.Substring(0, 50);
                     string destinationPath = System.IO.Path.Combine(desktopPath, institutionName + ".xlsx");
 
-                    if (CommonClass.IsFileAvailable(rezultTemplate))
-                        CommonClass.CopyWordDocument(rezultTemplate, destinationPath);
-
-                    // Відкриваємо скопійований файл для роботи
-                    Excel.Application excel = new Excel.Application() { Visible = true };
-                    Excel.Workbook newDoc = excel.Workbooks.Open(destinationPath);
-                    Excel.Sheets colSheets = newDoc.Sheets;
-                    var colMO = context.d_Microorganism.Select(c => c.name).ToList();
-
-                    int column = 0;
-                    int row = 0;
-                    int columnZagal = 0;
-                    int rowZagal = 0;
-
-                    Excel.Worksheet TitulSheet = colSheets[1];
-                    Excel.Worksheet ZagalSheet = colSheets[2];
-                    Excel.Worksheet ABSheet = colSheets[3];
-
-                    TitulSheet.Cells[1, 2] = institutionAnalises.Key.name;
-                    TitulSheet.Cells[2, 2] = subdivision.name;
-                    TitulSheet.Cells[3, 2] = staff.name;
-                    TitulSheet.Cells[4, 2] = staff.telephon1;
-
-                    var col1 = institutionAnalises.Where(c => c.d_TestAndAntibiotic != null).GroupBy(c => c.d_TestAndAntibiotic).AsQueryable();
-                    var col2 = institutionAnalises.Where(c => c.d_TestAndAntibiotic1 != null).GroupBy(c => c.d_TestAndAntibiotic1).AsQueryable();
-                    var col3 = institutionAnalises.Where(c => c.d_TestAndAntibiotic2 != null).GroupBy(c => c.d_TestAndAntibiotic2).AsQueryable();
-                    var col4 = institutionAnalises.Where(c => c.d_TestAndAntibiotic3 != null).GroupBy(c => c.d_TestAndAntibiotic3).AsQueryable();
-
-                    // Отримати значення з 1 стовпчика таблиці Excel
-                    Dictionary<string, int> colIdAB = new Dictionary<string, int>();
-                    for (int i = 5; i <= ABSheet.UsedRange.Rows.Count; i++)
+                    
+                    if (!CommonClass.IsFileAvailable(rezultTemplate))
                     {
-                        var cellValue = ABSheet.Cells[i, 1].Value;
-                        if (cellValue != null)
-                        {
-                            colIdAB.Add(cellValue.ToString(), i);
-                        }
+                        MessageBox.Show("Файл шаблону результату ВБД.xlsx зайнятий іншою програмою. Закрийте його та повторіть спробу.");
+                        return;
                     }
-                    int x; int y; int a; int b;
-                    foreach (var AB in colIdAB)
-                    {
-                        int idAB = Convert.ToInt32(AB.Key);
-                        x = col1.Where(c => c.Key.id == idAB).FirstOrDefault() != null ? col1.Where(c => c.Key.id == idAB).FirstOrDefault().Count() : 0;
-                        y = col2.Where(c => c.Key.id == idAB).FirstOrDefault() != null ? col2.Where(c => c.Key.id == idAB).FirstOrDefault().Count() : 0;
-                        ABSheet.Cells[AB.Value, 3] = x + y == 0 ? "" : (x + y).ToString();
-                        a = col3.Where(c => c.Key.id == idAB).FirstOrDefault() != null ? col3.Where(c => c.Key.id == idAB).FirstOrDefault().Count() : 0;
-                        b = col4.Where(c => c.Key.id == idAB).FirstOrDefault() != null ? col4.Where(c => c.Key.id == idAB).FirstOrDefault().Count() : 0;
-                        ABSheet.Cells[AB.Value, 4] = a + b == 0 ? "" : (a + b).ToString();
-                    }
+                    CommonClass.CopyWordDocument(rezultTemplate, destinationPath);
 
-                    var colDo48 = institutionAnalises.GroupBy(c => c.do48).AsQueryable();
-                    foreach (var do48 in colDo48)
+                    Excel.Application excel = null;
+                    Excel.Workbook newDoc = null;
+                    Excel.Sheets colSheets = null;
+                    Excel.Range xlRange = null;
+
+                    try
                     {
-                        var colDo72 = do48.GroupBy(c => c.do72).AsQueryable();
-                        foreach (var do72 in colDo72)
+                        // Відкриваємо скопійований файл для роботи
+                        excel = new Excel.Application() { Visible = true };
+                        newDoc = excel.Workbooks.Open(destinationPath);
+                        colSheets = newDoc.Sheets;
+
+                        var colMO = context.d_Microorganism.Select(c => c.name).ToList();
+
+                        int column = 0;
+                        int row = 0;
+                        int columnZagal = 0;
+                        int rowZagal = 0;
+
+                        Excel.Worksheet TitulSheet = colSheets[1];
+                        Excel.Worksheet ZagalSheet = colSheets[2];
+                        Excel.Worksheet ABSheet = colSheets[3];
+
+                        TitulSheet.Cells[1, 2] = institutionAnalises.Key.name;
+                        TitulSheet.Cells[2, 2] = subdivision.name;
+                        TitulSheet.Cells[3, 2] = staff.name;
+                        TitulSheet.Cells[4, 2] = staff.telephon1;
+
+                        var col1 = institutionAnalises.Where(c => c.d_TestAndAntibiotic != null).GroupBy(c => c.d_TestAndAntibiotic).AsQueryable();
+                        var col2 = institutionAnalises.Where(c => c.d_TestAndAntibiotic1 != null).GroupBy(c => c.d_TestAndAntibiotic1).AsQueryable();
+                        var col3 = institutionAnalises.Where(c => c.d_TestAndAntibiotic2 != null).GroupBy(c => c.d_TestAndAntibiotic2).AsQueryable();
+                        var col4 = institutionAnalises.Where(c => c.d_TestAndAntibiotic3 != null).GroupBy(c => c.d_TestAndAntibiotic3).AsQueryable();
+
+                        // Отримати значення з 1 стовпчика таблиці Excel
+                        Dictionary<string, int> colIdAB = new Dictionary<string, int>();
+                        for (int i = 5; i <= ABSheet.UsedRange.Rows.Count; i++)
                         {
-                            int columnOne = 0;
-                            if (do48.Key == true && do72.Key == true)
-                            { columnOne = 5; columnZagal = 4; }
-                            else if (do48.Key == true && do72.Key == false)
-                            { columnOne = 14; columnZagal = 5; }
-                            else if (do48.Key == false && do72.Key == true)
-                            { columnOne = 23; columnZagal = 6; }
-                            else if (do48.Key == false && do72.Key == false)
-                            { columnOne = 32; columnZagal = 7; }
-
-                            var colMatrial = do72.GroupBy(c => c.p_Group_Material_Purpose.d_Material).AsQueryable();
-                            foreach (var material in colMatrial)
+                            var cellValue = ABSheet.Cells[i, 1].Value;
+                            if (cellValue != null)
                             {
-                                if (!colIdMaterial.Contains(material.Key.id)) continue;
-
-                                if (material.Key.id == 3)
-                                { column = columnOne; rowZagal = 3; }
-                                else if (material.Key.id == 10)
-                                { column = columnOne + 3; rowZagal = 7; }
-                                else if (material.Key.id == 1064)
-                                { column = columnOne + 6; rowZagal = 11; }
-
-
-
-                                listCultures = material.SelectMany(analisPos => analisPos.p_Analises_Cultures)
-                                    .Where(culture =>
-                                        culture.p_Analises_Cultures_ABTest.Any(ab => ab.abResSen != true))
-                                    .AsQueryable();
-
-                                ZagalSheet.Cells[rowZagal, columnZagal].Value = material.Count();
-                                ZagalSheet.Cells[rowZagal + 1, columnZagal].Value = material.Where(c => c.p_Analises_Cultures.Any()).Count();
-                                ZagalSheet.Cells[rowZagal + 2, columnZagal].Value = listCultures.Count();
-
-                                int countMO = 0;
-                                var colMOGroup = listCultures.GroupBy(c => c.d_Microorganism).AsQueryable();
-                                foreach (var moGroup in colMOGroup)
-                                {
-                                    string moName = moGroup.Key.name;
-                                    if (string.IsNullOrEmpty(moName)) continue;
-                                    if (!SheetExists(colSheets, moName)) continue;
-                                    Excel.Worksheet targetSheet = GetSheetByName(colSheets, moName);
-                                    if (targetSheet == null) continue;
-
-                                    // Отримати значення з 1 стовпчика таблиці Excel
-                                    colIdAB.Clear();
-                                    for (int i = 5; i <= targetSheet.UsedRange.Rows.Count; i++)
-                                    {
-                                        var cellValue = targetSheet.Cells[i, 1].Value;
-                                        if (cellValue != null)
-                                        {
-                                            colIdAB.Add(cellValue.ToString(), i);
-                                        }
-                                    }
-
-
-                                    listABTest = moGroup.SelectMany(culture => culture.p_Analises_Cultures_ABTest.Where(ab => ab.abResSen != true)).AsQueryable();
-                                    targetSheet.Cells[colIdAB[4.ToString()], column].Value = moGroup.Count();
-                                    countMO += moGroup.Count();
-
-                                    var colAB = listABTest.GroupBy(c => c.d_TestAndAntibiotic);
-
-                                    foreach (var ab in colAB)
-                                    {
-                                        string abId = ab.Key.id.ToString();
-                                        if (!colIdAB.Keys.Contains(abId)) continue;
-                                        row = colIdAB[abId];
-
-                                        var colRez = ab.GroupBy(c => c.pm);
-                                        foreach (var pez in colRez)
-                                        {
-                                            if (pez.Key == null) continue;
-                                            if (pez.Key == "-" && (ab.Key.id == 104 || ab.Key.id == 105)) continue;
-                                            if (pez.Key == "+") targetSheet.Cells[row, column].Value = pez.Count();
-                                            if (pez.Key == "/") targetSheet.Cells[row, column + 1].Value = pez.Count();
-                                            else if (pez.Key == "-") targetSheet.Cells[row, column + 2].Value = pez.Count();
-                                        }
-
-                                    }
-
-                                }
-
-                                ZagalSheet.Cells[rowZagal + 3, columnZagal].Value = countMO;
+                                colIdAB.Add(cellValue.ToString(), i);
                             }
                         }
+                        int x; int y; int a; int b;
+                        foreach (var AB in colIdAB)
+                        {
+                            int idAB = Convert.ToInt32(AB.Key);
+                            x = col1.Where(c => c.Key.id == idAB).FirstOrDefault() != null ? col1.Where(c => c.Key.id == idAB).FirstOrDefault().Count() : 0;
+                            y = col2.Where(c => c.Key.id == idAB).FirstOrDefault() != null ? col2.Where(c => c.Key.id == idAB).FirstOrDefault().Count() : 0;
+                            ABSheet.Cells[AB.Value, 3] = x + y == 0 ? "" : (x + y).ToString();
+                            a = col3.Where(c => c.Key.id == idAB).FirstOrDefault() != null ? col3.Where(c => c.Key.id == idAB).FirstOrDefault().Count() : 0;
+                            b = col4.Where(c => c.Key.id == idAB).FirstOrDefault() != null ? col4.Where(c => c.Key.id == idAB).FirstOrDefault().Count() : 0;
+                            ABSheet.Cells[AB.Value, 4] = a + b == 0 ? "" : (a + b).ToString();
+                        }
+
+                        var colDo48 = institutionAnalises.GroupBy(c => c.do48).AsQueryable();
+                        foreach (var do48 in colDo48)
+                        {
+                            var colDo72 = do48.GroupBy(c => c.do72).AsQueryable();
+                            foreach (var do72 in colDo72)
+                            {
+                                int columnOne = 0;
+                                if (do48.Key == true && do72.Key == true)
+                                { columnOne = 5; columnZagal = 4; }
+                                else if (do48.Key == true && do72.Key == false)
+                                { columnOne = 14; columnZagal = 5; }
+                                else if (do48.Key == false && do72.Key == true)
+                                { columnOne = 23; columnZagal = 6; }
+                                else if (do48.Key == false && do72.Key == false)
+                                { columnOne = 32; columnZagal = 7; }
+
+                                var colMatrial = do72.GroupBy(c => c.p_Group_Material_Purpose.d_Material).AsQueryable();
+                                foreach (var material in colMatrial)
+                                {
+                                    if (!colIdMaterial.Contains(material.Key.id)) continue;
+
+                                    if (material.Key.id == 3)
+                                    { column = columnOne; rowZagal = 3; }
+                                    else if (material.Key.id == 10)
+                                    { column = columnOne + 3; rowZagal = 7; }
+                                    else if (material.Key.id == 1064)
+                                    { column = columnOne + 6; rowZagal = 11; }
+
+
+
+                                    listCultures = material.SelectMany(analisPos => analisPos.p_Analises_Cultures)
+                                        .Where(culture =>
+                                            culture.p_Analises_Cultures_ABTest.Any(ab => ab.abResSen != true))
+                                        .AsQueryable();
+
+                                    ZagalSheet.Cells[rowZagal, columnZagal].Value = material.Count();
+                                    ZagalSheet.Cells[rowZagal + 1, columnZagal].Value = material.Where(c => c.p_Analises_Cultures.Any()).Count();
+                                    ZagalSheet.Cells[rowZagal + 2, columnZagal].Value = listCultures.Count();
+
+                                    int countMO = 0;
+                                    var colMOGroup = listCultures.GroupBy(c => c.d_Microorganism).AsQueryable();
+                                    foreach (var moGroup in colMOGroup)
+                                    {
+                                        string moName = moGroup.Key.name;
+                                        if (string.IsNullOrEmpty(moName)) continue;
+                                        if (!SheetExists(colSheets, moName)) continue;
+                                        Excel.Worksheet targetSheet = GetSheetByName(colSheets, moName);
+                                        if (targetSheet == null) continue;
+
+                                        // Отримати значення з 1 стовпчика таблиці Excel
+                                        colIdAB.Clear();
+                                        for (int i = 5; i <= targetSheet.UsedRange.Rows.Count; i++)
+                                        {
+                                            var cellValue = targetSheet.Cells[i, 1].Value;
+                                            if (cellValue != null)
+                                            {
+                                                colIdAB.Add(cellValue.ToString(), i);
+                                            }
+                                        }
+
+
+                                        listABTest = moGroup.SelectMany(culture => culture.p_Analises_Cultures_ABTest.Where(ab => ab.abResSen != true)).AsQueryable();
+                                        targetSheet.Cells[colIdAB[4.ToString()], column].Value = moGroup.Count();
+                                        countMO += moGroup.Count();
+
+                                        var colAB = listABTest.GroupBy(c => c.d_TestAndAntibiotic);
+
+                                        foreach (var ab in colAB)
+                                        {
+                                            string abId = ab.Key.id.ToString();
+                                            if (!colIdAB.Keys.Contains(abId)) continue;
+                                            row = colIdAB[abId];
+
+                                            var colRez = ab.GroupBy(c => c.pm);
+                                            foreach (var pez in colRez)
+                                            {
+                                                if (pez.Key == null) continue;
+                                                if (pez.Key == "-" && (ab.Key.id == 104 || ab.Key.id == 105)) continue;
+                                                if (pez.Key == "+") targetSheet.Cells[row, column].Value = pez.Count();
+                                                if (pez.Key == "/") targetSheet.Cells[row, column + 1].Value = pez.Count();
+                                                else if (pez.Key == "-") targetSheet.Cells[row, column + 2].Value = pez.Count();
+                                            }
+
+                                        }
+
+                                    }
+
+                                    ZagalSheet.Cells[rowZagal + 3, columnZagal].Value = countMO;
+                                }
+                            }
+                        }
+                        newDoc.Save();
+                        
+                    }
+                    catch (Exception ex)
+                    {
+                        Message.Ok(ex.Message + " " + ex.StackTrace, "MsgDialog");
+
+                        // Закриваємо документ без збереження у разі помилки
+                        if (newDoc != null)
+                        {
+                            newDoc.Close(SaveChanges: false);
+                            System.Runtime.InteropServices.Marshal.ReleaseComObject(newDoc);
+                        }
+
+                        if (excel != null)
+                        {
+                            excel.Quit();
+                            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
+                        }
+                    }
+                    finally
+                    {
+                        // КРИТИЧНО: Звільнення COM-об'єктів у зворотному порядку створення
+                        if (xlRange != null)
+                        {
+                            System.Runtime.InteropServices.Marshal.ReleaseComObject(xlRange);
+                            xlRange = null;
+                        }
+
+                        if (colSheets != null)
+                        {
+                            System.Runtime.InteropServices.Marshal.ReleaseComObject(colSheets);
+                            colSheets = null;
+                        }
+
+                        if (newDoc != null)
+                        {
+                            System.Runtime.InteropServices.Marshal.ReleaseComObject(newDoc);
+                            newDoc = null;
+                        }
+
+                        if (excel != null)
+                        {
+                            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
+                            excel = null;
+                        }
+
+                        // Примусове збирання сміття
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
+                        GC.Collect();
                     }
 
-                    // Зберігаємо та закриваємо документ
-                    newDoc.Save();
-                    //newDoc.Close(SaveChanges: true);
-                    //excel.Quit();
                 }
 
                 Message.Ok("Готово!", "MsgDialog");

@@ -257,16 +257,31 @@
     <Compile Include="Administration\SearchWindow.xaml.cs">
       <DependentUpon>SearchWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="a_AntibioticControl.cs">
-      <DependentUpon>ModelDB.tt</DependentUpon>
-    </Compile>
     <Compile Include="a_AntibioticGroup.cs">
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
     <Compile Include="a_AntibioticMicroorganismGroup.cs">
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="a_AntibioticNorms.cs">
+    <Compile Include="Dialogs\Dialog_MinusSpirt.xaml.cs">
+      <DependentUpon>Dialog_MinusSpirt.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dictionary\AccreditationControl.xaml.cs">
+      <DependentUpon>AccreditationControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dictionary\CartotekaControl.xaml.cs">
+      <DependentUpon>CartotekaControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dictionary\ConsumableEnterControl.xaml.cs">
+      <DependentUpon>ConsumableEnterControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="d_Coefficient.cs">
+      <DependentUpon>ModelDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="d_ConsumablesControls.cs">
+      <DependentUpon>ModelDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="d_ConsumablesNorms.cs">
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
     <Compile Include="a_AntibioticPanel.cs">
@@ -276,6 +291,9 @@
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\AnotherCommandImplementation.cs" />
+    <Compile Include="Dialogs\Dialog_EnterControl.xaml.cs">
+      <DependentUpon>Dialog_EnterControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\Dialog_AddConsumes.xaml.cs">
       <DependentUpon>Dialog_AddConsumes.xaml</DependentUpon>
     </Compile>
@@ -312,8 +330,8 @@
     <Compile Include="Dictionary\ConsumableAVG.xaml.cs">
       <DependentUpon>ConsumableAVG.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dictionary\DublicatesControl.xaml.cs">
-      <DependentUpon>DublicatesControl.xaml</DependentUpon>
+    <Compile Include="Dictionary\MegreControl.xaml.cs">
+      <DependentUpon>MegreControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dictionary\DublicatesPatientsControl.xaml.cs">
       <DependentUpon>DublicatesPatientsControl.xaml</DependentUpon>
@@ -354,7 +372,7 @@
     <Compile Include="d_Department.cs">
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="d_Diagnosis.cs">
+    <Compile Include="d_DiagnosisGroup.cs">
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
     <Compile Include="d_Disinfectants.cs">
@@ -409,6 +427,9 @@
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
     <Compile Include="d_Medium.cs">
+      <DependentUpon>ModelDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="d_MediumGroup.cs">
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
     <Compile Include="d_MethodsInoculation.cs">
@@ -471,10 +492,16 @@
     <Compile Include="d_SerumStock.cs">
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="d_Spirt.cs">
+      <DependentUpon>ModelDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="d_Staff.cs">
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
     <Compile Include="d_StaffGroup.cs">
+      <DependentUpon>ModelDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="d_Sterilization.cs">
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
     <Compile Include="d_StyleApp.cs">
@@ -484,6 +511,9 @@
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
     <Compile Include="d_Template.cs">
+      <DependentUpon>ModelDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="d_Termin.cs">
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
     <Compile Include="d_TestAndAntibiotic.cs">
@@ -513,6 +543,9 @@
     <Compile Include="g_Equipment_DragMatal.cs">
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="g_GroupMaterialPurpose_Accreditation.cs">
+      <DependentUpon>ModelDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="g_Institution_Department.cs">
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
@@ -522,13 +555,28 @@
     <Compile Include="g_Institution_SentPerson.cs">
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="g_Medium_Consumables.cs">
+      <DependentUpon>ModelDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="g_MicroorganismGroup_Microorganism.cs">
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
     <Compile Include="g_Microorganism_ABResSen.cs">
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="g_Microorganism_Accreditation.cs">
+      <DependentUpon>ModelDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="g_Microorganism_TestsResults.cs">
+      <DependentUpon>ModelDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LabPreparationComponents.cs">
+      <DependentUpon>ModelDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LabPreparations.cs">
+      <DependentUpon>ModelDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LabSources.cs">
       <DependentUpon>ModelDB.tt</DependentUpon>
     </Compile>
     <Compile Include="l_log.cs">
@@ -554,6 +602,9 @@
     <Compile Include="Models\ConsumablesStock.cs" />
     <Compile Include="Models\CountingItemConsumableReport.cs" />
     <Compile Include="Models\FileFormatHelper.cs" />
+    <Compile Include="Models\Medium.cs" />
+    <Compile Include="Models\MegreModel.cs" />
+    <Compile Include="Models\Spirt.cs" />
     <Compile Include="Models\TerraCSVModel.cs" />
     <Compile Include="Models\MyExtensions.cs" />
     <Compile Include="p_Analises_Cultures.cs">
@@ -780,7 +831,7 @@
       <DependentUpon>TestControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\TestResult.cs" />
-    <Compile Include="Models\ABControls.cs" />
+    <Compile Include="Models\ConsumableControls.cs" />
     <Compile Include="Models\ABMOGroup.cs" />
     <Compile Include="Models\ABTest.cs" />
     <Compile Include="Models\ABNorms.cs" />
@@ -874,6 +925,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Dialogs\Dialog_MinusSpirt.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\Dialog_EnterControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Dialogs\Dialog_AddConsumes.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -898,6 +957,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Dictionary\AccreditationControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dictionary\CartotekaControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dictionary\ConsumableEnterControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Dictionary\ABResSenControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -910,7 +981,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dictionary\DublicatesControl.xaml">
+    <Page Include="Dictionary\MegreControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

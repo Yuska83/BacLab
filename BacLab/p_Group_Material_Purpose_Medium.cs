@@ -24,8 +24,8 @@ namespace BacLab
         public Nullable<int> index { get; set; }
         public string timeObservation { get; set; }
     
-        public virtual d_Medium d_Medium { get; set; }
         public virtual d_MethodsInoculation d_MethodsInoculation { get; set; }
         public virtual p_Group_Material_Purpose p_Group_Material_Purpose { get; set; }
+        public virtual d_Medium d_Medium { get; set; }
     }
 }

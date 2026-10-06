@@ -14,6 +14,12 @@ namespace BacLab
     
     public partial class d_ConsumableWritingOff
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public d_ConsumableWritingOff()
+        {
+            this.d_Spirt = new HashSet<d_Spirt>();
+        }
+    
         public int id { get; set; }
         public int idConsumablesStock { get; set; }
         public Nullable<System.DateTime> date { get; set; }
@@ -27,5 +33,7 @@ namespace BacLab
         public virtual d_Staff d_Staff { get; set; }
         public virtual d_Units d_Units { get; set; }
         public virtual d_ConsumablesStock d_ConsumablesStock { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<d_Spirt> d_Spirt { get; set; }
     }
 }

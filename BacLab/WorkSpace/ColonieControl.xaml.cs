@@ -560,7 +560,17 @@ namespace BacLab.WorkSpace
                             int length = str.IndexOf(':') - str.IndexOf(' ') - 1;
                             string nameCriteriaGroup = str.Substring(str.IndexOf(' ') + 1, length);
                             string nameCriteria = str.Substring(str.IndexOf(':') + 2).TrimEnd();
-                            int idCriteria = Convert.ToInt32(nameCriteria);
+                            int idCriteria = 0;
+                            try
+                            {
+                                idCriteria = Convert.ToInt32(nameCriteria);
+                            }
+                            catch (Exception)
+                            {
+
+                                throw;
+                            }
+                            
 
                             switch (nameCriteriaGroup)
                             {
@@ -599,8 +609,8 @@ namespace BacLab.WorkSpace
                             if (arrOnlyMicroorganism.Where(c => c == Colonie.d_Microorganism.id).Count() == 0)
                             { item.show = false; item.commentWhyEnabled += "тільки: "; foreach (var it in arrOnlyMicroorganism) item.commentWhyEnabled += context.d_Microorganism.Where(c => c.id == it).FirstOrDefault().abbr + ","; item.commentWhyEnabled = item.commentWhyEnabled.TrimEnd(); }
                         if (arrOnlyDiagnosis.Count() > 0)
-                            if (arrOnlyDiagnosis.Where(c => c == Analis.idDiagnosis).Count() == 0)
-                            { item.show = false; item.commentWhyEnabled += "тільки: "; foreach (var it in arrOnlyDiagnosis) item.commentWhyEnabled += context.d_Diagnosis.Where(c => c.id == it).FirstOrDefault().abbr + ","; item.commentWhyEnabled = item.commentWhyEnabled.TrimEnd(); }
+                            if (arrOnlyDiagnosis.Where(c => c == Analis.idDiagnosisGroup).Count() == 0)
+                            { item.show = false; item.commentWhyEnabled += "тільки: "; foreach (var it in arrOnlyDiagnosis) item.commentWhyEnabled += context.d_DiagnosisGroup.Where(c => c.id == it).FirstOrDefault().abbr + ","; item.commentWhyEnabled = item.commentWhyEnabled.TrimEnd(); }
 
                         if (arrUnlessMaterial.Count() > 0)
                             if (arrUnlessMaterial.Where(c => c == Analis.p_Group_Material_Purpose.idMaterial).Count() > 0)
@@ -609,8 +619,8 @@ namespace BacLab.WorkSpace
                             if (arrUnlessMicroorganism.Where(c => c == Colonie.d_Microorganism.id).Count() > 0)
                             { item.show = false; item.commentWhyEnabled += "окрім: "; foreach (var it in arrUnlessMicroorganism) item.commentWhyEnabled += context.d_Microorganism.Where(c => c.id == it).FirstOrDefault().abbr + ","; item.commentWhyEnabled = item.commentWhyEnabled.TrimEnd(); }
                         if (arrUnlessDiagnosis.Count() > 0)
-                            if (arrUnlessDiagnosis.Where(c => c == Analis.idDiagnosis).Count() > 0)
-                            { item.show = false; item.commentWhyEnabled += "окрім: "; foreach (var it in arrUnlessDiagnosis) item.commentWhyEnabled += context.d_Diagnosis.Where(c => c.id == it).FirstOrDefault().abbr + ","; item.commentWhyEnabled = item.commentWhyEnabled.TrimEnd(); }
+                            if (arrUnlessDiagnosis.Where(c => c == Analis.idDiagnosisGroup).Count() > 0)
+                            { item.show = false; item.commentWhyEnabled += "окрім: "; foreach (var it in arrUnlessDiagnosis) item.commentWhyEnabled += context.d_DiagnosisGroup.Where(c => c.id == it).FirstOrDefault().abbr + ","; item.commentWhyEnabled = item.commentWhyEnabled.TrimEnd(); }
 
                     }
 
@@ -636,7 +646,7 @@ namespace BacLab.WorkSpace
                 if (abSeries != null)
                 {
                     item.d_ConsumablesStock = abSeries;
-                    var abControl = abSeries.a_AntibioticControl.OrderBy(c => c.date).LastOrDefault();
+                    var abControl = abSeries.d_ConsumablesControls.OrderBy(c => c.date).LastOrDefault();
                     if (abControl != null)
                     {
                         item.commentABControl = "Контроль: " + abControl.date.ToShortDateString();

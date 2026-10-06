@@ -12,7 +12,7 @@ namespace BacLab.Dialogs
 {
     static class Message
     {
-        public async static Task<int> DialogPassport(string dialoghost)
+        public async static Task<int> Dialog_Passport(string dialoghost)
         {
             var view = new DialogPassport
             {
@@ -23,7 +23,7 @@ namespace BacLab.Dialogs
             return (int)result;
         }
 
-        public async static Task<int> DialogDias(string dialoghost)
+        public async static Task<int> Dialog_Dias(string dialoghost)
         {
             var view = new DialogDias
             {
@@ -94,7 +94,7 @@ namespace BacLab.Dialogs
 
         }
 
-        public async static Task<int> DialogNew_AddItem(string nameTab, int idInstitution, string dialoghost)
+        public async static Task<int> Dialog_AddItem(string nameTab, int idInstitution, string dialoghost)
         {
             var view = new Dialog_AddItem(nameTab, idInstitution);
 
@@ -102,7 +102,7 @@ namespace BacLab.Dialogs
             return (int)result;
         }
 
-        public async static Task<string> DialogNew_ABSpecific(BacLab_DBEntities context, a_AntibioticMicroorganismGroup ABMOItem, string specificity, string dialoghost)
+        public async static Task<string> Dialog_ABSpecific(BacLab_DBEntities context, a_AntibioticMicroorganismGroup ABMOItem, string specificity, string dialoghost)
         {
             var view = new Dialog_ABSpecific(context, ABMOItem, specificity);
 
@@ -110,7 +110,7 @@ namespace BacLab.Dialogs
             return (string)result;
         }
 
-        public async static Task<string> DialogNew_ABInterpritation(BacLab_DBEntities context, a_AntibioticMicroorganismGroup ABMOItem, string dialoghost)
+        public async static Task<string> Dialog_ABInterpritation(BacLab_DBEntities context, a_AntibioticMicroorganismGroup ABMOItem, string dialoghost)
         {
             var view = new Dialog_ABInterpritation(context, ABMOItem);
 
@@ -118,7 +118,7 @@ namespace BacLab.Dialogs
             return (string)result;
         }
 
-        public async static Task<bool> DialogNew_ABPanel(BacLab_DBEntities context, int idMOGroup, d_Subdivisions subdivisions, string dialoghost)
+        public async static Task<bool> Dialog_ABPanel(BacLab_DBEntities context, int idMOGroup, d_Subdivisions subdivisions, string dialoghost)
         {
             var view = new Dialog_ABPanel(context, idMOGroup, subdivisions);
 
@@ -126,7 +126,7 @@ namespace BacLab.Dialogs
             return (bool)result;
         }
 
-        public async static Task<bool> DialogNew_TestPanel(BacLab_DBEntities context, string dialoghost)
+        public async static Task<bool> Dialog_TestPanel(BacLab_DBEntities context, string dialoghost)
         {
             var view = new Dialog_TestPanel(context);
 
@@ -134,7 +134,7 @@ namespace BacLab.Dialogs
 
         }
 
-        public async static Task<object> DialogNew_AddMedium(BacLab_DBEntities context, List<p_Group_Material_Purpose_Medium> listMediums, List<p_Analises_Mediums> listMediumsAnalis, GroupMaterialPurpose GMP, string dialoghost)
+        public async static Task<object> Dialog_AddMedium(BacLab_DBEntities context, List<p_Group_Material_Purpose_Medium> listMediums, List<p_Analises_Mediums> listMediumsAnalis, GroupMaterialPurpose GMP, string dialoghost)
         {
             try
             {
@@ -193,7 +193,7 @@ namespace BacLab.Dialogs
 
         }
 
-        public async static Task<bool> DialogNew_AddDragMetal(BacLab_DBEntities context, Equipment equipment, string dialoghost)
+        public async static Task<bool> Dialog_AddDragMetal(BacLab_DBEntities context, Equipment equipment, string dialoghost)
         {
             try
             {
@@ -216,7 +216,7 @@ namespace BacLab.Dialogs
             return (string)result;
         }
 
-        public async static Task<string> DialogDiapazon(string name, string str, string dialoghost)
+        public async static Task<string> Dialog_Diapazon(string name, string str, string dialoghost)
         {
             var view = new DialogDiapazon(name, str);
 
@@ -236,19 +236,31 @@ namespace BacLab.Dialogs
             return (bool)result;
         }
 
-        public async static Task<ConsumablesStock> DialogNew_AddConsumes(BacLab_DBEntities context, ConsumablesStock consumablesStock,StockControl parentWindow, bool isEdit, string dialoghost)
+        public async static Task<ConsumablesStock> Dialog_AddConsumes(BacLab_DBEntities context, ConsumablesStock consumablesStock,StockControl parentWindow, bool isEdit, string dialoghost)
         {
             var view = new Dialog_AddConsumes(context, consumablesStock, parentWindow, isEdit);
             var result = await DialogHost.Show(view, dialoghost);
             return (ConsumablesStock)result;
         }
 
-        public async static Task<bool?> DialogNew_MinusConsumes(BacLab_DBEntities context, int idConsumablesStock, d_Staff staff, string dialoghost)
+        public async static Task<bool?> Dialog_MinusConsumes(BacLab_DBEntities context, int idConsumablesStock, d_Staff staff, string dialoghost)
         {
             var view = new Dialog_MinusConsumes(context, idConsumablesStock, staff);
             var result = await DialogHost.Show(view, dialoghost);
             return (bool?)result;
         }
 
+        public async static Task<bool?> Dialog_MinusSpirt(BacLab_DBEntities context, int idConsumablesStock, int idSubdivisions, d_Staff staff, d_ConsumableWritingOff consumableWritingOff, string dialoghost)
+        {
+            var view = new Dialog_MinusSpirt(context, idConsumablesStock,idSubdivisions , staff, consumableWritingOff);
+            var result = await DialogHost.Show(view, dialoghost);
+            return (bool?)result;
+        }
+        public async static Task<bool?> Dialog_Megre(BacLab_DBEntities context, d_Staff staff, MegreMode mode, string dialoghost)
+        {
+            var view = new MegreControl(context, staff, mode);
+            var result = await DialogHost.Show(view, dialoghost);
+            return (bool?)result;
+        }
     }
 }

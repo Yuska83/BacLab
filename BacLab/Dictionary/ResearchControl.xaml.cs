@@ -411,7 +411,7 @@ namespace BacLab.Dictionary
                     d_Item = context.p_Group_Material_Purpose.Where(c => c.id == SelectedItem.Id).FirstOrDefault();
 
                 // запускаємо діалог
-                var mediums = await Message.DialogNew_AddMedium(context, selectedItem.Mediums.ToList(), null, SelectedItem, "MsgDialog");
+                var mediums = await Message.Dialog_AddMedium(context, selectedItem.Mediums.ToList(), null, SelectedItem, "MsgDialog");
 
                 if (mediums == null) return;
 

@@ -15,11 +15,12 @@
         <dockablz:Layout>
             <DockPanel >
                 <dragablz:TabablzControl BorderThickness="2" >
-                    <TabItem Header="Контроль мікроклімату" x:Name="x_InnerControl"/>
-                    <TabItem Header="Вхідний контроль якості антибіотиків" x:Name="x_ABEnterControl"/>
                     <TabItem Header="Поточний контроль якості антибіотиків" x:Name="x_ABControl"/>
-                    <TabItem Header="Моніторинг якості антибіотиків" x:Name="x_ABMonitoring"/>
                     <TabItem Header="Контроль якості поживних середовищ" x:Name="x_ConsumablesControls"/>
+                    <TabItem Header="Вхідний контроль якості антибіотиків" x:Name="x_ABEnterControl"/>
+                    <TabItem Header="Контроль мікроклімату" x:Name="x_InnerControl"/>
+                    <TabItem Header="Моніторинг якості антибіотиків" x:Name="x_ABMonitoring"/>
+                    
                 </dragablz:TabablzControl>
             </DockPanel>
         </dockablz:Layout>

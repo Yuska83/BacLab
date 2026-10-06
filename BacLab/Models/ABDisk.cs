@@ -15,7 +15,6 @@ namespace BacLab.Models
         d_TestAndAntibiotic antibiotic;
         d_ConsumablesGroup consumablesGroup;
         a_AntibioticGroup antibioticGroup;
-
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string name)
         {

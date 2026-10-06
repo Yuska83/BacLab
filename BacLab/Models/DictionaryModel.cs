@@ -10,17 +10,19 @@ namespace BacLab.Models
         string abbr;
         int? index;
         bool? isShow;
-        d_MaterialGroup materialGroup;
-        d_District district;
         string point;
         bool? notCountPos;
         double? withoutPDV;
         double? withPDV;
-        d_PriceList priceList;
-        List<DictionaryModel> listItems;
         string dose;
+        double? koef;
+        d_MaterialGroup materialGroup;
+        d_District district;
+        d_PriceList priceList;
         d_TestAndAntibiotic testAndAntibiotic;
-
+        d_ConsumablesGroup consumablesGroup;
+        List<DictionaryModel> listItems;
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         public int Id { get { return id; } set { id = value; OnPropertyChanged("Id"); } }
@@ -38,6 +40,8 @@ namespace BacLab.Models
         public List<DictionaryModel> ListItems { get => listItems; set { listItems = value; OnPropertyChanged("ListItems"); } }
         public string Dose { get => dose; set { dose = value; OnPropertyChanged("Dose"); } }
         public d_TestAndAntibiotic TestAndAntibiotic { get => testAndAntibiotic; set { testAndAntibiotic = value; OnPropertyChanged("TestAndAntibiotic"); } }
+        public d_ConsumablesGroup ConsumablesGroup { get => consumablesGroup; set { consumablesGroup = value; OnPropertyChanged("ConsumablesGroup"); } }
+        public double? Koef { get => koef; set { koef = value; OnPropertyChanged("Koef"); } }
         protected void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

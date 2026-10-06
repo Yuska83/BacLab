@@ -26,24 +26,26 @@
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <DatePicker x:Name="x_date" Grid.Row="0" Grid.Column="0" 
-				Margin="5"
+            <DatePicker x:Name="x_date" Grid.Column="0" 
+				Margin="5,0,5,0"
 				SelectedDate="{Binding DateDelivery, Mode=TwoWay, Converter={StaticResource myDateConverter}, UpdateSourceTrigger=PropertyChanged}"
 				VerticalAlignment="Center"
 				materialDesign:HintAssist.Hint="Дата приходу" />
@@ -51,84 +53,75 @@
 		  Grid.Row="1"
 		  Grid.Column="0"
 		  VerticalAlignment="Center"
-		  Margin="5"
+		  Margin="5,0,5,0"
 		  ItemTemplate="{StaticResource itemsComboBox}"
 		  SelectedItem="{Binding Finance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 		  materialDesign:HintAssist.Hint="Фінансування"
 		  KeyUp="x_ComboBox_KeyUp" />
             <ComboBox x:Name="x_cb_category" Grid.Row="2" Grid.Column="0" 
 			  VerticalAlignment="Center"
-			  Margin="5"
+			  Margin="5,0,5,0"
 			  ItemTemplate="{StaticResource itemsComboBox}"
-			  SelectedItem="{Binding Consumable.d_ConsumablesGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+			  SelectedItem="{Binding ConsumablesGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 			  materialDesign:HintAssist.Hint="Категорія"
 			  SelectionChanged="x_cb_category_SelectionChanged"
 			  KeyUp="x_ComboBox_KeyUp" />
-            <ComboBox x:Name="x_cb_consumable" Grid.Row="3" Grid.Column="0" 
-					  VerticalAlignment="Center"
-					  Margin="5"
-					  ItemTemplate="{StaticResource itemsComboBox}"
-					  SelectedItem="{Binding Consumable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-					  materialDesign:HintAssist.Hint="Назва"
-					  KeyUp="x_ComboBox_KeyUp" />
-            <Button x:Name="x_addConsumable"  HorizontalAlignment="Right"  VerticalAlignment="Bottom"  Grid.Row="3" Grid.Column="1"
-					  Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-					  ToolTip="Додати" Width="Auto" Height="Auto" 
-					  materialDesign:ShadowAssist.ShadowDepth="Depth2"
-					  Click="X_addItem_Click">
-                <materialDesign:PackIcon Kind="PlusCircleOutline" />
-            </Button>
-            <ComboBox x:Name="x_cb_producer" Grid.Row="4" Grid.Column="0"
+            <TextBox Grid.Row="3" Grid.Column="0" x:Name="x_abbr" Margin="5,0,5,0"
+                     TextChanged="X_abbr_TextChanged" 
+                     materialDesign:HintAssist.Hint="Назва" VerticalAlignment="Center"  />
+            <ListBox Grid.Row="4" Grid.Column="0" Margin="5,5,5,5" x:Name="x_abbrList" 
+                     SelectionChanged="x_abbrList_SelectionChanged" MaxHeight="100"/>
+
+
+            <ComboBox x:Name="x_cb_producer" Grid.Row="5" Grid.Column="0"
 			  VerticalAlignment="Center"
-			  Margin="5"
+			  Margin="5,0,5,0"
 			  ItemTemplate="{StaticResource itemsComboBox}"
 			  SelectedItem="{Binding Producer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 			  materialDesign:HintAssist.Hint="Виробник"
 			  KeyUp="x_ComboBox_KeyUp" />
-            <Button x:Name="x_addProducer"  HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="4" Grid.Column="1"
+            <Button x:Name="x_addProducer"  HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="5" Grid.Column="1"
 		  Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
 		  ToolTip="Додати" Width="Auto" Height="Auto" 
 		  materialDesign:ShadowAssist.ShadowDepth="Depth2"
-		  Click="X_addItem_Click">
+		  Click="X_addItem_Click" Margin="0,12,0,0">
                 <materialDesign:PackIcon Kind="PlusCircleOutline" />
             </Button>
-            <TextBox x:Name="x_seria" Grid.Row="5" Grid.Column="0"
-			 Margin="5"
+            <TextBox x:Name="x_seria" Grid.Row="6" Grid.Column="0"
+			 Margin="5,0,5,0"
 			 Text="{Binding Series, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-			 materialDesign:HintAssist.Hint="Серія" />
-            <TextBox x:Name="x_termin" Grid.Row="6" Grid.Column="0"
-			 Margin="5"
+			 materialDesign:HintAssist.Hint="Серія" Grid.RowSpan="2" VerticalAlignment="Center" />
+            <TextBox x:Name="x_termin" Grid.Row="8" Grid.Column="0"
+			 Margin="5,0,5,0"
 			 Text="{Binding Termin, Converter={StaticResource myDateConverter}, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-			 materialDesign:HintAssist.Hint="Термін придатності" />
-            <TextBox x:Name="x_quantity" Grid.Row="7" Grid.Column="0"
-			 Margin="5"
-             Text="{Binding QuantityWas, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+			 materialDesign:HintAssist.Hint="Термін придатності" VerticalAlignment="Center" />
+            <TextBox x:Name="x_quantity" Grid.Row="9" Grid.Column="0"
+			 Margin="5,0,5,0"
 			 PreviewTextInput="x_quantity_PreviewTextInput"
-			 materialDesign:HintAssist.Hint="Кількість" />
-            <ComboBox x:Name="x_cb_unit"  Grid.Row="8" Grid.Column="0"
+			 materialDesign:HintAssist.Hint="Кількість" VerticalAlignment="Center" />
+            <ComboBox x:Name="x_cb_unit"  Grid.Row="10" Grid.Column="0"
 			  VerticalAlignment="Center"
-			  Margin="5"
+			  Margin="5,0,5,0"
 			  ItemTemplate="{StaticResource itemsComboBox}"
 			  SelectedItem="{Binding Units, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 			  materialDesign:HintAssist.Hint="Одиниця виміру"
 			  KeyUp="x_ComboBox_KeyUp" />
-            <Button x:Name="x_addUnit"  HorizontalAlignment="Right" VerticalAlignment="Bottom"  Grid.Row="8" Grid.Column="1"
+            <Button x:Name="x_addUnit"  HorizontalAlignment="Center" VerticalAlignment="Top"  Grid.Row="10" Grid.Column="1"
 				Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
 				ToolTip="Додати" Width="Auto" Height="Auto" 
 				materialDesign:ShadowAssist.ShadowDepth="Depth2"
-				Click="X_addItem_Click">
+				Click="X_addItem_Click" Margin="0,13,0,0" Grid.RowSpan="3">
                 <materialDesign:PackIcon Kind="PlusCircleOutline" />
             </Button>
-            <TextBox x:Name="x_quantityStikers" Grid.Row="10" Grid.Column="0"
-			 Margin="5"
-			 Text="1"
-			 materialDesign:HintAssist.Hint="Кількість наліпок" />
-            <TextBox x:Name="x_comment" Grid.Row="11" Grid.Column="0"
-			 Margin="5"
+            <TextBox x:Name="x_quantityStikers" Grid.Row="12" Grid.Column="0"
+			 Margin="5,0,5,0"
+			 materialDesign:HintAssist.Hint="Кількість наліпок" VerticalAlignment="Center" />
+            <TextBox x:Name="x_comment" Grid.Row="13" Grid.Column="0"
+			 Margin="5,0,5,0"
 			 Text="{Binding Comment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-			 materialDesign:HintAssist.Hint="Примітка" />
+			 materialDesign:HintAssist.Hint="Примітка" VerticalAlignment="Center" />
 
-            <StackPanel Orientation="Horizontal" Margin="10 0 10 0"  Grid.Row="12" Grid.Column="0">
+            <StackPanel Orientation="Horizontal" Margin="10,0,10,0"  Grid.Row="14" Grid.Column="0" Grid.RowSpan="2">
                 <Button IsDefault="True"
 				Click="ButtonSave_Click">
                     Зберегти

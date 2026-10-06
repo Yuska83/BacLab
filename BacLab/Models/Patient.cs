@@ -44,14 +44,18 @@ namespace BacLab.Models
         {
             try
             {
-                d_patient.id = id;
+                if(d_patient == null)
+                {
+                    d_patient = new d_Patients();
+                }
+
                 d_patient.name = name;
                 d_patient.year = year;
                 d_patient.sex = sex;
                 d_patient.adress = adress;
                 d_patient.phone = phone;
                 d_patient.email = email;
-                d_patient.d_District = district;
+                
                 return d_patient;
             }
             catch (Exception ex)

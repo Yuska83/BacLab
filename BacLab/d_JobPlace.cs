@@ -27,8 +27,8 @@ namespace BacLab
         public Nullable<bool> show { get; set; }
         public Nullable<int> idDistrict { get; set; }
     
+        public virtual d_District d_District { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<d_Analyzes> d_Analyzes { get; set; }
-        public virtual d_District d_District { get; set; }
     }
 }

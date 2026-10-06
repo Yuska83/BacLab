@@ -17,9 +17,9 @@ namespace BacLab
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public d_Department()
         {
-            this.d_Analyzes = new HashSet<d_Analyzes>();
             this.g_Institution_Department = new HashSet<g_Institution_Department>();
             this.g_Institution_Email_Print = new HashSet<g_Institution_Email_Print>();
+            this.d_Analyzes = new HashSet<d_Analyzes>();
         }
     
         public int id { get; set; }
@@ -29,10 +29,10 @@ namespace BacLab
         public Nullable<bool> show { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<d_Analyzes> d_Analyzes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<g_Institution_Department> g_Institution_Department { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<g_Institution_Email_Print> g_Institution_Email_Print { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<d_Analyzes> d_Analyzes { get; set; }
     }
 }

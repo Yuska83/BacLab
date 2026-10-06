@@ -401,7 +401,7 @@ namespace BacLab.Dictionary
                 }
                 if ((sender as TextBlock).Name == "x_DragMetalTextBlock")
                 {
-                    bool x = await Message.DialogNew_AddDragMetal(context, selectedItem, "MsgDialog");
+                    bool x = await Message.Dialog_AddDragMetal(context, selectedItem, "MsgDialog");
                     if (x) selectedItem.IsDragMetal =
                             (context.d_Equipment.Where(c => c.id == selectedItem.Id).FirstOrDefault().g_Equipment_DragMatal.Count > 0) ?
                              "є" : "ні";
@@ -422,13 +422,13 @@ namespace BacLab.Dictionary
                 }
                 if ((sender as TextBlock).Name == "x_CurrentModeTextBlock")
                 {
-                    string str = await Message.DialogDiapazon("Поточний режим", selectedItem.CurrentMode, "MsgDialog");
+                    string str = await Message.Dialog_Diapazon("Поточний режим", selectedItem.CurrentMode, "MsgDialog");
                     if (str != "False")
                         selectedItem.CurrentMode = str;
                 }
                 if ((sender as TextBlock).Name == "x_PassportModeTextBlock")
                 {
-                    string str = await Message.DialogDiapazon("Режими роботи", selectedItem.PassportMode, "MsgDialog");
+                    string str = await Message.Dialog_Diapazon("Режими роботи", selectedItem.PassportMode, "MsgDialog");
                     if (str != "False")
                         selectedItem.PassportMode = str;
                 }
@@ -596,14 +596,16 @@ namespace BacLab.Dictionary
                 int row = 3;
                 string str = "";
 
-                foreach (var item in ListItems)
+                if(sender is MenuItem)
                 {
+                    if (x_MainGrid.SelectedItem == null) return;
+                    Equipment item = x_MainGrid.SelectedItem as Equipment;
                     int row2 = row;
                     xlRange.Cells[row++, column] = laboratoria.abbrInstitution;
                     xlRange.Cells[row++, column] = "НАЗВА ОБЛАДНАННЯ:" + item.Name;
                     xlRange.Cells[row++, column] = "ЗАВОДСЬКИЙ НОМЕР:" + item.ZavNum;
-                    str = (item.LabNum != null && item.LabNum != "") ? "(" + item.LabNum + ")" : "";
-                    xlRange.Cells[row++, column] = "ІНВЕНТАРНИЙ НОМЕР:" + str;
+                    str = (item.LabNum != null && item.LabNum != "") ? " ( Лаб№ " + item.LabNum + " )" : "";
+                    xlRange.Cells[row++, column] = "ІНВЕНТАРНИЙ НОМЕР:" + item.InvNum + str;
                     xlRange.Cells[row++, column] = "ОСНОВНІ ТЕХНІЧНІ ХАРАКТЕРИСТИКИ:" + item.TechnicalCharacteristics;
                     xlRange.Cells[row++, column] = "РОБОЧИЙ РЕЖИМ:" + item.WorkMode;
                     xlRange.Cells[row++, column] = "ДАТА КАЛІБРУВАННЯ:" + item.DateCalibration;
@@ -619,9 +621,37 @@ namespace BacLab.Dictionary
                     sheet.get_Range(y1, y1).Cells.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
 
                     row += 2;
-
                 }
+                
+                else
+                {
+                    foreach (var item in ListItems)
+                    {
+                        int row2 = row;
+                        xlRange.Cells[row++, column] = laboratoria.abbrInstitution;
+                        xlRange.Cells[row++, column] = "НАЗВА ОБЛАДНАННЯ:" + item.Name;
+                        xlRange.Cells[row++, column] = "ЗАВОДСЬКИЙ НОМЕР:" + item.ZavNum;
+                        str = (item.LabNum != null && item.LabNum != "") ? " ( Лаб№ " + item.LabNum + " )" : "";
+                        xlRange.Cells[row++, column] = "ІНВЕНТАРНИЙ НОМЕР:" + item.InvNum + str;
+                        xlRange.Cells[row++, column] = "ОСНОВНІ ТЕХНІЧНІ ХАРАКТЕРИСТИКИ:" + item.TechnicalCharacteristics;
+                        xlRange.Cells[row++, column] = "РОБОЧИЙ РЕЖИМ:" + item.WorkMode;
+                        xlRange.Cells[row++, column] = "ДАТА КАЛІБРУВАННЯ:" + item.DateCalibration;
+                        xlRange.Cells[row++, column] = "ДАТА НАСТУПНОГО КАЛІБРУВАННЯ:" + item.DateCalibrationNext;
+                        xlRange.Cells[row, column] = "ВІДПОВІДАЛЬНА ОСОБА:" + item.Room?.d_Staff?.abbr;
 
+                        y1 = sheet.Cells[row2, column];
+                        y2 = sheet.Cells[row, column];
+                        sheet.get_Range(y1, y2).Cells.Borders.Weight = Excel.XlBorderWeight.xlThin;
+                        sheet.get_Range(y1, y2).Cells.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThick, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing);
+
+                        y1 = sheet.Cells[row2, column];
+                        sheet.get_Range(y1, y1).Cells.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+
+                        row += 2;
+
+                    }
+                }
+                   
                 row--;
 
                 excel.Visible = true;
@@ -661,78 +691,26 @@ namespace BacLab.Dictionary
                 (sender as ComboBox).SelectedItem = null;
         }
 
-        private void x_MainGrid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+       
+        private void x_MainGrid_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (x_MainGrid.SelectedItem == null) return;
-            Equipment selectedItem = x_MainGrid.SelectedItem as Equipment;
-
-            Word.Application wordApp = null;
-            Document newDoc = null;
-
             try
             {
-                //wordApp = new Word.Application { };
 
-                //newDoc = wordApp.Documents.Add(DocumentType: WdNewDocumentType.wdNewBlankDocument);
-                //newDoc.PageSetup.TopMargin = 36;
-                //newDoc.PageSetup.BottomMargin = 36;
-                //newDoc.PageSetup.LeftMargin = 36;
-                //newDoc.PageSetup.RightMargin = 36;
+                if (x_MainGrid.SelectedItem == null)  return;
 
-                //int row = 1;
-                //Word.Range tableLocation = newDoc.Range(0, 0);
-                //Table myTable = newDoc.Tables.Add(tableLocation, row, 2);
-                //myTable.Borders.InsideLineStyle = Word.WdLineStyle.wdLineStyleSingle;
-                //myTable.Borders.OutsideLineStyle = Word.WdLineStyle.wdLineStyleSingle;
+                ContextMenu contextMenu = new ContextMenu();
+                MenuItem EticetkaItem = new MenuItem { Header = "Сформувати етикетку" };
+                EticetkaItem.Click += PrintLabelButton_Click;
 
-
-
-                //    myTable.Rows[row].Cells[1].Range.Text = selectedItem.Name;
-                //    myTable.Rows[row].Range.Bold = 1;
-                //    myTable.Rows[row].Range.Borders[WdBorderType.wdBorderTop].LineWidth = WdLineWidth.wdLineWidth150pt;
-
-                //    var col1 = context.a_AntibioticPanel.Where(c => c.idAntibioticPanelName == item.id && c.fistLine == true
-                //     && c.a_AntibioticMicroorganismGroup.a_Antibiotic.id_AntibioticGroup != 15
-                //    && c.a_AntibioticMicroorganismGroup.a_Antibiotic.id_AntibioticGroup != 16
-                //    && c.a_AntibioticMicroorganismGroup.a_Antibiotic.id_AntibioticGroup != 17).OrderBy(c => c.index);
-                //    bool x = true;
-                //    foreach (var itemAB in col1)
-                //    {
-                //        myTable.Rows.Add();
-                //        row++;
-                //        myTable.Rows[row].Range.Borders[WdBorderType.wdBorderTop].LineWidth =
-                //            x == true ? WdLineWidth.wdLineWidth150pt : WdLineWidth.wdLineWidth075pt;
-                //        x = false;
-                //        myTable.Rows[row].Range.Bold = 0;
-                //        myTable.Rows[row].Cells[1].Range.Text = itemAB.a_AntibioticMicroorganismGroup.a_Antibiotic.nameDisk;
-                //        myTable.Rows[row].Cells[2].Range.Text = itemAB.a_AntibioticMicroorganismGroup.sen == itemAB.a_AntibioticMicroorganismGroup.res ? itemAB.a_AntibioticMicroorganismGroup.sen.ToString() : itemAB.a_AntibioticMicroorganismGroup.res.ToString() + "-" + itemAB.a_AntibioticMicroorganismGroup.sen.ToString();
-                //    }
-
-                //    x = true;
-                //    var col2 = context.a_AntibioticPanel.Where(c => c.idAntibioticPanelName == item.id && c.fistLine != true).OrderBy(c => c.index);
-                //    foreach (var itemAB in col2)
-                //    {
-                //        myTable.Rows.Add();
-                //        row++;
-                //        myTable.Rows[row].Range.Borders[WdBorderType.wdBorderTop].LineWidth =
-                //            x == true ? WdLineWidth.wdLineWidth150pt : WdLineWidth.wdLineWidth075pt;
-                //        x = false;
-                //        myTable.Rows[row].Range.Bold = 0;
-                //        myTable.Rows[row].Cells[1].Range.Text = itemAB.a_AntibioticMicroorganismGroup.a_Antibiotic.nameDisk;
-                //        myTable.Rows[row].Cells[2].Range.Text = itemAB.a_AntibioticMicroorganismGroup.sen == itemAB.a_AntibioticMicroorganismGroup.res ? itemAB.a_AntibioticMicroorganismGroup.sen.ToString() : itemAB.a_AntibioticMicroorganismGroup.res.ToString() + "-" + itemAB.a_AntibioticMicroorganismGroup.sen.ToString();
-                //    }
-                //    myTable.Rows.Add();
-                //    row++;
-
-
-                //wordApp.Visible = true;
-
+                contextMenu.Items.Add(EticetkaItem);
+                contextMenu.IsOpen = true;
             }
             catch (Exception ex)
             {
-                Message.Ok(ex.Message + ex.StackTrace, "MsgDialog");
+                Message.Ok(ex.Message + " " + ex.StackTrace, "MsgDialog");
             }
-        }
 
+        }
     }
 }
